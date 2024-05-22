@@ -7,8 +7,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TravelService {
-    void addTravelExpenses(TravelRequestDto travelRequestDto);
+    TravelResponseDto addTravelExpenses(TravelRequestDto travelRequestDto);
 //    List<TravelResponseDto> findAllTravelExpenses();
-    TravelResponseDto findTravelExpensesForTravelRequest(TravelRequestDto travelRequestDto);
-//    BigDecimal getTravelExpenses(TravelRequestDto travelRequestDto);
+    TravelResponseDto findTravelExpensesForTravelRequest(Long ig);
 }

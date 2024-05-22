@@ -30,4 +30,16 @@ public class TravelEntity {
     private Integer dinnerQuantity;
 
     private BigDecimal costOfTotalExpense;
+
+    public TravelEntity(LocalDateTime startDateTime, LocalDateTime endDateTime, BigDecimal dailyAllowance,
+                        Integer breakfastQuantity, Integer lunchQuantity, Integer dinnerQuantity,
+                        BigDecimal costOfTotalExpense) {
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.dailyAllowance = dailyAllowance;
+        this.breakfastQuantity = breakfastQuantity;
+        this.lunchQuantity = lunchQuantity;
+        this.dinnerQuantity = dinnerQuantity;
+        this.costOfTotalExpense = costOfTotalExpense;
+    }
 }

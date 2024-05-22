@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelallowance.model.Dto.TravelRequestDto;
 import pl.sginko.travelallowance.model.Dto.TravelResponseDto;
+import pl.sginko.travelallowance.model.Entity.TravelEntity;
 import pl.sginko.travelallowance.model.Mapper.TravelMapper;
 import pl.sginko.travelallowance.repository.TravelRepository;
 
@@ -22,13 +23,18 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public void addTravelExpenses(TravelRequestDto travelRequestDto) {
-        travelRepository.save(travelMapper.toEntity(travelRequestDto));
+    public TravelResponseDto addTravelExpenses(TravelRequestDto travelRequestDto) {
+        BigDecimal totalCostOfTravelExpenses = getTotalCostOfTravelExpenses(travelRequestDto);
+        TravelEntity entityAfterCalculation = travelMapper.toEntityAfterCalculation(travelRequestDto, totalCostOfTravelExpenses);
+        travelRepository.save(entityAfterCalculation);
+        TravelResponseDto travelResponseDto = travelMapper.fromEntity(entityAfterCalculation);
+        return travelResponseDto;
     }
 
     @Override
-    public TravelResponseDto findTravelExpensesForTravelRequest(TravelRequestDto travelRequestDto) {
-         return null;
+    public TravelResponseDto findTravelExpensesForTravelRequest(Long id) {
+
+        return null;
     }
 
 
@@ -73,8 +79,8 @@ public class TravelServiceImpl implements TravelService {
 
     private BigDecimal calculationOfFoodExpenses(Integer breakfastQuantity, Integer lunchQuantity, Integer dinnerQuantity, BigDecimal dailyAllowance) {
         BigDecimal totalFoodExpenses = BigDecimal.ZERO;
-        BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100).multiply(dailyAllowance);
-        BigDecimal twentyFivePercentOfDailyAllowance = BigDecimal.valueOf(25 / 100).multiply(dailyAllowance);
+        BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100.0).multiply(dailyAllowance);
+        BigDecimal twentyFivePercentOfDailyAllowance = BigDecimal.valueOf(25 / 100.0).multiply(dailyAllowance);
 
         BigDecimal moneyCostForBreakfast = BigDecimal.valueOf(breakfastQuantity).multiply(twentyFivePercentOfDailyAllowance);
         BigDecimal moneyCostForLunch = BigDecimal.valueOf(lunchQuantity).multiply(fiftyPercentOfDailyAllowance);
