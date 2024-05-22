@@ -1,4 +1,7 @@
 package pl.sginko.travelallowance.repository;
 
-class TravelRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.sginko.travelallowance.model.Entity.TravelEntity;
+
+public interface TravelRepository extends JpaRepository<TravelEntity, Long> {
 }
