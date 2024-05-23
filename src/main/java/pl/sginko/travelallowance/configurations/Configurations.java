@@ -12,4 +12,4 @@ public class Configurations {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-}
+  }

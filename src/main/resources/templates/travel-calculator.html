@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator krajowej podróży służbowej</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="submit"] {
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Kalkulator krajowej podróży służbowej</h1>
+<form method="POST" action="/api/v1/travels">
+    <label for="startDateTime">Data i godzina wyjazdu:</label>
+    <input name="startDateTime" type="datetime-local" id="startDateTime" required>
+
+    <label for="endDateTime">Data i godzina powrotu:</label>
+    <input name="endDateTime" type="datetime-local" id="endDateTime" required>
+
+    <label for="breakfastQuantity">Liczba śniadań:</label>
+    <input name="breakfastQuantity" type="number" id="breakfastQuantity" min="0" required>
+
+    <label for="lunchQuantity">Liczba obiadów:</label>
+    <input name="lunchQuantity" type="number" id="lunchQuantity" min="0" required>
+
+    <label for="dinnerQuantity">Liczba kolacji:</label>
+    <input name="dinnerQuantity" type="number" id="dinnerQuantity" min="0" required>
+
+    <input type="submit" value="Calculate">
+</form>
+</body>
+</html>

@@ -28,13 +28,13 @@ public class TravelMapper {
         return map;
     }
 
-
     public TravelEntity toEntity(TravelRequestDto travelRequestDto) {
         return modelMapper.map(travelRequestDto, TravelEntity.class);
     }
 
     public TravelEntity toEntityAfterCalculation(TravelRequestDto travelRequestDto, BigDecimal costOfTotalExpense) {
-        return new TravelEntity(travelRequestDto.getStartDateTime(), travelRequestDto.getEndDateTime(), travelRequestDto.getDAILY_ALLOWANCE(),
-                travelRequestDto.getBreakfastQuantity(), travelRequestDto.getLunchQuantity(), travelRequestDto.getDinnerQuantity(), costOfTotalExpense);
+        return new TravelEntity(travelRequestDto.getStartDateTime(), travelRequestDto.getEndDateTime(),
+                travelRequestDto.getDAILY_ALLOWANCE(), travelRequestDto.getBreakfastQuantity(),
+                travelRequestDto.getLunchQuantity(), travelRequestDto.getDinnerQuantity(), costOfTotalExpense);
     }
 }

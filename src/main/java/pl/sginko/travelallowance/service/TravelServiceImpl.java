@@ -37,12 +37,11 @@ public class TravelServiceImpl implements TravelService {
         return null;
     }
 
-
     private BigDecimal getTotalCostOfTravelExpenses(TravelRequestDto travelRequestDto) {
-        BigDecimal totalTravelExpenses = calculationOfTravelExpenses(travelRequestDto.getDAILY_ALLOWANCE(),
+        BigDecimal totalTravelExpenses = getCalculationOfTravelExpenses(travelRequestDto.getDAILY_ALLOWANCE(),
                 travelRequestDto.getStartDateTime(), travelRequestDto.getEndDateTime());
 
-        BigDecimal totalFoodExpenses = calculationOfFoodExpenses(travelRequestDto.getBreakfastQuantity(), travelRequestDto.getLunchQuantity(),
+        BigDecimal totalFoodExpenses = getCalculationOfFoodExpenses(travelRequestDto.getBreakfastQuantity(), travelRequestDto.getLunchQuantity(),
                 travelRequestDto.getDinnerQuantity(), travelRequestDto.getDAILY_ALLOWANCE());
 
         return totalTravelExpenses.subtract(totalFoodExpenses);
@@ -53,7 +52,7 @@ public class TravelServiceImpl implements TravelService {
         return duration.toHours();
     }
 
-    private BigDecimal calculationOfTravelExpenses(BigDecimal dailyAllowance, LocalDateTime startDay, LocalDateTime endDay) {
+    private BigDecimal getCalculationOfTravelExpenses(BigDecimal dailyAllowance, LocalDateTime startDay, LocalDateTime endDay) {
         long hoursInTravel = getHourInTravel(startDay, endDay);
         BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100).multiply(dailyAllowance);
 
@@ -77,7 +76,7 @@ public class TravelServiceImpl implements TravelService {
         }
     }
 
-    private BigDecimal calculationOfFoodExpenses(Integer breakfastQuantity, Integer lunchQuantity, Integer dinnerQuantity, BigDecimal dailyAllowance) {
+    private BigDecimal getCalculationOfFoodExpenses(Integer breakfastQuantity, Integer lunchQuantity, Integer dinnerQuantity, BigDecimal dailyAllowance) {
         BigDecimal totalFoodExpenses = BigDecimal.ZERO;
         BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100.0).multiply(dailyAllowance);
         BigDecimal twentyFivePercentOfDailyAllowance = BigDecimal.valueOf(25 / 100.0).multiply(dailyAllowance);
