@@ -80,5 +80,37 @@ class TravelServiceImplTest {
         assertThat(travelResponseDto.getCostOfTotalExpense()).isEqualTo(DAILY_ALLOWANCE.setScale(2));
     }
 
+    @Test
+    void should_calculate_travel_expenses_if_travel_was_more_day_and_less_then_day_and_8_hour() {
+        //given
+        LocalDateTime startDay = LocalDateTime.now();
+        LocalDateTime endDay = LocalDateTime.now().plusHours(27).plusMinutes(00);
+        Integer breakfastQuantity = 0;
+        Integer lunchQuantity = 0;
+        Integer dinnerQuantity = 0;
+        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, endDay, breakfastQuantity, lunchQuantity, dinnerQuantity);
 
+        //when
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
+
+        //then
+        assertThat(travelResponseDto.getCostOfTotalExpense()).isEqualTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE.multiply(new BigDecimal(0.50))).setScale(2));
+    }
+
+    @Test
+    void should_calculate_travel_expenses_if_travel_was_more_32_hour() {
+        //given
+        LocalDateTime startDay = LocalDateTime.now();
+        LocalDateTime endDay = LocalDateTime.now().plusHours(32).plusMinutes(00);
+        Integer breakfastQuantity = 0;
+        Integer lunchQuantity = 0;
+        Integer dinnerQuantity = 0;
+        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, endDay, breakfastQuantity, lunchQuantity, dinnerQuantity);
+
+        //when
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
+
+        //then
+        assertThat(travelResponseDto.getCostOfTotalExpense()).isEqualTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE).setScale(2));
+    }
 }
