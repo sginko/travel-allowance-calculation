@@ -29,6 +29,7 @@ class TravelController {
         return "travel-calculator";
     }
 
+    @ResponseBody
     @PostMapping
     public String addTravelExpenses(@ModelAttribute TravelRequestDto travelRequestDto, Model model) {
         TravelResponseDto travelResponseDto = travelService.addTravelExpenses(travelRequestDto);
