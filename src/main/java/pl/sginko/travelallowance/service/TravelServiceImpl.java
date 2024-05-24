@@ -23,7 +23,7 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
-    public TravelResponseDto addTravelExpenses(TravelRequestDto travelRequestDto) {
+    public TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto) {
         BigDecimal totalCostOfTravelExpenses = getTotalCostOfTravelExpenses(travelRequestDto);
         TravelEntity entityAfterCalculation = travelMapper.toEntityAfterCalculation(travelRequestDto, totalCostOfTravelExpenses);
         travelRepository.save(entityAfterCalculation);
@@ -31,11 +31,6 @@ public class TravelServiceImpl implements TravelService {
         return travelResponseDto;
     }
 
-    @Override
-    public TravelResponseDto findTravelExpensesForTravelRequest(Long id) {
-
-        return null;
-    }
 
     private BigDecimal getTotalCostOfTravelExpenses(TravelRequestDto travelRequestDto) {
         BigDecimal totalTravelExpenses = getCalculationOfTravelExpenses(travelRequestDto.getDAILY_ALLOWANCE(),
@@ -54,19 +49,19 @@ public class TravelServiceImpl implements TravelService {
 
     private BigDecimal getCalculationOfTravelExpenses(BigDecimal dailyAllowance, LocalDateTime startDay, LocalDateTime endDay) {
         long hoursInTravel = getHourInTravel(startDay, endDay);
-        BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100).multiply(dailyAllowance);
+        BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100.0).multiply(dailyAllowance);
 
         if (hoursInTravel <= 24) {
             if (hoursInTravel < 8) {
                 return new BigDecimal(0);
             }
-            if (hoursInTravel <= 12) {
+            if (hoursInTravel < 12) {
                 return fiftyPercentOfDailyAllowance;
             }
             return dailyAllowance;
         } else {
             long hoursInTravelLessThanDay = hoursInTravel % 24;
-            long fullDays = (hoursInTravel - hoursInTravelLessThanDay) / 24;
+            long fullDays = Duration.between(startDay, endDay).toDays(); //(hoursInTravel - hoursInTravelLessThanDay) / 24;
             BigDecimal totalAmountForFullDays = BigDecimal.valueOf(fullDays).multiply(dailyAllowance);
 
             if (hoursInTravelLessThanDay < 8) {

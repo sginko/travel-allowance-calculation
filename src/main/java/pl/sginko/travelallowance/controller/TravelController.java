@@ -29,10 +29,10 @@ class TravelController {
         return "travel-calculator";
     }
 
-    @ResponseBody
+
     @PostMapping
     public String addTravelExpenses(@ModelAttribute TravelRequestDto travelRequestDto, Model model) {
-        TravelResponseDto travelResponseDto = travelService.addTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
         model.addAttribute("travelResponse", travelResponseDto);
         return "results";
     }
