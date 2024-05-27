@@ -17,13 +17,6 @@ class TravelController {
         this.travelService = travelService;
     }
 
-//    @PostMapping
-//    public TravelResponseDto addTravelExpenses(@RequestBody TravelRequestDto travelRequestDto){
-//        TravelResponseDto travelResponseDto = travelService.addTravelExpenses(travelRequestDto);
-//        return travelResponseDto;
-
-//    }
-
     @GetMapping
     public String getTravelForm() {
         return "travel-calculator";
@@ -31,7 +24,7 @@ class TravelController {
 
 
     @PostMapping
-    public String addTravelExpenses(@ModelAttribute TravelRequestDto travelRequestDto, Model model) {
+    public String calculateTravelExpenses(@ModelAttribute TravelRequestDto travelRequestDto, Model model) {
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
         model.addAttribute("travelResponse", travelResponseDto);
         return "results";
