@@ -15,17 +15,20 @@ public class TravelResponseDto {
     private Integer breakfastQuantity;
     private Integer lunchQuantity;
     private Integer dinnerQuantity;
-//    private BigDecimal totalAmount;
-    private BigDecimal costOfTotalExpense;
+    private BigDecimal totalAmount;
+    private BigDecimal dietAmount;
+    private BigDecimal foodAmount;
 
     public TravelResponseDto(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer breakfastQuantity,
-                             Integer lunchQuantity, Integer dinnerQuantity, BigDecimal costOfTotalExpense) {
+                             Integer lunchQuantity, Integer dinnerQuantity, BigDecimal totalAmount,
+                             BigDecimal dietAmount, BigDecimal foodAmount) {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.breakfastQuantity = breakfastQuantity;
         this.lunchQuantity = lunchQuantity;
         this.dinnerQuantity = dinnerQuantity;
-//        this.totalAmount = totalAmount;
-        this.costOfTotalExpense = costOfTotalExpense;
+        this.totalAmount = totalAmount;
+        this.dietAmount = dietAmount;
+        this.foodAmount = foodAmount;
     }
 }
