@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelResponseDto {
+    private Long id;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Integer breakfastQuantity;
@@ -19,9 +20,10 @@ public class TravelResponseDto {
     private BigDecimal dietAmount;
     private BigDecimal foodAmount;
 
-    public TravelResponseDto(LocalDateTime startDateTime, LocalDateTime endDateTime, Integer breakfastQuantity,
+    public TravelResponseDto(Long id, LocalDateTime startDateTime, LocalDateTime endDateTime, Integer breakfastQuantity,
                              Integer lunchQuantity, Integer dinnerQuantity, BigDecimal totalAmount,
                              BigDecimal dietAmount, BigDecimal foodAmount) {
+        this.id = id;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.breakfastQuantity = breakfastQuantity;

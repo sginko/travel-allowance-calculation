@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class TravelMapper {
 
     public TravelResponseDto fromEntity(TravelEntity travelEntity) {
-        return new TravelResponseDto(travelEntity.getStartTravel(), travelEntity.getFinishTravel(),
+        return new TravelResponseDto(travelEntity.getId(), travelEntity.getStartTravel(), travelEntity.getFinishTravel(),
                 travelEntity.getBreakfastQuantity(), travelEntity.getLunchQuantity(), travelEntity.getDinnerQuantity(),
                 travelEntity.getTotalAmount(), travelEntity.getDietAmount(), travelEntity.getFoodAmount());
     }
