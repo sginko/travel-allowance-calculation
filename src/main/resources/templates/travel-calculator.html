@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,53 +7,95 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; /* Изменено с center на flex-start */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
         }
         h1 {
             color: #333;
+            text-align: center;
+            margin-bottom: 10px; /* Уменьшено значение margin-bottom */
+            margin-top: 10px; /* Добавлено значение margin-top */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-wrapper {
             max-width: 400px;
+            width: 100%;
             margin: 0 auto;
-            margin-bottom: 70px;
+            padding: 10px; /* Уменьшено значение padding */
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-        form {
-            max-width: 400px;
-            margin: 0 auto;
+        .form-wrapper label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px; /* Уменьшено значение margin-bottom */
         }
-        label, input {
-            display: block;
-            margin-bottom: 10px;
+        .form-wrapper input[type="text"],
+        .form-wrapper input[type="datetime-local"],
+        .form-wrapper input[type="number"] {
+            width: 200px; /* Устанавливаем одинаковую ширину для всех полей */
+            margin-left: 10px;
         }
-        input[type="submit"] {
-            margin-top: 20px;
+        .form-wrapper input[type="submit"] {
+            margin-top: 10px; /* Уменьшено значение margin-top */
             padding: 10px 15px;
             background-color: #007BFF;
             color: white;
             border: none;
             cursor: pointer;
         }
-        input[type="submit"]:hover {
+        .form-wrapper input[type="submit"]:hover {
             background-color: #0056b3;
+        }
+        .form-title {
+            text-align: left;
+            font-size: 18px;
+            margin-bottom: 10px; /* Уменьшено значение margin-bottom */
+            color: #333;
         }
     </style>
 </head>
 <body>
 <h1>Kalkulator krajowej podróży służbowej</h1>
-<form method="POST" action="/api/v1/travels">
-    <label for="startDateTime">Data i godzina wyjazdu:</label>
-    <input name="startDateTime" type="datetime-local" id="startDateTime" required>
+<div class="container">
+    <div class="form-title">Wprowadź dane podróży:</div>
+    <div class="form-wrapper">
+        <form method="POST" action="/api/v1/travels">
+            <label for="startDateTime">Data i godzina wyjazdu:
+                <input name="startDateTime" type="datetime-local" id="startDateTime" required>
+            </label>
 
-    <label for="endDateTime">Data i godzina powrotu:</label>
-    <input name="endDateTime" type="datetime-local" id="endDateTime" required>
+            <label for="endDateTime">Data i godzina powrotu:
+                <input name="endDateTime" type="datetime-local" id="endDateTime" required>
+            </label>
 
-    <label for="breakfastQuantity">Liczba śniadań:</label>
-    <input name="breakfastQuantity" type="number" id="breakfastQuantity" min="0" required>
+            <label for="breakfastQuantity">Liczba śniadań:
+                <input name="breakfastQuantity" type="number" id="breakfastQuantity" min="0" required>
+            </label>
 
-    <label for="lunchQuantity">Liczba obiadów:</label>
-    <input name="lunchQuantity" type="number" id="lunchQuantity" min="0" required>
+            <label for="lunchQuantity">Liczba obiadów:
+                <input name="lunchQuantity" type="number" id="lunchQuantity" min="0" required>
+            </label>
 
-    <label for="dinnerQuantity">Liczba kolacji:</label>
-    <input name="dinnerQuantity" type="number" id="dinnerQuantity" min="0" required>
+            <label for="dinnerQuantity">Liczba kolacji:
+                <input name="dinnerQuantity" type="number" id="dinnerQuantity" min="0" required>
+            </label>
 
-    <input type="submit" value="Calculate">
-</form>
+            <input type="submit" value="Calculate">
+        </form>
+    </div>
+</div>
 </body>
 </html>

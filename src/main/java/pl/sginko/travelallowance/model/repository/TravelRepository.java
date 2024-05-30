@@ -1,4 +1,4 @@
-package pl.sginko.travelallowance.repository;
+package pl.sginko.travelallowance.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.sginko.travelallowance.model.Entity.TravelEntity;

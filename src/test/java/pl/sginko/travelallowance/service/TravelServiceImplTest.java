@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.sginko.travelallowance.model.Dto.TravelRequestDto;
 import pl.sginko.travelallowance.model.Dto.TravelResponseDto;
-import pl.sginko.travelallowance.repository.TravelRepository;
+import pl.sginko.travelallowance.model.repository.TravelRepository;
+import pl.sginko.travelallowance.model.service.TravelService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

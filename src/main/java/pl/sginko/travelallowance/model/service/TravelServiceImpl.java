@@ -1,4 +1,4 @@
-package pl.sginko.travelallowance.service;
+package pl.sginko.travelallowance.model.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import pl.sginko.travelallowance.model.Dto.TravelRequestDto;
 import pl.sginko.travelallowance.model.Dto.TravelResponseDto;
 import pl.sginko.travelallowance.model.Entity.TravelEntity;
 import pl.sginko.travelallowance.model.Mapper.TravelMapper;
-import pl.sginko.travelallowance.repository.TravelRepository;
+import pl.sginko.travelallowance.model.repository.TravelRepository;
 
 @Service
 public class TravelServiceImpl implements TravelService {
