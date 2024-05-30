@@ -2,13 +2,12 @@ package pl.sginko.travelallowance.controller;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelallowance.PdfDocumentPrinter;
+import pl.sginko.travelallowance.service.PdfDocumentService;
 import pl.sginko.travelallowance.model.Dto.TravelRequestDto;
 import pl.sginko.travelallowance.model.Dto.TravelResponseDto;
 import pl.sginko.travelallowance.service.TravelService;
@@ -21,9 +20,9 @@ import java.io.IOException;
 @RequestMapping("/api/v1/travels")
 class TravelController {
     private final TravelService travelService;
-    private final PdfDocumentPrinter pdfDocumentPrinter;
+    private final PdfDocumentService pdfDocumentPrinter;
 
-    TravelController(TravelService travelService, PdfDocumentPrinter pdfDocumentPrinter) {
+    TravelController(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
         this.travelService = travelService;
         this.pdfDocumentPrinter = pdfDocumentPrinter;
     }
@@ -57,29 +56,10 @@ class TravelController {
                 .body(resource);
     }
 
-
-//    @PostMapping("/print")
-//    public ResponseEntity<byte[]> print(@ModelAttribute TravelResponseDto travelResponseDto) {
-//        Long id = travelResponseDto.getId();
-//        byte[] pdfBytes;
-//        try {
-//            pdfBytes = pdfDocumentPrinter.generatePdfDocument(id);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Content-Disposition", "inline; filename=report.pdf");
-//
-//        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-//    }
-
     @GetMapping
     public String getTravelForm() {
         return "travel-calculator";
     }
-
 
     @PostMapping
     public String calculateTravelExpenses(@ModelAttribute TravelRequestDto travelRequestDto, Model model) {

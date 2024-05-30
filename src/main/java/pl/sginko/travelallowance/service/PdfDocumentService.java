@@ -1,28 +1,21 @@
-package pl.sginko.travelallowance;
+package pl.sginko.travelallowance.service;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelallowance.model.Entity.TravelEntity;
 import pl.sginko.travelallowance.repository.TravelRepository;
 
-import javax.print.*;
-import javax.print.attribute.HashPrintRequestAttributeSet;
-import javax.print.attribute.PrintRequestAttributeSet;
-import javax.print.attribute.standard.MediaSizeName;
-import javax.print.attribute.standard.Sides;
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 
 @Service
-public class PdfDocumentPrinter {
+public class PdfDocumentService {
     private final TravelRepository travelRepository;
 
-    public PdfDocumentPrinter(TravelRepository travelRepository) {
+    public PdfDocumentService(TravelRepository travelRepository) {
         this.travelRepository = travelRepository;
     }
 
@@ -87,45 +80,7 @@ public class PdfDocumentPrinter {
             } else {
                 System.out.println("AcroForm is null.");
             }
-
             document.save(outputPath);
         }
     }
-
-
-
-//    public static void fillTemplate(String templatePath, String outputPath, Map<String, String> data) throws IOException {
-//        try (PDDocument document = PDDocument.load(new FileInputStream(templatePath))) {
-//            PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-//
-//            if (acroForm != null) {
-//                for (Map.Entry<String, String> entry : data.entrySet()) {
-//                    PDField field = acroForm.getField(entry.getKey());
-//                    if (field != null) {
-//                        field.setValue(entry.getValue());
-//                    }
-//                }
-//                acroForm.flatten();
-//            }
-//
-//            document.save(outputPath);
-//        }
-//    }
-//
-//    public static void printPdf(String filePath) throws PrintException, IOException {
-//        FileInputStream fis = new FileInputStream(filePath);
-//        Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.PDF, null);
-//
-//        PrintService printService = PrintServiceLookup.lookupDefaultPrintService();
-//        if (printService != null) {
-//            PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
-//            attributes.add(MediaSizeName.ISO_A4);
-//            attributes.add(Sides.ONE_SIDED);
-//            DocPrintJob printJob = printService.createPrintJob();
-//            printJob.print(pdfDoc, attributes);
-//        } else {
-//            System.out.println("No print service found.");
-//        }
-//        fis.close();
-//    }
 }
