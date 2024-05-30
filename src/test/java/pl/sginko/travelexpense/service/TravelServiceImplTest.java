@@ -1,13 +1,13 @@
-package pl.sginko.travelallowance.service;
+package pl.sginko.travelexpense.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sginko.travelallowance.model.Dto.TravelRequestDto;
-import pl.sginko.travelallowance.model.Dto.TravelResponseDto;
-import pl.sginko.travelallowance.model.repository.TravelRepository;
-import pl.sginko.travelallowance.model.service.TravelService;
+import pl.sginko.travelexpense.model.Dto.TravelRequestDto;
+import pl.sginko.travelexpense.model.Dto.TravelResponseDto;
+import pl.sginko.travelexpense.model.repository.TravelRepository;
+import pl.sginko.travelexpense.model.service.TravelService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

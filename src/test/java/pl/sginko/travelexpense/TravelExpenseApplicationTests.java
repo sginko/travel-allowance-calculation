@@ -1,10 +1,10 @@
-package pl.sginko.travelallowance;
+package pl.sginko.travelexpense;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TravelAllowanceCalculationApplicationTests {
+class TravelExpenseApplicationTests {
 
 	@Test
 	void contextLoads() {

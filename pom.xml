@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pl.sginko</groupId>
-    <artifactId>travelallowance</artifactId>
+    <artifactId>travelexpense</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>travel-allowance-calculation</name>
     <description>Travel Allowance Calculation</description>

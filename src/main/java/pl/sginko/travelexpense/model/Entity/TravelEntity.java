@@ -1,4 +1,4 @@
-package pl.sginko.travelallowance.model.Entity;
+package pl.sginko.travelexpense.model.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,12 +1,9 @@
-package pl.sginko.travelallowance.model.Mapper;
+package pl.sginko.travelexpense.model.Mapper;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import pl.sginko.travelallowance.model.Dto.TravelRequestDto;
-import pl.sginko.travelallowance.model.Dto.TravelResponseDto;
-import pl.sginko.travelallowance.model.Entity.TravelEntity;
-
-import java.math.BigDecimal;
+import pl.sginko.travelexpense.model.Dto.TravelRequestDto;
+import pl.sginko.travelexpense.model.Dto.TravelResponseDto;
+import pl.sginko.travelexpense.model.Entity.TravelEntity;
 
 @Component
 public class TravelMapper {

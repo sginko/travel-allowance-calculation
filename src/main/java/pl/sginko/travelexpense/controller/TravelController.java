@@ -1,4 +1,4 @@
-package pl.sginko.travelallowance.controller;
+package pl.sginko.travelexpense.controller;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelallowance.model.service.PdfDocumentService;
-import pl.sginko.travelallowance.model.Dto.TravelRequestDto;
-import pl.sginko.travelallowance.model.Dto.TravelResponseDto;
-import pl.sginko.travelallowance.model.service.TravelService;
+import pl.sginko.travelexpense.model.service.PdfDocumentService;
+import pl.sginko.travelexpense.model.Dto.TravelRequestDto;
+import pl.sginko.travelexpense.model.Dto.TravelResponseDto;
+import pl.sginko.travelexpense.model.service.TravelService;
 
 import java.io.File;
 import java.io.FileInputStream;

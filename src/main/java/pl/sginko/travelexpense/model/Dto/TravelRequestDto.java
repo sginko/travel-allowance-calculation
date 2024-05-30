@@ -1,4 +1,4 @@
-package pl.sginko.travelallowance.model.Dto;
+package pl.sginko.travelexpense.model.Dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
