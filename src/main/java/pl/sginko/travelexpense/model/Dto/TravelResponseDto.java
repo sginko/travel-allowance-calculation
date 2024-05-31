@@ -5,30 +5,35 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelResponseDto {
     private Long id;
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
-    private Integer breakfastQuantity;
-    private Integer lunchQuantity;
-    private Integer dinnerQuantity;
+    private LocalDate startDate;
+    private LocalTime startTime;
+    private LocalDate endDate;
+    private LocalTime endTime;
+    private Integer numberOfBreakfasts;
+    private Integer numberOfLunches;
+    private Integer numberOfDinners;
     private BigDecimal totalAmount;
     private BigDecimal dietAmount;
     private BigDecimal foodAmount;
 
-    public TravelResponseDto(Long id, LocalDateTime startDateTime, LocalDateTime endDateTime, Integer breakfastQuantity,
-                             Integer lunchQuantity, Integer dinnerQuantity, BigDecimal totalAmount,
+    public TravelResponseDto(Long id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime,
+                             Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners, BigDecimal totalAmount,
                              BigDecimal dietAmount, BigDecimal foodAmount) {
         this.id = id;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.breakfastQuantity = breakfastQuantity;
-        this.lunchQuantity = lunchQuantity;
-        this.dinnerQuantity = dinnerQuantity;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.numberOfBreakfasts = numberOfBreakfasts;
+        this.numberOfLunches = numberOfLunches;
+        this.numberOfDinners = numberOfDinners;
         this.totalAmount = totalAmount;
         this.dietAmount = dietAmount;
         this.foodAmount = foodAmount;

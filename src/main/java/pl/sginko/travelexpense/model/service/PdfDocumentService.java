@@ -19,16 +19,17 @@ public class PdfDocumentService {
         this.travelRepository = travelRepository;
     }
 
-
     public void generatePdfDocument(Long id) throws IOException {
         TravelEntity businessTrip = travelRepository.findById(id).orElseThrow(() -> new RuntimeException("Business trip not found"));
 
         Map<String, String> replacements = Map.of(
-                "startDate", businessTrip.getStartTravel().toString(),
-                "endDate", businessTrip.getFinishTravel().toString(),
-                "countBreakfast", String.valueOf(businessTrip.getBreakfastQuantity()),
-                "countLunch", String.valueOf(businessTrip.getLunchQuantity()),
-                "countDinner", String.valueOf(businessTrip.getDinnerQuantity()),
+                "startDate", businessTrip.getStartDate().toString(),
+                "startTime", businessTrip.getStartTime().toString(),
+                "endDate", businessTrip.getEndDate().toString(),
+                "endTime", businessTrip.getEndTime().toString(),
+                "countBreakfast", String.valueOf(businessTrip.getNumberOfBreakfasts()),
+                "countLunch", String.valueOf(businessTrip.getNumberOfLunches()),
+                "countDinner", String.valueOf(businessTrip.getNumberOfDinners()),
                 "totalAmount", String.valueOf(businessTrip.getTotalAmount()),
                 "dietAmount", String.valueOf(businessTrip.getDietAmount()),
                 "foodAmount", String.valueOf(businessTrip.getFoodAmount())

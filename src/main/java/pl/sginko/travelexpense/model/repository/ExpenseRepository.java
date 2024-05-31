@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.model.repository;
-
-class ExpenseRepository {
-}
+//package pl.sginko.travelexpense.model.repository;
+//
+//class ExpenseRepository {
+//}

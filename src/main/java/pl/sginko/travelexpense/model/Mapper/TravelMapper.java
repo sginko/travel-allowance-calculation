@@ -8,15 +8,17 @@ import pl.sginko.travelexpense.model.Entity.TravelEntity;
 @Component
 public class TravelMapper {
 
-    public TravelResponseDto fromEntity(TravelEntity travelEntity) {
-        return new TravelResponseDto(travelEntity.getId(), travelEntity.getStartTravel(), travelEntity.getFinishTravel(),
-                travelEntity.getBreakfastQuantity(), travelEntity.getLunchQuantity(), travelEntity.getDinnerQuantity(),
-                travelEntity.getTotalAmount(), travelEntity.getDietAmount(), travelEntity.getFoodAmount());
+    public TravelResponseDto toResponseDto(TravelEntity entity) {
+        return new TravelResponseDto(entity.getId(), entity.getStartDate(), entity.getStartTime(),
+                entity.getEndDate(), entity.getEndTime(), entity.getNumberOfBreakfasts(),
+                entity.getNumberOfLunches(), entity.getNumberOfDinners(), entity.getTotalAmount(),
+                entity.getDietAmount(), entity.getFoodAmount());
     }
 
-    public TravelEntity toEntityAfterCalculation(TravelRequestDto travelRequestDto) {
-        return new TravelEntity(travelRequestDto.getStartDateTime(), travelRequestDto.getEndDateTime(),
-                travelRequestDto.getDAILY_ALLOWANCE(), travelRequestDto.getBreakfastQuantity(),
-                travelRequestDto.getLunchQuantity(), travelRequestDto.getDinnerQuantity());
+    public TravelEntity toEntity(TravelRequestDto requestDto) {
+        return new TravelEntity(requestDto.getStartDate(), requestDto.getStartTime(),
+                requestDto.getEndDate(), requestDto.getEndTime(),
+                requestDto.getDAILY_ALLOWANCE(), requestDto.getNumberOfBreakfasts(),
+                requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners());
     }
 }

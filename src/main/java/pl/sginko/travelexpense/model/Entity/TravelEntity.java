@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -22,67 +23,75 @@ public class TravelEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDateTime startTravel;
-    private LocalDateTime finishTravel;
+    private LocalDate startDate;
+    private LocalTime startTime;
+    private LocalDate endDate;
+    private LocalTime endTime;
     private BigDecimal dailyAllowance;
 
-    private Integer breakfastQuantity;
-    private Integer lunchQuantity;
-    private Integer dinnerQuantity;
+    private Integer numberOfBreakfasts;
+    private Integer numberOfLunches;
+    private Integer numberOfDinners;
 
     private BigDecimal totalAmount = BigDecimal.ZERO;
     private BigDecimal dietAmount = BigDecimal.ZERO;
     private BigDecimal foodAmount = BigDecimal.ZERO;
 
-    public TravelEntity(LocalDateTime startTravel, LocalDateTime finishTravel, BigDecimal dailyAllowance,
-                        Integer breakfastQuantity, Integer lunchQuantity, Integer dinnerQuantity) {
-        this.startTravel = startTravel;
-        this.finishTravel = finishTravel;
+    public TravelEntity(LocalDate startDate, LocalTime startTime, LocalDate endDate,
+                        LocalTime endTime, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
+                        Integer numberOfLunches, Integer numberOfDinners) {
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.dailyAllowance = dailyAllowance;
-        this.breakfastQuantity = breakfastQuantity;
-        this.lunchQuantity = lunchQuantity;
-        this.dinnerQuantity = dinnerQuantity;
-
+        this.numberOfBreakfasts = numberOfBreakfasts;
+        this.numberOfLunches = numberOfLunches;
+        this.numberOfDinners = numberOfDinners;
     }
 
-    public void calculateDiet() {
-        long hoursInTravel = Duration.between(startTravel, finishTravel).toHours();
-        BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100.0).multiply(dailyAllowance);
+    public void calculateDietAmount() {
+        long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
+        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
 
         if (hoursInTravel <= 24) {
             if (hoursInTravel < 8) {
-                this.dietAmount = new BigDecimal(0);
-            }
-            if (hoursInTravel < 12) {
+                this.dietAmount = BigDecimal.ZERO;
+            } else if (hoursInTravel < 12) {
                 this.dietAmount = fiftyPercentOfDailyAllowance;
+            } else {
+                this.dietAmount = dailyAllowance;
             }
-            this.dietAmount = dailyAllowance;
         } else {
-            long hoursInTravelLessThanDay = hoursInTravel % 24;
-            long fullDays = Duration.between(startTravel, finishTravel).toDays();
-            BigDecimal totalAmountForFullDays = BigDecimal.valueOf(fullDays).multiply(dailyAllowance);
+            long fullDays = hoursInTravel / 24;
+            long remainingHours = hoursInTravel % 24;
+            BigDecimal totalAmountForFullDays = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
 
-            if (hoursInTravelLessThanDay < 8) {
+            if (remainingHours < 8) {
                 this.dietAmount = totalAmountForFullDays.add(fiftyPercentOfDailyAllowance);
+            } else if (remainingHours < 12) {
+                this.dietAmount = totalAmountForFullDays.add(fiftyPercentOfDailyAllowance);
+            } else {
+                this.dietAmount = totalAmountForFullDays.add(dailyAllowance);
             }
-            this.dietAmount = totalAmountForFullDays.add(dailyAllowance);
         }
-        recalculateTotalAmount();
+        updateTotalAmount();
     }
 
-    public void calculateFood() {
+    public void calculateFoodAmount() {
         BigDecimal totalFoodExpenses = BigDecimal.ZERO;
-        BigDecimal fiftyPercentOfDailyAllowance = BigDecimal.valueOf(50 / 100.0).multiply(dailyAllowance);
-        BigDecimal twentyFivePercentOfDailyAllowance = BigDecimal.valueOf(25 / 100.0).multiply(dailyAllowance);
+        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.5));
+        BigDecimal twentyFivePercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.25));
 
-        BigDecimal moneyCostForBreakfast = BigDecimal.valueOf(breakfastQuantity).multiply(twentyFivePercentOfDailyAllowance);
-        BigDecimal moneyCostForLunch = BigDecimal.valueOf(lunchQuantity).multiply(fiftyPercentOfDailyAllowance);
-        BigDecimal moneyCostForDinner = BigDecimal.valueOf(dinnerQuantity).multiply(twentyFivePercentOfDailyAllowance);
-        this.foodAmount = totalFoodExpenses.add(moneyCostForBreakfast).add(moneyCostForLunch).add(moneyCostForDinner).multiply(new BigDecimal(-1));
-        recalculateTotalAmount();
+        BigDecimal breakfastCost = BigDecimal.valueOf(numberOfBreakfasts).multiply(twentyFivePercentOfDailyAllowance);
+        BigDecimal lunchCost = BigDecimal.valueOf(numberOfLunches).multiply(fiftyPercentOfDailyAllowance);
+        BigDecimal dinnerCost = BigDecimal.valueOf(numberOfDinners).multiply(twentyFivePercentOfDailyAllowance);
+
+        this.foodAmount = totalFoodExpenses.add(breakfastCost).add(lunchCost).add(dinnerCost).negate();
+        updateTotalAmount();
     }
 
-    private void recalculateTotalAmount() {
+    private void updateTotalAmount() {
         this.totalAmount = this.dietAmount.add(this.foodAmount);
     }
 }
