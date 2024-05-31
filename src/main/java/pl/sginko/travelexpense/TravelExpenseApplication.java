@@ -1,13 +1,13 @@
-package pl.sginko.travelallowance;
+package pl.sginko.travelexpense;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TravelAllowanceCalculationApplication {
+public class TravelExpenseApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TravelAllowanceCalculationApplication.class, args);
+		SpringApplication.run(TravelExpenseApplication.class, args);
 	}
 
 }

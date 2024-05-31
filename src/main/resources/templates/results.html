@@ -39,7 +39,14 @@
     <p><strong>Liczba śniadań:</strong> <span th:text="${travelResponse.breakfastQuantity}"></span></p>
     <p><strong>Liczba obiadów:</strong> <span th:text="${travelResponse.lunchQuantity}"></span></p>
     <p><strong>Liczba kolacji:</strong> <span th:text="${travelResponse.dinnerQuantity}"></span></p>
-    <p><strong>Do wypłaty:</strong> <span th:text="${travelResponse.costOfTotalExpense}"></span></p>
+    <p><strong>Do wypłaty:</strong> <span th:text="${travelResponse.totalAmount}"></span></p>
+    <p><strong>Dieta:</strong> <span th:text="${travelResponse.dietAmount}"></span></p>
+    <p><strong>Posiłki:</strong> <span th:text="${travelResponse.foodAmount}"></span></p>
+    <p><strong>ID:</strong> <span th:text="${travelResponse.id}"></span></p>
+    <form method="POST" action="/api/v1/travels/print" target="_blank">
+        <input type="hidden" name="id" th:value="${travelResponse.id}">
+        <input type="submit" value="Print">
+    </form>
 </div>
 </body>
 </html>
