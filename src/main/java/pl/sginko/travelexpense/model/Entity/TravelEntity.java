@@ -69,14 +69,37 @@ public class TravelEntity {
 
             if (remainingHours < 8) {
                 this.dietAmount = totalAmountForFullDays.add(fiftyPercentOfDailyAllowance);
-            } else if (remainingHours < 12) {
-                this.dietAmount = totalAmountForFullDays.add(fiftyPercentOfDailyAllowance);
             } else {
                 this.dietAmount = totalAmountForFullDays.add(dailyAllowance);
             }
         }
         updateTotalAmount();
     }
+
+//    public void calculateDietAmount() {
+//        long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
+//        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
+//
+//        if (hoursInTravel <= 24) {
+//            if (hoursInTravel < 8) {
+//                this.dietAmount = BigDecimal.ZERO;
+//            }
+//            if (hoursInTravel < 12) {
+//                this.dietAmount = fiftyPercentOfDailyAllowance;
+//            }
+//            this.dietAmount = dailyAllowance;
+//        } else {
+//            long fullDays = hoursInTravel / 24;
+//            long remainingHours = hoursInTravel % 24;
+//            BigDecimal totalAmountForFullDays = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
+//
+//            if (remainingHours < 8) {
+//                this.dietAmount = totalAmountForFullDays.add(fiftyPercentOfDailyAllowance);
+//            }
+//            this.dietAmount = totalAmountForFullDays.add(dailyAllowance);
+//        }
+//        updateTotalAmount();
+//    }
 
     public void calculateFoodAmount() {
         BigDecimal totalFoodExpenses = BigDecimal.ZERO;

@@ -18,11 +18,11 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/api/v1/travels")
-class TravelController {
+public class TravelController {
     private final TravelService travelService;
     private final PdfDocumentService pdfDocumentPrinter;
 
-    TravelController(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
+    public TravelController(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
         this.travelService = travelService;
         this.pdfDocumentPrinter = pdfDocumentPrinter;
     }
@@ -42,18 +42,23 @@ class TravelController {
     }
 
     @GetMapping("/print/changed_template.pdf")
-    public ResponseEntity<InputStreamResource> getChangedTemplate() throws IOException {
-        File file = new File("src/main/resources/templates/files/changed_template.pdf");
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+    public ResponseEntity<InputStreamResource> getChangedTemplate() {
+        try {
+            File file = new File("src/main/resources/templates/files/changed_template.pdf");
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=changed_template.pdf");
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Disposition", "inline; filename=changed_template.pdf");
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(file.length())
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(resource);
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_PDF)
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).build();
+        }
     }
 
     @GetMapping
@@ -62,9 +67,9 @@ class TravelController {
     }
 
     @PostMapping
-    public String calculateTravelExpenses(@ModelAttribute TravelRequestDto travelRequestDto, Model model) {
-        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
-        model.addAttribute("travelResponse", travelResponseDto);
+    public String calculateTravelExpenses(@ModelAttribute TravelRequestDto requestDto, Model model) {
+        TravelResponseDto responseDto = travelService.calculateTravelExpenses(requestDto);
+        model.addAttribute("travelResponse", responseDto);
         return "results";
     }
 }

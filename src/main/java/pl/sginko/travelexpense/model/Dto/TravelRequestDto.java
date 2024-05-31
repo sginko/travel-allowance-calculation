@@ -23,12 +23,12 @@ public class TravelRequestDto {
     private Integer numberOfLunches;
     private Integer numberOfDinners;
 
-    public TravelRequestDto(LocalDate startDateTravel, LocalTime startTimeTravel, LocalDate finishDateTravel, LocalTime finishTimeTravel,
+    public TravelRequestDto(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime,
                             Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners) {
-        this.startDate = startDateTravel;
-        this.startTime = startTimeTravel;
-        this.endDate = finishDateTravel;
-        this.endTime = finishTimeTravel;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
