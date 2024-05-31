@@ -11,9 +11,6 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
-//    private LocalDateTime startDateTime;
-//    private LocalDateTime endDateTime;
-
     private LocalDate startDate;
     private LocalTime startTime;
     private LocalDate endDate;

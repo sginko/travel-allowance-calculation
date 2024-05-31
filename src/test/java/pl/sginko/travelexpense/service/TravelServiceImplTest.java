@@ -36,7 +36,7 @@ class TravelServiceImplTest {
     }
 
     @Test
-    void should_calculate_expenses_for_short_trip_less_than_8_hours_without_food() {
+    void should_calculate_expenses_for_short_trip_less_than_8_hours() {
         //given
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0,0);
