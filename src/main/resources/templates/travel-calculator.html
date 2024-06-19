@@ -104,11 +104,8 @@
 <!--</html>-->
 
 
-
-
-
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -184,7 +181,7 @@
     <div class="form-wrapper">
         <form method="POST" action="/api/v1/travels">
             <label for="pesel">PESEL:
-                <input name="pesel" type="text" id="pesel" required>
+                <input name="pesel" type="number" id="pesel" th:value="${pesel}" placeholder="PESEL" required>
             </label>
             <label for="startDate">Data wyjazdu:
                 <input name="startDate" type="date" id="startDate" required>

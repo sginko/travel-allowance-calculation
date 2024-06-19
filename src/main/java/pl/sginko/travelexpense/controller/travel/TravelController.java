@@ -61,8 +61,14 @@ public class TravelController {
         }
     }
 
+//    @GetMapping
+//    public String getTravelForm() {
+//        return "travel-calculator";
+//    }
+
     @GetMapping
-    public String getTravelForm() {
+    public String getTravelForm(@RequestParam(value = "pesel", required = false) Long pesel, Model model) {
+        model.addAttribute("pesel", pesel);
         return "travel-calculator";
     }
 

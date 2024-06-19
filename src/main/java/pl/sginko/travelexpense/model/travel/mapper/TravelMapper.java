@@ -12,7 +12,7 @@ public class TravelMapper {
         return new TravelResponseDto(entity.getId(), entity.getStartDate(), entity.getStartTime(),
                 entity.getEndDate(), entity.getEndTime(), entity.getNumberOfBreakfasts(),
                 entity.getNumberOfLunches(), entity.getNumberOfDinners(), entity.getTotalAmount(),
-                entity.getDietAmount(), entity.getFoodAmount());
+                entity.getDietAmount(), entity.getFoodAmount(), entity.getEmployeeEntity().getPesel());
     }
 
     public TravelEntity toEntity(TravelRequestDto requestDto) {

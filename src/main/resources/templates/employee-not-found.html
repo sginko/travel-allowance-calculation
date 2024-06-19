@@ -36,7 +36,7 @@
 <div class="container">
     <h1>Employee Not Found</h1>
     <p>Employee with PESEL <span th:text="${pesel}"></span> not found.</p>
-    <p><a th:href="@{/api/v1/employees/add(pesel=${pesel})}">Add New Employee</a></p>
+    <p><a th:href="@{/api/v1/employees/add(pesel=${pesel}, redirect=${redirect})}">Add New Employee</a></p>
 </div>
 </body>
 </html>

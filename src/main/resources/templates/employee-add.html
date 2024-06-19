@@ -22,7 +22,7 @@
             width: 100%;
             text-align: center;
         }
-        input[type="text"] {
+        input[type="text"], input[type="number"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -46,7 +46,8 @@
 <div class="container">
     <h1>Add Employee</h1>
     <form method="POST" action="/api/v1/employees/add">
-        <input type="hidden" name="pesel" th:value="${pesel}">
+        <input type="hidden" name="redirect" th:value="${redirect}">
+        <input type="number" name="pesel" th:value="${pesel}" placeholder="PESEL" required>
         <input type="text" name="firstName" placeholder="First Name" required>
         <input type="text" name="secondName" placeholder="Second Name" required>
         <input type="text" name="position" placeholder="Position" required>
