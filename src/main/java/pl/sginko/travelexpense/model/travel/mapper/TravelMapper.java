@@ -1,9 +1,9 @@
-package pl.sginko.travelexpense.model.Mapper;
+package pl.sginko.travelexpense.model.travel.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.model.Dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.Dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.Entity.TravelEntity;
+import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
+import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 
 @Component
 public class TravelMapper {

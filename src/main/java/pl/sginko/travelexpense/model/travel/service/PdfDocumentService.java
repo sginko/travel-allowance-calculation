@@ -1,11 +1,11 @@
-package pl.sginko.travelexpense.model.service;
+package pl.sginko.travelexpense.model.travel.service;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
-import pl.sginko.travelexpense.model.Entity.TravelEntity;
-import pl.sginko.travelexpense.model.repository.TravelRepository;
+import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
 
 import java.io.FileInputStream;
 import java.io.IOException;

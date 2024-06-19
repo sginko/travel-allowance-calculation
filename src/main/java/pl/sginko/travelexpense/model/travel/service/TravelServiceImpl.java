@@ -1,11 +1,11 @@
-package pl.sginko.travelexpense.model.service;
+package pl.sginko.travelexpense.model.travel.service;
 
 import org.springframework.stereotype.Service;
-import pl.sginko.travelexpense.model.Dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.Dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.Entity.TravelEntity;
-import pl.sginko.travelexpense.model.Mapper.TravelMapper;
-import pl.sginko.travelexpense.model.repository.TravelRepository;
+import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
+import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.model.travel.mapper.TravelMapper;
+import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
 
 @Service
 public class TravelServiceImpl implements TravelService {

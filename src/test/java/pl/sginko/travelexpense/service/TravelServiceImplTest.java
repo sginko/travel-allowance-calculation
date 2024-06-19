@@ -4,10 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sginko.travelexpense.model.Dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.Dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.repository.TravelRepository;
-import pl.sginko.travelexpense.model.service.TravelService;
+import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
+import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
+import pl.sginko.travelexpense.model.travel.service.TravelService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

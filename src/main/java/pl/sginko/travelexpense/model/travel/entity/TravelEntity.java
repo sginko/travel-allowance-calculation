@@ -1,12 +1,10 @@
-package pl.sginko.travelexpense.model.Entity;
+package pl.sginko.travelexpense.model.travel.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.model.employee.entity.EmployeeEntity;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -15,13 +13,16 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-
 @Entity
 public class TravelEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private EmployeeEntity employeeEntity;
 
     private LocalDate startDate;
     private LocalTime startTime;

@@ -1,3 +1,4 @@
+
 <!--<!DOCTYPE html>-->
 <!--<html lang="pl">-->
 <!--<head>-->
@@ -10,7 +11,7 @@
 <!--            display: flex;-->
 <!--            flex-direction: column;-->
 <!--            align-items: center;-->
-<!--            justify-content: flex-start; /* Изменено с center на flex-start */-->
+<!--            justify-content: flex-start;-->
 <!--            min-height: 100vh;-->
 <!--            margin: 0;-->
 <!--            padding: 20px;-->
@@ -19,8 +20,8 @@
 <!--        h1 {-->
 <!--            color: #333;-->
 <!--            text-align: center;-->
-<!--            margin-bottom: 10px; /* Уменьшено значение margin-bottom */-->
-<!--            margin-top: 10px; /* Добавлено значение margin-top */-->
+<!--            margin-bottom: 10px;-->
+<!--            margin-top: 10px;-->
 <!--        }-->
 <!--        .container {-->
 <!--            display: flex;-->
@@ -31,7 +32,7 @@
 <!--            max-width: 400px;-->
 <!--            width: 100%;-->
 <!--            margin: 0 auto;-->
-<!--            padding: 10px; /* Уменьшено значение padding */-->
+<!--            padding: 10px;-->
 <!--            background-color: #fff;-->
 <!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
 <!--            border-radius: 8px;-->
@@ -40,16 +41,17 @@
 <!--            display: flex;-->
 <!--            justify-content: space-between;-->
 <!--            align-items: center;-->
-<!--            margin-bottom: 5px; /* Уменьшено значение margin-bottom */-->
+<!--            margin-bottom: 5px;-->
 <!--        }-->
 <!--        .form-wrapper input[type="text"],-->
-<!--        .form-wrapper input[type="datetime-local"],-->
+<!--        .form-wrapper input[type="date"],-->
+<!--        .form-wrapper input[type="time"],-->
 <!--        .form-wrapper input[type="number"] {-->
-<!--            width: 200px; /* Устанавливаем одинаковую ширину для всех полей */-->
+<!--            width: 200px;-->
 <!--            margin-left: 10px;-->
 <!--        }-->
 <!--        .form-wrapper input[type="submit"] {-->
-<!--            margin-top: 10px; /* Уменьшено значение margin-top */-->
+<!--            margin-top: 10px;-->
 <!--            padding: 10px 15px;-->
 <!--            background-color: #007BFF;-->
 <!--            color: white;-->
@@ -62,7 +64,7 @@
 <!--        .form-title {-->
 <!--            text-align: left;-->
 <!--            font-size: 18px;-->
-<!--            margin-bottom: 10px; /* Уменьшено значение margin-bottom */-->
+<!--            margin-bottom: 10px;-->
 <!--            color: #333;-->
 <!--        }-->
 <!--    </style>-->
@@ -73,33 +75,37 @@
 <!--    <div class="form-title">Wprowadź dane podróży:</div>-->
 <!--    <div class="form-wrapper">-->
 <!--        <form method="POST" action="/api/v1/travels">-->
-<!--            <label for="startDateTime">Data i godzina wyjazdu:-->
-<!--                <input name="startDateTime" type="datetime-local" id="startDateTime" required>-->
+<!--            <label for="startDate">Data wyjazdu:-->
+<!--                <input name="startDate" type="date" id="startDate" required>-->
 <!--            </label>-->
-
-<!--            <label for="endDateTime">Data i godzina powrotu:-->
-<!--                <input name="endDateTime" type="datetime-local" id="endDateTime" required>-->
+<!--            <label for="startTime">Godzina wyjazdu:-->
+<!--                <input name="startTime" type="time" id="startTime" required>-->
 <!--            </label>-->
-
-<!--            <label for="breakfastQuantity">Liczba śniadań:-->
-<!--                <input name="breakfastQuantity" type="number" id="breakfastQuantity" min="0" required>-->
+<!--            <label for="endDate">Data powrotu:-->
+<!--                <input name="endDate" type="date" id="endDate" required>-->
 <!--            </label>-->
-
-<!--            <label for="lunchQuantity">Liczba obiadów:-->
-<!--                <input name="lunchQuantity" type="number" id="lunchQuantity" min="0" required>-->
+<!--            <label for="endTime">Godzina powrotu:-->
+<!--                <input name="endTime" type="time" id="endTime" required>-->
 <!--            </label>-->
-
-<!--            <label for="dinnerQuantity">Liczba kolacji:-->
-<!--                <input name="dinnerQuantity" type="number" id="dinnerQuantity" min="0" required>-->
+<!--            <label for="numberOfBreakfasts">Liczba śniadań:-->
+<!--                <input name="numberOfBreakfasts" type="number" id="numberOfBreakfasts" min="0" required>-->
 <!--            </label>-->
-
+<!--            <label for="numberOfLunches">Liczba obiadów:-->
+<!--                <input name="numberOfLunches" type="number" id="numberOfLunches" min="0" required>-->
+<!--            </label>-->
+<!--            <label for="numberOfDinners">Liczba kolacji:-->
+<!--                <input name="numberOfDinners" type="number" id="numberOfDinners" min="0" required>-->
+<!--            </label>-->
 <!--            <input type="submit" value="Calculate">-->
 <!--        </form>-->
 <!--    </div>-->
 <!--</div>-->
 <!--</body>-->
 <!--</html>-->
-<!--------------------------------------------------------------------------------------------------------------------------------->
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -177,6 +183,9 @@
     <div class="form-title">Wprowadź dane podróży:</div>
     <div class="form-wrapper">
         <form method="POST" action="/api/v1/travels">
+            <label for="pesel">PESEL:
+                <input name="pesel" type="text" id="pesel" required>
+            </label>
             <label for="startDate">Data wyjazdu:
                 <input name="startDate" type="date" id="startDate" required>
             </label>
@@ -204,111 +213,3 @@
 </div>
 </body>
 </html>
-
-
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="pl">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Kalkulator krajowej podróży służbowej2</title>-->
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: Arial, sans-serif;-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            align-items: center;-->
-<!--            justify-content: center;-->
-<!--            min-height: 100vh;-->
-<!--            margin: 0;-->
-<!--            padding: 20px;-->
-<!--            background-color: #f4f4f4;-->
-<!--        }-->
-<!--        h1 {-->
-<!--            color: #333;-->
-<!--            text-align: center;-->
-<!--            margin-bottom: 20px;-->
-<!--        }-->
-<!--        .container {-->
-<!--            display: flex;-->
-<!--            flex-direction: column;-->
-<!--            align-items: center;-->
-<!--        }-->
-<!--        .form-wrapper {-->
-<!--            max-width: 400px;-->
-<!--            width: 100%;-->
-<!--            padding: 20px;-->
-<!--            background-color: #fff;-->
-<!--            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);-->
-<!--            border-radius: 8px;-->
-<!--        }-->
-<!--        .form-wrapper label {-->
-<!--            display: flex;-->
-<!--            justify-content: space-between;-->
-<!--            align-items: center;-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-<!--        .form-wrapper input[type="date"],-->
-<!--        .form-wrapper input[type="time"],-->
-<!--        .form-wrapper input[type="number"] {-->
-<!--            width: calc(100% - 140px);-->
-<!--            padding: 5px;-->
-<!--            font-size: 16px;-->
-<!--        }-->
-<!--        .form-wrapper input[type="submit"] {-->
-<!--            width: 100%;-->
-<!--            padding: 10px;-->
-<!--            background-color: #007BFF;-->
-<!--            color: white;-->
-<!--            border: none;-->
-<!--            cursor: pointer;-->
-<!--            font-size: 16px;-->
-<!--            margin-top: 10px;-->
-<!--        }-->
-<!--        .form-wrapper input[type="submit"]:hover {-->
-<!--            background-color: #0056b3;-->
-<!--        }-->
-<!--        .form-title {-->
-<!--            text-align: left;-->
-<!--            font-size: 20px;-->
-<!--            margin-bottom: 20px;-->
-<!--            color: #333;-->
-<!--        }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Kalkulator krajowej podróży służbowej</h1>-->
-<!--<div class="container">-->
-<!--    <div class="form-title">Wprowadź dane podróży:</div>-->
-<!--    <div class="form-wrapper">-->
-<!--        <form method="POST" action="/api/v1/travels">-->
-<!--            <label for="startDateTravel">Data wyjazdu:-->
-<!--                <input name="startDateTravel" type="date" id="startDateTravel" required>-->
-<!--            </label>-->
-<!--            <label for="startTimeTravel">Godzina wyjazdu:-->
-<!--                <input name="startTimeTravel" type="time" id="startTimeTravel" required>-->
-<!--            </label>-->
-<!--            <label for="finishDateTravel">Data powrotu:-->
-<!--                <input name="finishDateTravel" type="date" id="finishDateTravel" required>-->
-<!--            </label>-->
-<!--            <label for="finishTimeTravel">Godzina powrotu:-->
-<!--                <input name="finishTimeTravel" type="time" id="finishTimeTravel" required>-->
-<!--            </label>-->
-<!--            <label for="breakfastQuantity">Liczba śniadań:-->
-<!--                <input name="breakfastQuantity" type="number" id="breakfastQuantity" min="0" required>-->
-<!--            </label>-->
-<!--            <label for="lunchQuantity">Liczba obiadów:-->
-<!--                <input name="lunchQuantity" type="number" id="lunchQuantity" min="0" required>-->
-<!--            </label>-->
-<!--            <label for="dinnerQuantity">Liczba kolacji:-->
-<!--                <input name="dinnerQuantity" type="number" id="dinnerQuantity" min="0" required>-->
-<!--            </label>-->
-<!--            <input type="submit" value="Calculate">-->
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
