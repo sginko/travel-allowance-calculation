@@ -19,9 +19,11 @@ public class TravelRequestDto {
     private Integer numberOfBreakfasts;
     private Integer numberOfLunches;
     private Integer numberOfDinners;
+    private Long pesel;
 
-    public TravelRequestDto(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime,
+    public TravelRequestDto(Long pesel, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime,
                             Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners) {
+        this.pesel = pesel;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;

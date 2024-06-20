@@ -40,7 +40,7 @@ public class TravelEntity {
 
     public TravelEntity(LocalDate startDate, LocalTime startTime, LocalDate endDate,
                         LocalTime endTime, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
-                        Integer numberOfLunches, Integer numberOfDinners) {
+                        Integer numberOfLunches, Integer numberOfDinners, EmployeeEntity employeeEntity) {
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
@@ -49,6 +49,7 @@ public class TravelEntity {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
+        this.employeeEntity = employeeEntity;
     }
 
     public void calculateDietAmount() {
