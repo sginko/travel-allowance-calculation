@@ -1,15 +1,18 @@
-package pl.sginko.travelexpense.model.service;
+package pl.sginko.travelexpense.model.travel.service;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
-import pl.sginko.travelexpense.model.Entity.TravelEntity;
-import pl.sginko.travelexpense.model.repository.TravelRepository;
+import pl.sginko.travelexpense.model.travel.TravelException;
+import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
+
+import static java.util.Map.entry;
 
 @Service
 public class PdfDocumentService {
@@ -19,19 +22,22 @@ public class PdfDocumentService {
         this.travelRepository = travelRepository;
     }
 
-
     public void generatePdfDocument(Long id) throws IOException {
-        TravelEntity businessTrip = travelRepository.findById(id).orElseThrow(() -> new RuntimeException("Business trip not found"));
+        TravelEntity travel = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
 
-        Map<String, String> replacements = Map.of(
-                "startDate", businessTrip.getStartTravel().toString(),
-                "endDate", businessTrip.getFinishTravel().toString(),
-                "countBreakfast", String.valueOf(businessTrip.getBreakfastQuantity()),
-                "countLunch", String.valueOf(businessTrip.getLunchQuantity()),
-                "countDinner", String.valueOf(businessTrip.getDinnerQuantity()),
-                "totalAmount", String.valueOf(businessTrip.getTotalAmount()),
-                "dietAmount", String.valueOf(businessTrip.getDietAmount()),
-                "foodAmount", String.valueOf(businessTrip.getFoodAmount())
+        Map<String, String> replacements = Map.ofEntries(
+                entry("startDate", travel.getStartDate().toString()),
+                entry("startTime", travel.getStartTime().toString()),
+                entry("endDate", travel.getEndDate().toString()),
+                entry("endTime", travel.getEndTime().toString()),
+                entry("countBreakfast", String.valueOf(travel.getNumberOfBreakfasts())),
+                entry("countLunch", String.valueOf(travel.getNumberOfLunches())),
+                entry("countDinner", String.valueOf(travel.getNumberOfDinners())),
+                entry("totalAmount", String.valueOf(travel.getTotalAmount())),
+                entry("dietAmount", String.valueOf(travel.getDietAmount())),
+                entry("foodAmount", String.valueOf(travel.getFoodAmount())),
+                entry("fullName", travel.getEmployeeEntity().getFirstName() + " " + travel.getEmployeeEntity().getSecondName()),
+                entry("position", travel.getEmployeeEntity().getPosition())
         );
 
         String templatePath = "src/main/resources/templates/files/template.pdf";
