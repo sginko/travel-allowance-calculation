@@ -4,6 +4,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
+import pl.sginko.travelexpense.model.travel.TravelException;
 import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
 
@@ -22,7 +23,7 @@ public class PdfDocumentService {
     }
 
     public void generatePdfDocument(Long id) throws IOException {
-        TravelEntity travel = travelRepository.findById(id).orElseThrow(() -> new RuntimeException("Travel not found"));
+        TravelEntity travel = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
 
         Map<String, String> replacements = Map.ofEntries(
                 entry("startDate", travel.getStartDate().toString()),

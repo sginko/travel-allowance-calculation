@@ -38,14 +38,15 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_short_trip_less_than_8_hours() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
-        LocalTime startTime = LocalTime.of(0,0);
+        LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
-        LocalTime endTime = LocalTime.of(7,59);
+        LocalTime endTime = LocalTime.of(7, 59);
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -57,6 +58,7 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_trip_more_8_and_less_12_hour() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -64,7 +66,7 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -76,6 +78,7 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_long_trip_more_than_12_hours() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -83,7 +86,7 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -95,6 +98,7 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_long_trip_more_than_12_hours_with_food() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -102,7 +106,7 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 1;
         Integer numberOfLunches = 1;
         Integer numberOfDinners = 1;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -114,6 +118,7 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_trip_more_than_one_day_and_less_than_8_hours() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -121,7 +126,7 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -133,6 +138,7 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_trip_more_than_one_day_and_less_than_8_hours_with_food() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -140,7 +146,7 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 1;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 1;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -152,6 +158,7 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_trip_more_than_one_day_and_more_than_8_hours() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -159,7 +166,7 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -171,6 +178,7 @@ class TravelServiceImplTest {
     @Test
     void should_calculate_expenses_for_trip_more_than_one_day_and_more_than_8_hours_with_food() {
         //given
+        Long pesel = 90010101001L;
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -178,7 +186,7 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 1;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);

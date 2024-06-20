@@ -16,6 +16,6 @@ public class EmployeeReaderServiceImpl implements EmployeeReaderService {
     @Override
     public EmployeeEntity findEmployeeByPesel(Long pesel) {
         return employeeReaderRepository.findByPesel(pesel)
-                .orElseThrow(() -> new EmployeeException("Don't find employee with this pesel: " + pesel));
+                .orElseThrow(() -> new EmployeeException("Can not find employee with this pesel: " + pesel));
     }
 }
