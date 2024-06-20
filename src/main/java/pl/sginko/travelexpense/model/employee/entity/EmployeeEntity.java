@@ -15,7 +15,9 @@ public class EmployeeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private Long pesel;
+
     private String firstName;
     private String secondName;
     private String position;

@@ -36,8 +36,7 @@ public class PdfDocumentService {
                 entry("totalAmount", String.valueOf(travel.getTotalAmount())),
                 entry("dietAmount", String.valueOf(travel.getDietAmount())),
                 entry("foodAmount", String.valueOf(travel.getFoodAmount())),
-                entry("firstName", travel.getEmployeeEntity().getFirstName()),
-                entry("secondName", travel.getEmployeeEntity().getSecondName()),
+                entry("fullName", travel.getEmployeeEntity().getFirstName() + " " + travel.getEmployeeEntity().getSecondName()),
                 entry("position", travel.getEmployeeEntity().getPosition())
         );
 
