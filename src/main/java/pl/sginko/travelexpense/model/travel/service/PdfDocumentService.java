@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 
+import static java.util.Map.entry;
+
 @Service
 public class PdfDocumentService {
     private final TravelRepository travelRepository;
@@ -20,19 +22,22 @@ public class PdfDocumentService {
     }
 
     public void generatePdfDocument(Long id) throws IOException {
-        TravelEntity businessTrip = travelRepository.findById(id).orElseThrow(() -> new RuntimeException("Business trip not found"));
+        TravelEntity travel = travelRepository.findById(id).orElseThrow(() -> new RuntimeException("Travel not found"));
 
-        Map<String, String> replacements = Map.of(
-                "startDate", businessTrip.getStartDate().toString(),
-                "startTime", businessTrip.getStartTime().toString(),
-                "endDate", businessTrip.getEndDate().toString(),
-                "endTime", businessTrip.getEndTime().toString(),
-                "countBreakfast", String.valueOf(businessTrip.getNumberOfBreakfasts()),
-                "countLunch", String.valueOf(businessTrip.getNumberOfLunches()),
-                "countDinner", String.valueOf(businessTrip.getNumberOfDinners()),
-                "totalAmount", String.valueOf(businessTrip.getTotalAmount()),
-                "dietAmount", String.valueOf(businessTrip.getDietAmount()),
-                "foodAmount", String.valueOf(businessTrip.getFoodAmount())
+        Map<String, String> replacements = Map.ofEntries(
+                entry("startDate", travel.getStartDate().toString()),
+                entry("startTime", travel.getStartTime().toString()),
+                entry("endDate", travel.getEndDate().toString()),
+                entry("endTime", travel.getEndTime().toString()),
+                entry("countBreakfast", String.valueOf(travel.getNumberOfBreakfasts())),
+                entry("countLunch", String.valueOf(travel.getNumberOfLunches())),
+                entry("countDinner", String.valueOf(travel.getNumberOfDinners())),
+                entry("totalAmount", String.valueOf(travel.getTotalAmount())),
+                entry("dietAmount", String.valueOf(travel.getDietAmount())),
+                entry("foodAmount", String.valueOf(travel.getFoodAmount())),
+                entry("firstName", travel.getEmployeeEntity().getFirstName()),
+                entry("secondName", travel.getEmployeeEntity().getSecondName()),
+                entry("position", travel.getEmployeeEntity().getPosition())
         );
 
         String templatePath = "src/main/resources/templates/files/template.pdf";

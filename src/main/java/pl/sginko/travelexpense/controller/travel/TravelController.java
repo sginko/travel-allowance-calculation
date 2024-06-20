@@ -35,7 +35,6 @@ public class TravelController {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
         }
-
         return ResponseEntity.status(302)
                 .header("Location", "/api/v1/travels/print/changed_template.pdf")
                 .build();
