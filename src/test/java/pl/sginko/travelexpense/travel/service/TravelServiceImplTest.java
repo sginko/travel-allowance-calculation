@@ -1,9 +1,13 @@
-package pl.sginko.travelexpense.service;
+package pl.sginko.travelexpense.travel.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.sginko.travelexpense.model.employee.dto.EmployeeRequestDto;
+import pl.sginko.travelexpense.model.employee.repository.EmployeeRepository;
+import pl.sginko.travelexpense.model.employee.service.EmployeeReaderService;
+import pl.sginko.travelexpense.model.employee.service.EmployeeService;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
@@ -30,15 +34,32 @@ class TravelServiceImplTest {
     @Autowired
     private TravelRepository travelRepository;
 
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private EmployeeReaderService employeeReaderService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @AfterEach
     void tearDown() {
         travelRepository.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     @Test
     void should_calculate_expenses_for_short_trip_less_than_8_hours() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -59,6 +80,12 @@ class TravelServiceImplTest {
     void should_calculate_expenses_for_trip_more_8_and_less_12_hour() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -79,6 +106,12 @@ class TravelServiceImplTest {
     void should_calculate_expenses_for_long_trip_more_than_12_hours() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -99,6 +132,12 @@ class TravelServiceImplTest {
     void should_calculate_expenses_for_long_trip_more_than_12_hours_with_food() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -119,6 +158,12 @@ class TravelServiceImplTest {
     void should_calculate_expenses_for_trip_more_than_one_day_and_less_than_8_hours() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -139,6 +184,12 @@ class TravelServiceImplTest {
     void should_calculate_expenses_for_trip_more_than_one_day_and_less_than_8_hours_with_food() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -159,6 +210,12 @@ class TravelServiceImplTest {
     void should_calculate_expenses_for_trip_more_than_one_day_and_more_than_8_hours() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -179,6 +236,12 @@ class TravelServiceImplTest {
     void should_calculate_expenses_for_trip_more_than_one_day_and_more_than_8_hours_with_food() {
         //given
         Long pesel = 90010101001L;
+        String firstName = "name";
+        String secondName = "surname";
+        String position = "position";
+        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        employeeService.addEmployee(employeeRequestDto);
+
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
