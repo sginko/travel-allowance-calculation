@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.model.travel.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
@@ -18,10 +19,12 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    @Transactional
     public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
         TravelEntity entity = travelMapper.toEntity(requestDto);
         entity.calculateDietAmount();
         entity.calculateFoodAmount();
+        entity.calculateOvernightStay();
         travelRepository.save(entity);
         return travelMapper.toResponseDto(entity);
     }

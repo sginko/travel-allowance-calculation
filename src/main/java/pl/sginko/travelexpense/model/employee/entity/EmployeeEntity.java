@@ -1,6 +1,8 @@
 package pl.sginko.travelexpense.model.employee.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,11 +17,22 @@ public class EmployeeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false, updatable = false, unique = true)
     private Long pesel;
 
+    @NotBlank
+    @Size(min = 2, max = 50, message = "First name should be between 2 and 50 characters")
+    @Column(nullable = false)
     private String firstName;
+
+    @NotBlank
+    @Size(min = 2, max = 50, message = "Second name should be between 2 and 50 characters")
+    @Column(nullable = false)
     private String secondName;
+
+    @NotBlank
+    @Size(min = 2, max = 50, message = "Position should be between 2 and 50 characters")
+    @Column(nullable = false)
     private String position;
 
     public EmployeeEntity(Long pesel, String firstName, String secondName, String position) {

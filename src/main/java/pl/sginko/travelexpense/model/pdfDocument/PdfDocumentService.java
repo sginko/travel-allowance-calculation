@@ -28,8 +28,8 @@ public class PdfDocumentService {
         Map<String, String> replacements = Map.ofEntries(
                 entry("fullName", travel.getEmployeeEntity().getFirstName() + " " + travel.getEmployeeEntity().getSecondName()),
                 entry("position", travel.getEmployeeEntity().getPosition()),
-                entry("cityFrom", travel.getCityFrom()),
-                entry("cityTo", travel.getCityTo()),
+                entry("fromCity", travel.getFromCity()),
+                entry("toCity", travel.getToCity()),
                 entry("startDate", travel.getStartDate().toString()),
                 entry("startTime", travel.getStartTime().toString()),
                 entry("endDate", travel.getEndDate().toString()),

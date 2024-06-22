@@ -15,17 +15,18 @@ public class TravelMapper {
     }
 
     public TravelResponseDto toResponseDto(TravelEntity entity) {
-        return new TravelResponseDto(entity.getId(), entity.getCityFrom(), entity.getCityTo(), entity.getStartDate(),
+        return new TravelResponseDto(entity.getId(), entity.getFromCity(), entity.getToCity(), entity.getStartDate(),
                 entity.getStartTime(), entity.getEndDate(), entity.getEndTime(), entity.getNumberOfBreakfasts(),
                 entity.getNumberOfLunches(), entity.getNumberOfDinners(), entity.getTotalAmount(),
-                entity.getDietAmount(), entity.getFoodAmount(), entity.getEmployeeEntity().getPesel());
+                entity.getDietAmount(), entity.getFoodAmount(), entity.getEmployeeEntity().getPesel(),
+                entity.getOvernightStay());
     }
 
     public TravelEntity toEntity(TravelRequestDto requestDto) {
-        return new TravelEntity(requestDto.getCityFrom(), requestDto.getCityTo(), requestDto.getStartDate(),
+        return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
                 requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
-                requestDto.getDAILY_ALLOWANCE(), requestDto.getNumberOfBreakfasts(),
-                requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners(),
-                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()));
+                requestDto.getNumberOfBreakfasts(), requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners(),
+                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.isCanGoHomeEveryDay(),
+                requestDto.isHotelInvoiceProvided(), requestDto.isFreeOvernightStayProvided());
     }
 }
