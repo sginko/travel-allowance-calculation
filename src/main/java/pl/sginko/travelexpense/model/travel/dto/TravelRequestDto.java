@@ -11,6 +11,9 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
+    private Long pesel;
+    private String cityFrom;
+    private String cityTo;
     private LocalDate startDate;
     private LocalTime startTime;
     private LocalDate endDate;
@@ -19,10 +22,12 @@ public class TravelRequestDto {
     private Integer numberOfBreakfasts;
     private Integer numberOfLunches;
     private Integer numberOfDinners;
-    private Long pesel;
 
-    public TravelRequestDto(Long pesel, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime,
-                            Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners) {
+    public TravelRequestDto(Long pesel, String cityFrom, String cityTo, LocalDate startDate, LocalTime startTime,
+                            LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
+                            Integer numberOfDinners) {
+        this.cityFrom = cityFrom;
+        this.cityTo = cityTo;
         this.pesel = pesel;
         this.startDate = startDate;
         this.startTime = startTime;

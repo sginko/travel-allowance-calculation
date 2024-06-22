@@ -12,6 +12,9 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelResponseDto {
     private Long id;
+    private Long pesel;
+    private String cityFrom;
+    private String cityTo;
     private LocalDate startDate;
     private LocalTime startTime;
     private LocalDate endDate;
@@ -22,12 +25,15 @@ public class TravelResponseDto {
     private BigDecimal totalAmount;
     private BigDecimal dietAmount;
     private BigDecimal foodAmount;
-    private Long pesel;
 
-    public TravelResponseDto(Long id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime,
-                             Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners, BigDecimal totalAmount,
-                             BigDecimal dietAmount, BigDecimal foodAmount, Long pesel) {
+    public TravelResponseDto(Long id, String cityFrom, String cityTo, LocalDate startDate, LocalTime startTime,
+                             LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
+                             Integer numberOfDinners, BigDecimal totalAmount, BigDecimal dietAmount,
+                             BigDecimal foodAmount, Long pesel) {
         this.id = id;
+        this.pesel = pesel;
+        this.cityFrom = cityFrom;
+        this.cityTo = cityTo;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
@@ -38,6 +44,5 @@ public class TravelResponseDto {
         this.totalAmount = totalAmount;
         this.dietAmount = dietAmount;
         this.foodAmount = foodAmount;
-        this.pesel=pesel;
     }
 }

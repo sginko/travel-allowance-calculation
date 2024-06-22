@@ -59,7 +59,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
-
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -67,7 +68,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -86,6 +88,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -93,7 +97,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -112,6 +117,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -119,7 +126,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -138,6 +146,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now();
@@ -145,7 +155,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 1;
         Integer numberOfLunches = 1;
         Integer numberOfDinners = 1;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -164,6 +175,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -171,7 +184,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -190,6 +204,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -197,7 +213,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 1;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 1;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -216,6 +233,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -223,7 +242,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -242,6 +262,8 @@ class TravelServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
+        String cityFrom = "cityFrom";
+        String cityTo = "cityTo";
         LocalDate startDay = LocalDate.now();
         LocalTime startTime = LocalTime.of(0, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
@@ -249,7 +271,8 @@ class TravelServiceImplTest {
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 1;
         Integer numberOfDinners = 0;
-        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, startDay, startTime, endDay, endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        TravelRequestDto travelRequestDto = new TravelRequestDto(pesel, cityFrom, cityTo, startDay, startTime, endDay,
+                endTime, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         //when
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
