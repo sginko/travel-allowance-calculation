@@ -24,6 +24,8 @@ public class TravelEntity {
     @JoinColumn(name = "employee_id")
     private EmployeeEntity employeeEntity;
 
+    private String cityFrom;
+    private String cityTo;
     private LocalDate startDate;
     private LocalTime startTime;
     private LocalDate endDate;
@@ -38,9 +40,12 @@ public class TravelEntity {
     private BigDecimal dietAmount = BigDecimal.ZERO;
     private BigDecimal foodAmount = BigDecimal.ZERO;
 
-    public TravelEntity(LocalDate startDate, LocalTime startTime, LocalDate endDate,
+    public TravelEntity(String cityFrom, String cityTo, LocalDate startDate, LocalTime startTime, LocalDate endDate,
                         LocalTime endTime, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                         Integer numberOfLunches, Integer numberOfDinners, EmployeeEntity employeeEntity) {
+        this.cityFrom = cityFrom;
+        this.cityTo = cityTo;
+        this.employeeEntity = employeeEntity;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
@@ -49,7 +54,6 @@ public class TravelEntity {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
-        this.employeeEntity = employeeEntity;
     }
 
     public void calculateDietAmount() {
