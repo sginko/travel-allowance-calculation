@@ -53,11 +53,12 @@ public class TravelRequestDto {
     @NotNull(message = "Can go home every day field cannot be null")
     private boolean canGoHomeEveryDay;
 
+    @NotNull(message = "Free overnight stay provided flag cannot be null")
+    private boolean freeOvernightStayProvided;
+
     @NotNull(message = "Hotel receipt provided flag cannot be null")
     private boolean hotelInvoiceProvided;
 
-    @NotNull(message = "Free overnight stay provided flag cannot be null")
-    private boolean freeOvernightStayProvided;
 
     public TravelRequestDto(Long pesel, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                             LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
