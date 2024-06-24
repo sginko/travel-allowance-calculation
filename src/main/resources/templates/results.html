@@ -147,7 +147,11 @@
     <p><span class="highlight">Liczba kolacji:</span> <span th:text="${travelResponse.numberOfDinners}"></span></p>
     <p><span class="highlight">Posiłki:</span> <span th:text="${travelResponse.foodAmount}"></span></p>
     <p><span class="highlight">Dieta:</span> <span th:text="${travelResponse.dietAmount}"></span></p>
+    <p><span class="highlight">Invoice noclegi:</span> <span th:text="${travelResponse.overnightStayWithInvoice}"></span></p>
+    <p><span class="highlight">Ryczałt noclegi:</span> <span th:text="${travelResponse.overnightStayWithoutInvoice}"></span></p>
+    <p><span class="highlight">Razem noclegi:</span> <span th:text="${travelResponse.totalOvernightStay}"></span></p>
     <br>
+    <p><span class="highlight">Pobrano zaliczke:</span> <span th:text="${travelResponse.advancePayment}"></span></p>
     <p><span class="highlight">Do wypłaty:</span> <span th:text="${travelResponse.totalAmount}"></span></p>
     <form method="POST" action="/api/v1/travels/print" target="_blank">
         <input type="hidden" name="id" th:value="${travelResponse.id}">

@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -50,20 +51,23 @@ public class TravelRequestDto {
     @Min(value = 0, message = "Number of dinners cannot be negative")
     private Integer numberOfDinners;
 
-    @NotNull(message = "Can go home every day field cannot be null")
-    private boolean canGoHomeEveryDay;
+    @NotNull(message = "overnightStayWithInvoice cannot be null")
+    @Min(value = 0, message = "overnightStayWithInvoice cannot be negative")
+    private BigDecimal overnightStayWithInvoice;
 
-    @NotNull(message = "Free overnight stay provided flag cannot be null")
-    private boolean freeOvernightStayProvided;
+    @NotNull(message = "overnightStayWithoutInvoice cannot be null")
+    @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
+    private BigDecimal overnightStayWithoutInvoice;
 
-    @NotNull(message = "Hotel receipt provided flag cannot be null")
-    private boolean hotelInvoiceProvided;
+    @NotNull(message = "advancePayment cannot be null")
+    @Min(value = 0, message = "advancePayment cannot be negative")
+    private BigDecimal advancePayment;
 
 
     public TravelRequestDto(Long pesel, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                             LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
-                            Integer numberOfDinners, boolean canGoHomeEveryDay, boolean hotelInvoiceProvided,
-                            boolean freeOvernightStayProvided) {
+                            Integer numberOfDinners, BigDecimal overnightStayWithInvoice, BigDecimal overnightStayWithoutInvoice,
+                            BigDecimal advancePayment) {
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.pesel = pesel;
@@ -74,8 +78,8 @@ public class TravelRequestDto {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
-        this.canGoHomeEveryDay = canGoHomeEveryDay;
-        this.freeOvernightStayProvided = freeOvernightStayProvided;
-        this.hotelInvoiceProvided = hotelInvoiceProvided;
+        this.overnightStayWithInvoice = overnightStayWithInvoice;
+        this.overnightStayWithoutInvoice = overnightStayWithoutInvoice;
+        this.advancePayment = advancePayment;
     }
 }

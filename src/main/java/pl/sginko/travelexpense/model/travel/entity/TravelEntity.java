@@ -11,7 +11,6 @@ import pl.sginko.travelexpense.model.travel.TravelException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -97,15 +96,23 @@ public class TravelEntity {
 //    @Column(nullable = false)
 //    private boolean hotelInvoiceProvided;
 
-    @NotNull(message = "Invoice amount cannot be null")
-    @DecimalMin(value = "0.0", inclusive = true, message = "Invoice amount must be non-negative")
+    @NotNull(message = "Field Overnight Stay With Invoice cannot be null")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Field Overnight Stay With Invoice must be non-negative")
     @Column(nullable = false)
-    private BigDecimal hotelInvoiceProvided;
+    private BigDecimal overnightStayWithInvoice = BigDecimal.ZERO;
 
-    @NotNull(message = "Overnight stay amount cannot be null")
-    @DecimalMin(value = "0.0", inclusive = true, message = "Overnight stay amount must be non-negative")
+    @NotNull(message = "Field Overnight Stay Without Invoice cannot be null")
+    @DecimalMin(value = "0.0", inclusive = true, message = "Field Overnight Stay Without Invoice must be non-negative")
     @Column(nullable = false)
-    private BigDecimal overnightStay;
+    private BigDecimal overnightStayWithoutInvoice = BigDecimal.ZERO;
+
+    //    @NotNull(message = "Overnight stay amount cannot be null")
+//    @DecimalMin(value = "0.0", inclusive = true, message = "Overnight stay amount must be non-negative")
+    @Column(nullable = false)
+    private BigDecimal totalOvernightStay = BigDecimal.ZERO;
+
+    @Column(nullable = false)
+    private BigDecimal advancePayment = BigDecimal.ZERO;
 
 //    @NotNull(message = "Confirmed overnight stay amount cannot be null")
 //    @DecimalMin(value = "0.0", inclusive = true, message = "Confirmed overnight stay amount must be non-negative")
@@ -117,8 +124,8 @@ public class TravelEntity {
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                         LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts,
                         Integer numberOfLunches, Integer numberOfDinners, EmployeeEntity employeeEntity,
-                        boolean canGoHomeEveryDay, boolean freeOvernightStayProvided, BigDecimal hotelInvoiceProvided,
-                        BigDecimal overnightStay) {
+                        BigDecimal overnightStayWithInvoice, BigDecimal overnightStayWithoutInvoice,
+                        BigDecimal advancePayment) {
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.employeeEntity = employeeEntity;
@@ -130,9 +137,9 @@ public class TravelEntity {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
-//        this.canGoHomeEveryDay = canGoHomeEveryDay;
-//        this.freeOvernightStayProvided = freeOvernightStayProvided;
-        this.hotelInvoiceProvided = hotelInvoiceProvided;
+        this.overnightStayWithInvoice = overnightStayWithInvoice;
+        this.overnightStayWithoutInvoice = overnightStayWithoutInvoice;
+        this.advancePayment = advancePayment;
         validateDates();
     }
 
@@ -175,49 +182,31 @@ public class TravelEntity {
         updateTotalAmount();
     }
 
-    public void calculateOvernightStay() {
-//        if (canGoHomeEveryDay || freeOvernightStayProvided) {
-//            this.overnightStay = BigDecimal.ZERO;
-//        } else {
-        long nights = 0;
-
-        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
-
-        while (startDateTime.isBefore(endDateTime)) {
-            LocalDateTime nextDay = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
-
-            LocalDateTime startOfNight = startDateTime.withHour(21).withMinute(0).withSecond(0);
-            if (startDateTime.isBefore(startOfNight)) {
-                startOfNight = startDateTime;
-            }
-
-            LocalDateTime endOfNight = nextDay.withHour(7).withMinute(0).withSecond(0);
-            if (endDateTime.isBefore(endOfNight)) {
-                endOfNight = endDateTime;
-            }
-            if (Duration.between(startOfNight, endOfNight).toHours() >= 6) {
-                nights++;
-            }
-            startDateTime = nextDay;
-        }
-
-        BigDecimal maxAmountPerNight = dailyAllowance.multiply(BigDecimal.valueOf(20));
-        BigDecimal ryczaltPerNight = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
-
-        if (hotelInvoiceProvided) {
-            // Убедитесь, что invoiceAmount не превышает maxAmountPerNight за одну ночь
-            BigDecimal totalInvoiceAmount = invoiceAmount.min(maxAmountPerNight).multiply(BigDecimal.valueOf(nights));
-            this.overnightStay = totalInvoiceAmount;
-        } else {
-            // Сумма за ночлег рассчитывается автоматически
-            BigDecimal totalRyczalt = ryczaltPerNight.multiply(BigDecimal.valueOf(nights));
-            this.overnightStay = totalRyczalt;
-        }
-//    }
-
-    updateTotalAmount();
-}
+    public void calculateTotalOvernightStayAmount() {
+//        long nights = 0;
+//        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+//        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+//
+//        while (startDateTime.isBefore(endDateTime)) {
+//            LocalDateTime nextDay = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
+//            LocalDateTime startOfNight = startDateTime.withHour(21).withMinute(0).withSecond(0);
+//            if (startDateTime.isBefore(startOfNight)) {
+//                startOfNight = startDateTime;
+//            }
+//            LocalDateTime endOfNight = nextDay.withHour(7).withMinute(0).withSecond(0);
+//            if (endDateTime.isBefore(endOfNight)) {
+//                endOfNight = endDateTime;
+//            }
+//            if (Duration.between(startOfNight, endOfNight).toHours() >= 6) {
+//                nights++;
+//            }
+//            startDateTime = nextDay;
+//        }
+//        BigDecimal maxAmountPerNight = dailyAllowance.multiply(BigDecimal.valueOf(20));
+//        BigDecimal ryczaltPerNight = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
+        totalOvernightStay = overnightStayWithInvoice.add(overnightStayWithoutInvoice);
+        updateTotalAmount();
+    }
 
 //    public void calculateOvernightStay() {
 //        if (canGoHomeEveryDay || freeOvernightStayProvided) {
@@ -264,13 +253,13 @@ public class TravelEntity {
 //        updateTotalAmount();
 //    }
 
-private void validateDates() {
-    if (endDate.isBefore(startDate) || (endDate.isEqual(startDate) && endTime.isBefore(startTime))) {
-        throw new TravelException("End date/time cannot be before start date/time");
+    private void validateDates() {
+        if (endDate.isBefore(startDate) || (endDate.isEqual(startDate) && endTime.isBefore(startTime))) {
+            throw new TravelException("End date/time cannot be before start date/time");
+        }
     }
-}
 
-private void updateTotalAmount() {
-    this.totalAmount = this.dietAmount.add(this.foodAmount).add(this.overnightStay);
-}
+    private void updateTotalAmount() {
+        this.totalAmount =(this.dietAmount.add(this.foodAmount).add(this.totalOvernightStay)).subtract(advancePayment);
+    }
 }

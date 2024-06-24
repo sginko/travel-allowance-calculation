@@ -25,12 +25,17 @@ public class TravelResponseDto {
     private BigDecimal totalAmount;
     private BigDecimal dietAmount;
     private BigDecimal foodAmount;
-    private BigDecimal overnightStay;
+    private BigDecimal overnightStayWithInvoice;
+    private BigDecimal overnightStayWithoutInvoice;
+    private BigDecimal totalOvernightStay;
+    private BigDecimal advancePayment;
 
     public TravelResponseDto(Long id, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                              LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
                              Integer numberOfDinners, BigDecimal totalAmount, BigDecimal dietAmount,
-                             BigDecimal foodAmount, Long pesel, BigDecimal overnightStay) {
+                             BigDecimal foodAmount, Long pesel, BigDecimal overnightStayWithInvoice,
+                             BigDecimal overnightStayWithoutInvoice, BigDecimal totalOvernightStay,
+                             BigDecimal advancePayment) {
         this.id = id;
         this.pesel = pesel;
         this.fromCity = fromCity;
@@ -45,6 +50,9 @@ public class TravelResponseDto {
         this.totalAmount = totalAmount;
         this.dietAmount = dietAmount;
         this.foodAmount = foodAmount;
-        this.overnightStay = overnightStay;
+        this.overnightStayWithInvoice = overnightStayWithInvoice;
+        this.overnightStayWithoutInvoice = overnightStayWithoutInvoice;
+        this.totalOvernightStay = totalOvernightStay;
+        this.advancePayment = advancePayment;
     }
 }

@@ -39,7 +39,10 @@ public class PdfDocumentService {
                 entry("countDinner", String.valueOf(travel.getNumberOfDinners())),
                 entry("totalAmount", String.valueOf(travel.getTotalAmount())),
                 entry("dietAmount", String.valueOf(travel.getDietAmount())),
-                entry("foodAmount", String.valueOf(travel.getFoodAmount()))
+                entry("foodAmount", String.valueOf(travel.getFoodAmount())),
+                entry("overnightStayWithInvoice", String.valueOf(travel.getOvernightStayWithInvoice())),
+                entry("overnightStayWithoutInvoice", String.valueOf(travel.getOvernightStayWithoutInvoice())),
+                entry("advancePayment", String.valueOf(travel.getAdvancePayment()))
         );
 
         String templatePath = "src/main/resources/templates/files/template.pdf";
