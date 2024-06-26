@@ -40,8 +40,8 @@ public class PdfDocumentService {
                 entry("totalAmount", String.valueOf(travel.getTotalAmount())),
                 entry("dietAmount", String.valueOf(travel.getDietAmount())),
                 entry("foodAmount", String.valueOf(travel.getFoodAmount())),
-                entry("overnightStayWithInvoice", String.valueOf(travel.getOvernightStayWithInvoice())),
-                entry("overnightStayWithoutInvoice", String.valueOf(travel.getOvernightStayWithoutInvoice())),
+                entry("overnightStayWithInvoice", String.valueOf(travel.getAmountOfTotalOvernightsStayWithInvoice())),
+                entry("overnightStayWithoutInvoice", String.valueOf(travel.getAmountOfTotalOvernightsStayWithoutInvoice())),
                 entry("advancePayment", String.valueOf(travel.getAdvancePayment()))
         );
 

@@ -24,7 +24,7 @@ public class TravelServiceImpl implements TravelService {
         TravelEntity entity = travelMapper.toEntity(requestDto);
         entity.calculateDietAmount();
         entity.calculateFoodAmount();
-        entity.calculateTotalOvernightStayAmount();
+        entity.calculateOvernightStayAmount();
         travelRepository.save(entity);
         return travelMapper.toResponseDto(entity);
     }

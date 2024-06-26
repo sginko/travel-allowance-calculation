@@ -25,17 +25,19 @@ public class TravelResponseDto {
     private BigDecimal totalAmount;
     private BigDecimal dietAmount;
     private BigDecimal foodAmount;
-    private BigDecimal overnightStayWithInvoice;
-    private BigDecimal overnightStayWithoutInvoice;
-    private BigDecimal totalOvernightStay;
+    private Integer quantityOfOvernightStay;
+    private Integer inputQuantityOfOvernightStayWithoutInvoice;
+    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
+    private Integer inputQuantityOfOvernightStayWithInvoice;
+    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
     private BigDecimal advancePayment;
 
     public TravelResponseDto(Long id, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                              LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
                              Integer numberOfDinners, BigDecimal totalAmount, BigDecimal dietAmount,
-                             BigDecimal foodAmount, Long pesel, BigDecimal overnightStayWithInvoice,
-                             BigDecimal overnightStayWithoutInvoice, BigDecimal totalOvernightStay,
-                             BigDecimal advancePayment) {
+                             BigDecimal foodAmount, Long pesel, Integer quantityOfOvernightStay, Integer inputQuantityOfOvernightStayWithoutInvoice,
+                             BigDecimal amountOfTotalOvernightsStayWithoutInvoice, Integer inputQuantityOfOvernightStayWithInvoice,
+                             BigDecimal amountOfTotalOvernightsStayWithInvoice, BigDecimal advancePayment) {
         this.id = id;
         this.pesel = pesel;
         this.fromCity = fromCity;
@@ -50,9 +52,11 @@ public class TravelResponseDto {
         this.totalAmount = totalAmount;
         this.dietAmount = dietAmount;
         this.foodAmount = foodAmount;
-        this.overnightStayWithInvoice = overnightStayWithInvoice;
-        this.overnightStayWithoutInvoice = overnightStayWithoutInvoice;
-        this.totalOvernightStay = totalOvernightStay;
+        this.quantityOfOvernightStay = quantityOfOvernightStay;
+        this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
+        this.amountOfTotalOvernightsStayWithoutInvoice = amountOfTotalOvernightsStayWithoutInvoice;
+        this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
+        this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
         this.advancePayment = advancePayment;
     }
 }

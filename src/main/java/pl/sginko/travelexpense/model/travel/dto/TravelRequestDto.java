@@ -51,26 +51,34 @@ public class TravelRequestDto {
     @Min(value = 0, message = "Number of dinners cannot be negative")
     private Integer numberOfDinners;
 
-    @NotNull(message = "overnightStayWithInvoice cannot be null")
-    @Min(value = 0, message = "overnightStayWithInvoice cannot be negative")
-    private BigDecimal overnightStayWithInvoice;
+    @NotNull(message = "Number of overnight stay without invoice cannot be null")
+    @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
+    private Integer inputQuantityOfOvernightStayWithoutInvoice;
 
     @NotNull(message = "overnightStayWithoutInvoice cannot be null")
     @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
-    private BigDecimal overnightStayWithoutInvoice;
+    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
+
+    @NotNull(message = "Number of overnight stay with invoice cannot be null")
+    @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
+    private Integer inputQuantityOfOvernightStayWithInvoice;
+
+    @NotNull(message = "overnightStayWithoutInvoice cannot be null")
+    @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
+    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
 
     @NotNull(message = "advancePayment cannot be null")
     @Min(value = 0, message = "advancePayment cannot be negative")
     private BigDecimal advancePayment;
 
-
     public TravelRequestDto(Long pesel, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                             LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
-                            Integer numberOfDinners, BigDecimal overnightStayWithInvoice, BigDecimal overnightStayWithoutInvoice,
-                            BigDecimal advancePayment) {
+                            Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
+                            Integer inputQuantityOfOvernightStayWithInvoice,
+                            BigDecimal amountOfTotalOvernightsStayWithInvoice, BigDecimal advancePayment) {
+        this.pesel = pesel;
         this.fromCity = fromCity;
         this.toCity = toCity;
-        this.pesel = pesel;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
@@ -78,8 +86,9 @@ public class TravelRequestDto {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
-        this.overnightStayWithInvoice = overnightStayWithInvoice;
-        this.overnightStayWithoutInvoice = overnightStayWithoutInvoice;
+        this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
+        this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
+        this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
         this.advancePayment = advancePayment;
     }
 }

@@ -12,7 +12,6 @@ import pl.sginko.travelexpense.model.employee.repository.EmployeeRepository;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class EmployeeServiceImplTest {
@@ -33,24 +32,24 @@ class EmployeeServiceImplTest {
 
     @Test
     void should_add_employee_() {
-        //given
+        //GIVEN
         Long pesel = 90010101001L;
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
 
-        //when
+        //WHEN
         employeeService.addEmployee(employeeRequestDto);
 
-        //then
+        //THEN
         assertThat(employeeRepository.findAll()).isNotEmpty();
 //        assertThat(employeeRepository.findAll().getFirst()).isEqualTo(employeeMapper.toEntity(employeeRequestDto));
     }
 
     @Test
     void should_find_all_employee() {
-        //given
+        //GIVEN
         Long pesel = 90010101001L;
         String firstName = "name";
         String secondName = "surname";
@@ -58,16 +57,16 @@ class EmployeeServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
-        //when
+        //WHEN
         List<EmployeeResponseDto> allEmployee = employeeService.findAllEmployee();
 
-        //then
+        //THEN
         assertThat(allEmployee).isNotEmpty();
     }
 
     @Test
     void should_find_employee_by_pesel() {
-        //given
+        //GIVEN
         Long pesel = 90010101001L;
         String firstName = "name";
         String secondName = "surname";
@@ -75,10 +74,10 @@ class EmployeeServiceImplTest {
         EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
         employeeService.addEmployee(employeeRequestDto);
 
-        //when
+        //WHEN
         EmployeeResponseDto employeeByPesel = employeeService.findEmployeeByPesel(pesel);
 
-        //then
+        //THEN
         assertThat(employeeByPesel.getPesel()).isEqualTo(pesel);
     }
 }
