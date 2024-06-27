@@ -33,9 +33,9 @@ public class TravelMapper {
 //                requestDto.getAdvancePayment());
 //    }
 
-    public TravelEntity toEntity(TravelRequestDto requestDto) {
-        return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
-                requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
-                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getAdvancePayment());
+    public TravelEntity toEntityFromTravelService(TravelRequestDto requestDto) {
+        return new TravelEntity(employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getFromCity(),
+                requestDto.getToCity(), requestDto.getStartDate(), requestDto.getStartTime(), requestDto.getEndDate(),
+                requestDto.getEndTime(), requestDto.getAdvancePayment());
     }
 }

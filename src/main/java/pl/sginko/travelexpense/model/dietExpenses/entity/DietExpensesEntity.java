@@ -48,7 +48,6 @@ public class DietExpensesEntity {
     private BigDecimal foodAmount = BigDecimal.ZERO;
 
     public DietExpensesEntity(Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners) {
-//        this.dailyAllowance = BigDecimal.valueOf(45);
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;

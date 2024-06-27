@@ -1,33 +1,37 @@
 package pl.sginko.travelexpense.model.overnightStayExpenses.service;
 
 import org.springframework.stereotype.Service;
-import pl.sginko.travelexpense.model.dietExpenses.dto.DietExpensesRequestDto;
 import pl.sginko.travelexpense.model.dietExpenses.service.DietExpensesService;
 import pl.sginko.travelexpense.model.overnightStayExpenses.OvernightStayException;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.travel.service.TravelReadService;
+import pl.sginko.travelexpense.model.travel.mapper.TravelMapper;
+import pl.sginko.travelexpense.model.travel.service.TravelService;
 
 import java.math.BigDecimal;
 
 @Service
 public class OvernightStayServiceImpl implements OvernightStayService {
-    private final TravelReadService travelReadService;
+    private final TravelMapper travelMapper;
+    private final TravelService travelService;
+    private final DietExpensesService dietExpensesService;
 
-    public OvernightStayServiceImpl(TravelReadService travelReadService, OvernightStayService overnightStayService, DietExpensesService dietExpensesService) {
-        this.travelReadService = travelReadService;
+    public OvernightStayServiceImpl(TravelMapper travelMapper, TravelService travelService, DietExpensesService dietExpensesService) {
+        this.travelMapper = travelMapper;
+        this.travelService = travelService;
+        this.dietExpensesService = dietExpensesService;
     }
 
     @Override
-    public BigDecimal calculateOvernightStayAmount(DietExpensesRequestDto dietRequestDto, TravelRequestDto travelRequestDto) {
+    public BigDecimal calculateOvernightStayAmount(TravelRequestDto travelRequestDto) {
         Integer inputQuantityOfOvernightStayWithInvoice = 0;
         Integer inputQuantityOfOvernightStayWithoutInvoice = 0;
         BigDecimal amountOfTotalOvernightsStayWithInvoice = BigDecimal.ZERO;
         BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
 
-        Integer quantityOfOvernightStay = travelReadService.getTotalQuantityOfNight(travelRequestDto);
+        Integer quantityOfOvernightStay = travelService.getTotalQuantityOfNight(travelRequestDto);
 
-        BigDecimal oneNightWithInvoice = dietRequestDto.getDailyAllowance().multiply(BigDecimal.valueOf(20));
-        BigDecimal oneNightWithoutInvoice = dietRequestDto.getDailyAllowance().multiply(BigDecimal.valueOf(1.5));
+        BigDecimal oneNightWithInvoice = dietExpensesService.getDAILY_ALLOWANCE().multiply(BigDecimal.valueOf(20));
+        BigDecimal oneNightWithoutInvoice = dietExpensesService.getDAILY_ALLOWANCE().multiply(BigDecimal.valueOf(1.5));
 
         if (inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay) {
             throw new OvernightStayException("Input quantity overnight stay more than quantity overnight stay");
@@ -46,6 +50,6 @@ public class OvernightStayServiceImpl implements OvernightStayService {
         BigDecimal overnightStayAmount = amountOfTotalOvernightsStayWithoutInvoice.add(amountOfTotalOvernightsStayWithInvoice);
         return overnightStayAmount;
 
-        travelReadService.updateTotalAmount();
+//        travelService.updateTotalAmount();
     }
 }

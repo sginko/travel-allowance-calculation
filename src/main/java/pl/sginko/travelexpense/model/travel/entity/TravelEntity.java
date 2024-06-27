@@ -59,20 +59,20 @@ public class TravelEntity {
     private LocalTime endTime;
 
     @Column(nullable = false)
+    private BigDecimal advancePayment = BigDecimal.ZERO;
+
+    @Column(nullable = false)
     private Long hoursInTravel;
 
     @NotNull(message = "Total amount cannot be null")
     @Column(nullable = false)
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
-    @Column(nullable = false)
-    private BigDecimal advancePayment = BigDecimal.ZERO;
-
-    public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
-                        LocalDate endDate, LocalTime endTime, EmployeeEntity employeeEntity, BigDecimal advancePayment) {
+    public TravelEntity(EmployeeEntity employeeEntity, String fromCity, String toCity, LocalDate startDate,
+                        LocalTime startTime, LocalDate endDate, LocalTime endTime, BigDecimal advancePayment) {
+        this.employeeEntity = employeeEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
-        this.employeeEntity = employeeEntity;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;

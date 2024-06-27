@@ -11,7 +11,7 @@ import pl.sginko.travelexpense.model.employee.service.EmployeeService;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
-import pl.sginko.travelexpense.model.travel.service.TravelReadService;
+import pl.sginko.travelexpense.model.travel.service.TravelService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest
-class TravelReadServiceImplTest {
+class TravelServiceImplTest {
     private final BigDecimal PERCENT_25 = new BigDecimal(0.25);
     private final BigDecimal PERCENT_50 = new BigDecimal(0.5);
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
@@ -33,7 +33,7 @@ class TravelReadServiceImplTest {
 
 
     @Autowired
-    private TravelReadService travelReadService;
+    private TravelService travelService;
 
     @Autowired
     private TravelRepository travelRepository;
@@ -82,7 +82,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(ZERO_DAILY_ALLOWANCE);
@@ -117,7 +117,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(HALF_DAILY_ALLOWANCE);
@@ -152,7 +152,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE);
@@ -187,7 +187,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(ZERO_DAILY_ALLOWANCE);
@@ -222,7 +222,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(HALF_DAILY_ALLOWANCE));
@@ -257,7 +257,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE));
@@ -292,7 +292,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE));
@@ -327,7 +327,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE)
@@ -363,7 +363,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE)
@@ -399,7 +399,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE);
@@ -434,7 +434,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE));
@@ -469,7 +469,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(HALF_DAILY_ALLOWANCE));
@@ -504,7 +504,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(HALF_DAILY_ALLOWANCE)
@@ -540,7 +540,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(DAILY_ALLOWANCE.add(DAILY_ALLOWANCE)
@@ -576,7 +576,7 @@ class TravelReadServiceImplTest {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, advancePayment);
 
         //WHEN
-        TravelResponseDto travelResponseDto = travelReadService.calculateTravelExpenses(travelRequestDto);
+        TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo((DAILY_ALLOWANCE.add(DAILY_ALLOWANCE)

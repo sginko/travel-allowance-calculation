@@ -39,33 +39,29 @@ public class TravelRequestDto {
     @NotNull(message = "End time cannot be null")
     private LocalTime endTime;
 
-//    @NotNull(message = "Number of breakfasts cannot be null")
-//    @Min(value = 0, message = "Number of breakfasts cannot be negative")
-//    private Integer numberOfBreakfasts;
-//
-//    @NotNull(message = "Number of lunches cannot be null")
-//    @Min(value = 0, message = "Number of lunches cannot be negative")
-//    private Integer numberOfLunches;
-//
-//    @NotNull(message = "Number of dinners cannot be null")
-//    @Min(value = 0, message = "Number of dinners cannot be negative")
-//    private Integer numberOfDinners;
+    @NotNull(message = "Number of breakfasts cannot be null")
+    @Min(value = 0, message = "Number of breakfasts cannot be negative")
+    private Integer numberOfBreakfasts;
 
-//    @NotNull(message = "Number of overnight stay without invoice cannot be null")
-//    @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
-//    private Integer inputQuantityOfOvernightStayWithoutInvoice;
-//
-//    @NotNull(message = "overnightStayWithoutInvoice cannot be null")
-//    @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
-//    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
-//
-//    @NotNull(message = "Number of overnight stay with invoice cannot be null")
-//    @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
-//    private Integer inputQuantityOfOvernightStayWithInvoice;
-//
-//    @NotNull(message = "overnightStayWithoutInvoice cannot be null")
-//    @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
-//    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
+    @NotNull(message = "Number of lunches cannot be null")
+    @Min(value = 0, message = "Number of lunches cannot be negative")
+    private Integer numberOfLunches;
+
+    @NotNull(message = "Number of dinners cannot be null")
+    @Min(value = 0, message = "Number of dinners cannot be negative")
+    private Integer numberOfDinners;
+
+    @NotNull(message = "Number of overnight stay without invoice cannot be null")
+    @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
+    private Integer inputQuantityOfOvernightStayWithoutInvoice;
+
+    @NotNull(message = "Number of overnight stay with invoice cannot be null")
+    @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
+    private Integer inputQuantityOfOvernightStayWithInvoice;
+
+    @NotNull(message = "overnightStayWithoutInvoice cannot be null")
+    @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
+    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
 
     @NotNull(message = "advancePayment cannot be null")
     @Min(value = 0, message = "advancePayment cannot be negative")
