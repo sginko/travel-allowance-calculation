@@ -24,12 +24,18 @@ public class TravelMapper {
                 entity.getAmountOfTotalOvernightsStayWithInvoice(), entity.getAdvancePayment());
     }
 
+//    public TravelEntity toEntity(TravelRequestDto requestDto) {
+//        return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
+//                requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
+//                requestDto.getNumberOfBreakfasts(), requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners(),
+//                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getInputQuantityOfOvernightStayWithoutInvoice(),
+//                requestDto.getInputQuantityOfOvernightStayWithInvoice(), requestDto.getAmountOfTotalOvernightsStayWithInvoice(),
+//                requestDto.getAdvancePayment());
+//    }
+
     public TravelEntity toEntity(TravelRequestDto requestDto) {
         return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
                 requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
-                requestDto.getNumberOfBreakfasts(), requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners(),
-                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getInputQuantityOfOvernightStayWithoutInvoice(),
-                requestDto.getInputQuantityOfOvernightStayWithInvoice(), requestDto.getAmountOfTotalOvernightsStayWithInvoice(),
-                requestDto.getAdvancePayment());
+                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getAdvancePayment());
     }
 }

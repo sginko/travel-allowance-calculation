@@ -1,31 +1,20 @@
 package pl.sginko.travelexpense.model.travel.service;
 
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.model.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
 
-@Service
 public class TravelServiceImpl implements TravelService {
-//    private final TravelRepository travelRepository;
     private final TravelMapper travelMapper;
+    private final TravelRepository travelRepository;
 
-    public TravelServiceImpl(TravelRepository travelRepository, TravelMapper travelMapper) {
-//        this.travelRepository = travelRepository;
+    public TravelServiceImpl(TravelMapper travelMapper, TravelRepository travelRepository) {
         this.travelMapper = travelMapper;
+        this.travelRepository = travelRepository;
     }
 
     @Override
-    @Transactional
-    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
-        TravelEntity entity = travelMapper.toEntity(requestDto);
-        entity.calculateDietAmount();
-        entity.calculateFoodAmount();
-        entity.calculateOvernightStayAmount();
-//        travelRepository.save(entity);
-        return travelMapper.toResponseDto(entity);
+    public void addTravel(TravelRequestDto requestDto) {
+        travelRepository.save(travelMapper.toEntity(requestDto));
     }
 }

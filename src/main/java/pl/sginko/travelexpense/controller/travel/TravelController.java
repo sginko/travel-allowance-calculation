@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.sginko.travelexpense.model.pdfDocument.PdfDocumentService;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.travel.service.TravelService;
+import pl.sginko.travelexpense.model.travel.service.TravelReadService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,11 +19,11 @@ import java.io.IOException;
 @Controller
 @RequestMapping("/api/v1/travels")
 public class TravelController {
-    private final TravelService travelService;
+    private final TravelReadService travelReadService;
     private final PdfDocumentService pdfDocumentPrinter;
 
-    public TravelController(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
-        this.travelService = travelService;
+    public TravelController(TravelReadService travelReadService, PdfDocumentService pdfDocumentPrinter) {
+        this.travelReadService = travelReadService;
         this.pdfDocumentPrinter = pdfDocumentPrinter;
     }
 
@@ -68,7 +68,7 @@ public class TravelController {
 
     @PostMapping
     public String calculateTravelExpenses(@ModelAttribute TravelRequestDto requestDto, Model model) {
-        TravelResponseDto responseDto = travelService.calculateTravelExpenses(requestDto);
+        TravelResponseDto responseDto = travelReadService.calculateTravelExpenses(requestDto);
         model.addAttribute("travelResponse", responseDto);
         return "results";
     }

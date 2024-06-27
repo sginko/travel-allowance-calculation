@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "employee")
 public class EmployeeEntity {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, updatable = false, unique = true)
