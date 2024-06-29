@@ -10,11 +10,11 @@ import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
 
 @Service
 public class TravelServiceImpl implements TravelService {
-//    private final TravelRepository travelRepository;
+    private final TravelRepository travelRepository;
     private final TravelMapper travelMapper;
 
     public TravelServiceImpl(TravelRepository travelRepository, TravelMapper travelMapper) {
-//        this.travelRepository = travelRepository;
+        this.travelRepository = travelRepository;
         this.travelMapper = travelMapper;
     }
 
@@ -25,7 +25,7 @@ public class TravelServiceImpl implements TravelService {
         entity.calculateDietAmount();
         entity.calculateFoodAmount();
         entity.calculateOvernightStayAmount();
-//        travelRepository.save(entity);
+        travelRepository.save(entity);
         return travelMapper.toResponseDto(entity);
     }
 }
