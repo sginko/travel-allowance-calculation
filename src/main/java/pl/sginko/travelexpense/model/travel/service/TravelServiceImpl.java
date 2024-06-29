@@ -1,8 +1,11 @@
 package pl.sginko.travelexpense.model.travel.service;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sginko.travelexpense.model.dietExpenses.entity.DietExpensesEntity;
 import pl.sginko.travelexpense.model.dietExpenses.service.DietExpensesService;
+import pl.sginko.travelexpense.model.overnightStayExpenses.entity.OvernightStayExpensesEntity;
 import pl.sginko.travelexpense.model.overnightStayExpenses.service.OvernightStayService;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
@@ -19,7 +22,7 @@ public class TravelServiceImpl implements TravelService {
     private final DietExpensesService dietExpensesService;
     private final OvernightStayService overnightStayService;
 
-    public TravelServiceImpl(TravelMapper travelMapper, DietExpensesService dietExpensesService, OvernightStayService overnightStayService) {
+    public TravelServiceImpl(TravelMapper travelMapper, @Lazy DietExpensesService dietExpensesService, OvernightStayService overnightStayService) {
         this.travelMapper = travelMapper;
         this.dietExpensesService = dietExpensesService;
         this.overnightStayService = overnightStayService;
@@ -70,16 +73,34 @@ public class TravelServiceImpl implements TravelService {
         return totalAmount;
     }
 
+//    @Override
+//    @Transactional
+//    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
+//        TravelEntity entityFromTravelService = travelMapper.toEntityFromTravelService(requestDto);
+//        DietExpensesEntity entityFromDietService = travelMapper.toEntityFromDietService(requestDto);
+//        OvernightStayExpensesEntity entityFromOvernightStayService = travelMapper.toEntityFromOvernightStayService(requestDto);
+//        dietExpensesService.calculateDietAmount(requestDto);
+//        dietExpensesService.calculateFoodAmount(requestDto);
+//        overnightStayService.calculateOvernightStayAmount(requestDto);
+//        return travelMapper.toResponseDto(entityFromTravelService, entityFromDietService, entityFromOvernightStayService);
+//    }
+
     @Override
     @Transactional
     public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
-        TravelEntity entity = travelMapper.toEntityFromTravelService(requestDto);
-        entity.getHoursInTravel();
+        BigDecimal dietAmount = dietExpensesService.calculateDietAmount(requestDto);
+        BigDecimal foodAmount = dietExpensesService.calculateFoodAmount(requestDto);
+        BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStayAmount(requestDto);
+        BigDecimal totalAmount = dietAmount.add(foodAmount).add(overnightStayAmount).subtract(requestDto.getAdvancePayment());
 
-        entity.calculateDietAmount();
-//        entity.calculateFoodAmount();
-//        entity.calculateOvernightStayAmount();
-//        travelRepository.save(entity);
-        return travelMapper.toResponseDto(entity);
+        TravelEntity entityFromTravelService = travelMapper.toEntityFromTravelService(requestDto);
+        DietExpensesEntity entityFromDietService = travelMapper.toEntityFromDietService(requestDto);
+        OvernightStayExpensesEntity entityFromOvernightStayService = travelMapper.toEntityFromOvernightStayService(requestDto);
+        entityFromTravelService.setTotalAmount(totalAmount);
+        entityFromDietService.setDietAmount(dietAmount);
+        entityFromDietService.setFoodAmount(foodAmount);
+        entityFromOvernightStayService.setOvernightStayAmount(overnightStayAmount);
+
+        return travelMapper.toResponseDto(entityFromTravelService, entityFromDietService, entityFromOvernightStayService);
     }
 }

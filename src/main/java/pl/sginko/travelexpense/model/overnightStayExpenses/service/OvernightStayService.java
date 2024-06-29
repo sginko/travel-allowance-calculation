@@ -7,4 +7,6 @@ import java.math.BigDecimal;
 public interface OvernightStayService {
 
     BigDecimal calculateOvernightStayAmount(TravelRequestDto travelRequestDto);
+
+    BigDecimal amountOfTotalOvernightsStayWithInvoice(TravelRequestDto travelRequestDto);
 }

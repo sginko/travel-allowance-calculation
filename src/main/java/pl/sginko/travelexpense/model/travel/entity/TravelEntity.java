@@ -7,8 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.sginko.travelexpense.model.dietExpenses.entity.DietExpensesEntity;
 import pl.sginko.travelexpense.model.employee.entity.EmployeeEntity;
+import pl.sginko.travelexpense.model.overnightStayExpenses.entity.OvernightStayExpensesEntity;
 import pl.sginko.travelexpense.model.travel.TravelException;
 
 import java.math.BigDecimal;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class TravelEntity {
@@ -24,13 +27,17 @@ public class TravelEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "employee_id")
     private EmployeeEntity employeeEntity;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "diet_id")
     private DietExpensesEntity dietExpensesEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "overnight_stay_id")
+    private OvernightStayExpensesEntity overnightStayExpensesEntity;
 
     @NotBlank
     @Size(min = 2, max = 50, message = "City name should be between 2 and 50 characters")

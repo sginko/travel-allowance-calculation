@@ -4,6 +4,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
+import pl.sginko.travelexpense.model.dietExpenses.DietException;
+import pl.sginko.travelexpense.model.dietExpenses.entity.DietExpensesEntity;
+import pl.sginko.travelexpense.model.dietExpenses.repository.DietRepository;
+import pl.sginko.travelexpense.model.overnightStayExpenses.OvernightStayException;
+import pl.sginko.travelexpense.model.overnightStayExpenses.entity.OvernightStayExpensesEntity;
+import pl.sginko.travelexpense.model.overnightStayExpenses.repository.OvernightStayRepository;
 import pl.sginko.travelexpense.model.travel.TravelException;
 import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
@@ -17,32 +23,38 @@ import static java.util.Map.entry;
 @Service
 public class PdfDocumentService {
     private final TravelRepository travelRepository;
+    private final DietRepository dietRepository;
+    private final OvernightStayRepository overnightStayRepository;
 
-    public PdfDocumentService(TravelRepository travelRepository) {
+    public PdfDocumentService(TravelRepository travelRepository, DietRepository dietRepository, OvernightStayRepository overnightStayRepository) {
         this.travelRepository = travelRepository;
+        this.dietRepository = dietRepository;
+        this.overnightStayRepository = overnightStayRepository;
     }
 
     public void generatePdfDocument(Long id) throws IOException {
-        TravelEntity travel = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
+        TravelEntity travelFound = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
+        DietExpensesEntity dietFound = dietRepository.findById(id).orElseThrow(() -> new DietException("Diet not found"));
+        OvernightStayExpensesEntity overnightStayFound = overnightStayRepository.findById(id).orElseThrow(() -> new OvernightStayException("Overnight Stay not found"));
 
         Map<String, String> replacements = Map.ofEntries(
-                entry("fullName", travel.getEmployeeEntity().getFirstName() + " " + travel.getEmployeeEntity().getSecondName()),
-                entry("position", travel.getEmployeeEntity().getPosition()),
-                entry("fromCity", travel.getFromCity()),
-                entry("toCity", travel.getToCity()),
-                entry("startDate", travel.getStartDate().toString()),
-                entry("startTime", travel.getStartTime().toString()),
-                entry("endDate", travel.getEndDate().toString()),
-                entry("endTime", travel.getEndTime().toString()),
-                entry("countBreakfast", String.valueOf(travel.getNumberOfBreakfasts())),
-                entry("countLunch", String.valueOf(travel.getNumberOfLunches())),
-                entry("countDinner", String.valueOf(travel.getNumberOfDinners())),
-                entry("totalAmount", String.valueOf(travel.getTotalAmount())),
-                entry("dietAmount", String.valueOf(travel.getDietAmount())),
-                entry("foodAmount", String.valueOf(travel.getFoodAmount())),
-                entry("overnightStayWithInvoice", String.valueOf(travel.getAmountOfTotalOvernightsStayWithInvoice())),
-                entry("overnightStayWithoutInvoice", String.valueOf(travel.getAmountOfTotalOvernightsStayWithoutInvoice())),
-                entry("advancePayment", String.valueOf(travel.getAdvancePayment()))
+                entry("fullName", travelFound.getEmployeeEntity().getFirstName() + " " + travelFound.getEmployeeEntity().getSecondName()),
+                entry("position", travelFound.getEmployeeEntity().getPosition()),
+                entry("fromCity", travelFound.getFromCity()),
+                entry("toCity", travelFound.getToCity()),
+                entry("startDate", travelFound.getStartDate().toString()),
+                entry("startTime", travelFound.getStartTime().toString()),
+                entry("endDate", travelFound.getEndDate().toString()),
+                entry("endTime", travelFound.getEndTime().toString()),
+                entry("countBreakfast", String.valueOf(dietFound.getNumberOfBreakfasts())),
+                entry("countLunch", String.valueOf(dietFound.getNumberOfLunches())),
+                entry("countDinner", String.valueOf(dietFound.getNumberOfDinners())),
+                entry("totalAmount", String.valueOf(travelFound.getTotalAmount())),
+                entry("dietAmount", String.valueOf(dietFound.getDietAmount())),
+                entry("foodAmount", String.valueOf(dietFound.getFoodAmount())),
+                entry("overnightStayWithInvoice", String.valueOf(overnightStayFound.getAmountOfTotalOvernightsStayWithInvoice())),
+                entry("overnightStayWithoutInvoice", String.valueOf(overnightStayFound.getAmountOfTotalOvernightsStayWithoutInvoice())),
+                entry("advancePayment", String.valueOf(travelFound.getAdvancePayment()))
         );
 
         String templatePath = "src/main/resources/templates/files/template.pdf";

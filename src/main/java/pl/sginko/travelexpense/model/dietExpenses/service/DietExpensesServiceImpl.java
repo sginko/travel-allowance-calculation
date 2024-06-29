@@ -1,5 +1,6 @@
 package pl.sginko.travelexpense.model.dietExpenses.service;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.mapper.TravelMapper;
@@ -11,11 +12,9 @@ import java.math.BigDecimal;
 public class DietExpensesServiceImpl implements DietExpensesService {
     private final BigDecimal DAILY_ALLOWANCE = BigDecimal.valueOf(45);
 
-    private final TravelMapper travelMapper;
     private final TravelService travelService;
 
-    public DietExpensesServiceImpl(TravelMapper travelMapper, TravelService travelService) {
-        this.travelMapper = travelMapper;
+    public DietExpensesServiceImpl(@Lazy TravelService travelService) {
         this.travelService = travelService;
     }
 
