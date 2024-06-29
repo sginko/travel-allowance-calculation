@@ -23,6 +23,17 @@ public class TravelServiceImpl implements TravelService {
         this.travelMapper = travelMapper;
     }
 
+    @Override
+    @Transactional
+    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
+        TravelEntity entity = travelMapper.toEntity(requestDto);
+        calculateDietAmount(entity);
+        calculateFoodAmount(entity);
+        calculateOvernightStayAmount(entity);
+        travelRepository.save(entity);
+        return travelMapper.toResponseDto(entity);
+    }
+
     private void calculateDietAmount(TravelEntity entity) {
         long hoursInTravel = Duration.between(entity.getStartTime().atDate(entity.getStartDate()), entity.getEndTime().atDate(entity.getEndDate())).toHours();
         BigDecimal fiftyPercentOfDailyAllowance = entity.getDailyAllowance().multiply(BigDecimal.valueOf(0.50));
@@ -113,16 +124,5 @@ public class TravelServiceImpl implements TravelService {
             startDateTime = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
         }
         return night;
-    }
-
-    @Override
-    @Transactional
-    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
-        TravelEntity entity = travelMapper.toEntity(requestDto);
-        calculateDietAmount(entity);
-        calculateFoodAmount(entity);
-        calculateOvernightStayAmount(entity);
-        travelRepository.save(entity);
-        return travelMapper.toResponseDto(entity);
     }
 }

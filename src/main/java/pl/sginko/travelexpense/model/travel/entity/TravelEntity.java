@@ -73,7 +73,7 @@ public class TravelEntity {
     @NotNull(message = "Daily allowance cannot be null")
     @DecimalMin(value = "0.0", inclusive = true, message = "Daily allowance must be non-negative")
     @Column(nullable = false)
-    private BigDecimal dailyAllowance;
+    private BigDecimal dailyAllowance = BigDecimal.valueOf(45);
 
     @NotNull(message = "Total amount cannot be null")
     @Column(nullable = false)
@@ -95,7 +95,7 @@ public class TravelEntity {
     @NotNull(message = "Field Amount Overnight Stay With Invoice cannot be null")
     @DecimalMin(value = "0.0", inclusive = true, message = "Field Amount Overnight Stay With Invoice must be non-negative")
     @Column(nullable = false)
-    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
+    private BigDecimal amountOfTotalOvernightsStayWithInvoice = BigDecimal.ZERO;
 
     @NotNull(message = "Number of overnight stay without invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
@@ -105,19 +105,19 @@ public class TravelEntity {
     @NotNull(message = "Field Amount Overnight Stay Without Invoice cannot be null")
     @DecimalMin(value = "0.0", inclusive = true, message = "Field Amount Overnight Stay Without Invoice must be non-negative")
     @Column(nullable = false)
-    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
+    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private Integer totalInputQuantityOfOvernightStay;
+    private Integer totalInputQuantityOfOvernightStay = 0;
 
     @Column(nullable = false)
-    private Integer quantityOfOvernightStay;
+    private Integer quantityOfOvernightStay = 0;
 
     @Column(nullable = false)
-    private BigDecimal overnightStayAmount;
+    private BigDecimal overnightStayAmount = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private BigDecimal advancePayment;
+    private BigDecimal advancePayment = BigDecimal.ZERO;
 
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                         LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts,
@@ -132,7 +132,6 @@ public class TravelEntity {
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
-        this.dailyAllowance = BigDecimal.valueOf(45);
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
@@ -142,99 +141,6 @@ public class TravelEntity {
         this.advancePayment = advancePayment;
         validateDates();
     }
-
-//    public void calculateDietAmount() {
-//        long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
-//        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
-//
-//        if (hoursInTravel <= 24) {
-//            if (hoursInTravel < 8) {
-//                this.dietAmount = BigDecimal.ZERO;
-//            } else if (hoursInTravel < 12) {
-//                this.dietAmount = fiftyPercentOfDailyAllowance;
-//            } else {
-//                this.dietAmount = dailyAllowance;
-//            }
-//        } else {
-//            long fullDays = hoursInTravel / 24;
-//            long remainingHours = hoursInTravel % 24;
-//            BigDecimal totalAmountForFullDays = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
-//
-//            if (remainingHours == 0) {
-//                this.dietAmount = totalAmountForFullDays.add(BigDecimal.ZERO);
-//            } else if (remainingHours < 8) {
-//                this.dietAmount = totalAmountForFullDays.add(fiftyPercentOfDailyAllowance);
-//            } else {
-//                this.dietAmount = totalAmountForFullDays.add(dailyAllowance);
-//            }
-//        }
-//        updateTotalAmount();
-//    }
-//
-//    public void calculateFoodAmount() {
-//        BigDecimal totalFoodExpenses = BigDecimal.ZERO;
-//        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.5));
-//        BigDecimal twentyFivePercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.25));
-//
-//        BigDecimal breakfastCost = BigDecimal.valueOf(numberOfBreakfasts).multiply(twentyFivePercentOfDailyAllowance);
-//        BigDecimal lunchCost = BigDecimal.valueOf(numberOfLunches).multiply(fiftyPercentOfDailyAllowance);
-//        BigDecimal dinnerCost = BigDecimal.valueOf(numberOfDinners).multiply(twentyFivePercentOfDailyAllowance);
-//
-//        this.foodAmount = totalFoodExpenses.add(breakfastCost).add(lunchCost).add(dinnerCost).negate();
-//        updateTotalAmount();
-//    }
-//
-//    public void calculateOvernightStayAmount() {
-//        quantityOfOvernightStay = getTotalQuantityOfNight();
-//
-//        BigDecimal oneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
-//        BigDecimal oneNightWithoutInvoice = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
-//
-//        if (inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay) {
-//            throw new TravelException("Input quantity overnight stay more than quantity overnight stay");
-//        } else {
-//            amountOfTotalOvernightsStayWithoutInvoice = oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
-//        }
-//
-//        if (inputQuantityOfOvernightStayWithInvoice > quantityOfOvernightStay) {
-//            throw new TravelException("Input quantity overnight stay more than quantity overnight stay");
-//        }
-//
-//        if ((inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice) > quantityOfOvernightStay) {
-//            throw new TravelException("Total input numbers of overnight stay more than total overnight stay");
-//        }
-//        this.totalInputQuantityOfOvernightStay = inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
-//        this.overnightStayAmount = amountOfTotalOvernightsStayWithoutInvoice.add(amountOfTotalOvernightsStayWithInvoice);
-//
-//        updateTotalAmount();
-//    }
-//
-//    private int getTotalQuantityOfNight() {
-//        int night = 0;
-//        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
-//        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
-//
-//        while (startDateTime.isBefore(endDateTime)) {
-//            LocalDateTime endOfCurrentNight = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
-//
-//            if (endDateTime.isBefore(endOfCurrentNight)) {
-//                endOfCurrentNight = endDateTime;
-//            }
-//
-//            LocalDateTime startOfCurrentNight = startDateTime.withHour(21).withMinute(0).withSecond(0);
-//
-//            if (startDateTime.isAfter(startOfCurrentNight)) {
-//                startOfCurrentNight = startDateTime;
-//            }
-//
-//            if (Duration.between(startOfCurrentNight, endOfCurrentNight).toHours() >= 6) {
-//                night++;
-//            }
-//
-//            startDateTime = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
-//        }
-//        return night;
-//    }
 
     private void validateDates() {
         if (endDate.isBefore(startDate) || (endDate.isEqual(startDate) && endTime.isBefore(startTime))) {
