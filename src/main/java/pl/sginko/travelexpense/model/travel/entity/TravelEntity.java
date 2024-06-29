@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.sginko.travelexpense.model.employee.entity.EmployeeEntity;
 import pl.sginko.travelexpense.model.travel.TravelException;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class TravelEntity {
@@ -240,7 +242,7 @@ public class TravelEntity {
         }
     }
 
-//    private void updateTotalAmount() {
-//        this.totalAmount = (this.dietAmount.add(this.foodAmount).add(this.overnightStayAmount)).subtract(advancePayment);
-//    }
+    public void updateTotalAmount() {
+        this.totalAmount = (this.dietAmount.add(this.foodAmount).add(this.overnightStayAmount)).subtract(advancePayment);
+    }
 }

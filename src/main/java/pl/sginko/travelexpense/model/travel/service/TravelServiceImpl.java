@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 
 @Service
 public class TravelServiceImpl implements TravelService {
-    private final BigDecimal DAILY_ALLOWANCE = BigDecimal.valueOf(45);
-
     private final TravelRepository travelRepository;
     private final TravelMapper travelMapper;
 
@@ -25,89 +23,75 @@ public class TravelServiceImpl implements TravelService {
         this.travelMapper = travelMapper;
     }
 
-    public void addTravel(TravelRequestDto requestDto){
-        travelRepository.save(travelMapper.toEntity(requestDto));
-    }
-
-    public BigDecimal calculateDietAmount(TravelRequestDto requestDto) {
-        BigDecimal dietAmount;
-        long hoursInTravel = Duration.between(requestDto.getStartTime().atDate(requestDto.getStartDate()),
-                requestDto.getEndTime().atDate(requestDto.getEndDate())).toHours();
-        BigDecimal fiftyPercentOfDailyAllowance = DAILY_ALLOWANCE.multiply(BigDecimal.valueOf(0.50));
+    private void calculateDietAmount(TravelEntity entity) {
+        long hoursInTravel = Duration.between(entity.getStartTime().atDate(entity.getStartDate()), entity.getEndTime().atDate(entity.getEndDate())).toHours();
+        BigDecimal fiftyPercentOfDailyAllowance = entity.getDailyAllowance().multiply(BigDecimal.valueOf(0.50));
 
         if (hoursInTravel <= 24) {
             if (hoursInTravel < 8) {
-                dietAmount = BigDecimal.ZERO;
+                entity.setDietAmount(BigDecimal.ZERO);
             } else if (hoursInTravel < 12) {
-                dietAmount = fiftyPercentOfDailyAllowance;
+                entity.setDietAmount(fiftyPercentOfDailyAllowance);
             } else {
-                dietAmount = DAILY_ALLOWANCE;
+                entity.setDietAmount(entity.getDailyAllowance());
             }
         } else {
             long fullDays = hoursInTravel / 24;
             long remainingHours = hoursInTravel % 24;
-            BigDecimal totalAmountForFullDays = DAILY_ALLOWANCE.multiply(BigDecimal.valueOf(fullDays));
+            BigDecimal totalAmountForFullDays = entity.getDailyAllowance().multiply(BigDecimal.valueOf(fullDays));
 
             if (remainingHours == 0) {
-                dietAmount = totalAmountForFullDays.add(BigDecimal.ZERO);
+                entity.setDietAmount(totalAmountForFullDays.add(BigDecimal.ZERO));
             } else if (remainingHours < 8) {
-                dietAmount = totalAmountForFullDays.add(fiftyPercentOfDailyAllowance);
+                entity.setDietAmount(totalAmountForFullDays.add(fiftyPercentOfDailyAllowance));
             } else {
-                dietAmount = totalAmountForFullDays.add(DAILY_ALLOWANCE);
+                entity.setDietAmount(totalAmountForFullDays.add(entity.getDailyAllowance()));
             }
         }
-        return dietAmount;
-//        updateTotalAmount();
+        entity.updateTotalAmount();
     }
 
-    public BigDecimal calculateFoodAmount(TravelRequestDto requestDto) {
-        BigDecimal totalFoodExpenses = BigDecimal.ZERO;
-        BigDecimal fiftyPercentOfDailyAllowance = DAILY_ALLOWANCE.multiply(BigDecimal.valueOf(0.5));
-        BigDecimal twentyFivePercentOfDailyAllowance = DAILY_ALLOWANCE.multiply(BigDecimal.valueOf(0.25));
+    private void calculateFoodAmount(TravelEntity entity) {
+        BigDecimal fiftyPercentOfDailyAllowance = entity.getDailyAllowance().multiply(BigDecimal.valueOf(0.5));
+        BigDecimal twentyFivePercentOfDailyAllowance = entity.getDailyAllowance().multiply(BigDecimal.valueOf(0.25));
 
-        BigDecimal breakfastCost = BigDecimal.valueOf(requestDto.getNumberOfBreakfasts()).multiply(twentyFivePercentOfDailyAllowance);
-        BigDecimal lunchCost = BigDecimal.valueOf(requestDto.getNumberOfLunches()).multiply(fiftyPercentOfDailyAllowance);
-        BigDecimal dinnerCost = BigDecimal.valueOf(requestDto.getNumberOfDinners()).multiply(twentyFivePercentOfDailyAllowance);
+        BigDecimal breakfastCost = BigDecimal.valueOf(entity.getNumberOfBreakfasts()).multiply(twentyFivePercentOfDailyAllowance);
+        BigDecimal lunchCost = BigDecimal.valueOf(entity.getNumberOfLunches()).multiply(fiftyPercentOfDailyAllowance);
+        BigDecimal dinnerCost = BigDecimal.valueOf(entity.getNumberOfDinners()).multiply(twentyFivePercentOfDailyAllowance);
 
-        BigDecimal foodAmount = totalFoodExpenses.add(breakfastCost).add(lunchCost).add(dinnerCost).negate();
-        return foodAmount;
-//        updateTotalAmount();
+        entity.setFoodAmount(breakfastCost.add(lunchCost).add(dinnerCost).negate());
+        entity.updateTotalAmount();
     }
 
-    public BigDecimal calculateOvernightStayAmount(TravelRequestDto requestDto) {
-        BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
-        Integer totalInputQuantityOfOvernightStay;
+    private void calculateOvernightStayAmount(TravelEntity entity) {
+        int quantityOfOvernightStay = getTotalQuantityOfNight(entity);
 
-        Integer quantityOfOvernightStay = getTotalQuantityOfNight(requestDto);
+        BigDecimal oneNightWithInvoice = entity.getDailyAllowance().multiply(BigDecimal.valueOf(20));
+        BigDecimal oneNightWithoutInvoice = entity.getDailyAllowance().multiply(BigDecimal.valueOf(1.5));
 
-        BigDecimal oneNightWithInvoice = DAILY_ALLOWANCE.multiply(BigDecimal.valueOf(20));
-        BigDecimal oneNightWithoutInvoice = DAILY_ALLOWANCE.multiply(BigDecimal.valueOf(1.5));
-
-
-        if (requestDto.getInputQuantityOfOvernightStayWithoutInvoice() > quantityOfOvernightStay) {
+        if (entity.getInputQuantityOfOvernightStayWithoutInvoice() > quantityOfOvernightStay) {
             throw new TravelException("Input quantity overnight stay more than quantity overnight stay");
         } else {
-            amountOfTotalOvernightsStayWithoutInvoice = oneNightWithoutInvoice.multiply(BigDecimal.valueOf(requestDto.getInputQuantityOfOvernightStayWithoutInvoice()));
+            entity.setAmountOfTotalOvernightsStayWithoutInvoice(oneNightWithoutInvoice.multiply(BigDecimal.valueOf(entity.getInputQuantityOfOvernightStayWithoutInvoice())));
         }
 
-        if (requestDto.getInputQuantityOfOvernightStayWithInvoice() > quantityOfOvernightStay) {
+        if (entity.getInputQuantityOfOvernightStayWithInvoice() > quantityOfOvernightStay) {
             throw new TravelException("Input quantity overnight stay more than quantity overnight stay");
         }
 
-        if ((requestDto.getInputQuantityOfOvernightStayWithInvoice() + requestDto.getInputQuantityOfOvernightStayWithoutInvoice()) > quantityOfOvernightStay) {
+        if ((entity.getInputQuantityOfOvernightStayWithInvoice() + entity.getInputQuantityOfOvernightStayWithoutInvoice()) > quantityOfOvernightStay) {
             throw new TravelException("Total input numbers of overnight stay more than total overnight stay");
         }
-        totalInputQuantityOfOvernightStay = requestDto.getInputQuantityOfOvernightStayWithInvoice() + requestDto.getInputQuantityOfOvernightStayWithoutInvoice();
-        BigDecimal overnightStayAmount = amountOfTotalOvernightsStayWithoutInvoice.add(requestDto.getAmountOfTotalOvernightsStayWithInvoice());
+        entity.setTotalInputQuantityOfOvernightStay(entity.getInputQuantityOfOvernightStayWithInvoice() + entity.getInputQuantityOfOvernightStayWithoutInvoice());
+        entity.setOvernightStayAmount(entity.getAmountOfTotalOvernightsStayWithoutInvoice().add(entity.getAmountOfTotalOvernightsStayWithInvoice()));
 
-        return overnightStayAmount;
-//            updateTotalAmount();
+        entity.updateTotalAmount();
     }
 
-    private Integer getTotalQuantityOfNight(TravelRequestDto requestDto) {
+    private int getTotalQuantityOfNight(TravelEntity entity) {
         int night = 0;
-        LocalDateTime startDateTime = LocalDateTime.of(requestDto.getStartDate(), requestDto.getStartTime());
-        LocalDateTime endDateTime = LocalDateTime.of(requestDto.getEndDate(), requestDto.getEndTime());
+        LocalDateTime startDateTime = LocalDateTime.of(entity.getStartDate(), entity.getStartTime());
+        LocalDateTime endDateTime = LocalDateTime.of(entity.getEndDate(), entity.getEndTime());
 
         while (startDateTime.isBefore(endDateTime)) {
             LocalDateTime endOfCurrentNight = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
@@ -131,19 +115,14 @@ public class TravelServiceImpl implements TravelService {
         return night;
     }
 
-    private BigDecimal calculateTotalAmount(TravelRequestDto requestDto) {
-        BigDecimal totalAmount = (calculateDietAmount(requestDto).add(calculateFoodAmount(requestDto))
-                .add(calculateOvernightStayAmount(requestDto))).subtract(requestDto.getAdvancePayment());
-        return totalAmount;
-    }
-
     @Override
+    @Transactional
     public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
         TravelEntity entity = travelMapper.toEntity(requestDto);
-        entity.calculateDietAmount(requestDto);
-        BigDecimal bigDecimal1 = calculateFoodAmount(requestDto);
-        BigDecimal bigDecimal2 = calculateOvernightStayAmount(requestDto);
-        addTravel(requestDto);
+        calculateDietAmount(entity);
+        calculateFoodAmount(entity);
+        calculateOvernightStayAmount(entity);
+        travelRepository.save(entity);
         return travelMapper.toResponseDto(entity);
     }
 }
