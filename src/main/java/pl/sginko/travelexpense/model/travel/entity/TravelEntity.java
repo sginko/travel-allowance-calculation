@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.model.travel.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -8,10 +9,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.sginko.travelexpense.model.dietExpenses.entity.DietExpensesEntity;
+import pl.sginko.travelexpense.model.diet.entity.DietEntity;
 import pl.sginko.travelexpense.model.employee.entity.EmployeeEntity;
-import pl.sginko.travelexpense.model.overnightStayExpenses.entity.OvernightStayExpensesEntity;
-import pl.sginko.travelexpense.model.travel.TravelException;
+import pl.sginko.travelexpense.model.overnightStay.entity.OvernightStayEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,22 +22,13 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class TravelEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "employee_id")
-    private EmployeeEntity employeeEntity;
-
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "diet_id")
-    private DietExpensesEntity dietExpensesEntity;
-
     @ManyToOne
-    @JoinColumn(name = "overnight_stay_id")
-    private OvernightStayExpensesEntity overnightStayExpensesEntity;
+    @JoinColumn(name = "employee_id", nullable = false)
+    private EmployeeEntity employeeEntity;
 
     @NotBlank
     @Size(min = 2, max = 50, message = "City name should be between 2 and 50 characters")
@@ -65,32 +56,39 @@ public class TravelEntity {
     @Column(nullable = false)
     private LocalTime endTime;
 
+    @NotNull(message = "Advance payment cannot be null")
+    @Min(value = 0, message = "Advance payment cannot be negative")
     @Column(nullable = false)
-    private BigDecimal advancePayment = BigDecimal.ZERO;
+    private BigDecimal advancePayment;
 
-    @Column(nullable = false)
-    private Long hoursInTravel;
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
+    private DietEntity dietEntity;
 
-    @NotNull(message = "Total amount cannot be null")
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
+    private OvernightStayEntity overnightStayEntity;
+
     @Column(nullable = false)
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
-    public TravelEntity(EmployeeEntity employeeEntity, String fromCity, String toCity, LocalDate startDate,
-                        LocalTime startTime, LocalDate endDate, LocalTime endTime, BigDecimal advancePayment) {
-        this.employeeEntity = employeeEntity;
+    public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
+                        LocalDate endDate, LocalTime endTime, EmployeeEntity employeeEntity,
+                        BigDecimal advancePayment, Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners,
+                        Integer inputQuantityOfOvernightStayWithoutInvoice, Integer inputQuantityOfOvernightStayWithInvoice,
+                        BigDecimal amountOfTotalOvernightsStayWithInvoice) {
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
+        this.employeeEntity = employeeEntity;
         this.advancePayment = advancePayment;
-        validateDates();
+        this.dietEntity = new DietEntity(this, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice);
+        updateTotalAmount();
     }
 
-    private void validateDates() {
-        if (endDate.isBefore(startDate) || (endDate.isEqual(startDate) && endTime.isBefore(startTime))) {
-            throw new TravelException("End date/time cannot be before start date/time");
-        }
+    public void updateTotalAmount() {
+        this.totalAmount = this.dietEntity.getDietAmount().add(this.overnightStayEntity.getOvernightStayAmount()).subtract(advancePayment);
     }
 }

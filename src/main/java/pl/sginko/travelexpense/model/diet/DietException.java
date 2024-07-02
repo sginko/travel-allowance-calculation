@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.model.dietExpenses;
+package pl.sginko.travelexpense.model.diet;
 
 public class DietException extends RuntimeException{
 

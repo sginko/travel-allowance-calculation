@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.model.overnightStayExpenses;
+package pl.sginko.travelexpense.model.overnightStay;
 
 public class OvernightStayException extends RuntimeException {
 

@@ -4,12 +4,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
-import pl.sginko.travelexpense.model.dietExpenses.DietException;
-import pl.sginko.travelexpense.model.dietExpenses.entity.DietExpensesEntity;
-import pl.sginko.travelexpense.model.dietExpenses.repository.DietRepository;
-import pl.sginko.travelexpense.model.overnightStayExpenses.OvernightStayException;
-import pl.sginko.travelexpense.model.overnightStayExpenses.entity.OvernightStayExpensesEntity;
-import pl.sginko.travelexpense.model.overnightStayExpenses.repository.OvernightStayRepository;
+import pl.sginko.travelexpense.model.diet.DietException;
+import pl.sginko.travelexpense.model.diet.entity.DietEntity;
+import pl.sginko.travelexpense.model.diet.repository.DietRepository;
+import pl.sginko.travelexpense.model.overnightStay.OvernightStayException;
+import pl.sginko.travelexpense.model.overnightStay.entity.OvernightStayEntity;
+import pl.sginko.travelexpense.model.overnightStay.repository.OvernightStayRepository;
 import pl.sginko.travelexpense.model.travel.TravelException;
 import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.model.travel.repository.TravelRepository;
@@ -34,8 +34,8 @@ public class PdfDocumentService {
 
     public void generatePdfDocument(Long id) throws IOException {
         TravelEntity travelFound = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
-        DietExpensesEntity dietFound = dietRepository.findById(id).orElseThrow(() -> new DietException("Diet not found"));
-        OvernightStayExpensesEntity overnightStayFound = overnightStayRepository.findById(id).orElseThrow(() -> new OvernightStayException("Overnight Stay not found"));
+        DietEntity dietFound = dietRepository.findById(id).orElseThrow(() -> new DietException("Diet not found"));
+        OvernightStayEntity overnightStayFound = overnightStayRepository.findById(id).orElseThrow(() -> new OvernightStayException("Overnight Stay not found"));
 
         Map<String, String> replacements = Map.ofEntries(
                 entry("fullName", travelFound.getEmployeeEntity().getFirstName() + " " + travelFound.getEmployeeEntity().getSecondName()),
@@ -51,7 +51,7 @@ public class PdfDocumentService {
                 entry("countDinner", String.valueOf(dietFound.getNumberOfDinners())),
                 entry("totalAmount", String.valueOf(travelFound.getTotalAmount())),
                 entry("dietAmount", String.valueOf(dietFound.getDietAmount())),
-                entry("foodAmount", String.valueOf(dietFound.getFoodAmount())),
+//                entry("foodAmount", String.valueOf(dietFound.getFoodAmount())),
                 entry("overnightStayWithInvoice", String.valueOf(overnightStayFound.getAmountOfTotalOvernightsStayWithInvoice())),
                 entry("overnightStayWithoutInvoice", String.valueOf(overnightStayFound.getAmountOfTotalOvernightsStayWithoutInvoice())),
                 entry("advancePayment", String.valueOf(travelFound.getAdvancePayment()))

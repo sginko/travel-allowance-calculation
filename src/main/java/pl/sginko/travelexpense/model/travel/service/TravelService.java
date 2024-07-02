@@ -7,11 +7,11 @@ import java.math.BigDecimal;
 
 public interface TravelService {
 
-    Long getHoursInTravel(TravelRequestDto requestDto);
-
-    Integer getTotalQuantityOfNight(TravelRequestDto requestDto);
-
-    BigDecimal updateTotalAmount(TravelRequestDto requestDto);
-
     TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto);
+
+//    Integer getTotalQuantityOfNight(TravelRequestDto requestDto);
+//
+//    BigDecimal updateTotalAmount(TravelRequestDto requestDto);
+//
+//    TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto);
 }
