@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class OvernightStayRequestDto {
     @NotNull(message = "Number of overnight stay without invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
-    private Integer inputQuantityOfOvernightStayWithoutInvoice;
+    private Integer inputQuantityOfOvernightStayWithoutInvoice = 0;
 
     @NotNull(message = "overnightStayWithoutInvoice cannot be null")
     @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
@@ -21,9 +21,17 @@ public class OvernightStayRequestDto {
 
     @NotNull(message = "Number of overnight stay with invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
-    private Integer inputQuantityOfOvernightStayWithInvoice;
+    private Integer inputQuantityOfOvernightStayWithInvoice = 0;
 
     @NotNull(message = "overnightStayWithInvoice cannot be null")
     @Min(value = 0, message = "overnightStayWithInvoice cannot be negative")
     private BigDecimal amountOfTotalOvernightsStayWithInvoice;
+
+    public OvernightStayRequestDto(Integer inputQuantityOfOvernightStayWithoutInvoice, BigDecimal amountOfTotalOvernightsStayWithoutInvoice,
+                                   Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice) {
+        this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
+        this.amountOfTotalOvernightsStayWithoutInvoice = amountOfTotalOvernightsStayWithoutInvoice;
+        this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
+        this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
+    }
 }

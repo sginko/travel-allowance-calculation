@@ -201,24 +201,29 @@
             <label for="endTime">Godzina powrotu:
                 <input name="endTime" type="time" id="endTime" required>
             </label>
+
+            <!-- Diet Request -->
             <label for="numberOfBreakfasts">Liczba śniadań:
-                <input name="numberOfBreakfasts" type="number" id="numberOfBreakfasts" min="0" required>
+                <input name="dietRequestDto.numberOfBreakfasts" type="number" id="numberOfBreakfasts" min="0" required>
             </label>
             <label for="numberOfLunches">Liczba obiadów:
-                <input name="numberOfLunches" type="number" id="numberOfLunches" min="0" required>
+                <input name="dietRequestDto.numberOfLunches" type="number" id="numberOfLunches" min="0" required>
             </label>
             <label for="numberOfDinners">Liczba kolacji:
-                <input name="numberOfDinners" type="number" id="numberOfDinners" min="0" required>
+                <input name="dietRequestDto.numberOfDinners" type="number" id="numberOfDinners" min="0" required>
             </label>
-            <label for="inputQuantityOfOvernightStayWithoutInvoice">Liczba noclegów, za które przysługuje ryczałt:
-                <input name="inputQuantityOfOvernightStayWithoutInvoice" type="number" id="inputQuantityOfOvernightStayWithoutInvoice" min="0" required>
+
+            <!-- Accommodation Request -->
+            <label for="inputQuantityOfOvernightStayWithoutInvoice">Liczba noclegów, за które przysługuje ryczałt:
+                <input name="overnightStayRequestDto.inputQuantityOfOvernightStayWithoutInvoice" type="number" id="inputQuantityOfOvernightStayWithoutInvoice" min="0" required>
             </label>
             <label for="inputQuantityOfOvernightStayWithInvoice">Liczba noclegów stwierdzonych rachunkiem:
-                <input name="inputQuantityOfOvernightStayWithInvoice" type="number" id="inputQuantityOfOvernightStayWithInvoice" min="0" required>
+                <input name="overnightStayRequestDto.inputQuantityOfOvernightStayWithInvoice" type="number" id="inputQuantityOfOvernightStayWithInvoice" min="0" required>
             </label>
-            <label for="amountOfTotalOvernightsStayWithInvoice">Koszt noclegów stwierdzony rachunkiem:
-                <input name="amountOfTotalOvernightsStayWithInvoice" type="number" id="amountOfTotalOvernightsStayWithInvoice" min="0" required>
+            <label for="amountOfTotalOvernightsStayWithInvoice">Koszt noclegów стwierdzony rachunkiem:
+                <input name="overnightStayRequestDto.amountOfTotalOvernightsStayWithInvoice" type="number" id="amountOfTotalOvernightsStayWithInvoice" min="0" required>
             </label>
+
             <label for="advancePayment">Pobrano zaliczke:
                 <input name="advancePayment" type="number" id="advancePayment" min="0" required>
             </label>
@@ -228,3 +233,4 @@
 </div>
 </body>
 </html>
+

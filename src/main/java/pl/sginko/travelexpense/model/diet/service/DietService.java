@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 public interface DietService {
 
     DietResponseDto calculateDiet(DietRequestDto requestDto, TravelEntity travelEntity);
+//    DietResponseDto calculateDiet(TravelRequestDto requestDto, TravelEntity travelEntity);
 
 //    BigDecimal calculateFoodAmount(TravelRequestDto requestDto);
 //

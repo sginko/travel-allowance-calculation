@@ -2,7 +2,9 @@ package pl.sginko.travelexpense.model.travel.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sginko.travelexpense.model.diet.dto.DietRequestDto;
 import pl.sginko.travelexpense.model.diet.service.DietService;
+import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayRequestDto;
 import pl.sginko.travelexpense.model.overnightStay.service.OvernightStayService;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
@@ -27,6 +29,7 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     @Transactional
+//    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto, DietRequestDto dietRequestDto, OvernightStayRequestDto overnightStayRequestDto) {
     public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
         TravelEntity travelEntity = travelMapper.toEntity(requestDto);
         dietService.calculateDiet(requestDto.getDietRequest(), travelEntity);
@@ -34,4 +37,30 @@ public class TravelServiceImpl implements TravelService {
         travelRepository.save(travelEntity);
         return travelMapper.toResponseDto(travelEntity);
     }
+
+
+//    private final TravelRepository travelRepository;
+//    private final TravelMapper travelMapper;
+//
+//    public TravelServiceImpl(TravelRepository travelRepository, TravelMapper travelMapper) {
+//        this.travelRepository = travelRepository;
+//        this.travelMapper = travelMapper;
+//    }
+//
+//    @Override
+//    @Transactional
+//    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
+//        TravelEntity entity = travelMapper.toEntity(requestDto);
+//
+//        // Сначала сохраняем родительскую сущность
+//        travelRepository.save(entity);
+//
+//        // Затем сохраняем дочерние сущности
+//        entity.getDietEntity().setTravelEntity(entity);
+//        entity.getAccommodationEntity().setTravelEntity(entity);
+//
+//        travelRepository.save(entity);
+//
+//        return travelMapper.toResponseDto(entity);
+//    }
 }

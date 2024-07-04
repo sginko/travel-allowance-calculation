@@ -33,24 +33,27 @@ public class DietEntity {
     private BigDecimal dietAmount = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private Integer numberOfBreakfasts;
+    private BigDecimal foodAmount = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private Integer numberOfLunches;
+    private Integer numberOfBreakfasts = 0;
 
     @Column(nullable = false)
-    private Integer numberOfDinners;
+    private Integer numberOfLunches = 0;
+
+    @Column(nullable = false)
+    private Integer numberOfDinners = 0;
 
     public DietEntity(TravelEntity travelEntity, Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners) {
         this.travelEntity = travelEntity;
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
-        calculateDietAmount();
-        calculateFoodAmount();
+        this.dietAmount = calculateDietAmount();
+        this.foodAmount = calculateFoodAmount();
     }
 
-    public void calculateDietAmount() {
+    public BigDecimal calculateDietAmount() {
         LocalDate startDate = travelEntity.getStartDate();
         LocalTime startTime = travelEntity.getStartTime();
         LocalDate endDate = travelEntity.getEndDate();
@@ -79,9 +82,11 @@ public class DietEntity {
                 this.dietAmount = totalAmountForFullDays.add(dailyAllowance);
             }
         }
+        return dietAmount;
     }
 
-    public void calculateFoodAmount() {
+    public BigDecimal calculateFoodAmount() {
+        BigDecimal totalFoodExpenses = BigDecimal.ZERO;
         BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.5));
         BigDecimal twentyFivePercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.25));
 
@@ -89,6 +94,7 @@ public class DietEntity {
         BigDecimal lunchCost = BigDecimal.valueOf(numberOfLunches).multiply(fiftyPercentOfDailyAllowance);
         BigDecimal dinnerCost = BigDecimal.valueOf(numberOfDinners).multiply(twentyFivePercentOfDailyAllowance);
 
-        this.dietAmount = this.dietAmount.subtract(breakfastCost).subtract(lunchCost).subtract(dinnerCost);
+        this.foodAmount = totalFoodExpenses.add(breakfastCost).add(lunchCost).add(dinnerCost).negate();
+        return foodAmount;
     }
 }

@@ -43,12 +43,19 @@ public class OvernightStayEntity {
     @Column(nullable = false)
     private BigDecimal overnightStayAmount = BigDecimal.ZERO;
 
+    @Column(nullable = false)
+    private Integer totalInputQuantityOfOvernightStay;
+
+    @Column(nullable = false)
+    private Integer quantityOfOvernightStay;
+
     public OvernightStayEntity(TravelEntity travelEntity, Integer inputQuantityOfOvernightStayWithoutInvoice,
                                Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice) {
         this.travelEntity = travelEntity;
         this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
         this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
+        this.quantityOfOvernightStay = getQuantityOfOvernightStay();
         calculateOvernightStayAmount();
     }
 
@@ -71,7 +78,7 @@ public class OvernightStayEntity {
         if ((inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice) > quantityOfOvernightStay) {
             throw new TravelException("Total input numbers of overnight stay more than total overnight stay");
         }
-
+        this.totalInputQuantityOfOvernightStay = inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
         this.overnightStayAmount = amountOfTotalOvernightsStayWithoutInvoice.add(amountOfTotalOvernightsStayWithInvoice);
     }
 

@@ -7,6 +7,7 @@ import pl.sginko.travelexpense.model.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.model.diet.entity.DietEntity;
 import pl.sginko.travelexpense.model.diet.mapper.DietMapper;
 import pl.sginko.travelexpense.model.diet.repository.DietRepository;
+import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 
 @Service

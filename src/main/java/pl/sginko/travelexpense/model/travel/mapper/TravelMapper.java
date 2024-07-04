@@ -1,10 +1,10 @@
 package pl.sginko.travelexpense.model.travel.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.model.diet.entity.DietEntity;
+import pl.sginko.travelexpense.model.diet.dto.DietRequestDto;
 import pl.sginko.travelexpense.model.diet.mapper.DietMapper;
 import pl.sginko.travelexpense.model.employee.service.EmployeeReaderService;
-import pl.sginko.travelexpense.model.overnightStay.entity.OvernightStayEntity;
+import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayRequestDto;
 import pl.sginko.travelexpense.model.overnightStay.mapper.OvernightStayMapper;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
@@ -62,6 +62,16 @@ public class TravelMapper {
                 overnightStayMapper.toResponseDto(entity.getOvernightStayEntity()));
     }
 
+//    public TravelEntity toEntity(TravelRequestDto requestDto) {
+//        return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
+//                requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
+//                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getAdvancePayment(),
+//                requestDto.getDietRequest().getNumberOfBreakfasts(), requestDto.getDietRequest().getNumberOfLunches(),
+//                requestDto.getDietRequest().getNumberOfDinners(), requestDto.getOvernightStayRequestDto().getInputQuantityOfOvernightStayWithoutInvoice(),
+//                requestDto.getOvernightStayRequestDto().getInputQuantityOfOvernightStayWithInvoice(),
+//                requestDto.getOvernightStayRequestDto().getAmountOfTotalOvernightsStayWithInvoice());
+//    }
+
     public TravelEntity toEntity(TravelRequestDto requestDto) {
         return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
                 requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
@@ -71,4 +81,14 @@ public class TravelMapper {
                 requestDto.getOvernightStayRequestDto().getInputQuantityOfOvernightStayWithInvoice(),
                 requestDto.getOvernightStayRequestDto().getAmountOfTotalOvernightsStayWithInvoice());
     }
+
+//    public TravelEntity toEntity(TravelRequestDto travelRequestDto, DietRequestDto dietRequestDto, OvernightStayRequestDto overnightStayRequestDto) {
+//        return new TravelEntity(travelRequestDto.getFromCity(), travelRequestDto.getToCity(), travelRequestDto.getStartDate(),
+//                travelRequestDto.getStartTime(), travelRequestDto.getEndDate(), travelRequestDto.getEndTime(),
+//                employeeReaderService.findEmployeeByPesel(travelRequestDto.getPesel()), travelRequestDto.getAdvancePayment(),
+//                dietRequestDto.getNumberOfBreakfasts(), dietRequestDto.getNumberOfLunches(),
+//                dietRequestDto.getNumberOfDinners(), overnightStayRequestDto.getInputQuantityOfOvernightStayWithoutInvoice(),
+//                overnightStayRequestDto.getInputQuantityOfOvernightStayWithInvoice(),
+//                overnightStayRequestDto.getAmountOfTotalOvernightsStayWithInvoice());
+//    }
 }

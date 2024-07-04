@@ -75,13 +75,13 @@ public class TravelEntity {
                         BigDecimal advancePayment, Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners,
                         Integer inputQuantityOfOvernightStayWithoutInvoice, Integer inputQuantityOfOvernightStayWithInvoice,
                         BigDecimal amountOfTotalOvernightsStayWithInvoice) {
+        this.employeeEntity = employeeEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
-        this.employeeEntity = employeeEntity;
         this.advancePayment = advancePayment;
         this.dietEntity = new DietEntity(this, numberOfBreakfasts, numberOfLunches, numberOfDinners);
         this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice);

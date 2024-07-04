@@ -8,6 +8,11 @@ import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 
 @Component
 public class DietMapper {
+//    public DietEntity toEntity(DietRequestDto requestDto, TravelEntity travelEntity) {
+//        return new DietEntity(travelEntity, requestDto.getNumberOfBreakfasts(), requestDto.getNumberOfLunches(),
+//                requestDto.getNumberOfDinners());
+//    }
+
     public DietEntity toEntity(DietRequestDto requestDto, TravelEntity travelEntity) {
         return new DietEntity(travelEntity, requestDto.getNumberOfBreakfasts(), requestDto.getNumberOfLunches(),
                 requestDto.getNumberOfDinners());

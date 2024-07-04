@@ -1,0 +1,41 @@
+
+
+
+
+
+
+
+
+
+@Column(nullable = false)
+    private Integer totalInputQuantityOfOvernightStay;
+
+    @Column(nullable = false)
+    private Integer quantityOfOvernightStay;
+
+
+
+
+    public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
+                        LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts,
+                        Integer numberOfLunches, Integer numberOfDinners, EmployeeEntity employeeEntity,
+                        Integer inputQuantityOfOvernightStayWithoutInvoice, Integer inputQuantityOfOvernightStayWithInvoice,
+                        BigDecimal amountOfTotalOvernightsStayWithInvoice,
+                        BigDecimal advancePayment) {
+        this.fromCity = fromCity;
+        this.toCity = toCity;
+        this.employeeEntity = employeeEntity;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.dailyAllowance = BigDecimal.valueOf(45);
+        this.numberOfBreakfasts = numberOfBreakfasts;
+        this.numberOfLunches = numberOfLunches;
+        this.numberOfDinners = numberOfDinners;
+        this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
+        this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
+        this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
+        this.advancePayment = advancePayment;
+        validateDates();
+    }
