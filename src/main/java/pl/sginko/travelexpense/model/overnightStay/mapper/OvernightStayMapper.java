@@ -1,6 +1,5 @@
 package pl.sginko.travelexpense.model.overnightStay.mapper;
 
-import jdk.jfr.Category;
 import org.springframework.stereotype.Component;
 import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayRequestDto;
 import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayResponseDto;

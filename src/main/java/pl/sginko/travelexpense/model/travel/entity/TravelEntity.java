@@ -72,9 +72,9 @@ public class TravelEntity {
 
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                         LocalDate endDate, LocalTime endTime, EmployeeEntity employeeEntity,
-                        BigDecimal advancePayment, Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners,
-                        Integer inputQuantityOfOvernightStayWithoutInvoice, Integer inputQuantityOfOvernightStayWithInvoice,
-                        BigDecimal amountOfTotalOvernightsStayWithInvoice) {
+                        BigDecimal advancePayment, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
+                        Integer numberOfLunches, Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
+                        Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice) {
         this.employeeEntity = employeeEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -83,8 +83,9 @@ public class TravelEntity {
         this.endDate = endDate;
         this.endTime = endTime;
         this.advancePayment = advancePayment;
-        this.dietEntity = new DietEntity(this, numberOfBreakfasts, numberOfLunches, numberOfDinners);
-        this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice);
+        this.dietEntity = new DietEntity(this, dailyAllowance, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+        this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice,
+                inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice);
         updateTotalAmount();
     }
 

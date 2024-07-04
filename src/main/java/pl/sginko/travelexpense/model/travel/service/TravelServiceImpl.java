@@ -2,9 +2,9 @@ package pl.sginko.travelexpense.model.travel.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sginko.travelexpense.model.diet.dto.DietRequestDto;
+import pl.sginko.travelexpense.model.diet.entity.DietEntity;
 import pl.sginko.travelexpense.model.diet.service.DietService;
-import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayRequestDto;
+import pl.sginko.travelexpense.model.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.model.overnightStay.service.OvernightStayService;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
@@ -27,40 +27,30 @@ public class TravelServiceImpl implements TravelService {
         this.overnightStayService = overnightStayService;
     }
 
+//    @Override
+//    @Transactional
+//    public TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto, DietEntity dietEntity, OvernightStayEntity overnightStayEntity) {
+//        TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
+//        dietService.calculateDiet(travelRequestDto, travelRequestDto.getDietRequestDto(), dietEntity);
+//        overnightStayService.calculateOvernightStay(travelRequestDto, travelRequestDto.getOvernightStayRequestDto(), overnightStayEntity);
+//        travelRepository.save(travelEntity);
+//        return travelMapper.toResponseDto(travelEntity);
+//    }
+
     @Override
     @Transactional
-//    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto, DietRequestDto dietRequestDto, OvernightStayRequestDto overnightStayRequestDto) {
-    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
-        TravelEntity travelEntity = travelMapper.toEntity(requestDto);
-        dietService.calculateDiet(requestDto.getDietRequest(), travelEntity);
-        overnightStayService.calculateOvernightStay(requestDto.getOvernightStayRequestDto(), travelEntity);
+    public TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto) {
+        TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
+
+//        DietEntity dietEntity = new DietEntity();
+        dietService.calculateDiet(travelRequestDto, travelRequestDto.getDietRequestDto(), dietEntity);
+
+//        OvernightStayEntity overnightStayEntity = new OvernightStayEntity();
+        overnightStayService.calculateOvernightStay(travelRequestDto, travelRequestDto.getOvernightStayRequestDto(), overnightStayEntity);
+
+        travelEntity.updateTotalAmount(); // Расчет общей суммы
+
         travelRepository.save(travelEntity);
         return travelMapper.toResponseDto(travelEntity);
     }
-
-
-//    private final TravelRepository travelRepository;
-//    private final TravelMapper travelMapper;
-//
-//    public TravelServiceImpl(TravelRepository travelRepository, TravelMapper travelMapper) {
-//        this.travelRepository = travelRepository;
-//        this.travelMapper = travelMapper;
-//    }
-//
-//    @Override
-//    @Transactional
-//    public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
-//        TravelEntity entity = travelMapper.toEntity(requestDto);
-//
-//        // Сначала сохраняем родительскую сущность
-//        travelRepository.save(entity);
-//
-//        // Затем сохраняем дочерние сущности
-//        entity.getDietEntity().setTravelEntity(entity);
-//        entity.getAccommodationEntity().setTravelEntity(entity);
-//
-//        travelRepository.save(entity);
-//
-//        return travelMapper.toResponseDto(entity);
-//    }
 }

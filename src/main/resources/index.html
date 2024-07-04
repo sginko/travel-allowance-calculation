@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Expense Calculator</title>
+</head>
+<body>
+<h1>Travel Expense Calculator</h1>
+<form id="expenseForm">
+    <label for="fromCity">Miasto wyjazdu:</label>
+    <input type="text" id="fromCity" name="fromCity" required><br><br>
+
+    <label for="toCity">Miasto przyjazdu:</label>
+    <input type="text" id="toCity" name="toCity" required><br><br>
+
+    <label for="startDate">Data wyjazdu:</label>
+    <input type="date" id="startDate" name="startDate" required><br><br>
+
+    <label for="startTime">Godzina wyjazdu:</label>
+    <input type="time" id="startTime" name="startTime" required><br><br>
+
+    <label for="endDate">Data powrotu:</label>
+    <input type="date" id="endDate" name="endDate" required><br><br>
+
+    <label for="endTime">Godzina powrotu:</label>
+    <input type="time" id="endTime" name="endTime" required><br><br>
+
+    <label for="numberOfBreakfasts">Liczba śniadań:</label>
+    <input type="number" id="numberOfBreakfasts" name="numberOfBreakfasts" min="0" required><br><br>
+
+    <label for="numberOfLunches">Liczba obiadów:</label>
+    <input type="number" id="numberOfLunches" name="numberOfLunches" min="0" required><br><br>
+
+    <label for="numberOfDinners">Liczba kolacji:</label>
+    <input type="number" id="numberOfDinners" name="numberOfDinners" min="0" required><br><br>
+
+    <label for="dailyAllowance">Dieta:</label>
+    <input type="number" id="dailyAllowance" name="dailyAllowance" min="0" step="0.01" required><br><br>
+
+    <label for="inputQuantityOfOvernightStayWithoutInvoice">Liczba Ryczałt noclegi:</label>
+    <input type="number" id="inputQuantityOfOvernightStayWithoutInvoice" name="inputQuantityOfOvernightStayWithoutInvoice" min="0" required><br><br>
+
+    <label for="amountOfTotalOvernightsStayWithoutInvoice">Koszt Ryczałt noclegi:</label>
+    <input type="number" id="amountOfTotalOvernightsStayWithoutInvoice" name="amountOfTotalOvernightsStayWithoutInvoice" min="0" step="0.01" required><br><br>
+
+    <label for="inputQuantityOfOvernightStayWithInvoice">Liczba Invoice noclegi:</label>
+    <input type="number" id="inputQuantityOfOvernightStayWithInvoice" name="inputQuantityOfOvernightStayWithInvoice" min="0" required><br><br>
+
+    <label for="amountOfTotalOvernightsStayWithInvoice">Koszt Invoice noclegi:</label>
+    <input type="number" id="amountOfTotalOvernightsStayWithInvoice" name="amountOfTotalOvernightsStayWithInvoice" min="0" step="0.01" required><br><br>
+
+    <label for="advancePayment">Pobrano zaliczkę:</label>
+    <input type="number" id="advancePayment" name="advancePayment" min="0" step="0.01" required><br><br>
+
+    <button type="button" onclick="calculateExpenses()">Oblicz</button>
+</form>
+
+<h2>Wyniki:</h2>
+<p id="result"></p>
+
+<script>
+    function calculateExpenses() {
+        // Получение данных из формы
+        const fromCity = document.getElementById('fromCity').value;
+        const toCity = document.getElementById('toCity').value;
+        const startDate = document.getElementById('startDate').value;
+        const startTime = document.getElementById('startTime').value;
+        const endDate = document.getElementById('endDate').value;
+        const endTime = document.getElementById('endTime').value;
+        const numberOfBreakfasts = parseInt(document.getElementById('numberOfBreakfasts').value);
+        const numberOfLunches = parseInt(document.getElementById('numberOfLunches').value);
+        const numberOfDinners = parseInt(document.getElementById('numberOfDinners').value);
+        const dailyAllowance = parseFloat(document.getElementById('dailyAllowance').value);
+        const inputQuantityOfOvernightStayWithoutInvoice = parseInt(document.getElementById('inputQuantityOfOvernightStayWithoutInvoice').value);
+        const amountOfTotalOvernightsStayWithoutInvoice = parseFloat(document.getElementById('amountOfTotalOvernightsStayWithoutInvoice').value);
+        const inputQuantityOfOvernightStayWithInvoice = parseInt(document.getElementById('inputQuantityOfOvernightStayWithInvoice').value);
+        const amountOfTotalOvernightsStayWithInvoice = parseFloat(document.getElementById('amountOfTotalOvernightsStayWithInvoice').value);
+        const advancePayment = parseFloat(document.getElementById('advancePayment').value);
+
+        // Рассчеты
+        const totalMeals = (numberOfBreakfasts * dailyAllowance * 0.25) +
+                           (numberOfLunches * dailyAllowance * 0.5) +
+                           (numberOfDinners * dailyAllowance * 0.25);
+
+        const totalDiet = (numberOfBreakfasts + numberOfLunches + numberOfDinners) * dailyAllowance;
+
+        const totalOvernightStay = inputQuantityOfOvernightStayWithoutInvoice * amountOfTotalOvernightsStayWithoutInvoice +
+                                   inputQuantityOfOvernightStayWithInvoice * amountOfTotalOvernightsStayWithInvoice;
+
+        const totalToPay = totalMeals + totalDiet + totalOvernightStay - advancePayment;
+
+        // Отображение результатов
+        const result = `
+            Miasto wyjazdu: ${fromCity}<br>
+            Miasto przyjazdu: ${toCity}<br>
+            Data wyjazdu: ${startDate}<br>
+            Godzina wyjazdu: ${startTime}<br>
+            Data powrotu: ${endDate}<br>
+            Godzina powrotu: ${endTime}<br><br>
+
+            Liczba śniadań: ${numberOfBreakfasts}<br>
+            Liczba obiadów: ${numberOfLunches}<br>
+            Liczba kolacji: ${numberOfDinners}<br>
+            Posiłki: ${totalMeals.toFixed(2)}<br>
+            Dieta: ${totalDiet.toFixed(2)}<br><br>
+
+            Liczba nocy: ${inputQuantityOfOvernightStayWithoutInvoice + inputQuantityOfOvernightStayWithInvoice}<br>
+            Liczba Invoice noclegi: ${inputQuantityOfOvernightStayWithInvoice}<br>
+            Koszt Invoice noclegi: ${amountOfTotalOvernightsStayWithInvoice.toFixed(2)}<br>
+            Liczba Ryczałt noclegi: ${inputQuantityOfOvernightStayWithoutInvoice}<br>
+            Koszt Ryczałt noclegi: ${amountOfTotalOvernightsStayWithoutInvoice.toFixed(2)}<br><br>
+
+            Pobrano zaliczkę: ${advancePayment.toFixed(2)}<br>
+            Do wypłaty: ${totalToPay.toFixed(2)}<br>
+        `;
+        document.getElementById('result').innerHTML = result;
+    }
+</script>
+</body>
+</html>
