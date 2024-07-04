@@ -2,7 +2,7 @@ package pl.sginko.travelexpense.model.overnightStay.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayRequestDto;
+import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayDto;
 import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayResponseDto;
 import pl.sginko.travelexpense.model.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.model.overnightStay.mapper.OvernightStayMapper;
@@ -31,17 +31,16 @@ public class OvernightStayServiceImpl implements OvernightStayService {
 
     @Override
     @Transactional
-    public OvernightStayResponseDto calculateOvernightStay(TravelRequestDto travelRequestDto,
-                                                           OvernightStayRequestDto overnightStayRequestDto,
-                                                           OvernightStayEntity overnightStayEntity) {
-        OvernightStayEntity entity = overnightStayMapper.toEntity(overnightStayRequestDto, travelMapper.toEntity(travelRequestDto));
-        calculateOvernightStayAmount(travelRequestDto, overnightStayRequestDto, overnightStayEntity);
+    public OvernightStayResponseDto calculateOvernightStay(TravelRequestDto travelRequestDto, OvernightStayEntity overnightStayEntity) {
+        OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
+        OvernightStayEntity entity = overnightStayMapper.toEntity(overnightStayDto, travelMapper.toEntity(travelRequestDto));
+        calculateOvernightStayAmount(travelRequestDto, overnightStayEntity);
         overnightStayRepository.save(entity);
         return overnightStayMapper.toResponseDto(entity);
     }
 
-    private void calculateOvernightStayAmount(TravelRequestDto travelRequestDto, OvernightStayRequestDto overnightStayRequestDto,
-                                              OvernightStayEntity overnightStayEntity) {
+    private void calculateOvernightStayAmount(TravelRequestDto travelRequestDto, OvernightStayEntity overnightStayEntity) {
+        OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         int quantityOfOvernightStay = getTotalQuantityOfNight(travelRequestDto);
         BigDecimal dailyAllowance = BigDecimal.valueOf(45);
         BigDecimal oneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
@@ -49,25 +48,25 @@ public class OvernightStayServiceImpl implements OvernightStayService {
         BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
 
 
-        if (overnightStayRequestDto.getInputQuantityOfOvernightStayWithoutInvoice() > quantityOfOvernightStay) {
+        if (overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice() > quantityOfOvernightStay) {
             throw new TravelException("Input quantity overnight stay more than quantity overnight stay");
         } else {
-            amountOfTotalOvernightsStayWithoutInvoice = oneNightWithoutInvoice.multiply(BigDecimal.valueOf(overnightStayRequestDto.getInputQuantityOfOvernightStayWithoutInvoice()));
+            amountOfTotalOvernightsStayWithoutInvoice = oneNightWithoutInvoice.multiply(BigDecimal.valueOf(overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice()));
             overnightStayEntity.setAmountOfTotalOvernightsStayWithoutInvoice(amountOfTotalOvernightsStayWithoutInvoice);
         }
 
-        if (overnightStayRequestDto.getInputQuantityOfOvernightStayWithInvoice() > quantityOfOvernightStay) {
+        if (overnightStayDto.getInputQuantityOfOvernightStayWithInvoice() > quantityOfOvernightStay) {
             throw new TravelException("Input quantity overnight stay more than quantity overnight stay");
         }
 
-        if ((overnightStayRequestDto.getInputQuantityOfOvernightStayWithInvoice() +
-                overnightStayRequestDto.getInputQuantityOfOvernightStayWithoutInvoice()) > quantityOfOvernightStay) {
+        if ((overnightStayDto.getInputQuantityOfOvernightStayWithInvoice() +
+                overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice()) > quantityOfOvernightStay) {
             throw new TravelException("Total input numbers of overnight stay more than total overnight stay");
         }
-        overnightStayEntity.setTotalInputQuantityOfOvernightStay(overnightStayRequestDto.getInputQuantityOfOvernightStayWithInvoice() +
-                overnightStayRequestDto.getInputQuantityOfOvernightStayWithoutInvoice());
+        overnightStayEntity.setTotalInputQuantityOfOvernightStay(overnightStayDto.getInputQuantityOfOvernightStayWithInvoice() +
+                overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice());
         overnightStayEntity.setOvernightStayAmount(amountOfTotalOvernightsStayWithoutInvoice
-                .add(overnightStayRequestDto.getAmountOfTotalOvernightsStayWithInvoice()));
+                .add(overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice()));
     }
 
     private int getTotalQuantityOfNight(TravelRequestDto travelRequestDto) {

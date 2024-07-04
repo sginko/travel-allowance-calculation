@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DietRequestDto {
+public class DietDto {
     @NotNull(message = "Daily allowance cannot be null")
     @Min(value = 0, message = "Number of breakfasts cannot be negative")
     private BigDecimal dailyAllowance;
@@ -27,7 +27,7 @@ public class DietRequestDto {
     @Min(value = 0, message = "Number of dinners cannot be negative")
     private Integer numberOfDinners;
 
-    public DietRequestDto(Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners, BigDecimal dailyAllowance) {
+    public DietDto(Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners, BigDecimal dailyAllowance) {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;

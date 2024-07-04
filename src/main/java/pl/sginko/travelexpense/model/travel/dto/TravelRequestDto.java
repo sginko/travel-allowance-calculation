@@ -1,14 +1,13 @@
 package pl.sginko.travelexpense.model.travel.dto;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.sginko.travelexpense.model.diet.dto.DietRequestDto;
-import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayRequestDto;
+import pl.sginko.travelexpense.model.diet.dto.DietDto;
+import pl.sginko.travelexpense.model.overnightStay.dto.OvernightStayDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -46,14 +45,14 @@ public class TravelRequestDto {
     private BigDecimal advancePayment;
 
     @NotNull
-    private DietRequestDto dietRequestDto;
+    private DietDto dietDto;
 
     @NotNull
-    private OvernightStayRequestDto overnightStayRequestDto;
+    private OvernightStayDto overnightStayDto;
 
     public TravelRequestDto(Long pesel, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
-                            LocalDate endDate, LocalTime endTime, BigDecimal advancePayment, DietRequestDto dietRequestDto,
-                            OvernightStayRequestDto overnightStayRequestDto) {
+                            LocalDate endDate, LocalTime endTime, BigDecimal advancePayment, DietDto dietDto,
+                            OvernightStayDto overnightStayDto) {
         this.pesel = pesel;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -62,7 +61,7 @@ public class TravelRequestDto {
         this.endDate = endDate;
         this.endTime = endTime;
         this.advancePayment = advancePayment;
-        this.dietRequestDto = dietRequestDto;
-        this.overnightStayRequestDto = overnightStayRequestDto;
+        this.dietDto = dietDto;
+        this.overnightStayDto = overnightStayDto;
     }
 }

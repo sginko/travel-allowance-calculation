@@ -31,10 +31,10 @@ public class TravelMapper {
         return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
                 requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
                 employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getAdvancePayment(),
-                requestDto.getDietRequestDto().getDailyAllowance(), requestDto.getDietRequestDto().getNumberOfBreakfasts(),
-                requestDto.getDietRequestDto().getNumberOfLunches(), requestDto.getDietRequestDto().getNumberOfDinners(),
-                requestDto.getOvernightStayRequestDto().getInputQuantityOfOvernightStayWithoutInvoice(),
-                requestDto.getOvernightStayRequestDto().getInputQuantityOfOvernightStayWithInvoice(),
-                requestDto.getOvernightStayRequestDto().getAmountOfTotalOvernightsStayWithInvoice());
+                requestDto.getDietDto().getDailyAllowance(), requestDto.getDietDto().getNumberOfBreakfasts(),
+                requestDto.getDietDto().getNumberOfLunches(), requestDto.getDietDto().getNumberOfDinners(),
+                requestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithoutInvoice(),
+                requestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithInvoice(),
+                requestDto.getOvernightStayDto().getAmountOfTotalOvernightsStayWithInvoice());
     }
 }

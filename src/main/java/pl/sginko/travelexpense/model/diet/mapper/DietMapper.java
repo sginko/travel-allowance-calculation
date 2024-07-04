@@ -1,7 +1,7 @@
 package pl.sginko.travelexpense.model.diet.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.model.diet.dto.DietRequestDto;
+import pl.sginko.travelexpense.model.diet.dto.DietDto;
 import pl.sginko.travelexpense.model.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.model.diet.entity.DietEntity;
 import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
@@ -9,7 +9,7 @@ import pl.sginko.travelexpense.model.travel.entity.TravelEntity;
 @Component
 public class DietMapper {
 
-    public DietEntity toEntity(DietRequestDto requestDto, TravelEntity travelEntity) {
+    public DietEntity toEntity(DietDto requestDto, TravelEntity travelEntity) {
         return new DietEntity(travelEntity, requestDto.getDailyAllowance(), requestDto.getNumberOfBreakfasts(),
                 requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners());
     }

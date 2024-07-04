@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class OvernightStayRequestDto {
+public class OvernightStayDto {
     @NotNull(message = "Number of overnight stay without invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
     private Integer inputQuantityOfOvernightStayWithoutInvoice = 0;
@@ -27,8 +27,8 @@ public class OvernightStayRequestDto {
     @Min(value = 0, message = "overnightStayWithInvoice cannot be negative")
     private BigDecimal amountOfTotalOvernightsStayWithInvoice;
 
-    public OvernightStayRequestDto(Integer inputQuantityOfOvernightStayWithoutInvoice, BigDecimal amountOfTotalOvernightsStayWithoutInvoice,
-                                   Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice) {
+    public OvernightStayDto(Integer inputQuantityOfOvernightStayWithoutInvoice, BigDecimal amountOfTotalOvernightsStayWithoutInvoice,
+                            Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice) {
         this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
         this.amountOfTotalOvernightsStayWithoutInvoice = amountOfTotalOvernightsStayWithoutInvoice;
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;

@@ -4,8 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.sginko.travelexpense.model.diet.entity.DietEntity;
-import pl.sginko.travelexpense.model.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.model.travel.service.TravelService;

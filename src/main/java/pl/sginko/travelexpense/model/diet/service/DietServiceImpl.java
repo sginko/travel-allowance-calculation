@@ -2,7 +2,7 @@ package pl.sginko.travelexpense.model.diet.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sginko.travelexpense.model.diet.dto.DietRequestDto;
+import pl.sginko.travelexpense.model.diet.dto.DietDto;
 import pl.sginko.travelexpense.model.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.model.diet.entity.DietEntity;
 import pl.sginko.travelexpense.model.diet.mapper.DietMapper;
@@ -29,21 +29,23 @@ public class DietServiceImpl implements DietService {
 
     @Override
     @Transactional
-    public DietResponseDto calculateDiet(TravelRequestDto travelRequestDto, DietRequestDto dietRequestDto, DietEntity dietEntity) {
-        DietEntity entity = dietMapper.toEntity(dietRequestDto, travelMapper.toEntity(travelRequestDto));
-        calculateDietAmount(travelRequestDto, dietRequestDto, dietEntity);
-        calculateFoodAmount(dietRequestDto, dietEntity);
+    public DietResponseDto calculateDiet(TravelRequestDto travelRequestDto, DietEntity dietEntity) {
+        DietDto dietDto = travelRequestDto.getDietDto();
+        DietEntity entity = dietMapper.toEntity(dietDto, travelMapper.toEntity(travelRequestDto));
+        calculateDietAmount(travelRequestDto, dietEntity);
+        calculateFoodAmount(travelRequestDto, dietEntity);
         dietRepository.save(entity);
         return dietMapper.toResponseDto(entity);
     }
 
-    private void calculateDietAmount(TravelRequestDto travelRequestDto, DietRequestDto dietRequestDto, DietEntity dietEntity) {
+    private void calculateDietAmount(TravelRequestDto travelRequestDto, DietEntity dietEntity) {
+        DietDto dietDto = travelRequestDto.getDietDto();
         LocalDate startDate = travelRequestDto.getStartDate();
         LocalTime startTime = travelRequestDto.getStartTime();
         LocalDate endDate = travelRequestDto.getEndDate();
         LocalTime endTime = travelRequestDto.getEndTime();
         long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
-        BigDecimal fiftyPercentOfDailyAllowance = dietRequestDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.50));
+        BigDecimal fiftyPercentOfDailyAllowance = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.50));
 
         if (hoursInTravel <= 24) {
             if (hoursInTravel < 8) {
@@ -51,31 +53,32 @@ public class DietServiceImpl implements DietService {
             } else if (hoursInTravel < 12) {
                 dietEntity.setDietAmount(fiftyPercentOfDailyAllowance);
             } else {
-                dietEntity.setDietAmount(dietRequestDto.getDailyAllowance());
+                dietEntity.setDietAmount(dietDto.getDailyAllowance());
             }
         } else {
             long fullDays = hoursInTravel / 24;
             long remainingHours = hoursInTravel % 24;
-            BigDecimal totalAmountForFullDays = dietRequestDto.getDailyAllowance().multiply(BigDecimal.valueOf(fullDays));
+            BigDecimal totalAmountForFullDays = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(fullDays));
 
             if (remainingHours == 0) {
                 dietEntity.setDietAmount(totalAmountForFullDays.add(BigDecimal.ZERO));
             } else if (remainingHours < 8) {
                 dietEntity.setDietAmount(totalAmountForFullDays.add(fiftyPercentOfDailyAllowance));
             } else {
-                dietEntity.setDietAmount(totalAmountForFullDays.add(dietRequestDto.getDailyAllowance()));
+                dietEntity.setDietAmount(totalAmountForFullDays.add(dietDto.getDailyAllowance()));
             }
         }
     }
 
-    private void calculateFoodAmount(DietRequestDto dietRequestDto, DietEntity dietEntity) {
+    private void calculateFoodAmount(TravelRequestDto travelRequestDto, DietEntity dietEntity) {
+        DietDto dietDto = travelRequestDto.getDietDto();
         BigDecimal totalFoodExpenses = BigDecimal.ZERO;
-        BigDecimal fiftyPercentOfDailyAllowance = dietRequestDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.5));
-        BigDecimal twentyFivePercentOfDailyAllowance = dietRequestDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.25));
+        BigDecimal fiftyPercentOfDailyAllowance = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.5));
+        BigDecimal twentyFivePercentOfDailyAllowance = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.25));
 
-        BigDecimal breakfastCost = BigDecimal.valueOf(dietRequestDto.getNumberOfBreakfasts()).multiply(twentyFivePercentOfDailyAllowance);
-        BigDecimal lunchCost = BigDecimal.valueOf(dietRequestDto.getNumberOfLunches()).multiply(fiftyPercentOfDailyAllowance);
-        BigDecimal dinnerCost = BigDecimal.valueOf(dietRequestDto.getNumberOfDinners()).multiply(twentyFivePercentOfDailyAllowance);
+        BigDecimal breakfastCost = BigDecimal.valueOf(dietDto.getNumberOfBreakfasts()).multiply(twentyFivePercentOfDailyAllowance);
+        BigDecimal lunchCost = BigDecimal.valueOf(dietDto.getNumberOfLunches()).multiply(fiftyPercentOfDailyAllowance);
+        BigDecimal dinnerCost = BigDecimal.valueOf(dietDto.getNumberOfDinners()).multiply(twentyFivePercentOfDailyAllowance);
 
         dietEntity.setFoodAmount(totalFoodExpenses.add(breakfastCost).add(lunchCost).add(dinnerCost).negate());
     }

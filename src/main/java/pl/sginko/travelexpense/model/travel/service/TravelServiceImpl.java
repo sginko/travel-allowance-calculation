@@ -2,9 +2,7 @@ package pl.sginko.travelexpense.model.travel.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sginko.travelexpense.model.diet.entity.DietEntity;
 import pl.sginko.travelexpense.model.diet.service.DietService;
-import pl.sginko.travelexpense.model.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.model.overnightStay.service.OvernightStayService;
 import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
@@ -27,28 +25,16 @@ public class TravelServiceImpl implements TravelService {
         this.overnightStayService = overnightStayService;
     }
 
-//    @Override
-//    @Transactional
-//    public TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto, DietEntity dietEntity, OvernightStayEntity overnightStayEntity) {
-//        TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
-//        dietService.calculateDiet(travelRequestDto, travelRequestDto.getDietRequestDto(), dietEntity);
-//        overnightStayService.calculateOvernightStay(travelRequestDto, travelRequestDto.getOvernightStayRequestDto(), overnightStayEntity);
-//        travelRepository.save(travelEntity);
-//        return travelMapper.toResponseDto(travelEntity);
-//    }
-
     @Override
     @Transactional
     public TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto) {
         TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
 
-//        DietEntity dietEntity = new DietEntity();
-        dietService.calculateDiet(travelRequestDto, travelRequestDto.getDietRequestDto(), dietEntity);
+        dietService.calculateDiet(travelRequestDto, dietEntity);
 
-//        OvernightStayEntity overnightStayEntity = new OvernightStayEntity();
-        overnightStayService.calculateOvernightStay(travelRequestDto, travelRequestDto.getOvernightStayRequestDto(), overnightStayEntity);
+        overnightStayService.calculateOvernightStay(travelRequestDto, overnightStayEntity);
 
-        travelEntity.updateTotalAmount(); // Расчет общей суммы
+        travelEntity.updateTotalAmount();
 
         travelRepository.save(travelEntity);
         return travelMapper.toResponseDto(travelEntity);
