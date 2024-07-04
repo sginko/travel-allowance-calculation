@@ -3,13 +3,13 @@ package pl.sginko.travelexpense.controller.employee;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.model.employee.dto.EmployeeRequestDto;
-import pl.sginko.travelexpense.model.employee.dto.EmployeeResponseDto;
-import pl.sginko.travelexpense.model.employee.service.EmployeeService;
+import pl.sginko.travelexpense.logic.employee.dto.EmployeeRequestDto;
+import pl.sginko.travelexpense.logic.employee.dto.EmployeeResponseDto;
+import pl.sginko.travelexpense.logic.employee.service.EmployeeService;
 
 @Controller
 @RequestMapping("/api/v1/employees")
-public class EmployeeController {
+class EmployeeController {
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeService employeeService) {

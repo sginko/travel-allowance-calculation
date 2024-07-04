@@ -6,13 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.sginko.travelexpense.model.employee.EmployeeException;
+import pl.sginko.travelexpense.logic.employee.EmployeeException;
 
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class EmployeeControllerAdvice {
+class EmployeeControllerAdvice {
 
     @ExceptionHandler(EmployeeException.class)
     public ResponseEntity handleEventException(EmployeeException e) {

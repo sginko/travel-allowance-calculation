@@ -4,13 +4,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.travel.service.TravelService;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travel.service.TravelService;
 
 @Controller
 @RequestMapping("/api/v1/travels")
-public class TravelController {
+class TravelController {
     private final TravelService travelService;
 
     public TravelController(TravelService travelService) {
