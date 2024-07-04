@@ -86,7 +86,7 @@ public class TravelEntity {
         this.dietEntity = new DietEntity(this, dailyAllowance, numberOfBreakfasts, numberOfLunches, numberOfDinners);
         this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice,
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice);
-        updateTotalAmount();
+//        updateTotalAmount();
     }
 
     public void updateTotalAmount() {

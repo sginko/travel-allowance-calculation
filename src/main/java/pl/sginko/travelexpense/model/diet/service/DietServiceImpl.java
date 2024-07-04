@@ -29,16 +29,18 @@ public class DietServiceImpl implements DietService {
 
     @Override
     @Transactional
-    public DietResponseDto calculateDiet(TravelRequestDto travelRequestDto, DietEntity dietEntity) {
+    public DietResponseDto calculateDiet(TravelRequestDto travelRequestDto) {
         DietDto dietDto = travelRequestDto.getDietDto();
+
         DietEntity entity = dietMapper.toEntity(dietDto, travelMapper.toEntity(travelRequestDto));
+
         calculateDietAmount(travelRequestDto, dietEntity);
         calculateFoodAmount(travelRequestDto, dietEntity);
         dietRepository.save(entity);
         return dietMapper.toResponseDto(entity);
     }
 
-    private void calculateDietAmount(TravelRequestDto travelRequestDto, DietEntity dietEntity) {
+    private BigDecimal calculateDietAmount(TravelRequestDto travelRequestDto) {
         DietDto dietDto = travelRequestDto.getDietDto();
         LocalDate startDate = travelRequestDto.getStartDate();
         LocalTime startTime = travelRequestDto.getStartTime();
@@ -68,6 +70,7 @@ public class DietServiceImpl implements DietService {
                 dietEntity.setDietAmount(totalAmountForFullDays.add(dietDto.getDailyAllowance()));
             }
         }
+        return d
     }
 
     private void calculateFoodAmount(TravelRequestDto travelRequestDto, DietEntity dietEntity) {

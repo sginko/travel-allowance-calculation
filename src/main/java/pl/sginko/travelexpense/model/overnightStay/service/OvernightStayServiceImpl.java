@@ -34,16 +34,18 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     public OvernightStayResponseDto calculateOvernightStay(TravelRequestDto travelRequestDto, OvernightStayEntity overnightStayEntity) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         OvernightStayEntity entity = overnightStayMapper.toEntity(overnightStayDto, travelMapper.toEntity(travelRequestDto));
+
         calculateOvernightStayAmount(travelRequestDto, overnightStayEntity);
         overnightStayRepository.save(entity);
+
         return overnightStayMapper.toResponseDto(entity);
     }
 
-    private void calculateOvernightStayAmount(TravelRequestDto travelRequestDto, OvernightStayEntity overnightStayEntity) {
+    private void calculateOvernightStayAmount(final TravelRequestDto travelRequestDto, final OvernightStayEntity overnightStayEntity) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         int quantityOfOvernightStay = getTotalQuantityOfNight(travelRequestDto);
         BigDecimal dailyAllowance = BigDecimal.valueOf(45);
-        BigDecimal oneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
+        BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
         BigDecimal oneNightWithoutInvoice = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
         BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
 
