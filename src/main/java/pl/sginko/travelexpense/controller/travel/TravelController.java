@@ -7,10 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.model.pdfDocument.PdfDocumentService;
-import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.travel.service.TravelService;
+import pl.sginko.travelexpense.logic.pdfDocument.PdfDocumentService;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travel.service.TravelService;
 
 import java.io.File;
 import java.io.FileInputStream;
