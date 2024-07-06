@@ -19,9 +19,9 @@ class Configurations {
         return new ModelMapper();
     }
 
-    @Bean
-    public TravelService travelService(TravelRepository travelRepository, TravelMapper travelMapper, DietService dietService,
-                                OvernightStayService overnightStayService, EmployeeReaderService employeeReaderService) {
-        return new TravelServiceImpl(travelRepository, travelMapper, dietService, overnightStayService, employeeReaderService);
-    }
+//    @Bean
+//    public TravelService travelService(TravelRepository travelRepository, TravelMapper travelMapper, DietService dietService,
+//                                OvernightStayService overnightStayService, EmployeeReaderService employeeReaderService) {
+//        return new TravelServiceImpl(travelRepository, travelMapper, dietService, overnightStayService, employeeReaderService);
+//    }
 }

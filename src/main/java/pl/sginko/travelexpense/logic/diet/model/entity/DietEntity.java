@@ -22,7 +22,7 @@ public class DietEntity {
     private TravelEntity travelEntity;
 
     @Column(nullable = false)
-    private BigDecimal dailyAllowance = BigDecimal.ZERO;
+    private BigDecimal dailyAllowance;
 
     @Column(nullable = false)
     private BigDecimal dietAmount = BigDecimal.ZERO;
@@ -31,13 +31,13 @@ public class DietEntity {
     private BigDecimal foodAmount = BigDecimal.ZERO;
 
     @Column(nullable = false)
-    private Integer numberOfBreakfasts = 0;
+    private Integer numberOfBreakfasts;
 
     @Column(nullable = false)
-    private Integer numberOfLunches = 0;
+    private Integer numberOfLunches;
 
     @Column(nullable = false)
-    private Integer numberOfDinners = 0;
+    private Integer numberOfDinners;
 
     public DietEntity(TravelEntity travelEntity, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                       Integer numberOfLunches, Integer numberOfDinners) {

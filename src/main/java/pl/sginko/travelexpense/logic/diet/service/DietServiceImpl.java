@@ -27,8 +27,9 @@ class DietServiceImpl implements DietService {
         LocalTime startTime = travelRequestDto.getStartTime();
         LocalDate endDate = travelRequestDto.getEndDate();
         LocalTime endTime = travelRequestDto.getEndTime();
+        BigDecimal dailyAllowance = dietDto.getDailyAllowance();
         long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
-        BigDecimal fiftyPercentOfDailyAllowance = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.50));
+        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
 
         BigDecimal dietAmount = BigDecimal.ZERO;
 

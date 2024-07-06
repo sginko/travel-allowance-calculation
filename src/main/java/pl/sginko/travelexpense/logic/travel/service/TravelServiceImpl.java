@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.logic.travel.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.logic.diet.service.DietService;
 import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
@@ -16,6 +17,7 @@ import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
 import java.math.BigDecimal;
 
 @AllArgsConstructor
+@Service
 public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
     private final TravelMapper travelMapper;
@@ -34,10 +36,12 @@ public class TravelServiceImpl implements TravelService {
 
         EmployeeEntity employeeByPesel = employeeReaderService.findEmployeeByPesel(travelRequestDto.getPesel());
 
-        TravelEntity travelEntity = travelMapper.toEntity(TravelMapper.Source.of(
-                travelRequestDto,
-                employeeByPesel
-        ));
+        TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
+
+//        TravelEntity travelEntity = travelMapper.toEntity(TravelMapper.Source.of(
+//                travelRequestDto,
+//                employeeByPesel
+//        ));
 
         travelRepository.save(travelEntity);
         return travelMapper.toResponseDto(travelEntity);
