@@ -7,10 +7,12 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor //(access = AccessLevel.PRIVATE)
+@Builder
+@AllArgsConstructor
 public class DietDto {
     @NotNull(message = "Daily allowance cannot be null")
-    @Min(value = 0, message = "Number of breakfasts cannot be negative")
+//    @Min(value = 0, message = "Number of breakfasts cannot be negative")
     private BigDecimal dailyAllowance;
 
     @NotNull(message = "Number of breakfasts cannot be null")
@@ -25,10 +27,10 @@ public class DietDto {
     @Min(value = 0, message = "Number of dinners cannot be negative")
     private Integer numberOfDinners;
 
-    public DietDto(Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners, BigDecimal dailyAllowance) {
-        this.numberOfBreakfasts = numberOfBreakfasts;
-        this.numberOfLunches = numberOfLunches;
-        this.numberOfDinners = numberOfDinners;
-        this.dailyAllowance = dailyAllowance;
-    }
+//    public DietDto(Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners, BigDecimal dailyAllowance) {
+//        this.numberOfBreakfasts = numberOfBreakfasts;
+//        this.numberOfLunches = numberOfLunches;
+//        this.numberOfDinners = numberOfDinners;
+//        this.dailyAllowance = dailyAllowance;
+//    }
 }

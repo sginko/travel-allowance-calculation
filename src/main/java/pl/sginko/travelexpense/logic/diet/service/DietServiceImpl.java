@@ -16,6 +16,9 @@ class DietServiceImpl implements DietService {
     @Override
     @Transactional
     public BigDecimal calculateDiet(TravelRequestDto travelRequestDto) {
+        if (travelRequestDto.getDietDto() == null) {
+            throw new IllegalArgumentException("DietDto cannot be null");
+        }
         BigDecimal dietAmount = calculateDietAmount(travelRequestDto);
         BigDecimal foodAmount = calculateFoodAmount(travelRequestDto);
         return dietAmount.add(foodAmount);

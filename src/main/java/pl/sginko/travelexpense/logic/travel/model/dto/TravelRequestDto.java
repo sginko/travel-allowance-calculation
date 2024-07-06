@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.sginko.travelexpense.logic.diet.dto.DietDto;
 import pl.sginko.travelexpense.logic.overnightStay.dto.OvernightStayDto;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
 
@@ -41,7 +43,6 @@ public class TravelRequestDto {
     private LocalTime endTime;
 
     @NotNull(message = "Advance payment cannot be null")
-    @Size(min = 0, message = "Advance payment cannot be negative")
     private BigDecimal advancePayment;
 
     @NotNull
