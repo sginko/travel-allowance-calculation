@@ -22,15 +22,13 @@ class DietServiceImpl implements DietService {
     }
 
     private BigDecimal calculateDietAmount(final TravelRequestDto travelRequestDto) {
-        DietDto dietDto = travelRequestDto.getDietDto();
         LocalDate startDate = travelRequestDto.getStartDate();
         LocalTime startTime = travelRequestDto.getStartTime();
         LocalDate endDate = travelRequestDto.getEndDate();
         LocalTime endTime = travelRequestDto.getEndTime();
-        BigDecimal dailyAllowance = dietDto.getDailyAllowance();
         long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
+        BigDecimal dailyAllowance = travelRequestDto.getDietDto().getDailyAllowance();
         BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
-
         BigDecimal dietAmount = BigDecimal.ZERO;
 
         if (hoursInTravel <= 24) {
@@ -39,19 +37,19 @@ class DietServiceImpl implements DietService {
             } else if (hoursInTravel < 12) {
                 dietAmount = dietAmount.add(fiftyPercentOfDailyAllowance);
             } else {
-                dietAmount = dietAmount.add(dietDto.getDailyAllowance());
+                dietAmount = dietAmount.add(dailyAllowance);
             }
         } else {
             long fullDays = hoursInTravel / 24;
             long remainingHours = hoursInTravel % 24;
-            BigDecimal totalAmountForFullDays = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(fullDays));
+            BigDecimal totalAmountForFullDays = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
 
             if (remainingHours == 0) {
                 dietAmount = dietAmount.add(totalAmountForFullDays.add(BigDecimal.ZERO));
             } else if (remainingHours < 8) {
                 dietAmount = dietAmount.add(totalAmountForFullDays.add(fiftyPercentOfDailyAllowance));
             } else {
-                dietAmount = dietAmount.add(totalAmountForFullDays.add(dietDto.getDailyAllowance()));
+                dietAmount = dietAmount.add(totalAmountForFullDays.add(dailyAllowance));
             }
         }
         return dietAmount;
