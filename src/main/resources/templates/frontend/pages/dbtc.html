@@ -15,15 +15,15 @@
     <h1>Kalkulator krajowej podróży służbowej</h1>
     <div class="dbtc-container">
         <h4>Wprowadź dane podróży:</h4>
-        <form name="dbtc-form" method="POST" action="/api/v1/travels" onsubmit="return validateFormFields()">
+        <form name="dbtc-form"id="dbtc-form" method="POST" action="/api/v1/travels">
             <label for="pesel">Pesel
                 <input id="pesel-field" name="pesel" type="text" id="pesel" minlength="11" maxlength="11" required>
             </label>
-            <label for="cityFrom">Miasto wyjazdu
-                <input name="cityFrom" type="text" id="cityFrom" required>
+            <label for="fromCity">Miasto wyjazdu"
+                <input name="fromCity" type="text" id="fromCity" required>
             </label>
-            <label for="cityTo">Miasto przyjazdu
-                <input name="cityTo" type="text" id="cityTo" required>
+            <label for="toCity">Miasto przyjazdu
+                <input name="toCity" type="text" id="toCity" required>
             </label>
             <label for="startDate">Data wyjazdu
                 <input name="startDate" type="date" id="startDate" required>
@@ -46,20 +46,18 @@
             <label for="numberOfDinners">Liczba kolacji
                 <input name="numberOfDinners" type="number" id="numberOfDinners" min="0">
             </label>
-
             <label for="inputQuantityOfOvernightStayWithoutInvoice">Liczba noclegów, za które przysługuje ryczałt:
-                <input name="inputQuantityOfOvernightStayWithoutInvoice" type="number" id="inputQuantityOfOvernightStayWithoutInvoice" min="0" required>
+                <input name="inputQuantityOfOvernightStayWithoutInvoice" type="number" id="inputQuantityOfOvernightStayWithoutInvoice" min="0">
             </label>
             <label for="inputQuantityOfOvernightStayWithInvoice">Liczba noclegów stwierdzonych rachunkiem:
-                <input name="inputQuantityOfOvernightStayWithInvoice" type="number" id="inputQuantityOfOvernightStayWithInvoice" min="0" required>
+                <input name="inputQuantityOfOvernightStayWithInvoice" type="number" id="inputQuantityOfOvernightStayWithInvoice" min="0">
             </label>
             <label for="amountOfTotalOvernightsStayWithInvoice">Koszt noclegów stwierdzony rachunkiem:
-                <input name="amountOfTotalOvernightsStayWithInvoice" type="number" id="amountOfTotalOvernightsStayWithInvoice" min="0" required>
+                <input name="amountOfTotalOvernightsStayWithInvoice" type="number" id="amountOfTotalOvernightsStayWithInvoice" min="0">
             </label>
             <label for="advancePayment">Pobrano zaliczke:
-                <input name="advancePayment" type="number" id="advancePayment" min="0" required>
+                <input name="advancePayment" type="number" id="advancePayment" min="0">
             </label>
-
             <input type="submit" value="Calculate">
         </form>
     </div>

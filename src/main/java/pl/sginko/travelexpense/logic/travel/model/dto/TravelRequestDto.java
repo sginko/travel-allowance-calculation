@@ -55,9 +55,6 @@ public class TravelRequestDto {
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
     private Integer inputQuantityOfOvernightStayWithoutInvoice;
 
-    @NotNull(message = "overnightStayWithoutInvoice cannot be null")
-    @Min(value = 0, message = "overnightStayWithoutInvoice cannot be negative")
-    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
 
     @NotNull(message = "Number of overnight stay with invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
@@ -74,8 +71,8 @@ public class TravelRequestDto {
     public TravelRequestDto(Long pesel, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                             LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
                             Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
-                            Integer inputQuantityOfOvernightStayWithInvoice,
-                            BigDecimal amountOfTotalOvernightsStayWithInvoice, BigDecimal advancePayment) {
+                            Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
+                            BigDecimal advancePayment) {
         this.pesel = pesel;
         this.fromCity = fromCity;
         this.toCity = toCity;
