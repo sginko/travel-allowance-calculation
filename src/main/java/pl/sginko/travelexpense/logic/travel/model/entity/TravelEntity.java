@@ -24,7 +24,7 @@ public class TravelEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "user_id")
     private UserEntity userEntity;
 
     @NotBlank
