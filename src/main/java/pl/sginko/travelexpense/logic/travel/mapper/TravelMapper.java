@@ -2,9 +2,9 @@ package pl.sginko.travelexpense.logic.travel.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.sginko.travelexpense.logic.employee.service.EmployeeReaderService;
-import pl.sginko.travelexpense.logic.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.logic.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.logic.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 
 @Component
 public class TravelMapper {

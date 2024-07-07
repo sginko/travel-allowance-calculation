@@ -3,9 +3,9 @@ package pl.sginko.travelexpense.logic.travel.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
-import pl.sginko.travelexpense.logic.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.logic.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.logic.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
 
@@ -27,6 +27,8 @@ public class TravelServiceImpl implements TravelService {
     @Transactional
     public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
         TravelEntity entity = travelMapper.toEntity(requestDto);
+        entity.setFromCity(requestDto.getFromCity());
+        entity.setToCity(requestDto.getToCity());
         calculateDietAmount(entity);
         calculateFoodAmount(entity);
         calculateOvernightStayAmount(entity);
@@ -119,6 +121,7 @@ public class TravelServiceImpl implements TravelService {
 
             startDateTime = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
         }
+        entity.setQuantityOfOvernightStay(night);
         return night;
     }
 }

@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.travel.dto;
+package pl.sginko.travelexpense.logic.travel.model.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

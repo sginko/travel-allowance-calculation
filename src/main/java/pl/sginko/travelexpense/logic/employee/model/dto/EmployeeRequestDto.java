@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.employee.dto;
+package pl.sginko.travelexpense.logic.employee.model.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,7 +1,7 @@
 package pl.sginko.travelexpense.logic.employee.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pl.sginko.travelexpense.logic.employee.entity.EmployeeEntity;
+import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
 
 import java.util.Optional;
 

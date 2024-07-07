@@ -2,7 +2,7 @@ package pl.sginko.travelexpense.logic.employee.service;
 
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.employee.exception.EmployeeException;
-import pl.sginko.travelexpense.logic.employee.entity.EmployeeEntity;
+import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
 import pl.sginko.travelexpense.logic.employee.repository.EmployeeReaderRepository;
 
 @Service

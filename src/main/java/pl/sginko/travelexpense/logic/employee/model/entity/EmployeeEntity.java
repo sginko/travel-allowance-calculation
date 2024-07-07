@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.employee.entity;
+package pl.sginko.travelexpense.logic.employee.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

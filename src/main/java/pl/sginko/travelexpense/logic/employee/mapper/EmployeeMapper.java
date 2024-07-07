@@ -1,9 +1,9 @@
 package pl.sginko.travelexpense.logic.employee.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.logic.employee.dto.EmployeeRequestDto;
-import pl.sginko.travelexpense.logic.employee.dto.EmployeeResponseDto;
-import pl.sginko.travelexpense.logic.employee.entity.EmployeeEntity;
+import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeRequestDto;
+import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeResponseDto;
+import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
 
 @Component
 public class EmployeeMapper {

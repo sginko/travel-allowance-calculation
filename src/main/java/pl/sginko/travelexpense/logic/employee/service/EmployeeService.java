@@ -1,7 +1,7 @@
 package pl.sginko.travelexpense.logic.employee.service;
 
-import pl.sginko.travelexpense.logic.employee.dto.EmployeeRequestDto;
-import pl.sginko.travelexpense.logic.employee.dto.EmployeeResponseDto;
+import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeRequestDto;
+import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeResponseDto;
 
 import java.util.List;
 

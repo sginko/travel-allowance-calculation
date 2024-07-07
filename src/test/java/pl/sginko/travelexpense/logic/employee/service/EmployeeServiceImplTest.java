@@ -4,8 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sginko.travelexpense.logic.employee.dto.EmployeeRequestDto;
-import pl.sginko.travelexpense.logic.employee.dto.EmployeeResponseDto;
+import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeRequestDto;
+import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeResponseDto;
 import pl.sginko.travelexpense.logic.employee.mapper.EmployeeMapper;
 import pl.sginko.travelexpense.logic.employee.repository.EmployeeRepository;
 

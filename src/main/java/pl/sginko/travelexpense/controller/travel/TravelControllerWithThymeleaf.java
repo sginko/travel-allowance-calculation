@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.sginko.travelexpense.logic.pdfDocument.PdfDocumentService;
-import pl.sginko.travelexpense.logic.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.logic.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.service.TravelService;
 
 import java.io.File;
@@ -18,11 +18,11 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/api/v1/travels")
-public class TravelController {
+public class TravelControllerWithThymeleaf {
     private final TravelService travelService;
     private final PdfDocumentService pdfDocumentPrinter;
 
-    public TravelController(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
+    public TravelControllerWithThymeleaf(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
         this.travelService = travelService;
         this.pdfDocumentPrinter = pdfDocumentPrinter;
     }

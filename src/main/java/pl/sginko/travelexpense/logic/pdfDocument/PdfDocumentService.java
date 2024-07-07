@@ -5,7 +5,7 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
-import pl.sginko.travelexpense.logic.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
 
 import java.io.FileInputStream;

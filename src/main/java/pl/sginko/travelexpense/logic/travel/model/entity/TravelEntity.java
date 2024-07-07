@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.travel.entity;
+package pl.sginko.travelexpense.logic.travel.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.sginko.travelexpense.logic.employee.entity.EmployeeEntity;
+import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 
 import java.math.BigDecimal;
