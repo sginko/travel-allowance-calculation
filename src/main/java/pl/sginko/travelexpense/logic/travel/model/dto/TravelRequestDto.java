@@ -41,7 +41,7 @@ public class TravelRequestDto {
     private LocalTime endTime;
 
     @NotNull(message = "Advance payment cannot be null")
-    @Size(min = 0, message = "Advance payment cannot be negative")
+//    @Size(min = 0, message = "Advance payment cannot be negative")
     private BigDecimal advancePayment;
 
     @NotNull

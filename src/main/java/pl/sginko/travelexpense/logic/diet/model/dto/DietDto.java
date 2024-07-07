@@ -12,11 +12,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DietDto {
     @NotNull(message = "Daily allowance cannot be null")
-    @Min(value = 0, message = "Number of breakfasts cannot be negative")
+//    @Min(value = 0, message = "Number of breakfasts cannot be negative")
     private BigDecimal dailyAllowance;
 
     @NotNull(message = "Number of breakfasts cannot be null")
-    @Min(value = 0, message = "Number of breakfasts cannot be negative")
+//    @Min(value = 0, message = "Number of breakfasts cannot be negative")
     private Integer numberOfBreakfasts;
 
     @NotNull(message = "Number of lunches cannot be null")

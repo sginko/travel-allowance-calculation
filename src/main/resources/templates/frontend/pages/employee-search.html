@@ -14,7 +14,7 @@
 <body>
     <div class="employee-register-container">
         <label for="register-employee-form" class="register-employee-label">Add employee</label>
-        <form name="register-employee-form" method="POST" action="/api/v1/employees">
+        <form name="register-employee-form" method="POST" action="http://localhost:8080/api/v1/employees">
             <label for="pesel" class="hidden"></label>
             <label for="firstName" class="hidden"></label>
             <label for="secondName" class="hidden"></label>
@@ -26,7 +26,10 @@
             <input type="submit" value="Dodaj">
         </form>
     </div>
+<!--    <script src="../javascript/validatePesel.js"></script>-->
     <script src="../javascript/validatePesel.js"></script>
+    <script src="../javascript/submitEmployeeForm.js"></script>
+
 </body>
 
 </html>
