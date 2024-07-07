@@ -4,10 +4,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeRequestDto;
-import pl.sginko.travelexpense.logic.employee.repository.EmployeeRepository;
-import pl.sginko.travelexpense.logic.employee.service.EmployeeReaderService;
-import pl.sginko.travelexpense.logic.employee.service.EmployeeService;
+import pl.sginko.travelexpense.logic.user.model.dto.UserRequestDto;
+import pl.sginko.travelexpense.logic.user.repository.UserRepository;
+import pl.sginko.travelexpense.logic.user.service.UserReaderService;
+import pl.sginko.travelexpense.logic.user.service.UserService;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
@@ -39,18 +39,18 @@ class TravelServiceImplTest {
     private TravelRepository travelRepository;
 
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
     @Autowired
-    private EmployeeReaderService employeeReaderService;
+    private UserReaderService userReaderService;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private UserRepository userRepository;
 
     @AfterEach
     void tearDown() {
         travelRepository.deleteAll();
-        employeeRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -60,8 +60,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -95,8 +95,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -130,8 +130,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -165,8 +165,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -200,8 +200,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -235,8 +235,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -270,8 +270,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -305,8 +305,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -341,8 +341,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -377,8 +377,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -412,8 +412,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -447,8 +447,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -482,8 +482,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -518,8 +518,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";
@@ -554,8 +554,8 @@ class TravelServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         String cityFrom = "cityFrom";
         String cityTo = "cityTo";

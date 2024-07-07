@@ -11,7 +11,7 @@ import org.springframework.web.filter.CorsFilter;
 public class Configurations {
 
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
@@ -28,4 +28,4 @@ public class Configurations {
 //
 //        return new CorsFilter(source);
 //    }
-  }
+}

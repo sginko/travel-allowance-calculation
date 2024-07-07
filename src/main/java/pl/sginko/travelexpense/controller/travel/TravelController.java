@@ -1,32 +1,19 @@
-//package pl.sginko.travelexpense.controller.travel;
-//
-//import org.springframework.core.io.InputStreamResource;
-//import org.springframework.http.HttpHeaders;
-//import org.springframework.http.MediaType;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.ui.Model;
-//import org.springframework.web.bind.annotation.*;
-//import pl.sginko.travelexpense.logic.pdfDocument.PdfDocumentService;
-//import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
-//import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
-//import pl.sginko.travelexpense.logic.travel.service.TravelService;
-//
-//import java.io.File;
-//import java.io.FileInputStream;
-//import java.io.IOException;
-//
-//@Controller
-//@RequestMapping("/api/v1/travels")
-//public class TravelControllerWithThymeleaf {
-//    private final TravelService travelService;
-//    private final PdfDocumentService pdfDocumentPrinter;
-//
-//    public TravelControllerWithThymeleaf(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
-//        this.travelService = travelService;
-//        this.pdfDocumentPrinter = pdfDocumentPrinter;
-//    }
-//
+package pl.sginko.travelexpense.controller.travel;
+
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import pl.sginko.travelexpense.logic.pdfDocument.PdfDocumentService;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travel.service.TravelService;
+
+@AllArgsConstructor
+@RestController
+@RequestMapping("/api/v1/travels")
+public class TravelController {
+    private final TravelService travelService;
+    private final PdfDocumentService pdfDocumentPrinter;
+
 //    @PostMapping("/print")
 //    public ResponseEntity<Void> print(@RequestParam("id") Long id) {
 //        try {
@@ -65,11 +52,10 @@
 //        model.addAttribute("pesel", pesel);
 //        return "travel-calculator";
 //    }
-//
-//    @PostMapping
-//    public String calculateTravelExpenses(@ModelAttribute TravelRequestDto requestDto, Model model) {
-//        TravelResponseDto responseDto = travelService.calculateTravelExpenses(requestDto);
-//        model.addAttribute("travelResponse", responseDto);
-//        return "results";
-//    }
-//}
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public void calculateTravelExpenses(@RequestBody TravelRequestDto requestDto) {
+        travelService.calculateTravelExpenses(requestDto);
+    }
+}

@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
+import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 
 import java.math.BigDecimal;
@@ -25,7 +25,7 @@ public class TravelEntity {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private EmployeeEntity employeeEntity;
+    private UserEntity userEntity;
 
     @NotBlank
     @Size(min = 2, max = 50, message = "City name should be between 2 and 50 characters")
@@ -119,13 +119,13 @@ public class TravelEntity {
 
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                         LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts,
-                        Integer numberOfLunches, Integer numberOfDinners, EmployeeEntity employeeEntity,
+                        Integer numberOfLunches, Integer numberOfDinners, UserEntity userEntity,
                         Integer inputQuantityOfOvernightStayWithoutInvoice, Integer inputQuantityOfOvernightStayWithInvoice,
                         BigDecimal amountOfTotalOvernightsStayWithInvoice,
                         BigDecimal advancePayment) {
         this.fromCity = fromCity;
         this.toCity = toCity;
-        this.employeeEntity = employeeEntity;
+        this.userEntity = userEntity;
         this.startDate = startDate;
         this.startTime = startTime;
         this.endDate = endDate;

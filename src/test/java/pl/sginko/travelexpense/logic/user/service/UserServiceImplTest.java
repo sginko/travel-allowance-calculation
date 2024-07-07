@@ -1,33 +1,33 @@
-package pl.sginko.travelexpense.logic.employee.service;
+package pl.sginko.travelexpense.logic.user.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeRequestDto;
-import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeResponseDto;
-import pl.sginko.travelexpense.logic.employee.mapper.EmployeeMapper;
-import pl.sginko.travelexpense.logic.employee.repository.EmployeeRepository;
+import pl.sginko.travelexpense.logic.user.model.dto.UserRequestDto;
+import pl.sginko.travelexpense.logic.user.model.dto.UserResponseDto;
+import pl.sginko.travelexpense.logic.user.mapper.UserMapper;
+import pl.sginko.travelexpense.logic.user.repository.UserRepository;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class EmployeeServiceImplTest {
+class UserServiceImplTest {
 
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    EmployeeMapper employeeMapper;
+    UserMapper userMapper;
 
     @AfterEach
     void tearDown() {
-        employeeRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -37,13 +37,13 @@ class EmployeeServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
 
         //WHEN
-        employeeService.addEmployee(employeeRequestDto);
+        userService.addUser(userRequestDto);
 
         //THEN
-        assertThat(employeeRepository.findAll()).isNotEmpty();
+        assertThat(userRepository.findAll()).isNotEmpty();
 //        assertThat(employeeRepository.findAll().getFirst()).isEqualTo(employeeMapper.toEntity(employeeRequestDto));
     }
 
@@ -54,11 +54,11 @@ class EmployeeServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         //WHEN
-        List<EmployeeResponseDto> allEmployee = employeeService.findAllEmployee();
+        List<UserResponseDto> allEmployee = userService.findAllUser();
 
         //THEN
         assertThat(allEmployee).isNotEmpty();
@@ -71,11 +71,11 @@ class EmployeeServiceImplTest {
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
-        EmployeeRequestDto employeeRequestDto = new EmployeeRequestDto(pesel, firstName, secondName, position);
-        employeeService.addEmployee(employeeRequestDto);
+        UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
+        userService.addUser(userRequestDto);
 
         //WHEN
-        EmployeeResponseDto employeeByPesel = employeeService.findEmployeeByPesel(pesel);
+        UserResponseDto employeeByPesel = userService.findUserByPesel(pesel);
 
         //THEN
         assertThat(employeeByPesel.getPesel()).isEqualTo(pesel);

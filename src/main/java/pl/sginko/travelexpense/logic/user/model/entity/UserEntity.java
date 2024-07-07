@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.employee.model.entity;
+package pl.sginko.travelexpense.logic.user.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "employee")
-public class EmployeeEntity {
+@Table(name = "users")
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,7 +35,7 @@ public class EmployeeEntity {
     @Column(nullable = false)
     private String position;
 
-    public EmployeeEntity(Long pesel, String firstName, String secondName, String position) {
+    public UserEntity(Long pesel, String firstName, String secondName, String position) {
         this.pesel = pesel;
         this.firstName = firstName;
         this.secondName = secondName;

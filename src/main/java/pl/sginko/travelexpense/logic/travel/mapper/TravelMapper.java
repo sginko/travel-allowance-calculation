@@ -1,24 +1,24 @@
 package pl.sginko.travelexpense.logic.travel.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.logic.employee.service.EmployeeReaderService;
+import pl.sginko.travelexpense.logic.user.service.UserReaderService;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 
 @Component
 public class TravelMapper {
-    private final EmployeeReaderService employeeReaderService;
+    private final UserReaderService userReaderService;
 
-    public TravelMapper(EmployeeReaderService employeeReaderService) {
-        this.employeeReaderService = employeeReaderService;
+    public TravelMapper(UserReaderService userReaderService) {
+        this.userReaderService = userReaderService;
     }
 
     public TravelResponseDto toResponseDto(TravelEntity entity) {
         return new TravelResponseDto(entity.getId(), entity.getFromCity(), entity.getToCity(), entity.getStartDate(),
                 entity.getStartTime(), entity.getEndDate(), entity.getEndTime(), entity.getNumberOfBreakfasts(),
                 entity.getNumberOfLunches(), entity.getNumberOfDinners(), entity.getTotalAmount(),
-                entity.getDietAmount(), entity.getFoodAmount(), entity.getEmployeeEntity().getPesel(),
+                entity.getDietAmount(), entity.getFoodAmount(), entity.getUserEntity().getPesel(),
                 entity.getQuantityOfOvernightStay(), entity.getInputQuantityOfOvernightStayWithoutInvoice(),
                 entity.getAmountOfTotalOvernightsStayWithoutInvoice(), entity.getInputQuantityOfOvernightStayWithInvoice(),
                 entity.getAmountOfTotalOvernightsStayWithInvoice(), entity.getAdvancePayment());
@@ -28,7 +28,7 @@ public class TravelMapper {
         return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
                 requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
                 requestDto.getNumberOfBreakfasts(), requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners(),
-                employeeReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getInputQuantityOfOvernightStayWithoutInvoice(),
+                userReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getInputQuantityOfOvernightStayWithoutInvoice(),
                 requestDto.getInputQuantityOfOvernightStayWithInvoice(), requestDto.getAmountOfTotalOvernightsStayWithInvoice(),
                 requestDto.getAdvancePayment());
     }
