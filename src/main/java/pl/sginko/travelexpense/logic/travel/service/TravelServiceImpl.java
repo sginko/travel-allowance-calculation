@@ -27,8 +27,6 @@ public class TravelServiceImpl implements TravelService {
     @Transactional
     public TravelResponseDto calculateTravelExpenses(TravelRequestDto requestDto) {
         TravelEntity entity = travelMapper.toEntity(requestDto);
-        entity.setFromCity(requestDto.getFromCity());
-        entity.setToCity(requestDto.getToCity());
         calculateDietAmount(entity);
         calculateFoodAmount(entity);
         calculateOvernightStayAmount(entity);

@@ -1,5 +1,6 @@
 package pl.sginko.travelexpense.logic.travel.model.dto;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,9 @@ public class TravelRequestDto {
 
     @NotNull(message = "PESEL cannot be null")
     private Long pesel;
+
+    @Column(nullable = false)
+    private BigDecimal dailyAllowance;
 
     @NotBlank(message = "From city cannot be blank")
     @Size(min = 2, max = 50, message = "City name should be between 2 and 50 characters")
@@ -55,7 +59,6 @@ public class TravelRequestDto {
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
     private Integer inputQuantityOfOvernightStayWithoutInvoice;
 
-
     @NotNull(message = "Number of overnight stay with invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
     private Integer inputQuantityOfOvernightStayWithInvoice;
@@ -68,12 +71,13 @@ public class TravelRequestDto {
     @Min(value = 0, message = "advancePayment cannot be negative")
     private BigDecimal advancePayment;
 
-    public TravelRequestDto(Long pesel, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
+    public TravelRequestDto(Long pesel, BigDecimal dailyAllowance, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                             LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts, Integer numberOfLunches,
                             Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
                             Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
                             BigDecimal advancePayment) {
         this.pesel = pesel;
+        this.dailyAllowance = dailyAllowance;
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.startDate = startDate;

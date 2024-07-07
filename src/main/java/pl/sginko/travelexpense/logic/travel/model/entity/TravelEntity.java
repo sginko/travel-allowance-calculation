@@ -71,7 +71,7 @@ public class TravelEntity {
     @NotNull(message = "Daily allowance cannot be null")
     @DecimalMin(value = "0.0", inclusive = true, message = "Daily allowance must be non-negative")
     @Column(nullable = false)
-    private BigDecimal dailyAllowance = BigDecimal.valueOf(45);
+    private BigDecimal dailyAllowance;
 
     @NotNull(message = "Total amount cannot be null")
     @Column(nullable = false)
@@ -117,12 +117,13 @@ public class TravelEntity {
     @Column(nullable = false)
     private BigDecimal advancePayment = BigDecimal.ZERO;
 
-    public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
+    public TravelEntity(BigDecimal dailyAllowance, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                         LocalDate endDate, LocalTime endTime, Integer numberOfBreakfasts,
                         Integer numberOfLunches, Integer numberOfDinners, UserEntity userEntity,
                         Integer inputQuantityOfOvernightStayWithoutInvoice, Integer inputQuantityOfOvernightStayWithInvoice,
                         BigDecimal amountOfTotalOvernightsStayWithInvoice,
                         BigDecimal advancePayment) {
+        this.dailyAllowance = dailyAllowance;
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.userEntity = userEntity;

@@ -13,6 +13,9 @@ function validateFormFields(form) {
     if (form["numberOfDinners"].value === "") {
         form["numberOfDinners"].value = 0;
     }
+    if (form["dailyAllowance"].value === "") {
+        form["dailyAllowance"].value = 45;
+    }
     if (form["inputQuantityOfOvernightStayWithoutInvoice"].value === "") {
         form["inputQuantityOfOvernightStayWithoutInvoice"].value = 0;
     }

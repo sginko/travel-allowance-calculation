@@ -25,7 +25,7 @@ public class TravelMapper {
     }
 
     public TravelEntity toEntity(TravelRequestDto requestDto) {
-        return new TravelEntity(requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
+        return new TravelEntity(requestDto.getDailyAllowance(), requestDto.getFromCity(), requestDto.getToCity(), requestDto.getStartDate(),
                 requestDto.getStartTime(), requestDto.getEndDate(), requestDto.getEndTime(),
                 requestDto.getNumberOfBreakfasts(), requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners(),
                 userReaderService.findEmployeeByPesel(requestDto.getPesel()), requestDto.getInputQuantityOfOvernightStayWithoutInvoice(),
