@@ -44,7 +44,7 @@ public class OvernightStayServiceImpl implements OvernightStayService {
                 .build();
     }
 
-    private int getTotalQuantityOfNight(TravelRequestDto travelRequestDto) {
+    public int getTotalQuantityOfNight(TravelRequestDto travelRequestDto) {
         int night = 0;
         LocalDate startDate = travelRequestDto.getStartDate();
         LocalTime startTime = travelRequestDto.getStartTime();

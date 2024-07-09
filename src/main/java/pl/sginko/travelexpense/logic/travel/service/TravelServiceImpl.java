@@ -8,6 +8,7 @@ import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
 import pl.sginko.travelexpense.logic.employee.service.EmployeeReaderService;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.CalculatedOvernightStay;
 import pl.sginko.travelexpense.logic.overnightStay.service.OvernightStayService;
+import pl.sginko.travelexpense.logic.overnightStay.service.OvernightStayServiceImpl;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
@@ -28,16 +29,16 @@ public class TravelServiceImpl implements TravelService {
     @Override
     @Transactional
     public TravelResponseDto calculateTravelExpenses(final TravelRequestDto travelRequestDto) {
-        //TODO calculate diet(invoking diet service)
         BigDecimal dietAmount = dietService.calculateDiet(travelRequestDto);
-
-        //TODO calculate overnightstay(invoking overnightstay service)
         CalculatedOvernightStay overnightStayResponseDto = overnightStayService.calculateOvernightStay(travelRequestDto);
-
+        int totalQuantityOfNight = ((OvernightStayServiceImpl) overnightStayService).getTotalQuantityOfNight(travelRequestDto);
+        TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
         EmployeeEntity employeeByPesel = employeeReaderService.findEmployeeByPesel(travelRequestDto.getPesel());
 
-        TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
-
+        travelEntity.getOvernightStayEntity().setQuantityOfOvernightStay(totalQuantityOfNight);
+        travelEntity.getDietEntity().setDietAmount(dietAmount);
+        travelEntity.getOvernightStayEntity().setOvernightStayAmount(overnightStayResponseDto.getOvernightStayAmount());
+        travelEntity.updateTotalAmount();
 //        TravelEntity travelEntity = travelMapper.toEntity(TravelMapper.Source.of(
 //                travelRequestDto,
 //                employeeByPesel
