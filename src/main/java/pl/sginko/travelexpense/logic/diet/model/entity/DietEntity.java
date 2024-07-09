@@ -36,10 +36,10 @@ public class DietEntity {
     private Integer numberOfDinners;
 
     @Column(nullable = false)
-    private BigDecimal dietAmount = BigDecimal.ZERO;
+    private BigDecimal dietAmount;
 
     @Column(nullable = false)
-    private BigDecimal foodAmount = BigDecimal.ZERO;
+    private BigDecimal foodAmount;
 
     public DietEntity(TravelEntity travelEntity, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                       Integer numberOfLunches, Integer numberOfDinners) {

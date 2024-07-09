@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DietDto {
     @NotNull(message = "Daily allowance cannot be null")
-    private BigDecimal dailyAllowance;
+    private BigDecimal dailyAllowance = BigDecimal.valueOf(45);
 
     @NotNull(message = "Number of breakfasts cannot be null")
     @Min(value = 0, message = "Number of breakfasts cannot be negative")

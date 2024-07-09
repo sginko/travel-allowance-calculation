@@ -1,7 +1,6 @@
 package pl.sginko.travelexpense.logic.diet.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 
@@ -14,19 +13,20 @@ import java.time.LocalTime;
 class DietServiceImpl implements DietService {
 
     @Override
-    @Transactional
     public BigDecimal calculateDiet(TravelRequestDto travelRequestDto) {
         BigDecimal dietAmount = calculateDietAmount(travelRequestDto);
         BigDecimal foodAmount = calculateFoodAmount(travelRequestDto);
         return dietAmount.add(foodAmount);
     }
 
-    private BigDecimal calculateDietAmount(final TravelRequestDto travelRequestDto) {
+    @Override
+    public BigDecimal calculateDietAmount(final TravelRequestDto travelRequestDto) {
         LocalDate startDate = travelRequestDto.getStartDate();
         LocalTime startTime = travelRequestDto.getStartTime();
         LocalDate endDate = travelRequestDto.getEndDate();
         LocalTime endTime = travelRequestDto.getEndTime();
         long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
+
         BigDecimal dailyAllowance = travelRequestDto.getDietDto().getDailyAllowance();
         BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
         BigDecimal dietAmount = BigDecimal.ZERO;
@@ -55,9 +55,10 @@ class DietServiceImpl implements DietService {
         return dietAmount;
     }
 
-    private BigDecimal calculateFoodAmount(TravelRequestDto travelRequestDto) {
+    @Override
+    public BigDecimal calculateFoodAmount(TravelRequestDto travelRequestDto) {
         DietDto dietDto = travelRequestDto.getDietDto();
-        BigDecimal totalFoodExpenses = BigDecimal.ZERO;
+        BigDecimal foodAmount = BigDecimal.ZERO;
         BigDecimal fiftyPercentOfDailyAllowance = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.5));
         BigDecimal twentyFivePercentOfDailyAllowance = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.25));
 
@@ -65,6 +66,6 @@ class DietServiceImpl implements DietService {
         BigDecimal lunchCost = BigDecimal.valueOf(dietDto.getNumberOfLunches()).multiply(fiftyPercentOfDailyAllowance);
         BigDecimal dinnerCost = BigDecimal.valueOf(dietDto.getNumberOfDinners()).multiply(twentyFivePercentOfDailyAllowance);
 
-        return totalFoodExpenses.add(breakfastCost).add(lunchCost).add(dinnerCost).negate();
+        return foodAmount.add(breakfastCost).add(lunchCost).add(dinnerCost).negate();
     }
 }

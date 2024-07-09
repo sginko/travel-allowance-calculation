@@ -27,16 +27,16 @@ public class OvernightStayEntity {
     private Integer inputQuantityOfOvernightStayWithoutInvoice;
 
     @Column(nullable = false)
-    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice = BigDecimal.ZERO;
+    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
 
     @Column(nullable = false)
     private Integer inputQuantityOfOvernightStayWithInvoice;
 
     @Column(nullable = false)
-    private BigDecimal amountOfTotalOvernightsStayWithInvoice = BigDecimal.ZERO;
+    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
 
     @Column(nullable = false)
-    private BigDecimal overnightStayAmount = BigDecimal.ZERO;
+    private BigDecimal overnightStayAmount;
 
     @Column(nullable = false)
     private Integer totalInputQuantityOfOvernightStay;

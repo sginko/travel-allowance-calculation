@@ -27,7 +27,7 @@ public class TravelEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
 
     @NotBlank
@@ -68,7 +68,7 @@ public class TravelEntity {
     private OvernightStayEntity overnightStayEntity;
 
     @Column(nullable = false)
-    private BigDecimal totalAmount = BigDecimal.ZERO;
+    private BigDecimal totalAmount;
 
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
                         LocalDate endDate, LocalTime endTime, UserEntity userEntity,
@@ -86,10 +86,5 @@ public class TravelEntity {
         this.dietEntity = new DietEntity(this, dailyAllowance, numberOfBreakfasts, numberOfLunches, numberOfDinners);
         this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice,
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice);
-//        updateTotalAmount();
-    }
-
-    public void updateTotalAmount() {
-        this.totalAmount = this.dietEntity.getDietAmount().add(this.overnightStayEntity.getOvernightStayAmount()).subtract(advancePayment);
     }
 }

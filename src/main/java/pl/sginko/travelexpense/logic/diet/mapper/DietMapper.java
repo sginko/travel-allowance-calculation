@@ -14,12 +14,6 @@ public class DietMapper {
                 requestDto.getNumberOfLunches(), requestDto.getNumberOfDinners());
     }
 
-//    public DietEntity toEntity(DietDto dietDto, TravelRequestDto travelRequestDto) {
-//        TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
-//        return new DietEntity(travelEntity, dietDto.getDailyAllowance(), dietDto.getNumberOfBreakfasts(),
-//                dietDto.getNumberOfLunches(), dietDto.getNumberOfDinners());
-//    }
-
     public DietResponseDto toResponseDto(DietEntity entity) {
         return new DietResponseDto(entity.getId(), entity.getDietAmount(), entity.getNumberOfBreakfasts(),
                 entity.getNumberOfLunches(), entity.getNumberOfDinners());

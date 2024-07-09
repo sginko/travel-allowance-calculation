@@ -25,13 +25,12 @@ public class TravelMapper {
     }
 
     public TravelEntity toEntity(TravelRequestDto travelRequestDto) {
-        UserEntity employeeByPesel = userReaderService.findUserByPesel(travelRequestDto.getPesel());
+        UserEntity userByPesel = userReaderService.findUserByPesel(travelRequestDto.getPesel());
         return new TravelEntity(travelRequestDto.getFromCity(), travelRequestDto.getToCity(), travelRequestDto.getStartDate(),
                 travelRequestDto.getStartTime(), travelRequestDto.getEndDate(), travelRequestDto.getEndTime(),
-                employeeByPesel, travelRequestDto.getAdvancePayment(),
-                travelRequestDto.getDietDto().getDailyAllowance(), travelRequestDto.getDietDto().getNumberOfBreakfasts(),
-                travelRequestDto.getDietDto().getNumberOfLunches(), travelRequestDto.getDietDto().getNumberOfDinners(),
-                travelRequestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithoutInvoice(),
+                userByPesel, travelRequestDto.getAdvancePayment(), travelRequestDto.getDietDto().getDailyAllowance(),
+                travelRequestDto.getDietDto().getNumberOfBreakfasts(), travelRequestDto.getDietDto().getNumberOfLunches(),
+                travelRequestDto.getDietDto().getNumberOfDinners(), travelRequestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithoutInvoice(),
                 travelRequestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithInvoice(),
                 travelRequestDto.getOvernightStayDto().getAmountOfTotalOvernightsStayWithInvoice());
     }

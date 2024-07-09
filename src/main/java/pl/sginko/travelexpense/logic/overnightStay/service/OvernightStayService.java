@@ -1,9 +1,18 @@
 package pl.sginko.travelexpense.logic.overnightStay.service;
 
-import pl.sginko.travelexpense.logic.overnightStay.model.dto.CalculatedOvernightStay;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+
+import java.math.BigDecimal;
 
 public interface OvernightStayService {
 
-    CalculatedOvernightStay calculateOvernightStay(TravelRequestDto travelRequestDto);
+    BigDecimal calculateOvernightStay(TravelRequestDto travelRequestDto);
+
+    BigDecimal calculateAmountOfOvernightStayWithoutInvoice(TravelRequestDto travelRequestDto);
+
+    BigDecimal calculateAmountOfOvernightStayWithInvoice(TravelRequestDto travelRequestDto);
+
+    Integer calculateQuantityOfOvernightStay(TravelRequestDto travelRequestDto);
+
+    Integer calculateTotalInputQuantityOfOvernightStay(TravelRequestDto travelRequestDto);
 }

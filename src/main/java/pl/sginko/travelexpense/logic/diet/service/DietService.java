@@ -7,4 +7,8 @@ import java.math.BigDecimal;
 public interface DietService {
 
     BigDecimal calculateDiet(TravelRequestDto travelRequestDto);
+
+    BigDecimal calculateDietAmount(final TravelRequestDto travelRequestDto);
+
+    BigDecimal calculateFoodAmount(TravelRequestDto travelRequestDto);
 }

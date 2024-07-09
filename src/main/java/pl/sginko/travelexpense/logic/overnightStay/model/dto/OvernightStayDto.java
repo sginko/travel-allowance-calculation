@@ -15,14 +15,14 @@ import java.math.BigDecimal;
 public class OvernightStayDto {
     @NotNull(message = "Number of overnight stay without invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
-    private Integer inputQuantityOfOvernightStayWithoutInvoice = 0;
+    private Integer inputQuantityOfOvernightStayWithoutInvoice;
 
     @NotNull(message = "overnightStayWithoutInvoice cannot be null")
     private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
 
     @NotNull(message = "Number of overnight stay with invoice cannot be null")
     @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
-    private Integer inputQuantityOfOvernightStayWithInvoice = 0;
+    private Integer inputQuantityOfOvernightStayWithInvoice;
 
     @NotNull(message = "overnightStayWithInvoice cannot be null")
     private BigDecimal amountOfTotalOvernightsStayWithInvoice;

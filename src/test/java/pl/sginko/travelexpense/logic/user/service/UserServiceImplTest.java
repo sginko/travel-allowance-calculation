@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.model.employee.service;
+package pl.sginko.travelexpense.logic.user.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -32,25 +32,24 @@ class UserServiceImplTest {
     }
 
     @Test
-    void should_add_employee_() {
-        //GIVEN
+    void should_add_user() {
+        // GIVEN
         Long pesel = 90010101001L;
         String firstName = "name";
         String secondName = "surname";
         String position = "position";
         UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
 
-        //WHEN
+        // WHEN
         userService.addUser(userRequestDto);
 
-        //THEN
+        // THEN
         assertThat(userRepository.findAll()).isNotEmpty();
-//        assertThat(employeeRepository.findAll().getFirst()).isEqualTo(employeeMapper.toEntity(employeeRequestDto));
     }
 
     @Test
-    void should_find_all_employee() {
-        //GIVEN
+    void should_find_all_users() {
+        // GIVEN
         Long pesel = 90010101001L;
         String firstName = "name";
         String secondName = "surname";
@@ -58,16 +57,16 @@ class UserServiceImplTest {
         UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
         userService.addUser(userRequestDto);
 
-        //WHEN
-        List<UserResponseDto> allEmployee = userService.findAllUser();
+        // WHEN
+        List<UserResponseDto> allUsers = userService.findAllUser();
 
-        //THEN
-        assertThat(allEmployee).isNotEmpty();
+        // THEN
+        assertThat(allUsers).isNotEmpty();
     }
 
     @Test
-    void should_find_employee_by_pesel() {
-        //GIVEN
+    void should_find_user_by_pesel() {
+        // GIVEN
         Long pesel = 90010101001L;
         String firstName = "name";
         String secondName = "surname";
@@ -75,10 +74,10 @@ class UserServiceImplTest {
         UserRequestDto userRequestDto = new UserRequestDto(pesel, firstName, secondName, position);
         userService.addUser(userRequestDto);
 
-        //WHEN
-        UserResponseDto employeeByPesel = userService.findUserByPesel(pesel);
+        // WHEN
+        UserResponseDto userByPesel = userService.findUserByPesel(pesel);
 
-        //THEN
-        assertThat(employeeByPesel.getPesel()).isEqualTo(pesel);
+        // THEN
+        assertThat(userByPesel.getPesel()).isEqualTo(pesel);
     }
 }

@@ -1,12 +1,14 @@
 package pl.sginko.travelexpense.logic.diet.model.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-//@Builder
 @AllArgsConstructor
 public class DietResponseDto {
     private Long id;
