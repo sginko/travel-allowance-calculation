@@ -23,7 +23,9 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     @Override
     public CalculatedOvernightStay calculateOvernightStay(TravelRequestDto travelRequestDto) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
-        int quantityOfOvernightStay = getTotalQuantityOfNight(travelRequestDto);
+        Integer quantityOfOvernightStay = getTotalQuantityOfNight(travelRequestDto);
+        quantityOfOvernightStay = overnightStayDto.getQuantityOfOvernightStay();
+
         if (overnightStayDto.getInputQuantityOfOvernightStayWithInvoice() > quantityOfOvernightStay) {
             throw new TravelException("Input quantity overnight stay more than quantity overnight stay");
         }

@@ -1,8 +1,11 @@
 package pl.sginko.travelexpense.logic.diet.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.logic.diet.dto.DietDto;
+import pl.sginko.travelexpense.logic.diet.mapper.DietMapper;
+import pl.sginko.travelexpense.logic.diet.repository.DietRepository;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 
 import java.math.BigDecimal;
@@ -10,8 +13,10 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@AllArgsConstructor
 @Service
 class DietServiceImpl implements DietService {
+
 
     @Override
     @Transactional
@@ -19,8 +24,10 @@ class DietServiceImpl implements DietService {
         if (travelRequestDto.getDietDto() == null) {
             throw new IllegalArgumentException("DietDto cannot be null");
         }
+
         BigDecimal dietAmount = calculateDietAmount(travelRequestDto);
         BigDecimal foodAmount = calculateFoodAmount(travelRequestDto);
+
         return dietAmount.add(foodAmount);
     }
 
@@ -56,7 +63,6 @@ class DietServiceImpl implements DietService {
                 dietAmount = dietAmount.add(totalAmountForFullDays.add(dietDto.getDailyAllowance()));
             }
         }
-
         return dietAmount;
     }
 

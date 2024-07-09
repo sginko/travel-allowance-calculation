@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class DietDto {
     @NotNull(message = "Daily allowance cannot be null")
-//    @Min(value = 0, message = "Number of breakfasts cannot be negative")
     private BigDecimal dailyAllowance;
 
     @NotNull(message = "Number of breakfasts cannot be null")
@@ -26,11 +25,4 @@ public class DietDto {
     @NotNull(message = "Number of dinners cannot be null")
     @Min(value = 0, message = "Number of dinners cannot be negative")
     private Integer numberOfDinners;
-
-//    public DietDto(Integer numberOfBreakfasts, Integer numberOfLunches, Integer numberOfDinners, BigDecimal dailyAllowance) {
-//        this.numberOfBreakfasts = numberOfBreakfasts;
-//        this.numberOfLunches = numberOfLunches;
-//        this.numberOfDinners = numberOfDinners;
-//        this.dailyAllowance = dailyAllowance;
-//    }
 }

@@ -26,20 +26,19 @@ class TravelServiceImpl implements TravelService {
     @Override
     @Transactional
     public TravelResponseDto calculateTravelExpenses(final TravelRequestDto travelRequestDto) {
-        //TODO calculate diet(invoking diet service)
+
         BigDecimal dietAmount = dietService.calculateDiet(travelRequestDto);
 
-        //TODO calculate overnightstay(invoking overnightstay service)
+
+
         CalculatedOvernightStay overnightStayResponseDto = overnightStayService.calculateOvernightStay(travelRequestDto);
 
         EmployeeEntity employeeByPesel = employeeReaderService.findEmployeeByPesel(travelRequestDto.getPesel());
 
-        TravelEntity travelEntity = travelMapper.toEntity(TravelMapper.Source.of(
-                travelRequestDto,
-                employeeByPesel
-        ));
+        TravelEntity travelEntity = travelMapper.toEntity(TravelMapper.Source.of(travelRequestDto, employeeByPesel));
 
         travelRepository.save(travelEntity);
+
         return travelMapper.toResponseDto(travelEntity);
     }
 
