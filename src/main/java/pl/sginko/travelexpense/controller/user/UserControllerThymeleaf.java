@@ -1,20 +1,18 @@
 //package pl.sginko.travelexpense.controller.employee;
 //
+//import lombok.AllArgsConstructor;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.ui.Model;
 //import org.springframework.web.bind.annotation.*;
-//import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeRequestDto;
-//import pl.sginko.travelexpense.logic.employee.model.dto.EmployeeResponseDto;
-//import pl.sginko.travelexpense.logic.employee.service.EmployeeService;
+//import pl.sginko.travelexpense.logic.user.model.dto.UserRequestDto;
+//import pl.sginko.travelexpense.logic.user.model.dto.UserResponseDto;
+//import pl.sginko.travelexpense.logic.user.service.UserService;
 //
+//@AllArgsConstructor
 //@Controller
 //@RequestMapping("/api/v1/employees")
-//public class EmployeeControllerThymeleaf {
-//    private final EmployeeService employeeService;
-//
-//    public EmployeeControllerThymeleaf(EmployeeService employeeService) {
-//        this.employeeService = employeeService;
-//    }
+//public class UserControllerThymeleaf {
+//    private final UserService userService;
 //
 //    @GetMapping("/search")
 //    public String searchEmployeeForm(@RequestParam(value = "redirect", required = false) String redirect, Model model) {
@@ -25,7 +23,7 @@
 //    @PostMapping("/search")
 //    public String searchEmployee(@RequestParam("pesel") Long pesel, @RequestParam(value = "redirect", required = false) String redirect, Model model) {
 //        try {
-//            EmployeeResponseDto employee = employeeService.findEmployeeByPesel(pesel);
+//            UserResponseDto employee = userService.findUserByPesel(pesel);
 //            if (redirect != null) {
 //                return "redirect:" + redirect + "?pesel=" + pesel;
 //            }
@@ -46,11 +44,11 @@
 //    }
 //
 //    @PostMapping("/add")
-//    public String addEmployee(@ModelAttribute EmployeeRequestDto employeeRequestDto, @RequestParam(value = "redirect", required = false) String redirect) {
-//        employeeService.addEmployee(employeeRequestDto);
+//    public String addEmployee(@ModelAttribute UserRequestDto userRequestDto, @RequestParam(value = "redirect", required = false) String redirect) {
+//        userService.addUser(userRequestDto);
 //        if (redirect != null) {
-//            return "redirect:" + redirect + "?pesel=" + employeeRequestDto.getPesel();
+//            return "redirect:" + redirect + "?pesel=" + userRequestDto.getPesel();
 //        }
-//        return "redirect:/api/v1/travels?pesel=" + employeeRequestDto.getPesel();
+//        return "redirect:/api/v1/travels?pesel=" + userRequestDto.getPesel();
 //    }
 //}

@@ -1,9 +1,11 @@
 package pl.sginko.travelexpense.logic.travel.model.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
@@ -14,10 +16,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
-
-    @NotNull(message = "PESEL cannot be null")
+    @NotNull(message = "Pessel cannot be null")
+    @Min(value = 11, message = "Pessel cannot be negative")
     private Long pesel;
 
     @NotBlank(message = "From city cannot be blank")
@@ -41,27 +44,11 @@ public class TravelRequestDto {
     private LocalTime endTime;
 
     @NotNull(message = "Advance payment cannot be null")
-//    @Size(min = 0, message = "Advance payment cannot be negative")
     private BigDecimal advancePayment;
 
-    @NotNull
+    @NotNull(message = "DietDto cannot be null")
     private DietDto dietDto;
 
-    @NotNull
+    @NotNull(message = "OvernightStayDto cannot be null")
     private OvernightStayDto overnightStayDto;
-
-    public TravelRequestDto(Long pesel, String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
-                            LocalDate endDate, LocalTime endTime, BigDecimal advancePayment, DietDto dietDto,
-                            OvernightStayDto overnightStayDto) {
-        this.pesel = pesel;
-        this.fromCity = fromCity;
-        this.toCity = toCity;
-        this.startDate = startDate;
-        this.startTime = startTime;
-        this.endDate = endDate;
-        this.endTime = endTime;
-        this.advancePayment = advancePayment;
-        this.dietDto = dietDto;
-        this.overnightStayDto = overnightStayDto;
-    }
 }

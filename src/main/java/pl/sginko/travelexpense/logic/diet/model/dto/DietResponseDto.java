@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder
+//@Builder
 @AllArgsConstructor
 public class DietResponseDto {
     private Long id;

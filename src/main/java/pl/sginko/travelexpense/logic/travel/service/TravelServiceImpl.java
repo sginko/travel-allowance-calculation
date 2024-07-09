@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.logic.diet.service.DietService;
-import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
-import pl.sginko.travelexpense.logic.employee.service.EmployeeReaderService;
+import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
+import pl.sginko.travelexpense.logic.user.service.UserReaderService;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.CalculatedOvernightStay;
 import pl.sginko.travelexpense.logic.overnightStay.service.OvernightStayService;
 import pl.sginko.travelexpense.logic.overnightStay.service.OvernightStayServiceImpl;
@@ -24,7 +24,7 @@ public class TravelServiceImpl implements TravelService {
     private final TravelMapper travelMapper;
     private final DietService dietService;
     private final OvernightStayService overnightStayService;
-    private final EmployeeReaderService employeeReaderService;
+    private final UserReaderService userReaderService;
 
     @Override
     @Transactional
@@ -33,7 +33,7 @@ public class TravelServiceImpl implements TravelService {
         CalculatedOvernightStay overnightStayResponseDto = overnightStayService.calculateOvernightStay(travelRequestDto);
         int totalQuantityOfNight = ((OvernightStayServiceImpl) overnightStayService).getTotalQuantityOfNight(travelRequestDto);
         TravelEntity travelEntity = travelMapper.toEntity(travelRequestDto);
-        EmployeeEntity employeeByPesel = employeeReaderService.findEmployeeByPesel(travelRequestDto.getPesel());
+        UserEntity employeeByPesel = userReaderService.findUserByPesel(travelRequestDto.getPesel());
 
         travelEntity.getOvernightStayEntity().setQuantityOfOvernightStay(totalQuantityOfNight);
         travelEntity.getDietEntity().setDietAmount(dietAmount);

@@ -14,6 +14,8 @@ import java.time.LocalTime;
 
 @Service
 public class OvernightStayServiceImpl implements OvernightStayService {
+
+
     @Override
     public CalculatedOvernightStay calculateOvernightStay(TravelRequestDto travelRequestDto) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();

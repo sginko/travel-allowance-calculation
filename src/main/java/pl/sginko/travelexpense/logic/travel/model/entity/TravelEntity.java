@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
-import pl.sginko.travelexpense.logic.employee.model.entity.EmployeeEntity;
+import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
 import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
 
 import java.math.BigDecimal;
@@ -20,7 +20,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@Entity
+@Entity(name = "travel")
 public class TravelEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class TravelEntity {
 
     @ManyToOne
     @JoinColumn(name = "employee_id", nullable = false)
-    private EmployeeEntity employeeEntity;
+    private UserEntity userEntity;
 
     @NotBlank
     @Size(min = 2, max = 50, message = "City name should be between 2 and 50 characters")
@@ -71,11 +71,11 @@ public class TravelEntity {
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
-                        LocalDate endDate, LocalTime endTime, EmployeeEntity employeeEntity,
+                        LocalDate endDate, LocalTime endTime, UserEntity userEntity,
                         BigDecimal advancePayment, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                         Integer numberOfLunches, Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
                         Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice) {
-        this.employeeEntity = employeeEntity;
+        this.userEntity = userEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
         this.startDate = startDate;

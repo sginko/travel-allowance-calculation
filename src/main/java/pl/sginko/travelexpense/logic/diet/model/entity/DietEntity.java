@@ -27,12 +27,6 @@ public class DietEntity {
     private BigDecimal dailyAllowance;
 
     @Column(nullable = false)
-    private BigDecimal dietAmount = BigDecimal.ZERO;
-
-    @Column(nullable = false)
-    private BigDecimal foodAmount = BigDecimal.ZERO;
-
-    @Column(nullable = false)
     private Integer numberOfBreakfasts;
 
     @Column(nullable = false)
@@ -41,12 +35,18 @@ public class DietEntity {
     @Column(nullable = false)
     private Integer numberOfDinners;
 
+    @Column(nullable = false)
+    private BigDecimal dietAmount = BigDecimal.ZERO;
+
+    @Column(nullable = false)
+    private BigDecimal foodAmount = BigDecimal.ZERO;
+
     public DietEntity(TravelEntity travelEntity, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                       Integer numberOfLunches, Integer numberOfDinners) {
+        this.dailyAllowance = dailyAllowance;
         this.travelEntity = travelEntity;
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
-        this.dailyAllowance = dailyAllowance;
     }
 }

@@ -26,8 +26,8 @@ public class PdfDocumentService {
         TravelEntity travel = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
 
         Map<String, String> replacements = Map.ofEntries(
-                entry("fullName", travel.getEmployeeEntity().getFirstName() + " " + travel.getEmployeeEntity().getSecondName()),
-                entry("position", travel.getEmployeeEntity().getPosition()),
+                entry("fullName", travel.getUserEntity().getFirstName() + " " + travel.getUserEntity().getSecondName()),
+                entry("position", travel.getUserEntity().getPosition()),
                 entry("fromCity", travel.getFromCity()),
                 entry("toCity", travel.getToCity()),
                 entry("startDate", travel.getStartDate().toString()),
