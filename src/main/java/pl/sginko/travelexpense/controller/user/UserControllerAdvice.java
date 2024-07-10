@@ -20,12 +20,20 @@ public class UserControllerAdvice {
                 .body(e.getMessage());
     }
 
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    public ResponseEntity handleEventException(ConstraintViolationException e) {
+//        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+//                .body(e.getConstraintViolations().stream()
+//                        .map(error -> error.getMessageTemplate()).collect(Collectors.joining(",", "", ""))
+//                        .replace(",", "\n"));
+//    }
+
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity handleEventException(ConstraintViolationException e) {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(e.getConstraintViolations().stream()
-                        .map(error -> error.getMessageTemplate()).collect(Collectors.joining(",", "", ""))
-                        .replace(",", "\n"));
+    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
+        String errors = e.getConstraintViolations().stream()
+                .map(error -> error.getPropertyPath() + ": " + error.getMessage())
+                .collect(Collectors.joining("\n"));
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(errors);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

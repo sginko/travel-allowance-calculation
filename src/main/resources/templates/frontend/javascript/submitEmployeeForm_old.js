@@ -2,7 +2,6 @@ document.getElementById('register-employee-form').addEventListener('submit', sub
 
 async function submitForm(event) {
     event.preventDefault();
-    clearErrors();
     const form = document.getElementById('register-employee-form');
     const formData = new FormData(form);
     const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
@@ -17,8 +16,6 @@ async function submitForm(event) {
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            displayErrors(errorText);
             throw new Error('Network response was not ok');
         }
 
@@ -30,21 +27,3 @@ async function submitForm(event) {
     }
 }
 
-function displayErrors(errors) {
-    const errorList = errors.split('\n');
-    errorList.forEach(error => {
-        const [field, message] = error.split(': ');
-        const inputField = document.querySelector(`[name=${field}]`);
-        if (inputField) {
-            const errorMessageElement = document.createElement('div');
-            errorMessageElement.classList.add('error-message');
-            errorMessageElement.innerText = message;
-            inputField.parentNode.appendChild(errorMessageElement);
-        }
-    });
-}
-
-function clearErrors() {
-    const errorMessages = document.querySelectorAll('.error-message');
-    errorMessages.forEach(errorMessage => errorMessage.remove());
-}
