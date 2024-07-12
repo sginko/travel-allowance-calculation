@@ -48,9 +48,6 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     @Override
     public BigDecimal calculateAmountOfOvernightStayWithInvoice(final TravelRequestDto travelRequestDto) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
-        DietDto dietDto = travelRequestDto.getDietDto();
-        BigDecimal dailyAllowance = dietDto.getDailyAllowance();
-        BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
 
         Integer quantityOfOvernightStay = calculateQuantityOfOvernightStay(travelRequestDto);
         Integer totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay(travelRequestDto);
@@ -62,6 +59,11 @@ public class OvernightStayServiceImpl implements OvernightStayService {
                 totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
             throw new TravelException("Quantity numbers of nights more than nights in travel");
         }
+
+        DietDto dietDto = travelRequestDto.getDietDto();
+
+        BigDecimal dailyAllowance = dietDto.getDailyAllowance();
+        BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
 
         BigDecimal amountOfTotalOvernightsStayWithInvoice = overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice();
         return amountOfTotalOvernightsStayWithInvoice;
