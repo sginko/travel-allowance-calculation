@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 
 import java.math.BigDecimal;
 
 @Getter
-@Setter
+//@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "diet")
@@ -48,5 +47,13 @@ public class DietEntity {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
+    }
+
+    public void updateDietAmount(BigDecimal dietAmount) {
+        this.dietAmount = dietAmount;
+    }
+
+    public void updateFoodAmount(BigDecimal foodAmount) {
+        this.foodAmount = foodAmount;
     }
 }

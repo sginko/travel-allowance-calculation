@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
 import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
 
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
-@Setter
+//@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity(name = "travel")
 public class TravelEntity {
@@ -86,5 +87,14 @@ public class TravelEntity {
         this.dietEntity = new DietEntity(this, dailyAllowance, numberOfBreakfasts, numberOfLunches, numberOfDinners);
         this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice,
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice);
+    }
+
+    public void updateTotalAmount(BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+
+    public void updateUser(UserEntity userByPesel) {
+        this.userEntity = userByPesel;
     }
 }

@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 
 import java.math.BigDecimal;
 
 @Getter
-@Setter
+//@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "overnight_stay")
@@ -51,5 +50,21 @@ public class OvernightStayEntity {
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
         this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
         this.totalInputQuantityOfOvernightStay = inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
+    }
+
+    public void updateQuantityOfOvernightStay(Integer quantityOfOvernightStay) {
+        this.quantityOfOvernightStay = quantityOfOvernightStay;
+    }
+
+    public void updateTotalInputQuantityOfOvernightStay(Integer totalInputQuantityOfOvernightStay) {
+        this.totalInputQuantityOfOvernightStay = totalInputQuantityOfOvernightStay;
+    }
+
+    public void updateAmountOfTotalOvernightsStayWithoutInvoice(BigDecimal amountOfTotalOvernightsStayWithoutInvoice) {
+        this.amountOfTotalOvernightsStayWithoutInvoice = amountOfTotalOvernightsStayWithoutInvoice;
+    }
+
+    public void updateOvernightStayAmount(BigDecimal overnightStayAmount) {
+        this.overnightStayAmount = overnightStayAmount;
     }
 }

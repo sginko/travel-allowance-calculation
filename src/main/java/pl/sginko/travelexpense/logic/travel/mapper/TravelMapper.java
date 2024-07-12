@@ -3,12 +3,14 @@ package pl.sginko.travelexpense.logic.travel.mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.sginko.travelexpense.logic.diet.mapper.DietMapper;
-import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
-import pl.sginko.travelexpense.logic.user.service.UserReaderService;
+import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
 import pl.sginko.travelexpense.logic.overnightStay.mapper.OvernightStayMapper;
+import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
+import pl.sginko.travelexpense.logic.user.service.UserReaderService;
 
 @AllArgsConstructor
 @Component
@@ -26,13 +28,12 @@ public class TravelMapper {
 
     public TravelEntity toEntity(TravelRequestDto travelRequestDto) {
         UserEntity userByPesel = userReaderService.findUserByPesel(travelRequestDto.getPesel());
+        DietDto dietDto = travelRequestDto.getDietDto();
+        OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         return new TravelEntity(travelRequestDto.getFromCity(), travelRequestDto.getToCity(), travelRequestDto.getStartDate(),
                 travelRequestDto.getStartTime(), travelRequestDto.getEndDate(), travelRequestDto.getEndTime(),
-                userByPesel, travelRequestDto.getAdvancePayment(), travelRequestDto.getDietDto().getDailyAllowance(),
-                travelRequestDto.getDietDto().getNumberOfBreakfasts(), travelRequestDto.getDietDto().getNumberOfLunches(),
-                travelRequestDto.getDietDto().getNumberOfDinners(), travelRequestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithoutInvoice(),
-                travelRequestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithInvoice(),
-                travelRequestDto.getOvernightStayDto().getAmountOfTotalOvernightsStayWithInvoice());
+                userByPesel, travelRequestDto.getAdvancePayment(), dietDto.getDailyAllowance(), dietDto.getNumberOfBreakfasts(), dietDto.getNumberOfLunches(), dietDto.getNumberOfDinners(), overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice(),
+                overnightStayDto.getInputQuantityOfOvernightStayWithInvoice(), overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice());
     }
 
 //    public TravelEntity toEntity(Source source) {
