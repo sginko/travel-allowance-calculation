@@ -4,6 +4,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
+import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
+import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
@@ -23,30 +25,32 @@ public class PdfDocumentService {
     }
 
     public void generatePdfDocument(Long id) throws IOException {
-        TravelEntity travel = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
+        TravelEntity travelEntity = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
+        DietEntity dietEntity = travelEntity.getDietEntity();
+        OvernightStayEntity overnightStayEntity = travelEntity.getOvernightStayEntity();
 
         Map<String, String> replacements = Map.ofEntries(
-                entry("fullName", travel.getUserEntity().getFirstName() + " " + travel.getUserEntity().getSecondName()),
-                entry("position", travel.getUserEntity().getPosition()),
-                entry("fromCity", travel.getFromCity()),
-                entry("toCity", travel.getToCity()),
-                entry("startDate", travel.getStartDate().toString()),
-                entry("startTime", travel.getStartTime().toString()),
-                entry("endDate", travel.getEndDate().toString()),
-                entry("endTime", travel.getEndTime().toString()),
-//                entry("countBreakfast", String.valueOf(travel.getNumberOfBreakfasts())),
-//                entry("countLunch", String.valueOf(travel.getNumberOfLunches())),
-//                entry("countDinner", String.valueOf(travel.getNumberOfDinners())),
-//                entry("totalAmount", String.valueOf(travel.getTotalAmount())),
-//                entry("dietAmount", String.valueOf(travel.getDietAmount())),
-//                entry("foodAmount", String.valueOf(travel.getFoodAmount())),
-//                entry("overnightStayWithInvoice", String.valueOf(travel.getAmountOfTotalOvernightsStayWithInvoice())),
-//                entry("overnightStayWithoutInvoice", String.valueOf(travel.getAmountOfTotalOvernightsStayWithoutInvoice())),
-                entry("advancePayment", String.valueOf(travel.getAdvancePayment()))
+                entry("fullName", travelEntity.getUserEntity().getFirstName() + " " + travelEntity.getUserEntity().getSecondName()),
+                entry("position", travelEntity.getUserEntity().getPosition()),
+                entry("fromCity", travelEntity.getFromCity()),
+                entry("toCity", travelEntity.getToCity()),
+                entry("startDate", travelEntity.getStartDate().toString()),
+                entry("startTime", travelEntity.getStartTime().toString()),
+                entry("endDate", travelEntity.getEndDate().toString()),
+                entry("endTime", travelEntity.getEndTime().toString()),
+                entry("countBreakfast", String.valueOf(dietEntity.getNumberOfBreakfasts())),
+                entry("countLunch", String.valueOf(dietEntity.getNumberOfLunches())),
+                entry("countDinner", String.valueOf(dietEntity.getNumberOfDinners())),
+                entry("totalAmount", String.valueOf(travelEntity.getTotalAmount())),
+                entry("dietAmount", String.valueOf(dietEntity.getDietAmount())),
+                entry("foodAmount", String.valueOf(dietEntity.getFoodAmount())),
+                entry("overnightStayWithInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithInvoice())),
+                entry("overnightStayWithoutInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithoutInvoice())),
+                entry("advancePayment", String.valueOf(travelEntity.getAdvancePayment()))
         );
 
-        String templatePath = "src/main/resources/templates/files/template.pdf";
-        String outputPath = "src/main/resources/templates/files/changed_template.pdf";
+        String templatePath = "src/main/resources/print/template.pdf";
+        String outputPath = "src/main/resources/print/changed_template.pdf";
 
         fillTemplate(templatePath, outputPath, replacements);
     }
