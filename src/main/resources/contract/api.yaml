@@ -184,10 +184,6 @@ components:
           type: integer
           minimum: 0
           example: 1
-        amountOfTotalOvernightsStayWithoutInvoice:
-          type: number
-          format: double
-          example: 50.00
         inputQuantityOfOvernightStayWithInvoice:
           type: integer
           minimum: 0
@@ -197,7 +193,6 @@ components:
           format: double
           example: 100.00
       required:
-        - inputQuantityOfOvernightStayWithoutInvoice
         - amountOfTotalOvernightsStayWithoutInvoice
         - inputQuantityOfOvernightStayWithInvoice
         - amountOfTotalOvernightsStayWithInvoice
