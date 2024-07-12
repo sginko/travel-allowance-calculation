@@ -11,6 +11,8 @@ import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.service.TravelService;
 
+import java.io.IOException;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/travels")
@@ -33,6 +35,12 @@ public class TravelController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error generating PDF document: " + e.getMessage());
         }
     }
+
+//    @PostMapping("/print/{id}")
+//    public void generatePdf2(@PathVariable Long id) throws IOException {
+//        pdfDocumentService.generatePdfDocument(id);
+//    }
+
 
 //    @GetMapping("/download")
 //    public ResponseEntity<byte[]> downloadPdf() {
