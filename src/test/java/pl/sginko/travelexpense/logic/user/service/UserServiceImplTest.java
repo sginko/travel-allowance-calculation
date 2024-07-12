@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.sginko.travelexpense.logic.user.model.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.user.model.dto.UserResponseDto;
-import pl.sginko.travelexpense.logic.user.mapper.UserMapper;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
-import pl.sginko.travelexpense.logic.user.service.UserService;
 
 import java.util.List;
 
@@ -22,9 +20,6 @@ class UserServiceImplTest {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    UserMapper userMapper;
 
     @AfterEach
     void tearDown() {
