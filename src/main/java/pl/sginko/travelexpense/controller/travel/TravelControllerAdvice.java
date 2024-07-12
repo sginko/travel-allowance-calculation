@@ -17,7 +17,7 @@ public class TravelControllerAdvice {
     @ExceptionHandler(TravelException.class)
     public ResponseEntity handleEventException(TravelException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
+                .body("Error: " + e.getMessage());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
