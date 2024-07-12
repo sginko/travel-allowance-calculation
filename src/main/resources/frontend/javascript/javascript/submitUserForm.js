@@ -1,14 +1,14 @@
-document.getElementById('register-employee-form').addEventListener('submit', submitForm);
+document.getElementById('register-user-form').addEventListener('submit', submitForm);
 
 async function submitForm(event) {
     event.preventDefault();
     clearErrors();
-    const form = document.getElementById('register-employee-form');
+    const form = document.getElementById('register-user-form');
     const formData = new FormData(form);
     const jsonData = JSON.stringify(Object.fromEntries(formData.entries()));
 
     try {
-        const response = await fetch('http://localhost:8080/api/v1/employees', {
+        const response = await fetch('http://localhost:8080/api/v1/users', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -23,10 +23,10 @@ async function submitForm(event) {
         }
 
         console.log('Pracownik został pomyślnie dodany');
-        alert('Pracownik został pomyślnie dodany');
+        alert('User został pomyślnie dodany');
     } catch (error) {
         console.error('Błąd:', error);
-        alert('Wystąpił błąd podczas dodawania pracownika');
+        alert('Wystąpił błąd podczas dodawania usera');
     }
 }
 

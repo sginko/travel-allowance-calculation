@@ -9,7 +9,7 @@ import pl.sginko.travelexpense.logic.user.service.UserService;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/employees")
+@RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
 
