@@ -2,10 +2,13 @@ package pl.sginko.travelexpense.logic.travel.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
+import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
+import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
@@ -19,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class TravelServiceImplTest {
@@ -546,6 +550,38 @@ class TravelServiceImplTest {
         //THEN
         assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo((DAILY_ALLOWANCE.add(DAILY_ALLOWANCE)
                 .add(DAILY_ALLOWANCE).add(ONE_NIGHT_WITH_INVOICE).add(ONE_NIGHT_WITHOUT_INVOICE)).subtract(ADVANCE_PAYMENT));
+    }
+
+    @Test
+    void should_overnight_stay_exception_for_trip_3_nights_with__input_two_nights_with_invoice_and_two_nights_without_invoice_and_with_advancePayment() {
+        //GIVEN
+        UserRequestDto userRequestDto = new UserRequestDto(PESEL, FIRST_NAME, SECOND_NAME, POSITION);
+        userService.addUser(userRequestDto);
+
+        LocalDate endDay = LocalDate.now().plusDays(3);
+        LocalTime endTime = LocalTime.of(0, 0);
+
+        Integer numberOfBreakfasts = 0;
+        Integer numberOfLunches = 0;
+        Integer numberOfDinners = 0;
+
+        Integer inputQuantityOfOvernightStayWithoutInvoice = 2;
+        Integer inputQuantityOfOvernightStayWithInvoice = 2;
+        BigDecimal amountOfTotalOvernightsStayWithInvoice = ONE_NIGHT_WITH_INVOICE.add(ONE_NIGHT_WITH_INVOICE);
+
+        DietDto dietDto = new DietDto(DAILY_ALLOWANCE, numberOfBreakfasts, numberOfLunches, numberOfDinners);
+
+        OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
+                amountOfTotalOvernightsStayWithInvoice);
+
+        TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
+                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+
+        //WHEN
+        Executable e = () -> travelService.calculateTravelExpenses(travelRequestDto);
+
+        //THEN
+        assertThrows(OvernightStayException.class, e);
     }
 
     //TODO add Test with throw

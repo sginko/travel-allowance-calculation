@@ -2,8 +2,8 @@ package pl.sginko.travelexpense.logic.overnightStay.service;
 
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
+import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
-import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 
 import java.math.BigDecimal;
@@ -38,7 +38,7 @@ public class OvernightStayServiceImpl implements OvernightStayService {
         if (inputQuantityOfOvernightStayWithInvoice > quantityOfOvernightStay ||
                 inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay ||
                 totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
-            throw new TravelException("Quantity numbers of nights more than nights in travel");
+            throw new OvernightStayException("Quantity numbers of nights more than nights in travel");
         }
 
         amountOfTotalOvernightsStayWithoutInvoice = oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
@@ -50,23 +50,15 @@ public class OvernightStayServiceImpl implements OvernightStayService {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
 
         Integer quantityOfOvernightStay = calculateQuantityOfOvernightStay(travelRequestDto);
-        Integer totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay(travelRequestDto);
-        Integer inputQuantityOfOvernightStayWithInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithInvoice();
-        Integer inputQuantityOfOvernightStayWithoutInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();
 
-        if (inputQuantityOfOvernightStayWithInvoice > quantityOfOvernightStay ||
-                inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay ||
-                totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
-            throw new TravelException("Quantity numbers of nights more than nights in travel");
-        }
+        checkQuantityOfNightInTravel(travelRequestDto, overnightStayDto, quantityOfOvernightStay);
 
         DietDto dietDto = travelRequestDto.getDietDto();
 
         BigDecimal dailyAllowance = dietDto.getDailyAllowance();
         BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
 
-        BigDecimal amountOfTotalOvernightsStayWithInvoice = overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice();
-        return amountOfTotalOvernightsStayWithInvoice;
+        return overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice();
     }
 
     @Override
@@ -104,8 +96,20 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     @Override
     public Integer calculateTotalInputQuantityOfOvernightStay(final TravelRequestDto travelRequestDto) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
-        Integer totalInputQuantityOfOvernightStay = overnightStayDto.getInputQuantityOfOvernightStayWithInvoice() +
+        return overnightStayDto.getInputQuantityOfOvernightStayWithInvoice() +
                 overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();
-        return totalInputQuantityOfOvernightStay;
+    }
+
+    private void checkQuantityOfNightInTravel(TravelRequestDto travelRequestDto, OvernightStayDto overnightStayDto,
+                                              Integer quantityOfOvernightStay) {
+        Integer inputQuantityOfOvernightStayWithInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithInvoice();
+        Integer inputQuantityOfOvernightStayWithoutInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();
+        Integer totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay(travelRequestDto);
+
+        if (inputQuantityOfOvernightStayWithInvoice > quantityOfOvernightStay ||
+                inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay ||
+                totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
+            throw new OvernightStayException("Quantity numbers of nights more than nights in travel");
+        }
     }
 }
