@@ -45,28 +45,30 @@ public class TravelServiceImpl implements TravelService {
 
 //        travelEntity.setUserEntity(userByPesel);
 //        travelEntity.setTotalAmount(totalAmount);
-        travelEntity.updateTotalAmount(totalAmount);
-        travelEntity.updateUser(userByPesel);
-
 //        dietEntity.setDietAmount(dietAmount);
 //        dietEntity.setFoodAmount(foodAmount);
-        dietEntity.updateDietAmount(dietAmount);
-        dietEntity.updateFoodAmount(foodAmount);
-
 //        overnightStayEntity.setQuantityOfOvernightStay(quantityOfOvernightStay);
 //        overnightStayEntity.setTotalInputQuantityOfOvernightStay(totalInputQuantityOfOvernightStay);
 //        overnightStayEntity.setAmountOfTotalOvernightsStayWithoutInvoice(amountOfTotalOvernightsStayWithoutInvoice);
 //        overnightStayEntity.setOvernightStayAmount(overnightStayAmount);
+
+        travelEntity.updateTotalAmount(totalAmount);
+        travelEntity.updateUser(userByPesel);
+
+        dietEntity.updateDietAmount(dietAmount);
+        dietEntity.updateFoodAmount(foodAmount);
+
         overnightStayEntity.updateQuantityOfOvernightStay(quantityOfOvernightStay);
         overnightStayEntity.updateTotalInputQuantityOfOvernightStay(totalInputQuantityOfOvernightStay);
         overnightStayEntity.updateAmountOfTotalOvernightsStayWithoutInvoice(amountOfTotalOvernightsStayWithoutInvoice);
         overnightStayEntity.updateOvernightStayAmount(overnightStayAmount);
 
         travelRepository.save(travelEntity);
+
         return travelMapper.toResponseDto(travelEntity);
     }
 
-    private BigDecimal calculateTotalAmount(TravelRequestDto travelRequestDto) {
+    private BigDecimal calculateTotalAmount(final TravelRequestDto travelRequestDto) {
         BigDecimal advancePayment = travelRequestDto.getAdvancePayment();
         BigDecimal dietAmount = dietService.calculateDiet(travelRequestDto);
         BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStay(travelRequestDto);

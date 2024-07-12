@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public void addUser(UserRequestDto requestDto) {
+    public void addUser(final UserRequestDto requestDto) {
         userRepository.save(userMapper.toEntity(requestDto));
     }
 
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto findUserByPesel(Long pesel) {
+    public UserResponseDto findUserByPesel(final Long pesel) {
         UserEntity userEntity = userRepository.findByPesel(pesel)
                 .orElseThrow(() -> new UserException("Can not find user with this pesel: " + pesel));
         return userMapper.fromEntity(userEntity);

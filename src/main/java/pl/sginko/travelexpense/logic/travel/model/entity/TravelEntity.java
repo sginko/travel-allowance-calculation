@@ -8,18 +8,15 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
-import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
-import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
 import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
+import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
-//@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity(name = "travel")
 public class TravelEntity {
@@ -92,7 +89,6 @@ public class TravelEntity {
     public void updateTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
-
 
     public void updateUser(UserEntity userByPesel) {
         this.userEntity = userByPesel;

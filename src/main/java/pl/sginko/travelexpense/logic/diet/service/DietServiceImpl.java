@@ -56,7 +56,7 @@ class DietServiceImpl implements DietService {
     }
 
     @Override
-    public BigDecimal calculateFoodAmount(TravelRequestDto travelRequestDto) {
+    public BigDecimal calculateFoodAmount(final TravelRequestDto travelRequestDto) {
         DietDto dietDto = travelRequestDto.getDietDto();
         BigDecimal foodAmount = BigDecimal.ZERO;
         BigDecimal fiftyPercentOfDailyAllowance = dietDto.getDailyAllowance().multiply(BigDecimal.valueOf(0.5));

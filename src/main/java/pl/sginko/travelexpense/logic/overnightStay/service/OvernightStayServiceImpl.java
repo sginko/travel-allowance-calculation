@@ -16,14 +16,14 @@ import java.time.LocalTime;
 public class OvernightStayServiceImpl implements OvernightStayService {
 
     @Override
-    public BigDecimal calculateOvernightStay(TravelRequestDto travelRequestDto) {
+    public BigDecimal calculateOvernightStay(final TravelRequestDto travelRequestDto) {
         BigDecimal amountOfOvernightStayWithoutInvoice = calculateAmountOfOvernightStayWithoutInvoice(travelRequestDto);
         BigDecimal amountOfOvernightStayWithInvoice = calculateAmountOfOvernightStayWithInvoice(travelRequestDto);
         return amountOfOvernightStayWithInvoice.add(amountOfOvernightStayWithoutInvoice);
     }
 
     @Override
-    public BigDecimal calculateAmountOfOvernightStayWithoutInvoice(TravelRequestDto travelRequestDto) {
+    public BigDecimal calculateAmountOfOvernightStayWithoutInvoice(final TravelRequestDto travelRequestDto) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         DietDto dietDto = travelRequestDto.getDietDto();
         Integer quantityOfOvernightStay = calculateQuantityOfOvernightStay(travelRequestDto);
@@ -46,7 +46,7 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     }
 
     @Override
-    public BigDecimal calculateAmountOfOvernightStayWithInvoice(TravelRequestDto travelRequestDto) {
+    public BigDecimal calculateAmountOfOvernightStayWithInvoice(final TravelRequestDto travelRequestDto) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         Integer quantityOfOvernightStay = calculateQuantityOfOvernightStay(travelRequestDto);
         DietDto dietDto = travelRequestDto.getDietDto();
@@ -68,7 +68,7 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     }
 
     @Override
-    public Integer calculateQuantityOfOvernightStay(TravelRequestDto travelRequestDto) {
+    public Integer calculateQuantityOfOvernightStay(final TravelRequestDto travelRequestDto) {
         Integer quantityOfOvernightStay = 0;
         LocalDate startDate = travelRequestDto.getStartDate();
         LocalTime startTime = travelRequestDto.getStartTime();
@@ -100,7 +100,7 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     }
 
     @Override
-    public Integer calculateTotalInputQuantityOfOvernightStay(TravelRequestDto travelRequestDto) {
+    public Integer calculateTotalInputQuantityOfOvernightStay(final TravelRequestDto travelRequestDto) {
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         Integer totalInputQuantityOfOvernightStay = overnightStayDto.getInputQuantityOfOvernightStayWithInvoice() +
                 overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();

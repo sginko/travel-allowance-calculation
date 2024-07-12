@@ -9,7 +9,6 @@ import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 import java.math.BigDecimal;
 
 @Getter
-//@Setter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "diet")
