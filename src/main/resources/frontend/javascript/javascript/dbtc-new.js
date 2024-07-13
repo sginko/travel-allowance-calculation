@@ -26,24 +26,10 @@ function validateFormFields(form) {
     if (form["advancePayment"].value === "") {
         form["advancePayment"].value = 0;
     }
-
-    console.log("Form validated", {
-        pesel: form["pesel"].value,
-        fromCity: form["fromCity"].value,
-        toCity: form["toCity"].value,
-        startDate: form["startDate"].value,
-        startTime: form["startTime"].value,
-        endDate: form["endDate"].value,
-        endTime: form["endTime"].value,
-        advancePayment: form["advancePayment"].value,
-        numberOfBreakfasts: form["numberOfBreakfasts"].value,
-        numberOfLunches: form["numberOfLunches"].value,
-        numberOfDinners: form["numberOfDinners"].value,
-        inputQuantityOfOvernightStayWithoutInvoice: form["inputQuantityOfOvernightStayWithoutInvoice"].value,
-        inputQuantityOfOvernightStayWithInvoice: form["inputQuantityOfOvernightStayWithInvoice"].value,
-        amountOfTotalOvernightsStayWithInvoice: form["amountOfTotalOvernightsStayWithInvoice"].value,
-        isInvoiceAmountGreaterAllowed: form["isInvoiceAmountGreaterAllowed"].checked
-    });
+    // Установка значения по умолчанию для isInvoiceAmountGreaterAllowed
+    if (!form["isInvoiceAmountGreaterAllowed"].checked) {
+        form["isInvoiceAmountGreaterAllowed"].value = false;
+    }
 }
 
 async function sendDbtcRequest(evt) {
@@ -95,9 +81,9 @@ async function sendDbtcRequest(evt) {
         }
 
         console.log('Podróż została pomyślnie dodana');
-        alert('Podróż została pomyślnie dodана');
+        alert('Podróż została pomyślnie dodana');
     } catch (error) {
         console.error('Błąd:', error);
-        alert('Wystąpił błąd podczas dodawания podróży');
+        alert('Wystąpił błąd podczas додawания podróży');
     }
 }
