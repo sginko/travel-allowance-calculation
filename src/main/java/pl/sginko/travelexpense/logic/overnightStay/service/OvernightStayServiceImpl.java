@@ -24,38 +24,26 @@ public class OvernightStayServiceImpl implements OvernightStayService {
 
     @Override
     public BigDecimal calculateAmountOfOvernightStayWithoutInvoice(final TravelRequestDto travelRequestDto) {
+        checkQuantityOfNightInTravel(travelRequestDto);
+
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
+        Integer inputQuantityOfOvernightStayWithoutInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();
         DietDto dietDto = travelRequestDto.getDietDto();
-        Integer quantityOfOvernightStay = calculateQuantityOfOvernightStay(travelRequestDto);
         BigDecimal dailyAllowance = dietDto.getDailyAllowance();
         BigDecimal oneNightWithoutInvoice = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
-        BigDecimal amountOfTotalOvernightsStayWithoutInvoice = BigDecimal.ZERO;
 
-        Integer totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay(travelRequestDto);
-        Integer inputQuantityOfOvernightStayWithInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithInvoice();
-        Integer inputQuantityOfOvernightStayWithoutInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();
-
-        if (inputQuantityOfOvernightStayWithInvoice > quantityOfOvernightStay ||
-                inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay ||
-                totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
-            throw new OvernightStayException("Quantity numbers of nights more than nights in travel");
-        }
-
-        amountOfTotalOvernightsStayWithoutInvoice = oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
-        return amountOfTotalOvernightsStayWithoutInvoice;
+        return oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
     }
 
     @Override
     public BigDecimal calculateAmountOfOvernightStayWithInvoice(final TravelRequestDto travelRequestDto) {
+        checkQuantityOfNightInTravel(travelRequestDto);
+
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
-
-        Integer quantityOfOvernightStay = calculateQuantityOfOvernightStay(travelRequestDto);
-
-        checkQuantityOfNightInTravel(travelRequestDto, overnightStayDto, quantityOfOvernightStay);
-
         DietDto dietDto = travelRequestDto.getDietDto();
-
         BigDecimal dailyAllowance = dietDto.getDailyAllowance();
+
+
         BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
 
         return overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice();
@@ -100,16 +88,17 @@ public class OvernightStayServiceImpl implements OvernightStayService {
                 overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();
     }
 
-    private void checkQuantityOfNightInTravel(TravelRequestDto travelRequestDto, OvernightStayDto overnightStayDto,
-                                              Integer quantityOfOvernightStay) {
+    private void checkQuantityOfNightInTravel(final TravelRequestDto travelRequestDto) {
+        OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         Integer inputQuantityOfOvernightStayWithInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithInvoice();
         Integer inputQuantityOfOvernightStayWithoutInvoice = overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice();
         Integer totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay(travelRequestDto);
+        Integer quantityOfOvernightStay = calculateQuantityOfOvernightStay(travelRequestDto);
 
         if (inputQuantityOfOvernightStayWithInvoice > quantityOfOvernightStay ||
                 inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay ||
                 totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
-            throw new OvernightStayException("Quantity numbers of nights more than nights in travel");
+            throw new OvernightStayException("The number of nights entered is greater than the number of nights on the trip.");
         }
     }
 }
