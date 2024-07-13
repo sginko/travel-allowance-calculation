@@ -2,7 +2,6 @@ const dbtcForm = document.getElementById("dbtc-form");
 dbtcForm.addEventListener('submit', sendDbtcRequest);
 
 function validateFormFields(form) {
-
     if (form["numberOfBreakfasts"].value === "") {
         form["numberOfBreakfasts"].value = 0;
     }
@@ -30,12 +29,24 @@ function validateFormFields(form) {
     if (!form["isInvoiceAmountGreaterAllowed"].checked) {
         form["isInvoiceAmountGreaterAllowed"].value = false;
     }
+
+    console.log("Form submitted", {
+        pesel: form["pesel"].value,
+        numberOfLunches: form["numberOfLunches"].value,
+        numberOfBreakfasts: form["numberOfBreakfasts"].value,
+        numberOfDinners: form["numberOfDinners"].value,
+        inputQuantityOfOvernightStayWithoutInvoice: form["inputQuantityOfOvernightStayWithoutInvoice"].value,
+        inputQuantityOfOvernightStayWithInvoice: form["inputQuantityOfOvernightStayWithInvoice"].value,
+        amountOfTotalOvernightsStayWithInvoice: form["amountOfTotalOvernightsStayWithInvoice"].value,
+        advancePayment: form["advancePayment"].value
+    });
 }
 
 async function sendDbtcRequest(evt) {
     evt.preventDefault();
-    const form = evt.target; // Получаем ссылку на форму
+    const form = evt.target;
     validateFormFields(form);
+
     const formData = new FormData(form);
     const jsonObject = {
         pesel: formData.get("pesel"),
@@ -68,21 +79,22 @@ async function sendDbtcRequest(evt) {
         const response = await fetch('http://localhost:8080/api/v1/travels', {
             method: 'POST',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: jsonData
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Server error:', errorData);
-            throw new Error('Network response was not ok');
+            alert(`Błąd: ${response.status}\nMessage: ${response.statusText}`);
+            throw new Error(`Błąd: ${response.status}\nMessage: ${response.statusText}`);
         }
+        const dataJSON = await response.json();
+        localStorage.setItem('resultValues', JSON.stringify(dataJSON));
+        window.location.href = 'results.html';
 
-        console.log('Podróż została pomyślnie dodana');
-        alert('Podróż została pomyślnie dodana');
     } catch (error) {
         console.error('Błąd:', error);
-        alert('Wystąpił błąd podczas додawания podróży');
+        alert('Wystąpił błąd podczas dodawania podróży');
     }
 }
