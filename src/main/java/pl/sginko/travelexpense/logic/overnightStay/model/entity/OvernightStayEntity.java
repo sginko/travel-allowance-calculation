@@ -42,13 +42,18 @@ public class OvernightStayEntity {
     @Column(nullable = false)
     private Integer quantityOfOvernightStay;
 
+    @Column(nullable = false)
+    private Boolean isInvoiceAmountGreaterAllowed;
+
     public OvernightStayEntity(TravelEntity travelEntity, Integer inputQuantityOfOvernightStayWithoutInvoice,
-                               Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice) {
+                               Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
+                               Boolean isInvoiceAmountGreaterAllowed) {
         this.travelEntity = travelEntity;
         this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
         this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
         this.totalInputQuantityOfOvernightStay = inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
+        this.isInvoiceAmountGreaterAllowed = isInvoiceAmountGreaterAllowed;
     }
 
     public void updateQuantityOfOvernightStay(Integer quantityOfOvernightStay) {

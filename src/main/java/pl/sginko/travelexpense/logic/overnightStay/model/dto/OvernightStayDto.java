@@ -21,6 +21,9 @@ public class OvernightStayDto {
     @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
     private Integer inputQuantityOfOvernightStayWithInvoice;
 
-    @NotNull(message = "overnightStayWithInvoice cannot be null")
+    @NotNull(message = "Amount of total overnight stays with invoice cannot be null")
     private BigDecimal amountOfTotalOvernightsStayWithInvoice;
+
+    @NotNull(message = "Invoice amount greater allowed flag cannot be null")
+    Boolean isInvoiceAmountGreaterAllowed;
 }

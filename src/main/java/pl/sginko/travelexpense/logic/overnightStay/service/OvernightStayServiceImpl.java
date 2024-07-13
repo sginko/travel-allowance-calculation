@@ -39,13 +39,19 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     public BigDecimal calculateAmountOfOvernightStayWithInvoice(final TravelRequestDto travelRequestDto) {
         checkQuantityOfNightInTravel(travelRequestDto);
 
-        OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         DietDto dietDto = travelRequestDto.getDietDto();
         BigDecimal dailyAllowance = dietDto.getDailyAllowance();
 
+        OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
+        BigDecimal amountOfTotalOvernightsStayWithInvoice = overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice();
+        Boolean isInvoiceAmountGreaterAllowed = overnightStayDto.getIsInvoiceAmountGreaterAllowed();
 
-        BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
-
+        if (!isInvoiceAmountGreaterAllowed) {
+            BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
+            if (amountOfTotalOvernightsStayWithInvoice.compareTo(maxAmountForOneNightWithInvoice) > 0) {
+                throw new OvernightStayException("Total amount exceeds the maximum allowable amount");
+            }
+        }
         return overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice();
     }
 
