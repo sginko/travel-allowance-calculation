@@ -36,8 +36,8 @@ class TravelServiceImplTest {
     private final LocalDate START_DAY = LocalDate.now();
     private final LocalTime START_TIME = LocalTime.of(0, 0);
 
-    private final BigDecimal PERCENT_25 = new BigDecimal(0.25);
-    private final BigDecimal PERCENT_50 = new BigDecimal(0.5);
+//    private final BigDecimal PERCENT_25 = new BigDecimal(0.25);
+    private final BigDecimal PERCENT_50 = BigDecimal.valueOf(0.5);//new BigDecimal(0.5);
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
     private final BigDecimal HALF_DAILY_ALLOWANCE = DAILY_ALLOWANCE.multiply(PERCENT_50);
     private final BigDecimal ZERO_DAILY_ALLOWANCE = BigDecimal.ZERO;
@@ -594,8 +594,9 @@ class TravelServiceImplTest {
         UserRequestDto userRequestDto = new UserRequestDto(PESEL, FIRST_NAME, SECOND_NAME, POSITION);
         userService.addUser(userRequestDto);
 
+        LocalTime startTime = LocalTime.of(18, 0);
         LocalDate endDay = LocalDate.now().plusDays(1);
-        LocalTime endTime = LocalTime.of(0, 0);
+        LocalTime endTime = LocalTime.of(18, 0);
 
         Integer numberOfBreakfasts = 0;
         Integer numberOfLunches = 0;
@@ -610,7 +611,7 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
-        TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
+        TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, startTime, endDay,
                 endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
 
         //WHEN
