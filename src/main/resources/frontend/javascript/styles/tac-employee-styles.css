@@ -1,0 +1,104 @@
+html {
+    box-sizing: border-box;
+    font-size: 100%;
+}
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    background-color: rgb(250,250,250);
+}
+form {
+    position: absolute;
+    top:140px;
+    left:30px;
+    /* border: 1px solid pink; */
+    margin-top:20px;
+    width: 280px;
+    height:310px;
+}
+label{
+    position: absolute;
+}
+input{
+    position: absolute;
+    border-radius: 5px;
+    outline:none;
+    border:none;
+}
+.hidden{
+    display:none;
+}
+input[type="text"]{
+    width:256px;
+    height:30px;
+    padding:5px 5px 5px 15px;
+    background-color: rgb(245,245,245);
+    border:2px solid rgb(235, 235, 235);
+}
+input[type="text"]:hover, input[type="text"]:focus{
+    border-color: rgb(50, 100, 255);
+}
+input[type="text"]::placeholder{
+    color:rgb(130,130,130);
+    letter-spacing: 2px;
+}
+input[type=submit]{
+    position: absolute;
+    top: 240px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    background-color: rgb(50, 100, 255);
+    text-transform: uppercase;
+    color:white;
+    width: 280px;
+    height: 50px;
+    padding: 5px;
+    transition: .5s;
+}
+input[type=submit]:hover{
+    cursor:pointer;
+    background-color: rgb(100, 150, 255);
+}
+form label{
+    left:0;
+    padding-left: 5px;
+}
+form input:nth-child(5){
+    top: 0;
+}
+form input:nth-child(6){
+    top: 50px;
+}
+form input:nth-child(7){
+    top: 100px;
+}
+form input:nth-child(8){
+    top: 150px;
+}
+.employee-register-container{
+    position: relative;
+    margin-left:auto;
+    margin-right:auto;
+    background-color: rgb(255,255,255);
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.12);
+    margin-top:60px;
+    width: 340px;
+    height:500px;
+}
+.register-employee-label{
+    top:40px;
+    left:20px;
+    width:300px;
+    text-align: center;
+    font-size: 30px;
+    letter-spacing: 1px;
+    color: rgb(50, 100, 255);
+}
