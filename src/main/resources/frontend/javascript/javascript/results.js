@@ -46,7 +46,7 @@ async function fetchPdfDocument(evt) {
     console.log(formBody);
 
     try {
-        const response = await fetch('/api/v1/travels/print', {
+        const response = await fetch('http://localhost:8080/api/v1/travels/print/${formToPrintData.get('id')}', {
             method: 'POST',
             headers: {
                 'Accept': 'application/pdf',

@@ -10,6 +10,7 @@ import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;

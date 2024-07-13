@@ -17,6 +17,7 @@ import pl.sginko.travelexpense.logic.travel.service.TravelService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 @AllArgsConstructor
 @RestController
@@ -42,7 +43,7 @@ public class TravelController {
 //    }
 
     @PostMapping("/print/{id}")
-    public ResponseEntity<Void> print(@RequestParam("id") Long id) {
+    public ResponseEntity<Void> print2(@PathVariable("id") Long id) {
         try {
             pdfDocumentService.generatePdfDocument(id);
         } catch (IOException e) {
@@ -73,7 +74,6 @@ public class TravelController {
             return ResponseEntity.status(500).build();
         }
     }
-
 
 //    @GetMapping("/download")
 //    public ResponseEntity<byte[]> downloadPdf() {
