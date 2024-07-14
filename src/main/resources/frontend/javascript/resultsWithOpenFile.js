@@ -25,7 +25,6 @@ function addValues() {
             "overnightStayResponseDto": {
                 "id": 1,
                 "inputQuantityOfOvernightStayWithoutInvoice": 1,
-                "amountOfTotalOvernightsStayWithoutInvoice": 50,
                 "inputQuantityOfOvernightStayWithInvoice": 1,
                 "amountOfTotalOvernightsStayWithInvoice": 100,
                 "overnightStayAmount": 150
