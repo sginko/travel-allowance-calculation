@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.diet.exception.DietException;
 import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
@@ -14,14 +15,8 @@ import pl.sginko.travelexpense.logic.user.exception.UserException;
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class TravelControllerAdvice {
-
-    @ExceptionHandler(UserException.class)
-    public ResponseEntity handleEventException(UserException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Error: " + e.getMessage());
-    }
 
     @ExceptionHandler(TravelException.class)
     public ResponseEntity handleEventException(TravelException e) {
