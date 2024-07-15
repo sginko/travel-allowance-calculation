@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Expense Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 150vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            margin-top:100px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            min-width:280px;
+            width: 100%;
+            text-align: left;
+            border:1px solid pink;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            color: #555;
+            margin: 5px 0;
+        }
+        .highlight {
+            font-weight: bold;
+        }
+        form {
+            margin-top: 20px;
+            text-align: center;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Wyniki</h1>
+    <p><span class="highlight">ID:</span> <span id="span-id"></span></p>
+    <p><span class="highlight">Pesel:</span> <span id="span-pesel"></span></p>
+    <br>
+    <p><span class="highlight">Miasto wyjazdu:</span> <span id="span-fromCity"></span></p>
+    <p><span class="highlight">Miasto przyjazdu:</span> <span id="span-toCity"></span></p>
+    <p><span class="highlight">Data wyjazdu:</span> <span id="span-startDate"></span></p>
+    <p><span class="highlight">Godzina wyjazdu:</span> <span id="span-startTime"></span></p>
+    <p><span class="highlight">Data powrotu:</span> <span id="span-endDate"></span></p>
+    <p><span class="highlight">Godzina powrotu:</span> <span id="span-endTime"></span></p>
+    <br>
+    <p><span class="highlight">Liczba śniadań:</span> <span id="span-numberOfBreakfasts"></span></p>
+    <p><span class="highlight">Liczba obiadów:</span> <span id="span-numberOfLunches"></span></p>
+    <p><span class="highlight">Liczba kolacji:</span> <span id="span-numberOfDinners"></span></p>
+    <p><span class="highlight">Posiłki wartość:</span> <span id="span-foodAmount"></span></p>
+    <p><span class="highlight">Dieta wartość:</span> <span id="span-dietAmount"></span></p>
+    <br>
+    <p><span class="highlight">Noclegi wartość:</span> <span id="span-overnightStayAmount"></span></p>
+    <p><span class="highlight">Liczba noclegów z fakturą:</span> <span id="span-inputQuantityOfOvernightStayWithInvoice"></span></p>
+    <p><span class="highlight">Koszt noclegów z fakturą:</span> <span id="span-amountOfTotalOvernightsStayWithInvoice"></span></p>
+    <p><span class="highlight">Liczba noclegów ryczałt :</span> <span id="span-inputQuantityOfOvernightStayWithoutInvoice"></span></p>
+    <p><span class="highlight">Koszt noclegów ryczałt:</span> <span id="span-amountOfTotalOvernightsStayWithoutInvoice"></span></p>
+    <br>
+    <p><span class="highlight">Pobrano zaliczke:</span> <span id="span-advancePayment"></span></p>
+    <p><span class="highlight">Do wypłaty:</span> <span id="span-totalAmount"></span></p>
+    <form method="POST" target="_blank" id="form-print-id">
+        <input type="hidden" name="id" id="input-print-id">
+        <input type="submit" value="Print">
+    </form>
+</div>
+<script type="text/javascript" src="../javascript/resultsWithOpenFile.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+html {
+    box-sizing: border-box;
+    font-size: 100%;
+}
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(255,255,255);
+}
+*{
+    margin: 0;
+    padding: 0;
+}
+header{
+    width:100%;
+    height: 60px;
+    background-color: rgb(255,255,255);
+    box-shadow: 0 2px 10px rgba(0,0,0,.12);
+}
+a{
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+a::after{
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    height:40px;
+    width:120px;
+}
+.Login-button, .Register-button{
+    position: absolute;
+    top:10px;
+    width:98px;
+    height:18px;
+    padding:10px;
+    border-radius: 5px;
+    transition: color .5s;
+}
+.Login-button{
+    right:160px;
+    color:white;
+    border:2px solid rgb(50, 100, 255);
+    background-color:rgb(50, 100, 255);
+}
+.Register-button{
+    right:30px;
+    border:2px solid rgb(50, 100, 255);
+    background-color:white;
+}
+.Login-button a{
+    margin-left:15px;
+    color: white;
+}
+.Register-button a{
+    margin-left:5px;
+    color:rgb(50, 100, 255);
+}
+.Login-button:hover{
+    cursor: pointer;
+    border:2px solid rgb(255, 150, 50);
+    background-color:white;
+}
+.Register-button:hover{
+    cursor: pointer;
+    border:2px solid rgb(255, 150, 50);
+    background-color:rgb(255, 150, 50);
+}
+.Login-button:hover a{
+    color:rgb(255, 150, 50);
+}
+.Register-button:hover a{
+    color:white;
+}
