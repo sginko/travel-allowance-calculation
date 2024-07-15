@@ -1,0 +1,414 @@
+openapi: 3.0.3
+info:
+  title: Travel Allowance API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Travel
+    description: Endpoints related to travel expenses
+  - name: User
+    description: Endpoints related to user management
+
+paths:
+  /api/v1/travels:
+    post:
+      tags:
+        - Travel
+      summary: Calculate travel expenses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRequestDto'
+      responses:
+        '201':
+          description: Travel expenses calculated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TravelResponseDto'
+        '400':
+          description: Bad Request - TravelException, DietException, OvernightStayException
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error: [error message]"
+        '422':
+          description: Unprocessable Entity - ConstraintViolationException, DateTimeParseException
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Invalid date and time format: [error message]"
+
+  /api/v1/travels/print/{id}:
+    post:
+      tags:
+        - Travel
+      summary: Generate PDF document
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: PDF document generated and redirected
+          headers:
+            Location:
+              schema:
+                type: string
+                example: /api/v1/travels/print/changed_template.pdf
+        '500':
+          description: Error generating PDF document
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error generating PDF document"
+
+  /api/v1/travels/print/changed_template.pdf:
+    get:
+      tags:
+        - Travel
+      summary: Get generated PDF document
+      responses:
+        '200':
+          description: PDF document
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '500':
+          description: Error retrieving PDF document
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error retrieving PDF document"
+
+  /api/v1/users:
+    post:
+      tags:
+        - User
+      summary: Add a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequestDto'
+      responses:
+        '201':
+          description: User created
+        '400':
+          description: Bad Request - UserException, Malformed JSON
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Error: [error message]"
+        '422':
+          description: Unprocessable Entity - ConstraintViolationException, Invalid date and time format
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "[error message]"
+
+components:
+  schemas:
+    UserRequestDto:
+      type: object
+      properties:
+        pesel:
+          type: integer
+          minimum: 0
+          example: 12345678901
+        firstName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: John
+        secondName:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Doe
+        position:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Developer
+      required:
+        - pesel
+        - firstName
+        - secondName
+        - position
+
+    TravelRequestDto:
+      type: object
+      properties:
+        pesel:
+          type: integer
+          minimum: 0
+          example: 12345678901
+          description: Pessel cannot be null and must be a positive number
+        fromCity:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Warsaw
+          description: From city cannot be blank, name should be between 2 and 50 characters
+        toCity:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Krakow
+          description: To city cannot be blank, name should be between 2 and 50 characters
+        startDate:
+          type: string
+          format: date
+          example: 2023-01-01
+          description: Start date cannot be null
+        startTime:
+          type: string
+          format: time
+          example: 08:00:00
+          description: Start time cannot be null
+        endDate:
+          type: string
+          format: date
+          example: 2023-01-02
+          description: End date cannot be null
+        endTime:
+          type: string
+          format: time
+          example: 18:00:00
+          description: End time cannot be null
+        advancePayment:
+          type: number
+          format: double
+          example: 100.00
+          description: Advance payment cannot be null
+        dietDto:
+          $ref: '#/components/schemas/DietDto'
+        overnightStayDto:
+          $ref: '#/components/schemas/OvernightStayDto'
+      required:
+        - pesel
+        - fromCity
+        - toCity
+        - startDate
+        - startTime
+        - endDate
+        - endTime
+        - advancePayment
+        - dietDto
+        - overnightStayDto
+
+    DietDto:
+      type: object
+      properties:
+        dailyAllowance:
+          type: number
+          format: double
+          example: 45.00
+          nullable: false
+          description: Daily allowance for the diet
+        numberOfBreakfasts:
+          type: integer
+          minimum: 0
+          example: 1
+          nullable: false
+          description: Number of breakfasts
+        numberOfLunches:
+          type: integer
+          minimum: 0
+          example: 1
+          nullable: false
+          description: Number of lunches
+        numberOfDinners:
+          type: integer
+          minimum: 0
+          example: 1
+          nullable: false
+          description: Number of dinners
+      required:
+        - dailyAllowance
+        - numberOfBreakfasts
+        - numberOfLunches
+        - numberOfDinners
+
+    DietResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        numberOfBreakfasts:
+          type: integer
+          minimum: 0
+          example: 1
+        numberOfLunches:
+          type: integer
+          minimum: 0
+          example: 1
+        numberOfDinners:
+          type: integer
+          minimum: 0
+          example: 1
+        foodAmount:
+          type: number
+          format: double
+          example: 45.00
+        dietAmount:
+          type: number
+          format: double
+          example: 135.00
+      required:
+        - id
+        - numberOfBreakfasts
+        - numberOfLunches
+        - numberOfDinners
+        - foodAmount
+        - dietAmount
+
+    OvernightStayDto:
+      type: object
+      properties:
+        inputQuantityOfOvernightStayWithoutInvoice:
+          type: integer
+          minimum: 0
+          example: 1
+          nullable: false
+          description: Number of overnight stay without invoice
+        inputQuantityOfOvernightStayWithInvoice:
+          type: integer
+          minimum: 0
+          example: 1
+          nullable: false
+          description: Number of overnight stay with invoice
+        amountOfTotalOvernightsStayWithInvoice:
+          type: number
+          format: double
+          example: 100.00
+          nullable: false
+          description: Amount of total overnight stays with invoice
+        isInvoiceAmountGreaterAllowed:
+          type: boolean
+          nullable: false
+          description: Invoice amount greater allowed flag
+      required:
+        - inputQuantityOfOvernightStayWithoutInvoice
+        - inputQuantityOfOvernightStayWithInvoice
+        - amountOfTotalOvernightsStayWithInvoice
+        - isInvoiceAmountGreaterAllowed
+
+    OvernightStayResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        quantityOfOvernightStay:
+          type: integer
+          minimum: 0
+          example: 2
+        totalInputQuantityOfOvernightStay:
+          type: integer
+          minimum: 0
+          example: 2
+        inputQuantityOfOvernightStayWithoutInvoice:
+          type: integer
+          minimum: 0
+          example: 1
+        amountOfTotalOvernightsStayWithoutInvoice:
+          type: number
+          format: double
+          example: 50.00
+        inputQuantityOfOvernightStayWithInvoice:
+          type: integer
+          minimum: 0
+          example: 1
+        amountOfTotalOvernightsStayWithInvoice:
+          type: number
+          format: double
+          example: 100.00
+        overnightStayAmount:
+          type: number
+          format: double
+          example: 150.00
+      required:
+        - id
+        - quantityOfOvernightStay
+        - totalInputQuantityOfOvernightStay
+        - inputQuantityOfOvernightStayWithoutInvoice
+        - amountOfTotalOvernightsStayWithoutInvoice
+        - inputQuantityOfOvernightStayWithInvoice
+        - amountOfTotalOvernightsStayWithInvoice
+        - overnightStayAmount
+
+    TravelResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        pesel:
+          type: integer
+          example: 12345678901
+        fromCity:
+          type: string
+          example: Warsaw
+        toCity:
+          type: string
+          example: Krakow
+        startDate:
+          type: string
+          format: date
+          example: 2023-01-01
+        startTime:
+          type: string
+          format: time
+          example: 08:00:00
+        endDate:
+          type: string
+          format: date
+          example: 2023-01-02
+        endTime:
+          type: string
+          format: time
+          example: 18:00:00
+        totalAmount:
+          type: number
+          format: double
+          example: 300.00
+        advancePayment:
+          type: number
+          format: double
+          example: 100.00
+        dietResponse:
+          $ref: '#/components/schemas/DietResponseDto'
+        overnightStayResponseDto:
+          $ref: '#/components/schemas/OvernightStayResponseDto'
+      required:
+        - id
+        - pesel
+        - fromCity
+        - toCity
+        - startDate
+        - startTime
+        - endDate
+        - endTime
+        - totalAmount
+        - advancePayment
+        - dietResponse
+        - overnightStayResponseDto

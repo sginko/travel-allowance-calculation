@@ -1,36 +1,51 @@
 package pl.sginko.travelexpense.controller.travel;
 
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.model.pdfDocument.PdfDocumentService;
-import pl.sginko.travelexpense.model.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.model.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.model.travel.service.TravelService;
+import pl.sginko.travelexpense.logic.pdfDocument.PdfDocumentService;
+import pl.sginko.travelexpense.logic.travel.exception.TravelException;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travel.service.TravelService;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
-@Controller
+@AllArgsConstructor
+@RestController
 @RequestMapping("/api/v1/travels")
 public class TravelController {
     private final TravelService travelService;
-    private final PdfDocumentService pdfDocumentPrinter;
+    private final PdfDocumentService pdfDocumentService;
 
-    public TravelController(TravelService travelService, PdfDocumentService pdfDocumentPrinter) {
-        this.travelService = travelService;
-        this.pdfDocumentPrinter = pdfDocumentPrinter;
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping
+    public TravelResponseDto calculateTravelExpenses(@RequestBody @Valid TravelRequestDto requestDto) {
+        return travelService.calculateTravelExpenses(requestDto);
     }
 
-    @PostMapping("/print")
-    public ResponseEntity<Void> print(@RequestParam("id") Long id) {
+//    @PostMapping("/print/{id}")
+//    public ResponseEntity<String> generatePdf(@PathVariable Long id) {
+//        try {
+//            pdfDocumentService.generatePdfDocument(id);
+//            return ResponseEntity.ok("PDF document generated successfully.");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error generating PDF document: " + e.getMessage());
+//        }
+//    }
+
+    @PostMapping("/print/{id}")
+    public ResponseEntity<Void> print(@PathVariable("id") Long id) {
         try {
-            pdfDocumentPrinter.generatePdfDocument(id);
+            pdfDocumentService.generatePdfDocument(id);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
@@ -43,7 +58,7 @@ public class TravelController {
     @GetMapping("/print/changed_template.pdf")
     public ResponseEntity<InputStreamResource> getChangedTemplate() {
         try {
-            File file = new File("src/main/resources/templates/files/changed_template.pdf");
+            File file = new File("src/main/resources/print/changed_template.pdf");
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
             HttpHeaders headers = new HttpHeaders();
@@ -60,21 +75,21 @@ public class TravelController {
         }
     }
 
-//    @GetMapping
-//    public String getTravelForm() {
-//        return "travel-calculator";
+//    @GetMapping("/download")
+//    public ResponseEntity<byte[]> downloadPdf() {
+//        try {
+//            File file = new File("src/main/resources/print/changed_template.pdf");
+//            InputStream inputStream = new FileInputStream(file);
+//            byte[] fileContent = inputStream.readAllBytes();
+//            inputStream.close();
+//
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=changed_template.pdf");
+//            headers.add(HttpHeaders.CONTENT_TYPE, "application/pdf");
+//
+//            return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+//        } catch (IOException e) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
 //    }
-
-    @GetMapping
-    public String getTravelForm(@RequestParam(value = "pesel", required = false) Long pesel, Model model) {
-        model.addAttribute("pesel", pesel);
-        return "travel-calculator";
-    }
-
-    @PostMapping
-    public String calculateTravelExpenses(@ModelAttribute TravelRequestDto requestDto, Model model) {
-        TravelResponseDto responseDto = travelService.calculateTravelExpenses(requestDto);
-        model.addAttribute("travelResponse", responseDto);
-        return "results";
-    }
 }
