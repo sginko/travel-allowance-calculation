@@ -43,7 +43,7 @@ public class TravelController {
 //    }
 
     @PostMapping("/print/{id}")
-    public ResponseEntity<Void> print2(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> print(@PathVariable("id") Long id) {
         try {
             pdfDocumentService.generatePdfDocument(id);
         } catch (IOException e) {

@@ -66,45 +66,35 @@
             <artifactId>fontbox</artifactId>
             <version>2.0.27</version>
         </dependency>
-        <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>3.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.modelmapper</groupId>-->
+<!--            <artifactId>modelmapper</artifactId>-->
+<!--            <version>3.2.0</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-thymeleaf</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/itextpdf &ndash;&gt;-->
 <!--        <dependency>-->
-<!--            <groupId>com.itextpdf</groupId>-->
-<!--            <artifactId>itextpdf</artifactId>-->
-<!--            <version>5.5.13.3</version>-->
+<!--            <groupId>io.swagger.core.v3</groupId>-->
+<!--            <artifactId>swagger-annotations</artifactId>-->
+<!--            <version>2.2.22</version>-->
 <!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/kernel &ndash;&gt;-->
 <!--        <dependency>-->
-<!--            <groupId>com.itextpdf</groupId>-->
-<!--            <artifactId>kernel</artifactId>-->
-<!--            <version>8.0.4</version>-->
+<!--            <groupId>org.springdoc</groupId>-->
+<!--            <artifactId>springdoc-openapi-ui</artifactId>-->
+<!--            <version>1.8.0</version>-->
 <!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/forms &ndash;&gt;-->
 <!--        <dependency>-->
-<!--            <groupId>com.itextpdf</groupId>-->
-<!--            <artifactId>forms</artifactId>-->
-<!--            <version>8.0.4</version>-->
+<!--            <groupId>io.swagger.codegen.v3</groupId>-->
+<!--            <artifactId>swagger-codegen-generators</artifactId>-->
+<!--            <version>1.0.50</version>-->
 <!--        </dependency>-->
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/layout &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>com.itextpdf</groupId>-->
-<!--            <artifactId>layout</artifactId>-->
-<!--            <version>8.0.4</version>-->
-<!--        </dependency>-->
-
 
     </dependencies>
 

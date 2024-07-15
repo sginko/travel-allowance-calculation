@@ -8,7 +8,7 @@ import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
 public class DietMapper {
 
     public DietResponseDto toResponseDto(DietEntity entity) {
-        return new DietResponseDto(entity.getId(), entity.getDietAmount(), entity.getNumberOfBreakfasts(),
-                entity.getNumberOfLunches(), entity.getNumberOfDinners());
+        return new DietResponseDto(entity.getId(), entity.getNumberOfBreakfasts(), entity.getNumberOfLunches(),
+                entity.getNumberOfDinners(), entity.getFoodAmount(), entity.getDietAmount());
     }
 }

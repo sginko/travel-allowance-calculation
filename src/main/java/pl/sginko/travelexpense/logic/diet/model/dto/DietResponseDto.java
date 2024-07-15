@@ -12,8 +12,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class DietResponseDto {
     private Long id;
-    private BigDecimal dietAmount;
     private Integer numberOfBreakfasts;
     private Integer numberOfLunches;
     private Integer numberOfDinners;
+    private BigDecimal foodAmount;
+    private BigDecimal dietAmount;
 }

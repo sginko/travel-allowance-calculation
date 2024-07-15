@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OvernightStayResponseDto {
     private Long id;
+    private Integer quantityOfOvernightStay;
+    private Integer totalInputQuantityOfOvernightStay;
     private Integer inputQuantityOfOvernightStayWithoutInvoice;
     private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
     private Integer inputQuantityOfOvernightStayWithInvoice;
