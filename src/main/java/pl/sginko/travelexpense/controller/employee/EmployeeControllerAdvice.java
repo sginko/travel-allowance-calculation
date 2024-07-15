@@ -1,16 +1,16 @@
-package pl.sginko.travelexpense.controller.travel;
+package pl.sginko.travelexpense.controller.employee;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pl.sginko.travelexpense.model.travel.TravelException;
+import pl.sginko.travelexpense.model.employee.EmployeeException;
 
 @ControllerAdvice
-public class TravelControllerAdvice {
+public class EmployeeControllerAdvice {
 
-    @ExceptionHandler(TravelException.class)
-    public ResponseEntity handleEventException(TravelException e) {
+    @ExceptionHandler(EmployeeException.class)
+    public ResponseEntity handleEventException(EmployeeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
     }

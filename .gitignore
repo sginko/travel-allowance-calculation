@@ -1,12 +1,9 @@
 HELP.md
 target/
-**/mvn/wrapper/maven-wrapper.jar
-**/src/main/java/
-**/src/main/resources/templates/files/
-**/src/main/resources/templates/themeleaf/
-**/src/main/resources/application.properties
-**/src/test/
-**/target/classes
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
 ### STS ###
 .apt_generated
 .classpath
@@ -35,10 +32,3 @@ build/
 ### VS Code ###
 .vscode/
 /PRINT/
-
-### single files ###
-.mvnw
-.mvnw.cmd
-.pom.xml
-.Travel Expense.txt
-.travelexpense.zip
