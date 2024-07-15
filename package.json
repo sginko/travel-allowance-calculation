@@ -1,0 +1,27 @@
+{
+  "name": "travel-allowance-calculation",
+  "version": "1.0.0",
+  "description": "node server",
+  "main": "nodeserver.js",
+  "scripts": {
+    "test": "test server",
+    "start": "nodemon src/main/resources/frontend/javascript/javascript/nodeserver.js localhost 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sginko/travel-allowance-calculation.git"
+  },
+  "author": "Krzysztof Sokołowski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sginko/travel-allowance-calculation/issues"
+  },
+  "homepage": "https://github.com/sginko/travel-allowance-calculation#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "path": "^0.12.7",
+    "pdfkit": "^0.15.0"
+  }
+}
