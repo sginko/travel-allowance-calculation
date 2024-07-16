@@ -1,6 +1,10 @@
 package pl.sginko.travelexpense.controller.travel;
 
 import jakarta.validation.ConstraintViolationException;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -16,82 +20,69 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class TravelControllerAdvice {
 
-//    @ExceptionHandler(TravelException.class)
-//    public ResponseEntity<Map<String, String>> handleEventException2(TravelException e) {
-//        Map<String, String> error = new HashMap<>();
-//        error.put("message", "Error: " + e.getMessage());
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-//    }
-//
-//    @ExceptionHandler(DietException.class)
-//    public ResponseEntity<Map<String, String>> handleEventException(DietException e) {
-//        Map<String, String> error = new HashMap<>();
-//        error.put("message", "Error: " + e.getMessage());
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-//    }
-//
-//    @ExceptionHandler(OvernightStayException.class)
-//    public ResponseEntity<Map<String, String>> handleEventException(OvernightStayException e) {
-//        Map<String, String> error = new HashMap<>();
-//        error.put("message", "Error: " + e.getMessage());
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-//    }
-//
 //    @ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<Map<String, String>> handleEventException(ConstraintViolationException e) {
+//    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
 //        String errors = e.getConstraintViolations().stream()
-//                .map(error -> error.getMessageTemplate()).collect(Collectors.joining(",", "", ""))
-//                .replace(",", "\n");
-//        Map<String, String> error = new HashMap<>();
-//        error.put("message", errors);
-//        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+//                .map(error -> error.getMessageTemplate()).collect(Collectors.joining("\n"));
+//        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+//                .body(errors);
 //    }
-//
+
 //    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+//    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
 //        Throwable cause = e.getMostSpecificCause();
-//        Map<String, String> error = new HashMap<>();
 //        if (cause instanceof DateTimeParseException) {
-//            error.put("message", "Invalid date and time format: " + cause.getMessage());
-//            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+//            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+//                    .body("Invalid date and time format: " + cause.getMessage());
 //        }
-//        error.put("message", "Malformed JSON request");
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Malformed JSON request");
 //    }
 
     @ExceptionHandler(TravelException.class)
-    public ResponseEntity<String> handleTravelException(TravelException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Error: " + e.getMessage());
+    public ResponseEntity<Response> handleTravelException(TravelException e) {
+        Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(DietException.class)
-    public ResponseEntity<String> handleDietException(DietException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Error: " + e.getMessage());
+    public ResponseEntity<Response> handleDietException(DietException e) {
+        Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(OvernightStayException.class)
-    public ResponseEntity<String> handleOvernightStayException(OvernightStayException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Error: " + e.getMessage());
+    public ResponseEntity<Response> handleOvernightStayException(OvernightStayException e) {
+        Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
+    public ResponseEntity<Response> handleConstraintViolationException(ConstraintViolationException e) {
         String errors = e.getConstraintViolations().stream()
-                .map(error -> error.getMessageTemplate()).collect(Collectors.joining("\n"));
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                .body(errors);
+                .map(error -> error.getMessageTemplate())
+                .collect(Collectors.joining("\n"));
+        Response response = new Response(errors);
+        return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<String> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ResponseEntity<Response> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         Throwable cause = e.getMostSpecificCause();
+        String message;
         if (cause instanceof DateTimeParseException) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .body("Invalid date and time format: " + cause.getMessage());
+            message = "Invalid date and time format: " + cause.getMessage();
+            return new ResponseEntity<>(new Response(message), HttpStatus.UNPROCESSABLE_ENTITY);
+        } else {
+            message = "Malformed JSON request";
+            return new ResponseEntity<>(new Response(message), HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Malformed JSON request");
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Response {
+        private String message;
     }
 }

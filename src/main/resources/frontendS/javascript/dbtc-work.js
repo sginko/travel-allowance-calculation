@@ -1,5 +1,7 @@
-const dbtcForm = document.getElementById("dbtc-form");
-dbtcForm.addEventListener('submit', sendDbtcRequest);
+document.addEventListener('DOMContentLoaded', () => {
+    const dbtcForm = document.getElementById("dbtc-form");
+    dbtcForm.addEventListener('submit', sendDbtcRequest);
+});
 
 function validateFormFields(form) {
     if (form["numberOfBreakfasts"].value === "") {
@@ -74,7 +76,7 @@ async function sendDbtcRequest(evt) {
     const jsonData = JSON.stringify(jsonObject);
     console.log("Sending data", jsonData);
 
-    try {
+   // try {
         const response = await fetch('http://localhost:8080/api/v1/travels', {
             method: 'POST',
             headers: {
@@ -85,15 +87,17 @@ async function sendDbtcRequest(evt) {
         });
 
         if (!response.ok) {
-            alert(`Błąd: ${response.status}\nMessage: ${response.statusText}`);
-            throw new Error(`Błąd: ${response.status}\nMessage: ${response.statusText}`);
+            const errorData = await response.json();
+            alert(`Error: ${response.status}\nMessage: ${errorData.message}`);
+            throw new Error(`Error: ${response.status}\nMessage: ${errorData.message}`);
         }
+
         const dataJSON = await response.json();
         localStorage.setItem('resultValues', JSON.stringify(dataJSON));
         window.location.href = 'results.html';
 
-    } catch (error) {
-        console.error('Błąd:', error);
-        alert('Wystąpił błąd podczas dodawania podróży');
-    }
+//    } catch (error) {
+//        console.error('Error:', error);
+//        alert('Error');
+//    }
 }
