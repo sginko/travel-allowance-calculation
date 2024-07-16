@@ -1,6 +1,5 @@
 package pl.sginko.travelexpense.controller.travel;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -9,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.sginko.travelexpense.logic.pdfDocument.PdfDocumentService;
-import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.service.TravelService;
@@ -17,7 +15,6 @@ import pl.sginko.travelexpense.logic.travel.service.TravelService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 @AllArgsConstructor
 @RestController

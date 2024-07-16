@@ -1,6 +1,5 @@
 package pl.sginko.travelexpense.controller.user;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void addUser(@RequestBody @Valid UserRequestDto userRequestDto) {
+    public void addUser(@RequestBody UserRequestDto userRequestDto) {
         userService.addUser(userRequestDto);
     }
 }
