@@ -80,8 +80,7 @@ public class TravelEntity {
                         Boolean isInvoiceAmountGreaterAllowed, Integer inputtedDaysNumberForTransportCost,
                         BigDecimal undocumentedLocalTransportCost, BigDecimal documentedLocalTransportCost,
                         String meansOfTransport, BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
-                        Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped,
-                        BigDecimal costOfTravelByOwnTransport, BigDecimal transportCostAmount) {
+                        Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped) {
         this.userEntity = userEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -95,7 +94,7 @@ public class TravelEntity {
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, isInvoiceAmountGreaterAllowed);
         this.transportCostEntity = new TransportCostEntity(this, inputtedDaysNumberForTransportCost, undocumentedLocalTransportCost,
                 documentedLocalTransportCost, meansOfTransport, costOfTravelByPublicTransport, kilometersByCarEngineUpTo900cc,
-                kilometersByCarEngineAbove900cc, kilometersByMotorcycle, kilometersByMoped, costOfTravelByOwnTransport, transportCostAmount);
+                kilometersByCarEngineAbove900cc, kilometersByMotorcycle, kilometersByMoped);
     }
 
     public void updateTotalAmount(BigDecimal totalAmount) {

@@ -88,7 +88,7 @@ public class TransportCostEntity {
     public TransportCostEntity(TravelEntity travelEntity, Integer inputtedDaysNumberForTransportCost, BigDecimal undocumentedLocalTransportCost,
                                BigDecimal documentedLocalTransportCost, String meansOfTransport, BigDecimal costOfTravelByPublicTransport,
                                Long kilometersByCarEngineUpTo900cc, Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle,
-                               Long kilometersByMoped, BigDecimal costOfTravelByOwnTransport, BigDecimal transportCostAmount) {
+                               Long kilometersByMoped) {
         this.travelEntity = travelEntity;
         this.inputtedDaysNumberForTransportCost = inputtedDaysNumberForTransportCost;
         this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
@@ -99,8 +99,6 @@ public class TransportCostEntity {
         this.kilometersByCarEngineAbove900cc = kilometersByCarEngineAbove900cc;
         this.kilometersByMotorcycle = kilometersByMotorcycle;
         this.kilometersByMoped = kilometersByMoped;
-        this.costOfTravelByOwnTransport = costOfTravelByOwnTransport;
-        this.transportCostAmount = transportCostAmount;
     }
 
     public void updateUndocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {

@@ -17,10 +17,6 @@ public class TransportCostResponseDto {
     private BigDecimal documentedLocalTransportCost;
     private String meansOfTransport;
     private BigDecimal costOfTravelByPublicTransport;
-    private Long kilometersByCarEngineUpTo900cc;
-    private Long kilometersByCarEngineAbove900cc;
-    private Long kilometersByMotorcycle;
-    private Long kilometersByMoped;
     private BigDecimal costOfTravelByOwnTransport;
     private BigDecimal transportCostAmount;
 }

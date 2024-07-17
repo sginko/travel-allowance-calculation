@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
+import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostDto;
 import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostResponseDto;
 
 import java.math.BigDecimal;
@@ -54,5 +55,5 @@ public class TravelRequestDto {
     private OvernightStayDto overnightStayDto;
 
     @NotNull(message = "OvernightStayDto cannot be null")
-    private TransportCostResponseDto transportCostResponseDto;
+    private TransportCostDto transportCostDto;
 }

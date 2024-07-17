@@ -7,6 +7,7 @@ import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
 import pl.sginko.travelexpense.logic.overnightStay.mapper.OvernightStayMapper;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.transport.mapper.TransportCostMapper;
+import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostDto;
 import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostResponseDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
@@ -34,18 +35,17 @@ public class TravelMapper {
         UserEntity userByPesel = userReaderService.findUserByPesel(travelRequestDto.getPesel());
         DietDto dietDto = travelRequestDto.getDietDto();
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
-        TransportCostResponseDto transportCostResponseDto = travelRequestDto.getTransportCostResponseDto();
+        TransportCostDto transportCostDto = travelRequestDto.getTransportCostDto();
         return new TravelEntity(travelRequestDto.getFromCity(), travelRequestDto.getToCity(), travelRequestDto.getStartDate(),
                 travelRequestDto.getStartTime(), travelRequestDto.getEndDate(), travelRequestDto.getEndTime(),
                 userByPesel, travelRequestDto.getAdvancePayment(), dietDto.getDailyAllowance(), dietDto.getNumberOfBreakfasts(),
                 dietDto.getNumberOfLunches(), dietDto.getNumberOfDinners(), overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice(),
                 overnightStayDto.getInputQuantityOfOvernightStayWithInvoice(), overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice(),
-                overnightStayDto.getIsInvoiceAmountGreaterAllowed(), transportCostResponseDto.getInputtedDaysNumberForTransportCost(),
-                transportCostResponseDto.getUndocumentedLocalTransportCost(), transportCostResponseDto.getDocumentedLocalTransportCost(),
-                transportCostResponseDto.getMeansOfTransport(), transportCostResponseDto.getCostOfTravelByPublicTransport(),
-                transportCostResponseDto.getKilometersByCarEngineUpTo900cc(), transportCostResponseDto.getKilometersByCarEngineAbove900cc(),
-                transportCostResponseDto.getKilometersByMotorcycle(), transportCostResponseDto.getKilometersByMoped(),
-                transportCostResponseDto.getCostOfTravelByOwnTransport(), transportCostResponseDto.getTransportCostAmount());
+                overnightStayDto.getIsInvoiceAmountGreaterAllowed(), transportCostDto.getInputtedDaysNumberForTransportCost(),
+                transportCostDto.getUndocumentedLocalTransportCost(), transportCostDto.getDocumentedLocalTransportCost(),
+                transportCostDto.getMeansOfTransport(), transportCostDto.getСostOfTravelByPublicTransport(),
+                transportCostDto.getKilometersByCarEngineUpTo900cc(), transportCostDto.getKilometersByCarEngineAbove900cc(),
+                transportCostDto.getKilometersByMotorcycle(), transportCostDto.getKilometersByMoped());
     }
 
 //    public TravelEntity toEntity(Source source) {
