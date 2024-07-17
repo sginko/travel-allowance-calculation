@@ -47,5 +47,7 @@ travelexpense.zip
 node_modules/
 package-lock.json
 package.json
+src/main/resources/frontendK/nodeserver
+src/main/resources/frontendS/
 .gitignore
-src/main/resources/frontend/javascript/javascript/nodeserver.js
+
