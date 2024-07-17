@@ -9,7 +9,7 @@ import pl.sginko.travelexpense.logic.user.service.UserService;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+class UserController {
     private final UserService userService;
 
     @ResponseStatus(HttpStatus.CREATED)

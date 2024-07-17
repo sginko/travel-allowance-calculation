@@ -43,15 +43,6 @@ public class TravelServiceImpl implements TravelService {
         BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStay(travelRequestDto);
         BigDecimal amountOfTotalOvernightsStayWithoutInvoice = overnightStayService.calculateAmountOfOvernightStayWithoutInvoice(travelRequestDto);
 
-//        travelEntity.setUserEntity(userByPesel);
-//        travelEntity.setTotalAmount(totalAmount);
-//        dietEntity.setDietAmount(dietAmount);
-//        dietEntity.setFoodAmount(foodAmount);
-//        overnightStayEntity.setQuantityOfOvernightStay(quantityOfOvernightStay);
-//        overnightStayEntity.setTotalInputQuantityOfOvernightStay(totalInputQuantityOfOvernightStay);
-//        overnightStayEntity.setAmountOfTotalOvernightsStayWithoutInvoice(amountOfTotalOvernightsStayWithoutInvoice);
-//        overnightStayEntity.setOvernightStayAmount(overnightStayAmount);
-
         travelEntity.updateTotalAmount(totalAmount);
         travelEntity.updateUser(userByPesel);
 

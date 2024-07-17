@@ -19,7 +19,7 @@ import java.io.IOException;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/travels")
-public class TravelController {
+class TravelController {
     private final TravelService travelService;
     private final PdfDocumentService pdfDocumentService;
 

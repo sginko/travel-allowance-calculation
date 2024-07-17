@@ -11,10 +11,16 @@ import java.time.LocalTime;
 @Service
 public class TransportCostServiceImpl {
 
-    public BigDecimal calculateLocalTransportCost(TravelRequestDto travelRequestDto){
+    public BigDecimal calculateLocalTransportCostAmount(TravelRequestDto travelRequestDto){
         BigDecimal dailyAllowance = travelRequestDto.getDietDto().getDailyAllowance();
         BigDecimal dailyLocalTransportCost = dailyAllowance.multiply(BigDecimal.valueOf(0.20));
 
+        Long daysInTravel = calculateDaysInTravel(travelRequestDto);
+
+        return dailyLocalTransportCost.multiply(BigDecimal.valueOf(daysInTravel));
+    }
+
+    private static Long calculateDaysInTravel (TravelRequestDto travelRequestDto){
         LocalDate startDate = travelRequestDto.getStartDate();
         LocalTime startTime = travelRequestDto.getStartTime();
         LocalDate endDate = travelRequestDto.getEndDate();
@@ -27,6 +33,6 @@ public class TransportCostServiceImpl {
         if (remainingHours > 0) {
             daysInTravel++;
         }
-        return dailyLocalTransportCost.multiply(BigDecimal.valueOf(daysInTravel));
+        return daysInTravel;
     }
 }
