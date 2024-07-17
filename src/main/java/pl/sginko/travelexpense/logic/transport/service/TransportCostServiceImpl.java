@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.transport;
+package pl.sginko.travelexpense.logic.transport.service;
 
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
@@ -11,7 +11,8 @@ import java.time.LocalTime;
 @Service
 public class TransportCostServiceImpl {
 
-    public BigDecimal calculateLocalTransportCostAmount(TravelRequestDto travelRequestDto){
+    public BigDecimal calculateUndocumentedLocalTransportCostAmount(TravelRequestDto travelRequestDto){
+        travelRequestDto.
         BigDecimal dailyAllowance = travelRequestDto.getDietDto().getDailyAllowance();
         BigDecimal dailyLocalTransportCost = dailyAllowance.multiply(BigDecimal.valueOf(0.20));
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.diet.exception.DietException;
 import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
-import pl.sginko.travelexpense.logic.transport.TransportException;
+import pl.sginko.travelexpense.logic.transport.exception.TransportException;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 
 import java.time.format.DateTimeParseException;
