@@ -104,4 +104,20 @@ public class TransportCostEntity {
     public void updateUndocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
         this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
     }
+
+    public void updateDocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
+        this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
+    }
+
+    public void updateCostOfTravelByPublicTransport(BigDecimal costOfTravelByPublicTransport) {
+        this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;
+    }
+
+    public void updateCostOfTravelByOwnTransport(BigDecimal costOfTravelByOwnTransport) {
+        this.costOfTravelByOwnTransport = costOfTravelByOwnTransport;
+    }
+
+
+
+
 }

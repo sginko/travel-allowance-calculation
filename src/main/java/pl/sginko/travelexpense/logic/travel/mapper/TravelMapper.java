@@ -8,7 +8,6 @@ import pl.sginko.travelexpense.logic.overnightStay.mapper.OvernightStayMapper;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.transport.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostDto;
-import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostResponseDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
@@ -41,7 +40,7 @@ public class TravelMapper {
                 userByPesel, travelRequestDto.getAdvancePayment(), dietDto.getDailyAllowance(), dietDto.getNumberOfBreakfasts(),
                 dietDto.getNumberOfLunches(), dietDto.getNumberOfDinners(), overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice(),
                 overnightStayDto.getInputQuantityOfOvernightStayWithInvoice(), overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice(),
-                overnightStayDto.getIsInvoiceAmountGreaterAllowed(), transportCostDto.getInputtedDaysNumberForTransportCost(),
+                overnightStayDto.getIsInvoiceAmountGreaterAllowed(), transportCostDto.getInputtedDaysNumberForUndocumentedLocalTransportCost(),
                 transportCostDto.getUndocumentedLocalTransportCost(), transportCostDto.getDocumentedLocalTransportCost(),
                 transportCostDto.getMeansOfTransport(), transportCostDto.getСostOfTravelByPublicTransport(),
                 transportCostDto.getKilometersByCarEngineUpTo900cc(), transportCostDto.getKilometersByCarEngineAbove900cc(),

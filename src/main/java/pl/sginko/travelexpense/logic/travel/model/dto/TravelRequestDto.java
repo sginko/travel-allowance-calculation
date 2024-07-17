@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostDto;
-import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostResponseDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

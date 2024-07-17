@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class TransportCostDto {
     @NotNull(message = "inputtedDaysNumberForTransportCost cannot be null")
     @Column(nullable = false)
-    private Integer inputtedDaysNumberForTransportCost;
+    private Integer inputtedDaysNumberForUndocumentedLocalTransportCost;
 
     @Column(nullable = false)
     private BigDecimal undocumentedLocalTransportCost;
@@ -46,5 +46,5 @@ public class TransportCostDto {
     private Long kilometersByMoped;
 
     @Column(nullable = false)
-    private BigDecimal сostOfTravelByPublicTransport;
+    private BigDecimal costOfTravelByPublicTransport;
 }
