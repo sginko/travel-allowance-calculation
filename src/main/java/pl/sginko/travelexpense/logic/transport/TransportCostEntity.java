@@ -36,11 +36,11 @@ public class TransportCostEntity {
 
 
     //Rodzaj transportu przejazdu. Wybieram w menu.
-    private String nameOfTransport;
+    private String meansOfTransport;
 
     //Przejazd transportem publicznym w zlotych
     @Column(nullable = false)
-    private BigDecimal transportCost;
+    private BigDecimal сostOfTravelByPublicTransport;
 
 
     //Przejazd niebędącym własnością pracodawcy (liczba faktycznie przejechanych kilometrów)
@@ -72,14 +72,13 @@ public class TransportCostEntity {
     @Min(value = 0, message = "Kilometers by moped cannot be negative")
     private Long kilometersByMoped;
 
+    @Column(nullable = false)
+    private BigDecimal сostOfTravelByOwnTransport;
+
+    @Column(nullable = false)
+    private BigDecimal transportCostAmount;
 
 
-
-    public TransportCostEntity(TravelEntity travelEntity, BigDecimal transportCost, Integer inputtedDaysNumberForTransportCost) {
-        this.travelEntity = travelEntity;
-        this.transportCost = transportCost;
-        this.inputtedDaysNumberForTransportCost = inputtedDaysNumberForTransportCost;
-    }
 
     public void updateLocalTransportCost(BigDecimal documentedTransportCostAmount) {
         this.documentedLocalTransportCost = documentedTransportCostAmount;

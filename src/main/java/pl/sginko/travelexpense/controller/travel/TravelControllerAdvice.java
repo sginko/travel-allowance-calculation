@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.diet.exception.DietException;
 import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
+import pl.sginko.travelexpense.logic.transport.TransportException;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 
 import java.time.format.DateTimeParseException;
@@ -38,13 +39,19 @@ public class TravelControllerAdvice {
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
 
+    @ExceptionHandler(TransportException.class)
+    public ResponseEntity<Response> handleTransportException(TransportException e) {
+        Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Response> handleConstraintViolationException(ConstraintViolationException e) {
         String errors = e.getConstraintViolations().stream()
                 .map(error -> error.getMessageTemplate())
                 .collect(Collectors.joining("\n"));
         Response response = new Response(errors);
-        return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

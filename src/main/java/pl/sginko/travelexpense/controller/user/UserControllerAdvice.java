@@ -31,7 +31,7 @@ public class UserControllerAdvice {
                 .map(error -> error.getMessageTemplate())
                 .collect(Collectors.joining("\n"));
         TravelControllerAdvice.Response response = new TravelControllerAdvice.Response(errors);
-        return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
