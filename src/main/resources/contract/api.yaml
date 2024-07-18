@@ -160,7 +160,7 @@ components:
           type: integer
           minimum: 0
           example: 12345678901
-          description: Pessel cannot be null and must be a positive number
+          description: Pesel cannot be null and must be a positive number
         fromCity:
           type: string
           minLength: 2
@@ -198,6 +198,11 @@ components:
           format: double
           example: 100.00
           description: Advance payment cannot be null
+        otherExpenses:
+          type: number
+          format: double
+          example: 50.00
+          description: Other expenses cannot be null
         dietDto:
           $ref: '#/components/schemas/DietDto'
         overnightStayDto:
@@ -213,6 +218,7 @@ components:
         - endDate
         - endTime
         - advancePayment
+        - otherExpenses
         - dietDto
         - overnightStayDto
         - transportCostDto
@@ -292,13 +298,13 @@ components:
           minimum: 0
           example: 1
           nullable: false
-          description: Number of overnight stay without invoice
+          description: Number of overnight stays without invoice
         inputQuantityOfOvernightStayWithInvoice:
           type: integer
           minimum: 0
           example: 1
           nullable: false
-          description: Number of overnight stay with invoice
+          description: Number of overnight stays with invoice
         amountOfTotalOvernightsStayWithInvoice:
           type: number
           format: double
@@ -505,6 +511,10 @@ components:
           type: number
           format: double
           example: 100.00
+        otherExpenses:
+          type: number
+          format: double
+          example: 50.00
         dietResponse:
           $ref: '#/components/schemas/DietResponseDto'
         overnightStayResponseDto:
@@ -522,6 +532,7 @@ components:
         - endTime
         - totalAmount
         - advancePayment
+        - otherExpenses
         - dietResponse
         - overnightStayResponseDto
         - transportCostResponseDto

@@ -47,12 +47,15 @@ public class TravelRequestDto {
     @NotNull(message = "Advance payment cannot be null")
     private BigDecimal advancePayment;
 
+    @NotNull(message = "Other expenses cannot be null")
+    private BigDecimal otherExpenses;
+
     @NotNull(message = "DietDto cannot be null")
     private DietDto dietDto;
 
     @NotNull(message = "OvernightStayDto cannot be null")
     private OvernightStayDto overnightStayDto;
 
-    @NotNull(message = "OvernightStayDto cannot be null")
+    @NotNull(message = "TransportCostDto cannot be null")
     private TransportCostDto transportCostDto;
 }

@@ -24,6 +24,7 @@ public class TravelResponseDto {
     private LocalTime startTime;
     private LocalDate endDate;
     private LocalTime endTime;
+    private BigDecimal otherExpenses;
     private BigDecimal totalAmount;
     private BigDecimal advancePayment;
     private DietResponseDto dietResponse;

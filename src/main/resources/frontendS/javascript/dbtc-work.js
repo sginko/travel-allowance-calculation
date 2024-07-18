@@ -55,6 +55,9 @@ function validateFormFields(form) {
     if (form["kilometersByMoped"].value === "") {
         form["kilometersByMoped"].value = 0;
     }
+    if (form["otherExpenses"].value === "") {
+        form["otherExpenses"].value = 0;
+    }
 
 
     console.log("Form submitted", {
@@ -83,6 +86,7 @@ async function sendDbtcRequest(evt) {
         startTime: formData.get("startTime"),
         endDate: formData.get("endDate"),
         endTime: formData.get("endTime"),
+        otherExpenses: parseFloat(formData.get("otherExpenses")),
         advancePayment: parseFloat(formData.get("advancePayment")),
         dietDto: {
             dailyAllowance: parseFloat(formData.get("dailyAllowance")),

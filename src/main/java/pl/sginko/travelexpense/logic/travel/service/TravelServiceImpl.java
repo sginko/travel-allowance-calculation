@@ -77,9 +77,10 @@ public class TravelServiceImpl implements TravelService {
 
     private BigDecimal calculateTotalAmount(final TravelRequestDto travelRequestDto) {
         BigDecimal advancePayment = travelRequestDto.getAdvancePayment();
+        BigDecimal otherExpenses = travelRequestDto.getOtherExpenses();
         BigDecimal dietAmount = dietService.calculateDiet(travelRequestDto);
         BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStay(travelRequestDto);
         BigDecimal transportCostAmount = transportCostService.calculateTransportCostAmount(travelRequestDto);
-        return dietAmount.add(overnightStayAmount).add(transportCostAmount).subtract(advancePayment);
+        return (dietAmount.add(overnightStayAmount).add(transportCostAmount).add(otherExpenses)).subtract(advancePayment);
     }
 }

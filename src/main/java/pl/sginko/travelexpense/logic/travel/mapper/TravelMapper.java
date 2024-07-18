@@ -24,7 +24,7 @@ public class TravelMapper {
 
     public TravelResponseDto toResponseDto(TravelEntity entity) {
         return new TravelResponseDto(entity.getId(), entity.getUserEntity().getPesel(), entity.getFromCity(), entity.getToCity(),
-                entity.getStartDate(), entity.getStartTime(), entity.getEndDate(), entity.getEndTime(),
+                entity.getStartDate(), entity.getStartTime(), entity.getEndDate(), entity.getEndTime(), entity.getOtherExpenses(),
                 entity.getTotalAmount(), entity.getAdvancePayment(), dietMapper.toResponseDto(entity.getDietEntity()),
                 overnightStayMapper.toResponseDto(entity.getOvernightStayEntity()),
                 transportCostMapper.toResponseDto(entity.getTransportCostEntity()));
@@ -43,7 +43,7 @@ public class TravelMapper {
                 overnightStayDto.getIsInvoiceAmountGreaterAllowed(), transportCostDto.getInputtedDaysNumberForUndocumentedLocalTransportCost(),
                 transportCostDto.getDocumentedLocalTransportCost(), transportCostDto.getMeansOfTransport(), transportCostDto.getCostOfTravelByPublicTransport(),
                 transportCostDto.getKilometersByCarEngineUpTo900cc(), transportCostDto.getKilometersByCarEngineAbove900cc(),
-                transportCostDto.getKilometersByMotorcycle(), transportCostDto.getKilometersByMoped());
+                transportCostDto.getKilometersByMotorcycle(), transportCostDto.getKilometersByMoped(), travelRequestDto.getOtherExpenses());
     }
 
 //    public TravelEntity toEntity(Source source) {
