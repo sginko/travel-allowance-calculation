@@ -3,7 +3,6 @@ package pl.sginko.travelexpense.logic.transport.service;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.transport.exception.TransportException;
 import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostDto;
-import pl.sginko.travelexpense.logic.transport.model.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 
 import java.math.BigDecimal;
@@ -13,12 +12,18 @@ import java.time.LocalTime;
 
 @Service
 public class TransportCostServiceImpl implements TransportCostService {
+    private final BigDecimal COST_BY_CAR_ENGINE_UP_TO_900_CC = BigDecimal.valueOf(0.89);
+    private final BigDecimal COST_BY_CAR_ENGINE_ABOVE_TO_900_CC = BigDecimal.valueOf(1.15);
+    private final BigDecimal COST_BY_MOTORCYCLE = BigDecimal.valueOf(0.69);
+    private final BigDecimal COST_BY_MOPED = BigDecimal.valueOf(0.42);
 
+    @Override
     public BigDecimal calculateTransportCostAmount(TravelRequestDto travelRequestDto) {
-        calculateUndocumentedLocalTransportCost(travelRequestDto);
-        calculateDocumentedLocalTransportCost(travelRequestDto);
-
-        return null;
+        BigDecimal undocumentedLocalTransportCost = calculateUndocumentedLocalTransportCost(travelRequestDto);
+        BigDecimal documentedLocalTransportCost = calculateDocumentedLocalTransportCost(travelRequestDto);
+        BigDecimal costOfTravelByPublicTransport = calculateCostOfTravelByPublicTransport(travelRequestDto);
+        BigDecimal calculateCostOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport(travelRequestDto);
+        return undocumentedLocalTransportCost.add(documentedLocalTransportCost).add(costOfTravelByPublicTransport).add(calculateCostOfTravelByOwnTransport);
     }
 
     @Override
@@ -48,22 +53,17 @@ public class TransportCostServiceImpl implements TransportCostService {
     }
 
     @Override
-    public BigDecimal calculateCostOfTravelByOwnTransport(TransportCostEntity transportCostEntity, TravelRequestDto travelRequestDto) {
-        BigDecimal costByCarEngineUpTo900Cc = transportCostEntity.getCOST_BY_CAR_ENGINE_UP_TO_900_CC();
-        BigDecimal costByCarEngineAboveTo900Cc = transportCostEntity.getCOST_BY_CAR_ENGINE_ABOVE_TO_900_CC();
-        BigDecimal costByMotorcycle = transportCostEntity.getCOST_BY_MOTORCYCLE();
-        BigDecimal costByMoped = transportCostEntity.getCOST_BY_MOPED();
-
+    public BigDecimal calculateCostOfTravelByOwnTransport(TravelRequestDto travelRequestDto) {
         TransportCostDto transportCostDto = travelRequestDto.getTransportCostDto();
         Long kilometersByCarEngineUpTo900cc = transportCostDto.getKilometersByCarEngineUpTo900cc();
         Long kilometersByCarEngineAbove900cc = transportCostDto.getKilometersByCarEngineAbove900cc();
         Long kilometersByMotorcycle = transportCostDto.getKilometersByMotorcycle();
         Long kilometersByMoped = transportCostDto.getKilometersByMoped();
 
-        BigDecimal amountCostByCarEngineUpTo900Cc = costByCarEngineUpTo900Cc.multiply(BigDecimal.valueOf(kilometersByCarEngineUpTo900cc));
-        BigDecimal amountCostByCarEngineAboveTo900Cc = costByCarEngineAboveTo900Cc.multiply(BigDecimal.valueOf(kilometersByCarEngineAbove900cc));
-        BigDecimal amountCostByMotorcycle = costByMotorcycle.multiply(BigDecimal.valueOf(kilometersByMotorcycle));
-        BigDecimal amountCostByMoped = costByMoped.multiply(BigDecimal.valueOf(kilometersByMoped));
+        BigDecimal amountCostByCarEngineUpTo900Cc = COST_BY_CAR_ENGINE_UP_TO_900_CC.multiply(BigDecimal.valueOf(kilometersByCarEngineUpTo900cc));
+        BigDecimal amountCostByCarEngineAboveTo900Cc = COST_BY_CAR_ENGINE_ABOVE_TO_900_CC.multiply(BigDecimal.valueOf(kilometersByCarEngineAbove900cc));
+        BigDecimal amountCostByMotorcycle = COST_BY_MOTORCYCLE.multiply(BigDecimal.valueOf(kilometersByMotorcycle));
+        BigDecimal amountCostByMoped = COST_BY_MOPED.multiply(BigDecimal.valueOf(kilometersByMoped));
 
         return amountCostByCarEngineUpTo900Cc.add(amountCostByCarEngineAboveTo900Cc).add(amountCostByMotorcycle).add(amountCostByMoped);
     }

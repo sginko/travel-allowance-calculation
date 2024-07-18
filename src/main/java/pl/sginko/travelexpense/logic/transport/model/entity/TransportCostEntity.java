@@ -46,18 +46,18 @@ public class TransportCostEntity {
     private BigDecimal costOfTravelByPublicTransport;
 
 
-    //Przejazd niebędącym własnością pracodawcy (liczba faktycznie przejechanych kilometrów)
-    @Column(nullable = false)
-    private final BigDecimal COST_BY_CAR_ENGINE_UP_TO_900_CC = BigDecimal.valueOf(0.89);
-
-    @Column(nullable = false)
-    private final BigDecimal COST_BY_CAR_ENGINE_ABOVE_TO_900_CC = BigDecimal.valueOf(1.15);
-
-    @Column(nullable = false)
-    private final BigDecimal COST_BY_MOTORCYCLE = BigDecimal.valueOf(0.69);
-
-    @Column(nullable = false)
-    private final BigDecimal COST_BY_MOPED = BigDecimal.valueOf(0.42);
+//    //Przejazd niebędącym własnością pracodawcy (liczba faktycznie przejechanych kilometrów)
+//    @Column(nullable = false)
+//    private BigDecimal costByCarEngineUpTo900Cc;
+//
+//    @Column(nullable = false)
+//    private BigDecimal costByCarEngineAboveTo900Cc;
+//
+//    @Column(nullable = false)
+//    private BigDecimal costByMotorcycle;
+//
+//    @Column(nullable = false)
+//    private BigDecimal costByMoped;
 
     @NotNull(message = "Kilometers by car engine up to 900cc cannot be null")
     @Min(value = 0, message = "Kilometers by car engine up to 900cc cannot be negative")
@@ -117,7 +117,7 @@ public class TransportCostEntity {
         this.costOfTravelByOwnTransport = costOfTravelByOwnTransport;
     }
 
-
-
-
+    public void updateTransportCostAmount(BigDecimal transportCostAmount) {
+        this.transportCostAmount = transportCostAmount;
+    }
 }

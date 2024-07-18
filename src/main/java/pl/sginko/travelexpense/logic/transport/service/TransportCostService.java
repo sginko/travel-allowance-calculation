@@ -7,11 +7,13 @@ import java.math.BigDecimal;
 
 public interface TransportCostService {
 
+    BigDecimal calculateTransportCostAmount(TravelRequestDto travelRequestDto);
+
     BigDecimal calculateUndocumentedLocalTransportCost(TravelRequestDto travelRequestDto);
 
     BigDecimal calculateDocumentedLocalTransportCost(TravelRequestDto travelRequestDto);
 
     BigDecimal calculateCostOfTravelByPublicTransport(TravelRequestDto travelRequestDto);
 
-    BigDecimal calculateCostOfTravelByOwnTransport(TransportCostEntity transportCostEntity, TravelRequestDto travelRequestDto);
+    BigDecimal calculateCostOfTravelByOwnTransport(TravelRequestDto travelRequestDto);
 }

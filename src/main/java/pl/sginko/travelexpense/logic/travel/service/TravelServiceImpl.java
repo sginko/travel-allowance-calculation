@@ -7,6 +7,8 @@ import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
 import pl.sginko.travelexpense.logic.diet.service.DietService;
 import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.overnightStay.service.OvernightStayService;
+import pl.sginko.travelexpense.logic.transport.model.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.transport.service.TransportCostService;
 import pl.sginko.travelexpense.logic.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
@@ -24,6 +26,7 @@ public class TravelServiceImpl implements TravelService {
     private final TravelMapper travelMapper;
     private final DietService dietService;
     private final OvernightStayService overnightStayService;
+    private final TransportCostService transportCostService;
     private final UserReaderService userReaderService;
 
     @Override
@@ -43,6 +46,13 @@ public class TravelServiceImpl implements TravelService {
         BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStay(travelRequestDto);
         BigDecimal amountOfTotalOvernightsStayWithoutInvoice = overnightStayService.calculateAmountOfOvernightStayWithoutInvoice(travelRequestDto);
 
+        TransportCostEntity transportCostEntity = travelEntity.getTransportCostEntity();
+        BigDecimal transportCostAmount = transportCostService.calculateTransportCostAmount(travelRequestDto);
+        BigDecimal costOfTravelByPublicTransport = transportCostService.calculateCostOfTravelByPublicTransport(travelRequestDto);
+        BigDecimal costOfTravelByOwnTransport = transportCostService.calculateCostOfTravelByOwnTransport(travelRequestDto);
+        BigDecimal undocumentedLocalTransportCost = transportCostService.calculateUndocumentedLocalTransportCost(travelRequestDto);
+        BigDecimal documentedLocalTransportCost = transportCostService.calculateDocumentedLocalTransportCost(travelRequestDto);
+
         travelEntity.updateTotalAmount(totalAmount);
         travelEntity.updateUser(userByPesel);
 
@@ -53,6 +63,12 @@ public class TravelServiceImpl implements TravelService {
         overnightStayEntity.updateTotalInputQuantityOfOvernightStay(totalInputQuantityOfOvernightStay);
         overnightStayEntity.updateAmountOfTotalOvernightsStayWithoutInvoice(amountOfTotalOvernightsStayWithoutInvoice);
         overnightStayEntity.updateOvernightStayAmount(overnightStayAmount);
+
+        transportCostEntity.updateTransportCostAmount(transportCostAmount);
+        transportCostEntity.updateCostOfTravelByPublicTransport(costOfTravelByPublicTransport);
+        transportCostEntity.updateCostOfTravelByOwnTransport(costOfTravelByOwnTransport);
+        transportCostEntity.updateUndocumentedLocalTransportCost(undocumentedLocalTransportCost);
+        transportCostEntity.updateDocumentedLocalTransportCost(documentedLocalTransportCost);
 
         travelRepository.save(travelEntity);
 
