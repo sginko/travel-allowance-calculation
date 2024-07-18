@@ -27,7 +27,7 @@ public class TransportCostEntity {
     //Dojazdy środkami komunikacji miejscowej (w miejscu delegacji)
     @NotNull(message = "inputtedDaysNumberForTransportCost cannot be null")
     @Column(nullable = false)
-    private Integer inputtedDaysNumberForTransportCost; //Ilość dób, za które przysługuje ryczałt za dojazdy
+    private Integer inputtedDaysNumberForUndocumentedTransportCost; //Ilość dób, za które przysługuje ryczałt za dojazdy
 
     @Column(nullable = false)
     private BigDecimal undocumentedLocalTransportCost; //wyliczona w zaleznosci od ilosci dni
@@ -85,13 +85,11 @@ public class TransportCostEntity {
     @Column(nullable = false)
     private BigDecimal transportCostAmount;
 
-    public TransportCostEntity(TravelEntity travelEntity, Integer inputtedDaysNumberForTransportCost, BigDecimal undocumentedLocalTransportCost,
-                               BigDecimal documentedLocalTransportCost, String meansOfTransport, BigDecimal costOfTravelByPublicTransport,
-                               Long kilometersByCarEngineUpTo900cc, Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle,
-                               Long kilometersByMoped) {
+    public TransportCostEntity(TravelEntity travelEntity, Integer inputtedDaysNumberForUndocumentedTransportCost, BigDecimal documentedLocalTransportCost,
+                               String meansOfTransport, BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
+                               Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped) {
         this.travelEntity = travelEntity;
-        this.inputtedDaysNumberForTransportCost = inputtedDaysNumberForTransportCost;
-        this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
+        this.inputtedDaysNumberForUndocumentedTransportCost = inputtedDaysNumberForUndocumentedTransportCost;
         this.documentedLocalTransportCost = documentedLocalTransportCost;
         this.meansOfTransport = meansOfTransport;
         this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;
@@ -105,9 +103,9 @@ public class TransportCostEntity {
         this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
     }
 
-    public void updateDocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
-        this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
-    }
+//    public void updateDocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
+//        this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
+//    }
 
     public void updateCostOfTravelByPublicTransport(BigDecimal costOfTravelByPublicTransport) {
         this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;

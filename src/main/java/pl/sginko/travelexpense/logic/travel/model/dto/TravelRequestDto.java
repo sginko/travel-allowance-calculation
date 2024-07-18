@@ -21,7 +21,7 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
     @NotNull(message = "Pessel cannot be null")
-    @Min(value = 11, message = "Pessel cannot be negative")
+    @Size(min = 11, max = 11, message = "Pesel must be exactly 11 characters")
     private Long pesel;
 
     @NotBlank(message = "From city cannot be blank")

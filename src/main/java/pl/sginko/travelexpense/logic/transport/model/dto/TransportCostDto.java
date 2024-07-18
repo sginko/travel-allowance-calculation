@@ -20,14 +20,14 @@ public class TransportCostDto {
     private Integer inputtedDaysNumberForUndocumentedLocalTransportCost;
 
     @Column(nullable = false)
-    private BigDecimal undocumentedLocalTransportCost;
-
-    @Column(nullable = false)
     private BigDecimal documentedLocalTransportCost;
 
     @NotBlank(message = "meansOfTransport cannot be blank")
     @Column(nullable = false)
     private String meansOfTransport;
+
+    @Column(nullable = false)
+    private BigDecimal costOfTravelByPublicTransport;
 
     @NotNull(message = "Kilometers by car engine up to 900cc cannot be null")
     @Min(value = 0, message = "Kilometers by car engine up to 900cc cannot be negative")
@@ -45,6 +45,4 @@ public class TransportCostDto {
     @Min(value = 0, message = "Kilometers by moped cannot be negative")
     private Long kilometersByMoped;
 
-    @Column(nullable = false)
-    private BigDecimal costOfTravelByPublicTransport;
 }

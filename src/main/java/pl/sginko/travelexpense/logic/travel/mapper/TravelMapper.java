@@ -41,8 +41,7 @@ public class TravelMapper {
                 dietDto.getNumberOfLunches(), dietDto.getNumberOfDinners(), overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice(),
                 overnightStayDto.getInputQuantityOfOvernightStayWithInvoice(), overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice(),
                 overnightStayDto.getIsInvoiceAmountGreaterAllowed(), transportCostDto.getInputtedDaysNumberForUndocumentedLocalTransportCost(),
-                transportCostDto.getUndocumentedLocalTransportCost(), transportCostDto.getDocumentedLocalTransportCost(),
-                transportCostDto.getMeansOfTransport(), transportCostDto.getDocumentedLocalTransportCost(),
+                transportCostDto.getDocumentedLocalTransportCost(), transportCostDto.getMeansOfTransport(), transportCostDto.getCostOfTravelByPublicTransport(),
                 transportCostDto.getKilometersByCarEngineUpTo900cc(), transportCostDto.getKilometersByCarEngineAbove900cc(),
                 transportCostDto.getKilometersByMotorcycle(), transportCostDto.getKilometersByMoped());
     }

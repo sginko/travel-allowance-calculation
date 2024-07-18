@@ -77,10 +77,10 @@ public class TravelEntity {
                         BigDecimal advancePayment, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                         Integer numberOfLunches, Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
                         Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
-                        Boolean isInvoiceAmountGreaterAllowed, Integer inputtedDaysNumberForTransportCost,
-                        BigDecimal undocumentedLocalTransportCost, BigDecimal documentedLocalTransportCost,
-                        String meansOfTransport, BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
-                        Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped) {
+                        Boolean isInvoiceAmountGreaterAllowed, Integer inputtedDaysNumberForUndocumentedTransportCost,
+                        BigDecimal documentedLocalTransportCost, String meansOfTransport, BigDecimal costOfTravelByPublicTransport,
+                        Long kilometersByCarEngineUpTo900cc, Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle,
+                        Long kilometersByMoped) {
         this.userEntity = userEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -92,7 +92,7 @@ public class TravelEntity {
         this.dietEntity = new DietEntity(this, dailyAllowance, numberOfBreakfasts, numberOfLunches, numberOfDinners);
         this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice,
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, isInvoiceAmountGreaterAllowed);
-        this.transportCostEntity = new TransportCostEntity(this, inputtedDaysNumberForTransportCost, undocumentedLocalTransportCost,
+        this.transportCostEntity = new TransportCostEntity(this, inputtedDaysNumberForUndocumentedTransportCost,
                 documentedLocalTransportCost, meansOfTransport, costOfTravelByPublicTransport, kilometersByCarEngineUpTo900cc,
                 kilometersByCarEngineAbove900cc, kilometersByMotorcycle, kilometersByMoped);
     }

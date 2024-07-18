@@ -68,7 +68,7 @@ public class TravelServiceImpl implements TravelService {
         transportCostEntity.updateCostOfTravelByPublicTransport(costOfTravelByPublicTransport);
         transportCostEntity.updateCostOfTravelByOwnTransport(costOfTravelByOwnTransport);
         transportCostEntity.updateUndocumentedLocalTransportCost(undocumentedLocalTransportCost);
-        transportCostEntity.updateDocumentedLocalTransportCost(documentedLocalTransportCost);
+//        transportCostEntity.updateDocumentedLocalTransportCost(documentedLocalTransportCost);
 
         travelRepository.save(travelEntity);
 
@@ -79,6 +79,7 @@ public class TravelServiceImpl implements TravelService {
         BigDecimal advancePayment = travelRequestDto.getAdvancePayment();
         BigDecimal dietAmount = dietService.calculateDiet(travelRequestDto);
         BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStay(travelRequestDto);
-        return dietAmount.add(overnightStayAmount).subtract(advancePayment);
+        BigDecimal transportCostAmount = transportCostService.calculateTransportCostAmount(travelRequestDto);
+        return dietAmount.add(overnightStayAmount).add(transportCostAmount).subtract(advancePayment);
     }
 }

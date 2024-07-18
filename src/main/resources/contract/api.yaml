@@ -368,12 +368,6 @@ components:
           example: 5
           nullable: false
           description: Number of days for undocumented local transport cost
-        undocumentedLocalTransportCost:
-          type: number
-          format: double
-          example: 20.00
-          nullable: false
-          description: Cost of undocumented local transport
         documentedLocalTransportCost:
           type: number
           format: double
@@ -419,7 +413,6 @@ components:
           description: Cost of travel by public transport
       required:
         - inputtedDaysNumberForUndocumentedLocalTransportCost
-        - undocumentedLocalTransportCost
         - documentedLocalTransportCost
         - meansOfTransport
         - kilometersByCarEngineUpTo900cc

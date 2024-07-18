@@ -8,7 +8,7 @@ import pl.sginko.travelexpense.logic.transport.model.entity.TransportCostEntity;
 public class TransportCostMapper {
 
     public TransportCostResponseDto toResponseDto(TransportCostEntity entity) {
-        return new TransportCostResponseDto(entity.getId(), entity.getInputtedDaysNumberForTransportCost(),
+        return new TransportCostResponseDto(entity.getId(), entity.getInputtedDaysNumberForUndocumentedTransportCost(),
                 entity.getUndocumentedLocalTransportCost(), entity.getDocumentedLocalTransportCost(), entity.getMeansOfTransport(),
                 entity.getCostOfTravelByPublicTransport(), entity.getCostOfTravelByOwnTransport(), entity.getTransportCostAmount());
     }

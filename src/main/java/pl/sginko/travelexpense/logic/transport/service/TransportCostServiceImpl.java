@@ -37,7 +37,7 @@ public class TransportCostServiceImpl implements TransportCostService {
         if (inputtedDaysNumberForUndocumentedLocalTransportCost > daysInTravel) {
             throw new TransportException("The number of days entered for undocumented Local Transport Costs is greater than the number of days on the trip");
         }
-        return dailyUndocumentedLocalTransportCost.multiply(BigDecimal.valueOf(daysInTravel));
+        return dailyUndocumentedLocalTransportCost.multiply(BigDecimal.valueOf(inputtedDaysNumberForUndocumentedLocalTransportCost));
     }
 
     @Override

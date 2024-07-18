@@ -31,6 +31,31 @@ function validateFormFields(form) {
     if (!form["isInvoiceAmountGreaterAllowed"].checked) {
         form["isInvoiceAmountGreaterAllowed"].value = false;
     }
+    if (form["inputtedDaysNumberForUndocumentedLocalTransportCost"].value === "") {
+        form["inputtedDaysNumberForUndocumentedLocalTransportCost"].value = 0;
+    }
+    if (form["documentedLocalTransportCost"].value === "") {
+        form["documentedLocalTransportCost"].value = 0;
+    }
+    if (form["meansOfTransport"].value === "") {
+        form["meansOfTransport"].value = 0;
+    }
+    if (form["costOfTravelByPublicTransport"].value === "") {
+        form["costOfTravelByPublicTransport"].value = 0;
+    }
+    if (form["kilometersByCarEngineUpTo900cc"].value === "") {
+        form["kilometersByCarEngineUpTo900cc"].value = 0;
+    }
+    if (form["kilometersByCarEngineAbove900cc"].value === "") {
+        form["kilometersByCarEngineAbove900cc"].value = 0;
+    }
+    if (form["kilometersByMotorcycle"].value === "") {
+        form["kilometersByMotorcycle"].value = 0;
+    }
+    if (form["kilometersByMoped"].value === "") {
+        form["kilometersByMoped"].value = 0;
+    }
+
 
     console.log("Form submitted", {
         pesel: form["pesel"].value,
@@ -70,6 +95,16 @@ async function sendDbtcRequest(evt) {
             inputQuantityOfOvernightStayWithInvoice: parseInt(formData.get("inputQuantityOfOvernightStayWithInvoice")),
             amountOfTotalOvernightsStayWithInvoice: parseFloat(formData.get("amountOfTotalOvernightsStayWithInvoice")),
             isInvoiceAmountGreaterAllowed: form["isInvoiceAmountGreaterAllowed"].checked
+        },
+        transportCostDto: {
+            inputtedDaysNumberForUndocumentedLocalTransportCost: parseInt(formData.get("inputtedDaysNumberForUndocumentedLocalTransportCost")),
+            documentedLocalTransportCost: parseFloat(formData.get("documentedLocalTransportCost")),
+            meansOfTransport: formData.get("meansOfTransport"),
+            costOfTravelByPublicTransport: parseInt(formData.get("costOfTravelByPublicTransport")),
+            kilometersByCarEngineUpTo900cc: parseInt(formData.get("kilometersByCarEngineUpTo900cc")),
+            kilometersByCarEngineAbove900cc: parseInt(formData.get("kilometersByCarEngineAbove900cc")),
+            kilometersByMotorcycle: parseInt(formData.get("kilometersByMotorcycle")),
+            kilometersByMoped: parseInt(formData.get("kilometersByMoped")),
         }
     };
 
