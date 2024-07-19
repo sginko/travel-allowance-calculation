@@ -42,5 +42,4 @@ public class TransportCostDto {
     @NotNull(message = "Kilometers by moped cannot be null")
     @Min(value = 0, message = "Kilometers by moped cannot be negative")
     private Long kilometersByMoped;
-
 }

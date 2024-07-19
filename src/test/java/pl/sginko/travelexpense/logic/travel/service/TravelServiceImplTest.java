@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
 import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
+import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
@@ -36,7 +37,7 @@ class TravelServiceImplTest {
     private final LocalDate START_DAY = LocalDate.now();
     private final LocalTime START_TIME = LocalTime.of(0, 0);
 
-//    private final BigDecimal PERCENT_25 = new BigDecimal(0.25);
+    private final BigDecimal PERCENT_25 = BigDecimal.valueOf(0.25);
     private final BigDecimal PERCENT_50 = BigDecimal.valueOf(0.5);//new BigDecimal(0.5);
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
     private final BigDecimal HALF_DAILY_ALLOWANCE = DAILY_ALLOWANCE.multiply(PERCENT_50);
@@ -46,7 +47,16 @@ class TravelServiceImplTest {
     private final BigDecimal MAX_AMOUNT_FOR_ONE_NIGHT_WITH_INVOICE = DAILY_ALLOWANCE.multiply(BigDecimal.valueOf(20));
     private final BigDecimal ADVANCE_PAYMENT = BigDecimal.valueOf(50);
     private final Boolean IS_INVOICE_AMOUNT_GREATER_ALLOWED = false;
+    private final BigDecimal OTHER_EXPENSES = BigDecimal.valueOf(0);
 
+    private final Integer INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST = 0;
+    private final BigDecimal DOCUMENTED_LOCAL_TRANSPORT_COST = BigDecimal.valueOf(0);
+    private final String MEANS_OF_TRANSPORT = "without transport";
+    private final BigDecimal COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT = BigDecimal.valueOf(0);
+    private final Long KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC = 0L;
+    private final Long KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC = 0L;
+    private final Long KILOMETERS_BY_MOTORCYCLE = 0L;
+    private final Long KILOMETERS_BY_MOPED = 0L;
 
     @Autowired
     private TravelService travelService;
@@ -91,14 +101,18 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
 
         //THEN
-        assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(ZERO_DAILY_ALLOWANCE.subtract(ADVANCE_PAYMENT));
+        assertThat(travelResponseDto.getTotalAmount()).isEqualByComparingTo(ZERO_DAILY_ALLOWANCE.add(OTHER_EXPENSES).subtract(ADVANCE_PAYMENT));
     }
 
     @Test
@@ -123,8 +137,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -155,8 +173,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -187,8 +209,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -219,8 +245,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -252,8 +282,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, startTime, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -284,8 +318,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -316,8 +354,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -349,8 +391,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -382,8 +428,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -414,8 +464,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -446,8 +500,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -478,8 +536,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -511,8 +573,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -544,8 +610,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         TravelResponseDto travelResponseDto = travelService.calculateTravelExpenses(travelRequestDto);
@@ -577,8 +647,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
         TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         Executable e = () -> travelService.calculateTravelExpenses(travelRequestDto);
@@ -611,8 +685,12 @@ class TravelServiceImplTest {
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
                 amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
-        TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, startTime, endDay,
-                endTime, ADVANCE_PAYMENT, dietDto, overnightStayDto);
+        TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
+                MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
+                KILOMETERS_BY_MOTORCYCLE, KILOMETERS_BY_MOPED);
+
+        TravelRequestDto travelRequestDto = new TravelRequestDto(PESEL, CITY_FROM, CITY_TO, START_DAY, START_TIME, endDay,
+                endTime, ADVANCE_PAYMENT, OTHER_EXPENSES, dietDto, overnightStayDto, transportCostDto);
 
         //WHEN
         Executable e = () -> travelService.calculateTravelExpenses(travelRequestDto);

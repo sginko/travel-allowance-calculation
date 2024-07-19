@@ -22,8 +22,9 @@ public class TransportCostServiceImpl implements TransportCostService {
         BigDecimal undocumentedLocalTransportCost = calculateUndocumentedLocalTransportCost(travelRequestDto);
         BigDecimal documentedLocalTransportCost = calculateDocumentedLocalTransportCost(travelRequestDto);
         BigDecimal costOfTravelByPublicTransport = calculateCostOfTravelByPublicTransport(travelRequestDto);
-        BigDecimal calculateCostOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport(travelRequestDto);
-        return undocumentedLocalTransportCost.add(documentedLocalTransportCost).add(costOfTravelByPublicTransport).add(calculateCostOfTravelByOwnTransport);
+        BigDecimal costOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport(travelRequestDto);
+        return undocumentedLocalTransportCost.add(documentedLocalTransportCost).
+                add(costOfTravelByPublicTransport).add(costOfTravelByOwnTransport);
     }
 
     @Override
