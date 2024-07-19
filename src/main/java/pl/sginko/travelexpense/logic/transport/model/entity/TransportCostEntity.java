@@ -23,41 +23,22 @@ public class TransportCostEntity {
     @JoinColumn(name = "travel_id", nullable = false)
     private TravelEntity travelEntity;
 
-
-    //Dojazdy środkami komunikacji miejscowej (w miejscu delegacji)
     @NotNull(message = "inputtedDaysNumberForTransportCost cannot be null")
     @Column(nullable = false)
-    private Integer inputtedDaysNumberForUndocumentedTransportCost; //Ilość dób, za które przysługuje ryczałt za dojazdy
+    private Integer inputtedDaysNumberForUndocumentedTransportCost;
 
     @Column(nullable = false)
-    private BigDecimal undocumentedLocalTransportCost; //wyliczona w zaleznosci od ilosci dni
+    private BigDecimal undocumentedLocalTransportCost;
 
     @Column(nullable = false)
-    private BigDecimal documentedLocalTransportCost; //Kwota z tytułu zwrotu udokumentowanych kosztów dojazdów (wymagana zgoda pracodawcy)
+    private BigDecimal documentedLocalTransportCost;
 
-
-    //Rodzaj transportu przejazdu. Wybieram w menu.
     @NotBlank(message = "meansOfTransport cannot be blank")
     @Column(nullable = false)
     private String meansOfTransport;
 
-    //Przejazd transportem publicznym w zlotych
     @Column(nullable = false)
     private BigDecimal costOfTravelByPublicTransport;
-
-
-//    //Przejazd niebędącym własnością pracodawcy (liczba faktycznie przejechanych kilometrów)
-//    @Column(nullable = false)
-//    private BigDecimal costByCarEngineUpTo900Cc;
-//
-//    @Column(nullable = false)
-//    private BigDecimal costByCarEngineAboveTo900Cc;
-//
-//    @Column(nullable = false)
-//    private BigDecimal costByMotorcycle;
-//
-//    @Column(nullable = false)
-//    private BigDecimal costByMoped;
 
     @NotNull(message = "Kilometers by car engine up to 900cc cannot be null")
     @Min(value = 0, message = "Kilometers by car engine up to 900cc cannot be negative")
@@ -102,10 +83,6 @@ public class TransportCostEntity {
     public void updateUndocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
         this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
     }
-
-//    public void updateDocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
-//        this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
-//    }
 
     public void updateCostOfTravelByPublicTransport(BigDecimal costOfTravelByPublicTransport) {
         this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;
