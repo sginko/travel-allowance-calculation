@@ -31,8 +31,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TravelResponseDto'
-        '400':
-          description: Bad Request - TravelException, DietException, OvernightStayException, TransportException
+        '406':
+          description: Bad Request - TravelException, OvernightStayException, TransportException
           content:
             text/plain:
               schema:
