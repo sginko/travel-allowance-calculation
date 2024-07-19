@@ -1,6 +1,8 @@
 package pl.sginko.travelexpense.logic.pdfDocument;
 
+import com.ibm.icu.text.RuleBasedNumberFormat;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Locale;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -45,11 +49,13 @@ public class PdfDocumentService {
                 entry("countLunch", String.valueOf(dietEntity.getNumberOfLunches())),
                 entry("countDinner", String.valueOf(dietEntity.getNumberOfDinners())),
                 entry("totalAmount", String.valueOf(travelEntity.getTotalAmount())),
+                entry("totalAmountWords", numberToWords(travelEntity.getTotalAmount())),
                 entry("dietAmount", String.valueOf(dietEntity.getDietAmount())),
                 entry("foodAmount", String.valueOf(dietEntity.getFoodAmount())),
                 entry("overnightStayWithInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithInvoice())),
                 entry("overnightStayWithoutInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithoutInvoice())),
                 entry("advancePayment", String.valueOf(travelEntity.getAdvancePayment())),
+                entry("advancePaymentWords", numberToWords(travelEntity.getAdvancePayment())),
                 entry("undocumentedLocalTransportCost", String.valueOf(transportCostEntity.getUndocumentedLocalTransportCost())),
                 entry("documentedLocalTransportCost", String.valueOf(transportCostEntity.getDocumentedLocalTransportCost())),
                 entry("meansOfTransport", String.valueOf(transportCostEntity.getMeansOfTransport())),
@@ -59,9 +65,15 @@ public class PdfDocumentService {
         );
 
         String templatePath = "src/main/resources/print/template.pdf";
+//        String templatePath = "src/main/resources/print/templateWords.pdf";
         String outputPath = "src/main/resources/print/changed_template.pdf";
 
         fillTemplate(templatePath, outputPath, replacements);
+    }
+
+    private String numberToWords(BigDecimal number) {
+        RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(Locale.forLanguageTag("pl-PL"), RuleBasedNumberFormat.SPELLOUT);
+        return ruleBasedNumberFormat.format(number);
     }
 
     // method without validation
@@ -70,6 +82,9 @@ public class PdfDocumentService {
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
 
             if (acroForm != null) {
+
+//                PDType0Font font = PDType0Font.load(document, new FileInputStream("src/main/resources/print/arial.ttf"));
+
                 for (Map.Entry<String, String> entry : data.entrySet()) {
                     PDField field = acroForm.getField(entry.getKey());
                     if (field != null) {
