@@ -51,7 +51,7 @@ public class TravelServiceImpl implements TravelService {
         BigDecimal costOfTravelByPublicTransport = transportCostService.calculateCostOfTravelByPublicTransport(travelRequestDto);
         BigDecimal costOfTravelByOwnTransport = transportCostService.calculateCostOfTravelByOwnTransport(travelRequestDto);
         BigDecimal undocumentedLocalTransportCost = transportCostService.calculateUndocumentedLocalTransportCost(travelRequestDto);
-        BigDecimal documentedLocalTransportCost = transportCostService.calculateDocumentedLocalTransportCost(travelRequestDto);
+        BigDecimal totalCostOfTravelByOwnAndPublicTransport = transportCostService.calculateTotalCostOfTravelByOwnAndPublicTransport(travelRequestDto);
 
         travelEntity.updateTotalAmount(totalAmount);
         travelEntity.updateUser(userByPesel);
@@ -68,7 +68,7 @@ public class TravelServiceImpl implements TravelService {
         transportCostEntity.updateCostOfTravelByPublicTransport(costOfTravelByPublicTransport);
         transportCostEntity.updateCostOfTravelByOwnTransport(costOfTravelByOwnTransport);
         transportCostEntity.updateUndocumentedLocalTransportCost(undocumentedLocalTransportCost);
-//        transportCostEntity.updateDocumentedLocalTransportCost(documentedLocalTransportCost);
+        transportCostEntity.updateTotalCostOfTravelByOwnAndPublicTransport(totalCostOfTravelByOwnAndPublicTransport);
 
         travelRepository.save(travelEntity);
 

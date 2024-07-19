@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
 import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
+import pl.sginko.travelexpense.logic.transport.model.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travel.model.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
@@ -29,6 +30,7 @@ public class PdfDocumentService {
         TravelEntity travelEntity = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
         DietEntity dietEntity = travelEntity.getDietEntity();
         OvernightStayEntity overnightStayEntity = travelEntity.getOvernightStayEntity();
+        TransportCostEntity transportCostEntity = travelEntity.getTransportCostEntity();
 
         Map<String, String> replacements = Map.ofEntries(
                 entry("fullName", travelEntity.getUserEntity().getFirstName() + " " + travelEntity.getUserEntity().getSecondName()),
@@ -47,7 +49,13 @@ public class PdfDocumentService {
                 entry("foodAmount", String.valueOf(dietEntity.getFoodAmount())),
                 entry("overnightStayWithInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithInvoice())),
                 entry("overnightStayWithoutInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithoutInvoice())),
-                entry("advancePayment", String.valueOf(travelEntity.getAdvancePayment()))
+                entry("advancePayment", String.valueOf(travelEntity.getAdvancePayment())),
+                entry("undocumentedLocalTransportCost", String.valueOf(transportCostEntity.getMeansOfTransport())),
+                entry("documentedLocalTransportCost", String.valueOf(transportCostEntity.getMeansOfTransport())),
+                entry("meansOfTransport", String.valueOf(transportCostEntity.getMeansOfTransport())),
+                entry("totalCostOfTravelByOwnAndPublicTransport", String.valueOf(transportCostEntity.getTotalCostOfTravelByOwnAndPublicTransport())),
+                entry("transportCostAmount", String.valueOf(transportCostEntity.getTransportCostAmount())),
+                entry("otherExpenses", String.valueOf(travelEntity.getOtherExpenses()))
         );
 
         String templatePath = "src/main/resources/print/template.pdf";

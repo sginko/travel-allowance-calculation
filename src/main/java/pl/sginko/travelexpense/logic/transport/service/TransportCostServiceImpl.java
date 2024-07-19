@@ -28,6 +28,13 @@ public class TransportCostServiceImpl implements TransportCostService {
     }
 
     @Override
+    public BigDecimal calculateTotalCostOfTravelByOwnAndPublicTransport(TravelRequestDto travelRequestDto) {
+        BigDecimal costOfTravelByPublicTransport = calculateCostOfTravelByPublicTransport(travelRequestDto);
+        BigDecimal costOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport(travelRequestDto);
+        return costOfTravelByPublicTransport.add(costOfTravelByOwnTransport);
+    }
+
+    @Override
     public BigDecimal calculateUndocumentedLocalTransportCost(TravelRequestDto travelRequestDto) {
         TransportCostDto transportCostDto = travelRequestDto.getTransportCostDto();
         BigDecimal dailyAllowance = travelRequestDto.getDietDto().getDailyAllowance();

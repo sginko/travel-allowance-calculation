@@ -9,6 +9,8 @@ public interface TransportCostService {
 
     BigDecimal calculateTransportCostAmount(TravelRequestDto travelRequestDto);
 
+    BigDecimal calculateTotalCostOfTravelByOwnAndPublicTransport(TravelRequestDto travelRequestDto);
+
     BigDecimal calculateUndocumentedLocalTransportCost(TravelRequestDto travelRequestDto);
 
     BigDecimal calculateDocumentedLocalTransportCost(TravelRequestDto travelRequestDto);

@@ -64,6 +64,9 @@ public class TransportCostEntity {
     private BigDecimal costOfTravelByOwnTransport;
 
     @Column(nullable = false)
+    private BigDecimal totalCostOfTravelByOwnAndPublicTransport;
+
+    @Column(nullable = false)
     private BigDecimal transportCostAmount;
 
     public TransportCostEntity(TravelEntity travelEntity, Integer inputtedDaysNumberForUndocumentedTransportCost, BigDecimal documentedLocalTransportCost,
@@ -94,5 +97,9 @@ public class TransportCostEntity {
 
     public void updateTransportCostAmount(BigDecimal transportCostAmount) {
         this.transportCostAmount = transportCostAmount;
+    }
+
+    public void updateTotalCostOfTravelByOwnAndPublicTransport(BigDecimal totalCostOfTravelByOwnAndPublicTransport) {
+        this.totalCostOfTravelByOwnAndPublicTransport = totalCostOfTravelByOwnAndPublicTransport;
     }
 }

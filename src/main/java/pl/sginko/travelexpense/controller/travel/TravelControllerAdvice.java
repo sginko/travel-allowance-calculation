@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.sginko.travelexpense.logic.diet.exception.DietException;
 import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.transport.exception.TransportException;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
@@ -23,12 +22,6 @@ public class TravelControllerAdvice {
 
     @ExceptionHandler(TravelException.class)
     public ResponseEntity<Response> handleTravelException(TravelException e) {
-        Response response = new Response(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
-    }
-
-    @ExceptionHandler(DietException.class)
-    public ResponseEntity<Response> handleDietException(DietException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }
