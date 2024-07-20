@@ -10,7 +10,6 @@ import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayExcept
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 
-import javax.annotation.meta.When;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;

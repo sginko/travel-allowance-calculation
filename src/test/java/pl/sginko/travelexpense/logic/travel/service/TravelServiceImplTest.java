@@ -606,12 +606,11 @@ class TravelServiceImplTest {
 
         Integer inputQuantityOfOvernightStayWithoutInvoice = 1;
         Integer inputQuantityOfOvernightStayWithInvoice = 1;
-        BigDecimal amountOfTotalOvernightsStayWithInvoice = ONE_NIGHT_WITH_INVOICE;
 
         DietDto dietDto = new DietDto(DAILY_ALLOWANCE, numberOfBreakfasts, numberOfLunches, numberOfDinners);
 
         OvernightStayDto overnightStayDto = new OvernightStayDto(inputQuantityOfOvernightStayWithoutInvoice, inputQuantityOfOvernightStayWithInvoice,
-                amountOfTotalOvernightsStayWithInvoice, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
+                ONE_NIGHT_WITH_INVOICE, IS_INVOICE_AMOUNT_GREATER_ALLOWED);
 
         TransportCostDto transportCostDto = new TransportCostDto(INPUTTED_DAYS_NUMBER_FOR_UNDOCUMENTED_LOCAL_TRANSPORT_COST, DOCUMENTED_LOCAL_TRANSPORT_COST,
                 MEANS_OF_TRANSPORT, COST_OF_TRAVEL_BY_PUBLIC_TRANSPORT, KILOMETERS_BY_CAR_ENGINE_UP_TO_900_CC, KILOMETERS_BY_CAR_ENGINE_ABOVE_TO_900_CC,
@@ -743,7 +742,7 @@ class TravelServiceImplTest {
     }
 
     @Test
-    void Should_throw_TransportException_for_trip_24_hour_with_two_day_undocumented_cost() {
+    void should_throw_transportException_for_trip_one_day_and_inputted_two_day_undocumented_cost() {
         //GIVEN
         UserRequestDto userRequestDto = new UserRequestDto(PESEL, FIRST_NAME, SECOND_NAME, POSITION);
         userService.addUser(userRequestDto);
