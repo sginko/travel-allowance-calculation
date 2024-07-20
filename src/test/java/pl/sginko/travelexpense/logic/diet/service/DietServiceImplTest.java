@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.logic.diet.service;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-//@ExtendWith(MockitoExtension.class)
 class DietServiceImplTest {
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
 
