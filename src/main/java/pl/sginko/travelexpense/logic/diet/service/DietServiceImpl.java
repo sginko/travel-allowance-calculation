@@ -13,7 +13,7 @@ import java.time.LocalTime;
 class DietServiceImpl implements DietService {
 
     @Override
-    public BigDecimal calculateDiet(TravelRequestDto travelRequestDto) {
+    public BigDecimal calculateDiet(final TravelRequestDto travelRequestDto) {
         BigDecimal dietAmount = calculateDietAmount(travelRequestDto);
         BigDecimal foodAmount = calculateFoodAmount(travelRequestDto);
         return dietAmount.add(foodAmount);

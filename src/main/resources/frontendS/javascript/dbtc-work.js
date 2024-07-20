@@ -115,7 +115,7 @@ async function sendDbtcRequest(evt) {
     const jsonData = JSON.stringify(jsonObject);
     console.log("Sending data", jsonData);
 
-   // try {
+    try {
         const response = await fetch('http://localhost:8080/api/v1/travels', {
             method: 'POST',
             headers: {
@@ -135,8 +135,8 @@ async function sendDbtcRequest(evt) {
         localStorage.setItem('resultValues', JSON.stringify(dataJSON));
         window.location.href = 'results.html';
 
-//    } catch (error) {
-//        console.error('Error:', error);
+    } catch (error) {
+        console.error('Error:', error);
 //        alert('Error');
-//    }
+    }
 }

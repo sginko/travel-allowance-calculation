@@ -16,7 +16,6 @@ import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travel.repository.TravelRepository;
 import pl.sginko.travelexpense.logic.user.model.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
-import pl.sginko.travelexpense.logic.user.service.UserReaderService;
 import pl.sginko.travelexpense.logic.user.service.UserService;
 
 import java.math.BigDecimal;
@@ -39,7 +38,7 @@ class TravelServiceImplTest {
     private final LocalTime START_TIME = LocalTime.of(0, 0);
 
     private final BigDecimal PERCENT_25 = BigDecimal.valueOf(0.25);
-    private final BigDecimal PERCENT_50 = BigDecimal.valueOf(0.5);//new BigDecimal(0.5);
+    private final BigDecimal PERCENT_50 = BigDecimal.valueOf(0.5);
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
     private final BigDecimal HALF_DAILY_ALLOWANCE = DAILY_ALLOWANCE.multiply(PERCENT_50);
     private final BigDecimal ZERO_DAILY_ALLOWANCE = BigDecimal.ZERO;
@@ -65,7 +64,6 @@ class TravelServiceImplTest {
     private final BigDecimal COST_BY_MOTORCYCLE = BigDecimal.valueOf(0.69);
     private final BigDecimal COST_BY_MOPED = BigDecimal.valueOf(0.42);
 
-
     @Autowired
     private TravelService travelService;
 
@@ -74,9 +72,6 @@ class TravelServiceImplTest {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UserReaderService userReaderService;
 
     @Autowired
     private UserRepository userRepository;
