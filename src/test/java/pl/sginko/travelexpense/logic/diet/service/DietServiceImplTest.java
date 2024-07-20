@@ -11,13 +11,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 //@ExtendWith(MockitoExtension.class)
 class DietServiceImplTest {
+    private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
+
     @Autowired
     private DietService dietService;
 
@@ -31,7 +33,7 @@ class DietServiceImplTest {
     void should_calculate_food_amount_when_breakfast_is_0_lunch_is_0_dinner_is_0() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
         when(dietDto.getNumberOfLunches()).thenReturn(0);
         when(dietDto.getNumberOfDinners()).thenReturn(0);
@@ -48,7 +50,7 @@ class DietServiceImplTest {
     void should_calculate_food_amount_when_breakfast_is_1_lunch_is_0_dinner_is_0() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(1);
         when(dietDto.getNumberOfLunches()).thenReturn(0);
         when(dietDto.getNumberOfDinners()).thenReturn(0);
@@ -65,7 +67,7 @@ class DietServiceImplTest {
     void should_calculate_food_amount_when_breakfast_is_0_lunch_is_1_dinner_is_0() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
         when(dietDto.getNumberOfLunches()).thenReturn(1);
         when(dietDto.getNumberOfDinners()).thenReturn(0);
@@ -82,7 +84,7 @@ class DietServiceImplTest {
     void should_calculate_food_amount_when_breakfast_is_0_lunch_is_0_dinner_is_1() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(1);
         when(dietDto.getNumberOfLunches()).thenReturn(0);
         when(dietDto.getNumberOfDinners()).thenReturn(0);
@@ -99,7 +101,7 @@ class DietServiceImplTest {
     void should_calculate_food_amount_when_breakfast_is_1_lunch_is_0_dinner_is_1() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
         when(dietDto.getNumberOfLunches()).thenReturn(1);
         when(dietDto.getNumberOfDinners()).thenReturn(0);
@@ -116,7 +118,7 @@ class DietServiceImplTest {
     void should_calculate_food_amount_when_breakfast_is_1_lunch_is_1_dinner_is_1() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
         when(dietDto.getNumberOfLunches()).thenReturn(1);
         when(dietDto.getNumberOfDinners()).thenReturn(0);
@@ -133,7 +135,7 @@ class DietServiceImplTest {
     void should_calculate_diet_amount_when_trip_less_than_8_hours() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
 
         when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
         when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
@@ -151,7 +153,7 @@ class DietServiceImplTest {
     void should_calculate_diet_amount_when_trip_more_8_and_less_12_hour() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
 
         when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
         when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
@@ -169,7 +171,7 @@ class DietServiceImplTest {
     void should_calculate_diet_amount_when_trip_more_than_12_hours() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
 
         when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
         when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(9, 0));
@@ -187,7 +189,7 @@ class DietServiceImplTest {
     void should_calculate_diet_amount_when_trip_more_than_one_day_and_less_than_8_hours() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
 
         when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
         when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
@@ -205,7 +207,7 @@ class DietServiceImplTest {
     void should_calculate_diet_amount_when_trip_more_than_one_day_and_more_than_8_hours() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
 
         when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
         when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
@@ -223,7 +225,7 @@ class DietServiceImplTest {
     void should_calculate_diet() {
         // GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-        when(dietDto.getDailyAllowance()).thenReturn(BigDecimal.valueOf(45));
+        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(1);
         when(dietDto.getNumberOfLunches()).thenReturn(1);
         when(dietDto.getNumberOfDinners()).thenReturn(1);
