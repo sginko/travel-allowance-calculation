@@ -1,51 +1,8 @@
-const dbtcForm = document.getElementById("dbtc-form");
-dbtcForm.addEventListener('submit', sendDbtcRequest);
-
-function validateFormFields(form) {
-    if (form["numberOfBreakfasts"].value === "") {
-        form["numberOfBreakfasts"].value = 0;
-    }
-    if (form["numberOfLunches"].value === "") {
-        form["numberOfLunches"].value = 0;
-    }
-    if (form["numberOfDinners"].value === "") {
-        form["numberOfDinners"].value = 0;
-    }
-    if (form["dailyAllowance"].value === "") {
-        form["dailyAllowance"].value = 45;
-    }
-    if (form["inputQuantityOfOvernightStayWithoutInvoice"].value === "") {
-        form["inputQuantityOfOvernightStayWithoutInvoice"].value = 0;
-    }
-    if (form["inputQuantityOfOvernightStayWithInvoice"].value === "") {
-        form["inputQuantityOfOvernightStayWithInvoice"].value = 0;
-    }
-    if (form["amountOfTotalOvernightsStayWithInvoice"].value === "") {
-        form["amountOfTotalOvernightsStayWithInvoice"].value = 0;
-    }
-    if (form["advancePayment"].value === "") {
-        form["advancePayment"].value = 0;
-    }
-    if (!form["isInvoiceAmountGreaterAllowed"].checked) {
-        form["isInvoiceAmountGreaterAllowed"].value = false;
-    }
-
-    console.log("Form submitted", {
-        pesel: form["pesel"].value,
-        numberOfLunches: form["numberOfLunches"].value,
-        numberOfBreakfasts: form["numberOfBreakfasts"].value,
-        numberOfDinners: form["numberOfDinners"].value,
-        inputQuantityOfOvernightStayWithoutInvoice: form["inputQuantityOfOvernightStayWithoutInvoice"].value,
-        inputQuantityOfOvernightStayWithInvoice: form["inputQuantityOfOvernightStayWithInvoice"].value,
-        amountOfTotalOvernightsStayWithInvoice: form["amountOfTotalOvernightsStayWithInvoice"].value,
-        advancePayment: form["advancePayment"].value
-    });
-}
+const form = document.getElementById("dbtc-form");
+form.addEventListener('submit', sendDbtcRequest);
 
 async function sendDbtcRequest(evt) {
     evt.preventDefault();
-    const form = evt.target;
-    validateFormFields(form);
 
     const formData = new FormData(form);
     const jsonObject = {
@@ -56,21 +13,31 @@ async function sendDbtcRequest(evt) {
         startTime: formData.get("startTime"),
         endDate: formData.get("endDate"),
         endTime: formData.get("endTime"),
-        advancePayment: parseFloat(formData.get("advancePayment")),
+        advancePayment: parseFloat(formData.get("advancePayment")) ? parseFloat(formData.get("advancePayment")) : 0,
         dietDto: {
-            dailyAllowance: parseFloat(formData.get("dailyAllowance")),
-            numberOfBreakfasts: parseInt(formData.get("numberOfBreakfasts")),
-            numberOfLunches: parseInt(formData.get("numberOfLunches")),
-            numberOfDinners: parseInt(formData.get("numberOfDinners"))
+            dailyAllowance: parseFloat(formData.get("dailyAllowance")) ? parseFloat(formData.get("dailyAllowance")) : 45,
+            numberOfBreakfasts: parseInt(formData.get("numberOfBreakfasts")) ? parseInt(formData.get("numberOfBreakfasts")) : 0,
+            numberOfLunches: parseInt(formData.get("numberOfLunches")) ? parseInt(formData.get("numberOfLunches")) : 0,
+            numberOfDinners: parseInt(formData.get("numberOfDinners")) ? parseInt(formData.get("numberOfDinners")) : 0
         },
         overnightStayDto: {
-            inputQuantityOfOvernightStayWithoutInvoice: parseInt(formData.get("inputQuantityOfOvernightStayWithoutInvoice")),
-            inputQuantityOfOvernightStayWithInvoice: parseInt(formData.get("inputQuantityOfOvernightStayWithInvoice")),
-            amountOfTotalOvernightsStayWithInvoice: parseFloat(formData.get("amountOfTotalOvernightsStayWithInvoice")),
-            isInvoiceAmountGreaterAllowed: form["isInvoiceAmountGreaterAllowed"].checked
+            inputQuantityOfOvernightStayWithoutInvoice: parseInt(formData.get("inputQuantityOfOvernightStayWithoutInvoice")) ? parseInt(formData.get("inputQuantityOfOvernightStayWithoutInvoice")) : 0,
+            inputQuantityOfOvernightStayWithInvoice: parseInt(formData.get("inputQuantityOfOvernightStayWithInvoice")) ? parseInt(formData.get("inputQuantityOfOvernightStayWithInvoice")) : 0,
+            amountOfTotalOvernightsStayWithInvoice: parseFloat(formData.get("amountOfTotalOvernightsStayWithInvoice")) ? parseFloat(formData.get("amountOfTotalOvernightsStayWithInvoice")) : 0,
+            isInvoiceAmountGreaterAllowed: Boolean(form["isInvoiceAmountGreaterAllowed"].checked)
+        },
+        transportCostDto: {
+            inputtedDaysNumberForUndocumentedLocalTransportCost: parseInt(formData.get("inputtedDaysNumberForUndocumentedLocalTransportCost")) ? parseInt(formData.get("inputtedDaysNumberForUndocumentedLocalTransportCost")) : 0,
+            documentedLocalTransportCost: parseFloat(formData.get("documentedLocalTransportCost")) ? parseFloat(formData.get("documentedLocalTransportCost")) : 0,
+            meansOfTransport: formData.get("meansOfTransport"),
+            kilometersByCarEngineUpTo900cc: parseInt(formData.get("kilometersByCarEngineUpTo900cc")) ? parseInt(formData.get("kilometersByCarEngineUpTo900cc")) : 0,
+            kilometersByCarEngineAbove900cc: parseInt(formData.get("kilometersByCarEngineAbove900cc")) ? parseInt(formData.get("kilometersByCarEngineAbove900cc")) : 0,
+            kilometersByMotorcycle: parseInt(formData.get("kilometersByMotorcycle")) ? parseInt(formData.get("kilometersByMotorcycle")) : 0,
+            kilometersByMoped: parseInt(formData.get("kilometersByMoped")) ? parseInt(formData.get("kilometersByMoped")) : 0,
+            costOfTravelByPublicTransport: parseFloat(formData.get("costOfTravelByPublicTransport")) ? parseFloat(formData.get("costOfTravelByPublicTransport")) : 0
         }
     };
-
+    console.log(jsonObject);
     const jsonData = JSON.stringify(jsonObject);
     console.log("Sending data", jsonData);
 
@@ -85,15 +52,53 @@ async function sendDbtcRequest(evt) {
         });
 
         if (!response.ok) {
-            alert(`Błąd: ${response.status}\nMessage: ${response.statusText}`);
-            throw new Error(`Błąd: ${response.status}\nMessage: ${response.statusText}`);
+            const errorData = await response.json();
+            displayErrorBox("error-box", errorData);
         }
+
         const dataJSON = await response.json();
         localStorage.setItem('resultValues', JSON.stringify(dataJSON));
         window.location.href = 'results.html';
 
     } catch (error) {
-        console.error('Błąd:', error);
-        alert('Wystąpił błąd podczas dodawania podróży');
+        displayErrorBox("error-box", error);
     }
 }
+const transportOptions = document.getElementById("meansOfTransport");
+transportOptions.addEventListener('change', showSelectedOption);
+document.addEventListener('DOMContentLoaded', showSelectedOption);
+
+function showSelectedOption() {
+    const formData = new FormData(form);
+    const type = formData.get("meansOfTransport");
+
+    const options = {
+        public: "costOfTravelByPublicTransport",
+        business: "costOfTravelByPublicTransport",
+        upTo900: "kilometersByCarEngineUpTo900cc",
+        above900: "kilometersByCarEngineAbove900cc",
+        motocycle: "kilometersByMotorcycle",
+        moped: "kilometersByMoped"
+
+    }
+    const labels = document.querySelectorAll('.selectlabel');
+    labels.forEach(element => {
+        if (!element.classList.contains('hidden')) {
+            element.classList.add('hidden')
+            element.firstElementChild.value = '';
+        }
+    })
+
+    const id = options[type];
+    const input = document.getElementById(id);
+    if (type !== "business") {
+        input.parentElement.classList.remove('hidden');
+    }
+}
+
+
+// values for meansOfTransport
+// "upTo900"
+// "above900"
+// "motocycle"
+// "moped"

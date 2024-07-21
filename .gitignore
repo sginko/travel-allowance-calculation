@@ -48,6 +48,7 @@ node_modules/
 package-lock.json
 package.json
 src/main/resources/frontendK/nodeserver
-src/main/resources/frontendS/
+src/main/resources/frontendS
+frontendS/
 .gitignore
 
