@@ -37,9 +37,9 @@ async function sendDbtcRequest(evt) {
             costOfTravelByPublicTransport: parseFloat(formData.get("costOfTravelByPublicTransport")) ? parseFloat(formData.get("costOfTravelByPublicTransport")) : 0
         }
     };
-    console.log(jsonObject);
+    //console.log(jsonObject);
     const jsonData = JSON.stringify(jsonObject);
-    console.log("Sending data", jsonData);
+   // console.log("Sending data", jsonData);
 
     try {
         const response = await fetch('http://localhost:8080/api/v1/travels', {
@@ -54,11 +54,13 @@ async function sendDbtcRequest(evt) {
         if (!response.ok) {
             const errorData = await response.json();
             displayErrorBox("error-box", errorData);
-        }
 
-        const dataJSON = await response.json();
-        localStorage.setItem('resultValues', JSON.stringify(dataJSON));
-        window.location.href = 'results.html';
+        } else {
+
+            const dataJSON = await response.json();
+            localStorage.setItem('resultValues', JSON.stringify(dataJSON));
+            window.location.href = 'results.html';
+        }
 
     } catch (error) {
         displayErrorBox("error-box", error);
@@ -95,10 +97,3 @@ function showSelectedOption() {
         input.parentElement.classList.remove('hidden');
     }
 }
-
-
-// values for meansOfTransport
-// "upTo900"
-// "above900"
-// "motocycle"
-// "moped"

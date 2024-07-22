@@ -23,7 +23,8 @@
     --dbtc-form-label-color:rgb(100,100,100);
     --dbtc-container-background-color:rgb(255,255,255);
     --dbtc-container-background-shadow:rgba(0,0,0,.1);
-    --font-color-gray:rgb(100,100,100);
+    --font-color-gray:rgb(70,70,70);
+    --font-color-lightblue:rgb(5, 203, 253);
     /* --dbtc-container-h4-color:rgb(50, 100, 255); */
 }
 html {
@@ -48,9 +49,21 @@ input{
     border:none;
 }
 input:not(input[type="submit"],input[type="checkbox"]){
-    padding:5px 5px 5px 15px;
     background-color: var(--input-background-color);
     border:2px solid var(--input-border-color);
+}
+input:not(input[type="submit"],input[type="checkbox"],input[type="number"]){
+    padding:5px 5px 5px 15px;
+}
+input[type="number"]{
+    padding:5px 30px 5px 15px;
+}
+input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{
+    /* -webkit-appearance: none;
+    margin:0; */
+}
+input[type="number"]{
+    /* -moz-appearance: textfield; */
 }
 input:not(input[type="submit"],input[type="checkbox"]):hover{
     border:2px solid var(--input-border-color-hover);
@@ -184,7 +197,6 @@ transform: rotate(45deg)
     input:not(input[type="submit"],input[type="checkbox"]){
         width:256px;
         height:20px;
-        padding:5px 5px 5px 15px;
     }
 }
 @media only screen and (min-width:601px){
@@ -194,7 +206,6 @@ transform: rotate(45deg)
     input:not(input[type="submit"],input[type="checkbox"]){
         width:156px;
         height:20px;
-        padding:5px 5px 5px 15px;
     }
 }
 @media only screen and (min-width:1025px){
@@ -204,6 +215,5 @@ transform: rotate(45deg)
    input:not(input[type="submit"],input[type="checkbox"]){
     width:156px;
     height:20px;
-    padding:5px 5px 5px 15px;
 }
 }

@@ -32,6 +32,11 @@ form label:not(.cbox){
 form label input{
     position: absolute;
 }
+form label span{
+    position: absolute;
+    margin:3px 0 0 270px;
+    font-size:12px;
+}
 input[type='checkbox']{
     position: relative;
     top: -10px;
@@ -102,9 +107,8 @@ input[type='checkbox']:checked ~ .cbox{
     /* border:1px solid black; */
 }
 .dbtc-container h4{
-    font-size: 20px;
     margin:10px 0 10px 0px;
-    color:var(--main-theme-color);
+    color:var(--font-color-lightblue);
     text-align: left;
     padding:5px 10px 5px 15px;
     text-transform: uppercase;
@@ -122,7 +126,6 @@ input[type='checkbox']:checked ~ .cbox{
 }
 .dbtc-child-container h5{
     display:block;
-    font-size: 16px;
     text-align: left;
     color:var(--font-color-gray);
     margin:20px 0 0 0;
@@ -138,7 +141,11 @@ input[type='checkbox']:checked ~ .cbox{
         width: 280px;
         padding:0 0 40px 0;
     }
+    .dbtc-container h4{
+        font-size: 20px;
+    }
     .dbtc-child-container h5{
+        font-size: 16px;
         margin:20px 0 0 0;
     }
     form label input{
@@ -164,7 +171,7 @@ input[type='checkbox']:checked ~ .cbox{
 }
 @media only screen and (min-width:601px){
     .dbtc-container{
-        box-shadow: 0 5px 20px var(--container-erc-background-shadow);
+        box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
         margin-bottom:50px;
         margin-top:20px;
         width: 540px;
@@ -173,7 +180,11 @@ input[type='checkbox']:checked ~ .cbox{
         width: 480px;
         padding:0 0 20px 0;
     }
+    .dbtc-container h4{
+        font-size: 20px;
+    }
     .dbtc-child-container h5{
+        font-size: 16px;
         margin:20px 0 30px 0;
     }
     form label input{
@@ -209,21 +220,26 @@ input[type='checkbox']:checked ~ .cbox{
 }
 @media only screen and (min-width:1025px){
     .dbtc-container{
-        box-shadow: 0 5px 20px var(--container-erc-background-shadow);
+        box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
         margin-bottom:50px;
-        margin-top:20px;
-        width: 840px;
+        margin-top:40px;
+        width: 900px;
     }
     .dbtc-child-container{
         width: 480px;
         padding:0 0 40px 0;
     }
+    .dbtc-container h4{
+        font-size: 24px;
+    }
     .dbtc-child-container h5{
+        font-size: 18px;
         margin:20px 0 0 0;
     }
     form label input{
+        top:0;
         right:250px;
-        margin-top: 25px;
+        margin-top: -6px;
     }
     form label:not(.cbox){
         margin:30px auto 30px 0;

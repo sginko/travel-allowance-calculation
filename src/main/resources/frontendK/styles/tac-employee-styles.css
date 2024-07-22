@@ -52,10 +52,16 @@ form input:nth-child(8){
 @media only screen and (max-width:600px){
     .employee-register-container{
         background-color: var(--container-erc-background-color);
+        box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
     }
 }
 @media only screen and (min-width:601px){
     .employee-register-container{
-          box-shadow: 0 5px 30px var(--container-erc-background-shadow);
+        box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
+    }
+}
+@media only screen and (min-width:601px){
+    .employee-register-container{
+        box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
     }
 }
