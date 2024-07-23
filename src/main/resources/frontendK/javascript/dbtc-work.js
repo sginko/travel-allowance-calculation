@@ -14,6 +14,7 @@ async function sendDbtcRequest(evt) {
         endDate: formData.get("endDate"),
         endTime: formData.get("endTime"),
         advancePayment: parseFloat(formData.get("advancePayment")) ? parseFloat(formData.get("advancePayment")) : 0,
+        otherExpenses: parseFloat(formData.get("otherExpenses")) ? parseFloat(formData.get("otherExpenses")) : 0,
         dietDto: {
             dailyAllowance: parseFloat(formData.get("dailyAllowance")) ? parseFloat(formData.get("dailyAllowance")) : 45,
             numberOfBreakfasts: parseInt(formData.get("numberOfBreakfasts")) ? parseInt(formData.get("numberOfBreakfasts")) : 0,
@@ -37,9 +38,9 @@ async function sendDbtcRequest(evt) {
             costOfTravelByPublicTransport: parseFloat(formData.get("costOfTravelByPublicTransport")) ? parseFloat(formData.get("costOfTravelByPublicTransport")) : 0
         }
     };
-    //console.log(jsonObject);
+    console.log(jsonObject);
     const jsonData = JSON.stringify(jsonObject);
-   // console.log("Sending data", jsonData);
+    // console.log("Sending data", jsonData);
 
     try {
         const response = await fetch('http://localhost:8080/api/v1/travels', {
