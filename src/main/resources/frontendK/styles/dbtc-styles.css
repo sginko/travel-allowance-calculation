@@ -1,17 +1,8 @@
-html {
-    box-sizing: border-box;
-    font-size: 100%;
-}
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-color: rgb(250,250,250);
+h1{
+    margin-top:20px;
+    margin-bottom:60px;
+    padding: 0 30px 0 20px;
+    color:var(--dbtc-h1-color);
 }
 form {
     position: relative;
@@ -22,105 +13,84 @@ form {
     top:0;
     left:0;
     margin-top: 20px;
-    /* border: 1px solid green; */
     width: 280px;
-    /* height:890px; */
 }
 label{
     position: relative;
 }
-h1{
-    margin-top:20px;
-    margin-bottom:60px;
-    padding: 0 30px 0 20px;
-    color:rgb(100,100,100);
-}
-input{
-    position: absolute;
-    border-radius: 5px;
-    outline:none;
-    border:none;
-}
-.hidden{
-    display:none;
-}
-input{
-    width:256px;
-    height:20px;
-    padding:5px 5px 5px 15px;
-    background-color: rgb(245,245,245);
-    border:2px solid rgb(235, 235, 235);
-}
-input:hover, input:focus{
-    border-color: rgb(50, 100, 255);
-}
-input::placeholder{
-    color:rgb(130,130,130);
-    letter-spacing: 2px;
-}
 input[type=submit]{
     position:relative;
-    /* top: 840px; */
-    font-size: 16px;
     margin:60px auto 0 auto;
-    letter-spacing: 1px;
-    font-weight: bold;
-    background-color: rgb(50, 100, 255);
-    text-transform: uppercase;
-    color:white;
-    width: 280px;
-    height: 50px;
-    padding: 5px;
-    transition: .5s;
 }
-input[type=submit]:hover{
-    cursor:pointer;
-    background-color: rgb(100, 150, 255);
-}
-form label{
+form label:not(.cbox){
     left:0;
-    padding-left: 20px;
-    margin:20px auto 40px 0;
     height: fit-content;
     font-size: 14px;
     text-align: left;
-    color:rgb(100,100,100);
-    /* border:1px solid pink; */
+    color:var(--dbtc-form-label-color);
 }
-/* form label:nth-child(1){
-    top: 0;
-}
-form label:nth-child(2){
-    top: 90px;
-}
-form label:nth-child(3){
-    top: 160px;
-}
-form label:nth-child(4){
-    top: 250px;
-}
-form label:nth-child(5){
-    top: 320px;
-}
-form label:nth-child(6){
-    top: 390px;
-}
-form label:nth-child(7){
-    top: 460px;
-}
-form label:nth-child(8){
-    top: 570px;
-}
-form label:nth-child(9){
-    top: 640px;
-}
-form label:nth-child(10){
-    top: 710px;
-} */
 form label input{
     position: absolute;
-    left:0px;
-    margin-top: 20px;
+}
+form label span{
+    position: absolute;
+    margin:3px 0 0 270px;
+    font-size:12px;
+}
+input[type='checkbox']{
+    position: relative;
+    top: -10px;
+    width:16px;
+    height:16px;
+    margin:50px auto 10px auto;
+    border:1px solid green;
+    border: 1px solid pink;
+    opacity:0;
+}
+.cbox{
+    user-select: none;
+    display: inline-block;
+    position: relative;
+    border:2px solid rgb(230,230,230);
+    width:14px;
+    height:14px;
+    color:var(--dbtc-form-label-color);
+    font-size: 14px;
+    text-align: left;
+    border-radius: 2px;
+    background-color: var(--input-background-color); 
+}
+.cbox::before{
+    content:"";
+    position: absolute;
+    top: 0px;
+    left:4px;
+    border: solid var(--input-background-color);
+    border-width:0 2px 2px 0;
+    width:4px;
+    height:10px;
+    transform: rotate(45deg);
+    opacity:0;
+}
+.cbox::after{
+    content:"Czy pracodawca zgadza się na wyższe koszty?";
+    position: absolute;
+    top: 0;
+    left:0;
+    height:20px;
+    width: 240px;
+    opacity:1;
+}
+.cbox:hover{
+    cursor: pointer;
+    border:2px solid var(--input-border-color-hover);
+}
+input[type='checkbox']:checked ~ .cbox::before{
+    opacity:1;
+}
+input[type='checkbox']:checked ~ .cbox{
+    background-color: var( --main-theme-color);
+    border:2px solid var( --main-theme-color);
 }
 .dbtc-container{
     position: relative;
@@ -130,27 +100,157 @@ form label input{
     justify-content: center;
     margin-left:auto;
     margin-right:auto;
-    background-color: rgb(255,255,255);
+    background-color: var(--dbtc-container-background-color);
     border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.12);
-    margin-top:10px;
-    margin-bottom:50px;
     padding:10px 10px 40px 10px;
     width: 320px;
-    /* height:1020px; */
+    /* border:1px solid black; */
 }
 .dbtc-container h4{
-    font-size: 18px;
-    margin:30px 0 10px 0px;
-    color:rgb(50, 100, 255);
-    text-align: center;
+    margin:10px 0 10px 0px;
+    color:var(--font-color-lightblue);
+    text-align: left;
+    padding:5px 10px 5px 15px;
+    text-transform: uppercase;
 }
-.register-employee-label{
-    top:40px;
-    left:20px;
-    width:300px;
-    text-align: center;
-    font-size: 30px;
-    letter-spacing: 1px;
-    color: rgb(50, 100, 255);
+.dbtc-child-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top:0;
+    left:0;
+    margin-top: 20px;
+    /* border:1px solid black; */
+}
+.dbtc-child-container h5{
+    display:block;
+    text-align: left;
+    color:var(--font-color-gray);
+    margin:20px 0 0 0;
+    width:100%;
+    text-transform: uppercase;
+}
+@media only screen and (max-width:600px){
+    .dbtc-container{
+        /* background-color: rgb(0, 255, 145); */
+        width: 320px;
+    }
+    .dbtc-child-container{
+        width: 280px;
+        padding:0 0 40px 0;
+    }
+    .dbtc-container h4{
+        font-size: 20px;
+    }
+    .dbtc-child-container h5{
+        font-size: 16px;
+        margin:20px 0 0 0;
+    }
+    form label input{
+        left:0px;
+        margin-top: 25px;
+    }
+    form label:not(.cbox){
+        margin:30px auto 30px 0;
+    }
+    form select{
+        margin: -15px auto 0 auto;
+        width:280px;
+    }
+    input[type='checkbox']{
+        left:128px;
+    }
+    .cbox::after{
+        margin:-3px 0 0 -262px;
+    }
+    .cbox{
+        margin:-36px auto 20px 260px;
+    }
+}
+@media only screen and (min-width:601px){
+    .dbtc-container{
+        box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
+        margin-bottom:50px;
+        margin-top:20px;
+        width: 540px;
+    }
+    .dbtc-child-container{
+        width: 480px;
+        padding:0 0 20px 0;
+    }
+    .dbtc-container h4{
+        font-size: 20px;
+    }
+    .dbtc-child-container h5{
+        font-size: 16px;
+        margin:20px 0 30px 0;
+    }
+    form label input{
+        top:0;
+        left:300px;
+        margin-top: -6px;
+    }
+    form label:not(.cbox){
+        margin:10px auto 0 0;
+        height:40px;
+        width:285px;
+        word-wrap:break-word;
+    }
+    form select{
+        margin: -45px auto 0 auto;
+        top:0;
+        left: 110px;
+        height: 34px;
+        width:260px;
+    }
+    .selectlabel{
+        top:12px;
+    }
+    input[type='checkbox']{
+        left: 68px;
+    }
+    .cbox::after{
+        margin:-3px 0 0 -302px;
+    }
+    .cbox{
+        margin:-36px auto 20px 300px;
+    }
+}
+@media only screen and (min-width:1025px){
+    .dbtc-container{
+        box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
+        margin-bottom:50px;
+        margin-top:40px;
+        width: 900px;
+    }
+    .dbtc-child-container{
+        width: 480px;
+        padding:0 0 40px 0;
+    }
+    .dbtc-container h4{
+        font-size: 24px;
+    }
+    .dbtc-child-container h5{
+        font-size: 18px;
+        margin:20px 0 0 0;
+    }
+    form label input{
+        top:0;
+        right:250px;
+        margin-top: -6px;
+    }
+    form label:not(.cbox){
+        margin:30px auto 30px 0;
+    }
+    input[type='checkbox']{
+        left: 228px;
+    }
+    .cbox::after{
+        margin:-3px 0 0 -462px;
+    }
+    .cbox{
+        margin:-36px auto 20px 460px;
+    }
 }
