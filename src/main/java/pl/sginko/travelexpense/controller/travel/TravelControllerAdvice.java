@@ -11,6 +11,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
+import pl.sginko.travelexpense.logic.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.logic.transport.exception.TransportException;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 
