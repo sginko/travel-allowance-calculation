@@ -8,6 +8,7 @@
     --msg-box-color-shadow:rgb(96, 255, 96);
     --font-color-light:rgb(255,255,255);
     --body-background-color:rgb(255,255,255);
+    --body-background-color-grey:rgb(245,245,245);
     --input-background-color:rgb(255,255,255);
     --input-border-color:rgb(235, 235, 235);
     --input-border-color-hover: rgb(47, 235, 47);
@@ -17,15 +18,18 @@
     --input-submit-background-color:rgb(50, 100, 255); */
     --input-submit-background-color-hover:rgb(100, 150, 255);
     --container-erc-background-color:rgb(255,255,255);
-    --container-erc-background-shadow:rgba(0,0,0,.1);
+    --container-erc-background-shadow:rgba(0,0,0,.12);
+    --submit-background-shadow:rgba(0,0,0,.25);
+    --submit-background-shadow-hover:rgba(0,0,0,.3);
     /* --register-rel-color:rgb(50, 100, 255); */
     --dbtc-h1-color:rgb(100,100,100);
     --dbtc-form-label-color:rgb(100,100,100);
     --dbtc-container-background-color:rgb(255,255,255);
-    --dbtc-container-background-shadow:rgba(0,0,0,.1);
+    --dbtc-container-background-shadow:rgba(0,0,0,.12);
     --font-color-gray:rgb(70,70,70);
     --font-color-lightblue:rgb(5, 203, 253);
     /* --dbtc-container-h4-color:rgb(50, 100, 255); */
+    --border-radius-regular:5px;
 }
 html {
     box-sizing: border-box;
@@ -40,11 +44,11 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: var(--body-background-color);
+    background-color: var(--body-background-color-grey);
 }
 input{
     position: absolute;
-    border-radius: 5px;
+    border-radius: var(--border-radius-regular);
     outline:none;
     border:none;
 }
@@ -85,18 +89,24 @@ input[type=submit]{
     width: 280px;
     height: 40px;
     padding: 5px;
+    box-shadow: 0 4px 8px -1px var(--submit-background-shadow), 0 2px 4px -2px var(--submit-background-shadow);
     transition: .5s;
 }
 input[type=submit]:hover{
     cursor:pointer;
-    background-color: var(--input-submit-background-color-hover);
+    /* background-color: var(--input-submit-background-color-hover); */
+    box-shadow: 0 8px 20px -1px var(--submit-background-shadow-hover), 0 2px 8px -2px var(--submit-background-shadow-hover);
+}
+input[type=password], input[name="login"], .input-reg-log{
+    width:256px;
+    height:20px;
 }
 select{
     position: relative;
     height:30px;
     border: 2px solid var(--input-border-color);
     padding:5px 5px 5px 15px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-regular);
     background-color: var(--input-background-color);
 }
 select:hover{
@@ -110,7 +120,7 @@ select:focus{
 }
 .message-box, .error-box{
     display:none;
-    border-radius: 5px;
+    border-radius: var(--border-radius-regular);
     font-size: 16px;
     color:var(--font-color-light);
     text-align: center;
@@ -190,29 +200,22 @@ transform: rotate(45deg)
 }
 
 @media only screen and (max-width:600px){
-    body{
-        background-color: rgb(0, 255, 145);
-       /* background-color: var(--body-background-color); */
-    }
-    input:not(input[type="submit"],input[type="checkbox"]){
+    input:not(input[type="submit"],input[type="checkbox"],input[type="number"],input[type=password], input[name="login"],.input-reg-log){
         width:256px;
         height:20px;
     }
+    input[type="number"]{
+        width:231px;
+    }
 }
 @media only screen and (min-width:601px){
-     body{
-       background-color: pink;
-    }
-    input:not(input[type="submit"],input[type="checkbox"]){
+    input:not(input[type="submit"],input[type="checkbox"],input[type=password], input[name="login"], .input-reg-log){
         width:156px;
         height:20px;
     }
 }
 @media only screen and (min-width:1025px){
-    body{
-      background-color: rgb(5, 203, 253);
-   }
-   input:not(input[type="submit"],input[type="checkbox"]){
+   input:not(input[type="submit"],input[type="checkbox"],input[type=password], input[name="login"],.input-reg-log){
     width:156px;
     height:20px;
 }

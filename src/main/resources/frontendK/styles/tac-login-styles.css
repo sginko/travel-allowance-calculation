@@ -2,7 +2,7 @@ html {
     box-sizing: border-box;
     font-size: 100%;
 }
-body {
+/* body {
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
@@ -11,8 +11,7 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
-    background-color: rgb(250,250,250);
-}
+} */
 form {
     position: absolute;
     top:120px;
@@ -25,22 +24,17 @@ form {
 label{
     position: absolute;
 }
-input{
-    position: absolute;
-    border-radius: 5px;
-    outline:none;
-    border:none;
-}
+
 .hidden{
     display:none;
 }
-input[type=password], input[name="login"]{
+/* input[type=password], input[name="login"]{
     width:256px;
     height:30px;
     padding:5px 5px 5px 15px;
     background-color: rgb(245,245,245);
     border:2px solid rgb(235, 235, 235);
-}
+} */
 input[type=password]:hover, input[name="login"]:hover{
     border-color: rgb(50, 100, 255);
 }
@@ -54,20 +48,9 @@ input[type=password]::placeholder, input[name="login"]::placeholder{
 input[type=submit]{
     position: absolute;
     top: 230px;
-    font-size: 16px;
-    letter-spacing: 1px;
-    font-weight: bold;
-    background-color: rgb(50, 100, 255);
-    text-transform: uppercase;
-    color:white;
-    width: 280px;
-    height: 50px;
-    padding: 5px;
-    transition: .5s;
 }
 input[type=submit]:hover{
-    cursor:pointer;
-    background-color: rgb(100, 150, 255);
+    top: 225px;
 }
 form label{
     left:0;
@@ -83,18 +66,18 @@ form input[type=text]{
     top: 40px;
 }
 form input[type=password]{
-    top: 120px;
+    top: 95px;
 }
 .login-container{
     position: relative;
     margin-left:auto;
     margin-right:auto;
-    background-color: rgb(255,255,255);
+    background-color: var(--body-background-color);
     border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0,0,0,.12);
     margin-top:60px;
     width: 340px;
     height:500px;
+    box-shadow: 0 4px 8px -1px var(--container-erc-background-shadow), 0 2px 4px -2px var(--container-erc-background-shadow);
 }
 .login-container-label{
     top:40px;
@@ -119,7 +102,7 @@ form input[type=password]{
     left:10px;
     width:200px;
     text-align: left;
-    font-size: 12px;
+    font-size: 10px;
     letter-spacing: 1px;
     color: rgb(100, 100, 100);
 }

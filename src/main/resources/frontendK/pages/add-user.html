@@ -7,13 +7,12 @@
     <meta charset="utf-8">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <title>Kalkulator krajowej podróży służbowej</title>
+    <title>Dodawanie użytkownika - Kalkulator krajowej podróży służbowej</title>
     <link rel="stylesheet" href="../styles/tac-employee-styles.css">
     <link rel="stylesheet" href="../styles/core.css">
 </head>
 
 <body>
-
     <div id="user-error-box" class="error-box">
         <div class="error-b-c-btn"></div>
         <span>Błąd podczas dodawania użytkownika</span>
@@ -29,11 +28,11 @@
             <label for="firstName" class="hidden"></label>
             <label for="secondName" class="hidden"></label>
             <label for="position" class="hidden"></label>
-            <input name="pesel" id="pesel-field1" type="text" minlength="11" maxlength="11" placeholder="Pesel"
+            <input class="input-reg-log" name="pesel" id="pesel-field1" type="text" minlength="11" maxlength="11" placeholder="Pesel"
                 required>
-            <input name="firstName" type="text" placeholder="Imię" required>
-            <input name="secondName" type="text" placeholder="Nazwisko" required>
-            <input name="position" type="text" placeholder="Stanowisko" required>
+            <input class="input-reg-log" name="firstName" type="text" placeholder="Imię" required>
+            <input class="input-reg-log" name="secondName" type="text" placeholder="Nazwisko" required>
+            <input class="input-reg-log" name="position" type="text" placeholder="Stanowisko" required>
             <input type="submit" value="Dodaj">
         </form>
     </div>

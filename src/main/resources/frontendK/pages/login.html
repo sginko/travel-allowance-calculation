@@ -8,63 +8,15 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <title>Logowanie - Kalkulator krajowej podróży służbowej</title>
+    <link rel="stylesheet" href="../styles/core.css">
     <link rel="stylesheet" href="../styles/tac-login-styles.css">
 </head>
 
 <body>
-    <style>
-        /* Hide the default checkbox */
-        input[type="checkbox"] {
-            opacity: 0;
-            position: absolute;
-        }
-
-        /* Style the label as a custom checkbox */
-        .custom-checkbox {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            background-color: #f1f1f1;
-            border: 2px solid #ccc;
-            border-radius: 3px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        /* Add a checkmark when the checkbox is checked */
-        .custom-checkbox::before {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 1px;
-            width: 8px;
-            height: 12px;
-            border: solid #333;
-            border-width: 0 2px 2px 0;
-            transform: rotate(45deg);
-            opacity: 0;
-            transition: opacity 0.2s ease;
-        }
-
-        /* Show the checkmark when the checkbox is checked */
-        input[type="checkbox"]:checked + .custom-checkbox::before {
-            opacity: 1;
-        }
-
-        /* Optional: Add some hover effects */
-        .custom-checkbox:hover {
-            background-color: #e0e0e0;
-        }
-
-        input[type="checkbox"]:focus + .custom-checkbox {
-            outline: 2px solid blue;
-        }
-    </style>
-    <input type="checkbox" id="checkbox1">
-    <label for="checkbox1" class="custom-checkbox"></label>
     <div class="login-container">
         <label for="login-form" class="login-container-label">Logowanie do serwisu</label>
-        <form name="login-form" method="POST" action="">
+        <form name="login-form" method="POST" id="login-form">
+            <input name="${_csrf.parameterName}" value="${_csrftoken}" type="hidden">
             <label for="login" class="hidden"></label>
             <label for="password" class="hidden"></label>
             <input name="login" type="text" placeholder="Login">
@@ -76,6 +28,8 @@
             <a href="#" name="password-forgot"></a>
         </div>
     </div>
+    <script src="../javascript/login.js"></script>
 </body>
-
 </html>
+
+<!-- "http://localhost:8080/api/v1/ginko/new-user" -->
