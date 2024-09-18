@@ -22,10 +22,4 @@ class Configurations {
 
         return new CorsFilter(source);
     }
-
-//    @Bean
-//    public TravelService travelService(TravelRepository travelRepository, TravelMapper travelMapper, DietService dietService,
-//                                OvernightStayService overnightStayService, EmployeeReaderService employeeReaderService) {
-//        return new TravelServiceImpl(travelRepository, travelMapper, dietService, overnightStayService, employeeReaderService);
-//    }
 }

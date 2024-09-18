@@ -69,6 +69,7 @@ async function fetchPdfDocument(evt) {
     console.log(formBody);
 
     try {
+//        const response = await fetch(`http://host.docker.internal:8080/api/v1/travels/print/${formToPrintData.get('id')}`, {
         const response = await fetch(`http://localhost:8080/api/v1/travels/print/${formToPrintData.get('id')}`, {
             method: 'POST'
         });
@@ -78,7 +79,7 @@ async function fetchPdfDocument(evt) {
             throw new Error(errorMessage);
         }
 
-        // Открываем PDF в новом окне
+//        window.open(`http://host.docker.internal:8080/api/v1/travels/print/changed_template.pdf`, '_blank');
         window.open(`http://localhost:8080/api/v1/travels/print/changed_template.pdf`, '_blank');
 
     } catch (error) {

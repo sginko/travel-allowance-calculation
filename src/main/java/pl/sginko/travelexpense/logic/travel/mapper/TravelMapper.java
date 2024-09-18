@@ -45,21 +45,4 @@ public class TravelMapper {
                 transportCostDto.getKilometersByCarEngineUpTo900cc(), transportCostDto.getKilometersByCarEngineAbove900cc(),
                 transportCostDto.getKilometersByMotorcycle(), transportCostDto.getKilometersByMoped(), travelRequestDto.getOtherExpenses());
     }
-
-//    public TravelEntity toEntity(Source source) {
-//        return new TravelEntity(source.travelRequestDto.getFromCity(), source.travelRequestDto.getToCity(), source.travelRequestDto.getStartDate(),
-//                source.travelRequestDto.getStartTime(), source.travelRequestDto.getEndDate(), source.travelRequestDto.getEndTime(),
-//                source.employeeEntity, source.travelRequestDto.getAdvancePayment(),
-//                source.travelRequestDto.getDietDto().getDailyAllowance(), source.travelRequestDto.getDietDto().getNumberOfBreakfasts(),
-//                source.travelRequestDto.getDietDto().getNumberOfLunches(), source.travelRequestDto.getDietDto().getNumberOfDinners(),
-//                source.travelRequestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithoutInvoice(),
-//                source.travelRequestDto.getOvernightStayDto().getInputQuantityOfOvernightStayWithInvoice(),
-//                source.travelRequestDto.getOvernightStayDto().getAmountOfTotalOvernightsStayWithInvoice());
-//    }
-//
-//    @Value(staticConstructor = "of")
-//    public static class Source {
-//        TravelRequestDto travelRequestDto;
-//        EmployeeEntity employeeEntity;
-//    }
 }

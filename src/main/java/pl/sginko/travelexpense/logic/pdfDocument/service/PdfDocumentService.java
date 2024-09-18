@@ -63,7 +63,6 @@ public class PdfDocumentService {
         );
 
         String templatePath = "src/main/resources/print/template.pdf";
-//        String templatePath = "src/main/resources/print/templateWords1.pdf";
         String outputPath = "src/main/resources/print/changed_template.pdf";
 
         fillTemplate(templatePath, outputPath, replacements);
@@ -80,8 +79,6 @@ public class PdfDocumentService {
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
 
             if (acroForm != null) {
-
-//                PDType0Font font = PDType0Font.load(document, new FileInputStream("src/main/resources/fonts/arial.ttf"));
 
                 for (Map.Entry<String, String> entry : data.entrySet()) {
                     PDField field = acroForm.getField(entry.getKey());

@@ -8,10 +8,10 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
-import pl.sginko.travelexpense.logic.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.logic.transport.exception.TransportException;
 import pl.sginko.travelexpense.logic.travel.exception.TravelException;
 
@@ -45,6 +45,12 @@ public class TravelControllerAdvice {
                 .map(error -> error.getMessageTemplate())
                 .collect(Collectors.joining("\n"));
         Response response = new Response(errors);
+        return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
     }
 

@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_DB: travel_allowance_db
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: admin
     ports:
       - "5432:5432"
     volumes:
@@ -18,6 +18,8 @@ services:
       - postgres
     ports:
       - "8080:8080"
+    volumes:
+      - ./src/main/resources/print:/app/resources/print
 
   pgadmin:
     image: dpage/pgadmin4:latest

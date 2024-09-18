@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.controller.travel.TravelControllerAdvice;
@@ -31,6 +32,12 @@ public class UserControllerAdvice {
                 .map(error -> error.getMessageTemplate())
                 .collect(Collectors.joining("\n"));
         TravelControllerAdvice.Response response = new TravelControllerAdvice.Response(errors);
+        return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<TravelControllerAdvice.Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        TravelControllerAdvice.Response response = new TravelControllerAdvice.Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
     }
 

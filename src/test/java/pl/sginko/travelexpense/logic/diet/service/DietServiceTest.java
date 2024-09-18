@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class DietServiceImplTest {
+class DietServiceTest {
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
 
     @Autowired

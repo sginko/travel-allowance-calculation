@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class TravelServiceImplTest {
+class TravelServiceTest {
     private final Long PESEL = 90010101001L;
     private final String FIRST_NAME = "name";
     private final String SECOND_NAME = "surname";

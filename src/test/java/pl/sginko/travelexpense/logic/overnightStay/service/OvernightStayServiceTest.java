@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class OvernightStayServiceImplTest {
+class OvernightStayServiceTest {
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
 
     @Autowired
