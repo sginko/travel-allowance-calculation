@@ -8,9 +8,9 @@ import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEnt
 public class OvernightStayMapper {
 
     public OvernightStayResponseDto toResponseDto(OvernightStayEntity entity) {
-        return new OvernightStayResponseDto(entity.getId(), entity.getQuantityOfOvernightStay(), entity.getTotalInputQuantityOfOvernightStay(),
-                entity.getInputQuantityOfOvernightStayWithoutInvoice(), entity.getAmountOfTotalOvernightsStayWithoutInvoice(),
-                entity.getInputQuantityOfOvernightStayWithInvoice(), entity.getAmountOfTotalOvernightsStayWithInvoice(),
-                entity.getOvernightStayAmount());
+        return new OvernightStayResponseDto(entity.getId(), entity.getQuantityOfOvernightStay(),
+                entity.getTotalInputQuantityOfOvernightStay(), entity.getInputQuantityOfOvernightStayWithoutInvoice(),
+                entity.getAmountOfTotalOvernightsStayWithoutInvoice(), entity.getInputQuantityOfOvernightStayWithInvoice(),
+                entity.getAmountOfTotalOvernightsStayWithInvoice(), entity.getOvernightStayAmount());
     }
 }

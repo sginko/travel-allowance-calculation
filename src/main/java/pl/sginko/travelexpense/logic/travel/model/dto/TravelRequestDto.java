@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
 import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
+import pl.sginko.travelexpense.logic.transport.model.dto.TransportCostDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
     @NotNull(message = "Pessel cannot be null")
-    @Min(value = 11, message = "Pessel cannot be negative")
+    @Size(min = 11, max = 11, message = "Pesel must be exactly 11 characters")
     private Long pesel;
 
     @NotBlank(message = "From city cannot be blank")
@@ -46,9 +47,15 @@ public class TravelRequestDto {
     @NotNull(message = "Advance payment cannot be null")
     private BigDecimal advancePayment;
 
+    @NotNull(message = "Other expenses cannot be null")
+    private BigDecimal otherExpenses;
+
     @NotNull(message = "DietDto cannot be null")
     private DietDto dietDto;
 
     @NotNull(message = "OvernightStayDto cannot be null")
     private OvernightStayDto overnightStayDto;
+
+    @NotNull(message = "TransportCostDto cannot be null")
+    private TransportCostDto transportCostDto;
 }

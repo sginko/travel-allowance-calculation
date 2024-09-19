@@ -2,8 +2,8 @@ package pl.sginko.travelexpense.logic.user.service;
 
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.user.exception.UserException;
-import pl.sginko.travelexpense.logic.user.repository.UserReaderRepository;
 import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
+import pl.sginko.travelexpense.logic.user.repository.UserReaderRepository;
 
 @Service
 public class UserReaderServiceImpl implements UserReaderService {

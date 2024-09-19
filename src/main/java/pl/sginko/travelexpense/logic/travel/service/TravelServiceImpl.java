@@ -7,6 +7,8 @@ import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
 import pl.sginko.travelexpense.logic.diet.service.DietService;
 import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.overnightStay.service.OvernightStayService;
+import pl.sginko.travelexpense.logic.transport.model.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.transport.service.TransportCostService;
 import pl.sginko.travelexpense.logic.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
@@ -24,6 +26,7 @@ public class TravelServiceImpl implements TravelService {
     private final TravelMapper travelMapper;
     private final DietService dietService;
     private final OvernightStayService overnightStayService;
+    private final TransportCostService transportCostService;
     private final UserReaderService userReaderService;
 
     @Override
@@ -43,14 +46,12 @@ public class TravelServiceImpl implements TravelService {
         BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStay(travelRequestDto);
         BigDecimal amountOfTotalOvernightsStayWithoutInvoice = overnightStayService.calculateAmountOfOvernightStayWithoutInvoice(travelRequestDto);
 
-//        travelEntity.setUserEntity(userByPesel);
-//        travelEntity.setTotalAmount(totalAmount);
-//        dietEntity.setDietAmount(dietAmount);
-//        dietEntity.setFoodAmount(foodAmount);
-//        overnightStayEntity.setQuantityOfOvernightStay(quantityOfOvernightStay);
-//        overnightStayEntity.setTotalInputQuantityOfOvernightStay(totalInputQuantityOfOvernightStay);
-//        overnightStayEntity.setAmountOfTotalOvernightsStayWithoutInvoice(amountOfTotalOvernightsStayWithoutInvoice);
-//        overnightStayEntity.setOvernightStayAmount(overnightStayAmount);
+        TransportCostEntity transportCostEntity = travelEntity.getTransportCostEntity();
+        BigDecimal transportCostAmount = transportCostService.calculateTransportCostAmount(travelRequestDto);
+        BigDecimal costOfTravelByPublicTransport = transportCostService.calculateCostOfTravelByPublicTransport(travelRequestDto);
+        BigDecimal costOfTravelByOwnTransport = transportCostService.calculateCostOfTravelByOwnTransport(travelRequestDto);
+        BigDecimal undocumentedLocalTransportCost = transportCostService.calculateUndocumentedLocalTransportCost(travelRequestDto);
+        BigDecimal totalCostOfTravelByOwnAndPublicTransport = transportCostService.calculateTotalCostOfTravelByOwnAndPublicTransport(travelRequestDto);
 
         travelEntity.updateTotalAmount(totalAmount);
         travelEntity.updateUser(userByPesel);
@@ -63,6 +64,12 @@ public class TravelServiceImpl implements TravelService {
         overnightStayEntity.updateAmountOfTotalOvernightsStayWithoutInvoice(amountOfTotalOvernightsStayWithoutInvoice);
         overnightStayEntity.updateOvernightStayAmount(overnightStayAmount);
 
+        transportCostEntity.updateTransportCostAmount(transportCostAmount);
+        transportCostEntity.updateCostOfTravelByPublicTransport(costOfTravelByPublicTransport);
+        transportCostEntity.updateCostOfTravelByOwnTransport(costOfTravelByOwnTransport);
+        transportCostEntity.updateUndocumentedLocalTransportCost(undocumentedLocalTransportCost);
+        transportCostEntity.updateTotalCostOfTravelByOwnAndPublicTransport(totalCostOfTravelByOwnAndPublicTransport);
+
         travelRepository.save(travelEntity);
 
         return travelMapper.toResponseDto(travelEntity);
@@ -70,8 +77,10 @@ public class TravelServiceImpl implements TravelService {
 
     private BigDecimal calculateTotalAmount(final TravelRequestDto travelRequestDto) {
         BigDecimal advancePayment = travelRequestDto.getAdvancePayment();
+        BigDecimal otherExpenses = travelRequestDto.getOtherExpenses();
         BigDecimal dietAmount = dietService.calculateDiet(travelRequestDto);
         BigDecimal overnightStayAmount = overnightStayService.calculateOvernightStay(travelRequestDto);
-        return dietAmount.add(overnightStayAmount).subtract(advancePayment);
+        BigDecimal transportCostAmount = transportCostService.calculateTransportCostAmount(travelRequestDto);
+        return (dietAmount.add(overnightStayAmount).add(transportCostAmount).add(otherExpenses)).subtract(advancePayment);
     }
 }

@@ -6,11 +6,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.List;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
 @Configuration
 class Configurations {
 
@@ -27,10 +22,4 @@ class Configurations {
 
         return new CorsFilter(source);
     }
-
-//    @Bean
-//    public TravelService travelService(TravelRepository travelRepository, TravelMapper travelMapper, DietService dietService,
-//                                OvernightStayService overnightStayService, EmployeeReaderService employeeReaderService) {
-//        return new TravelServiceImpl(travelRepository, travelMapper, dietService, overnightStayService, employeeReaderService);
-//    }
 }

@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.logic.overnightStay.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,14 @@ public class OvernightStayEntity {
     @JoinColumn(name = "travel_id", nullable = false)
     private TravelEntity travelEntity;
 
+    @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
     @Column(nullable = false)
     private Integer inputQuantityOfOvernightStayWithoutInvoice;
 
     @Column(nullable = false)
     private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
 
+    @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
     @Column(nullable = false)
     private Integer inputQuantityOfOvernightStayWithInvoice;
 
@@ -52,7 +55,6 @@ public class OvernightStayEntity {
         this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
         this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
-        this.totalInputQuantityOfOvernightStay = inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
         this.isInvoiceAmountGreaterAllowed = isInvoiceAmountGreaterAllowed;
     }
 

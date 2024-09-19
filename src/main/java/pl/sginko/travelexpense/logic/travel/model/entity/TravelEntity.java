@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.diet.model.entity.DietEntity;
 import pl.sginko.travelexpense.logic.overnightStay.model.entity.OvernightStayEntity;
+import pl.sginko.travelexpense.logic.transport.model.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
 
 import java.math.BigDecimal;
@@ -65,6 +66,12 @@ public class TravelEntity {
     @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
     private OvernightStayEntity overnightStayEntity;
 
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
+    private TransportCostEntity transportCostEntity;
+
+    @Column(nullable = false)
+    private BigDecimal otherExpenses;
+
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
@@ -73,7 +80,10 @@ public class TravelEntity {
                         BigDecimal advancePayment, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                         Integer numberOfLunches, Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
                         Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
-                        Boolean isInvoiceAmountGreaterAllowed) {
+                        Boolean isInvoiceAmountGreaterAllowed, Integer inputtedDaysNumberForUndocumentedTransportCost,
+                        BigDecimal documentedLocalTransportCost, String meansOfTransport, BigDecimal costOfTravelByPublicTransport,
+                        Long kilometersByCarEngineUpTo900cc, Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle,
+                        Long kilometersByMoped, BigDecimal otherExpenses) {
         this.userEntity = userEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -85,6 +95,10 @@ public class TravelEntity {
         this.dietEntity = new DietEntity(this, dailyAllowance, numberOfBreakfasts, numberOfLunches, numberOfDinners);
         this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice,
                 inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, isInvoiceAmountGreaterAllowed);
+        this.transportCostEntity = new TransportCostEntity(this, inputtedDaysNumberForUndocumentedTransportCost,
+                documentedLocalTransportCost, meansOfTransport, costOfTravelByPublicTransport, kilometersByCarEngineUpTo900cc,
+                kilometersByCarEngineAbove900cc, kilometersByMotorcycle, kilometersByMoped);
+        this.otherExpenses = otherExpenses;
     }
 
     public void updateTotalAmount(BigDecimal totalAmount) {

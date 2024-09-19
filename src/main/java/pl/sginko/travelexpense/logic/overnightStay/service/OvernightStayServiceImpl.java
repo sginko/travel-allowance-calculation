@@ -104,7 +104,7 @@ public class OvernightStayServiceImpl implements OvernightStayService {
         if (inputQuantityOfOvernightStayWithInvoice > quantityOfOvernightStay ||
                 inputQuantityOfOvernightStayWithoutInvoice > quantityOfOvernightStay ||
                 totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
-            throw new OvernightStayException("The number of nights entered is greater than the number of nights on the trip.");
+            throw new OvernightStayException("The number of nights entered for overnight stay is greater than the number of nights on the trip");
         }
     }
 }

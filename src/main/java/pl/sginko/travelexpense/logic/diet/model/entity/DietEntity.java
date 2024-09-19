@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.logic.diet.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,12 +25,15 @@ public class DietEntity {
     @Column(nullable = false)
     private BigDecimal dailyAllowance;
 
+    @Min(value = 0, message = "Number of breakfasts cannot be negative")
     @Column(nullable = false)
     private Integer numberOfBreakfasts;
 
+    @Min(value = 0, message = "Number of lunches cannot be negative")
     @Column(nullable = false)
     private Integer numberOfLunches;
 
+    @Min(value = 0, message = "Number of dinners cannot be negative")
     @Column(nullable = false)
     private Integer numberOfDinners;
 

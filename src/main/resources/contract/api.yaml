@@ -31,8 +31,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TravelResponseDto'
-        '400':
-          description: Bad Request - TravelException, DietException, OvernightStayException
+        '406':
+          description: Bad Request - TravelException, OvernightStayException, TransportException
           content:
             text/plain:
               schema:
@@ -160,7 +160,7 @@ components:
           type: integer
           minimum: 0
           example: 12345678901
-          description: Pessel cannot be null and must be a positive number
+          description: Pesel cannot be null and must be a positive number
         fromCity:
           type: string
           minLength: 2
@@ -198,10 +198,17 @@ components:
           format: double
           example: 100.00
           description: Advance payment cannot be null
+        otherExpenses:
+          type: number
+          format: double
+          example: 50.00
+          description: Other expenses cannot be null
         dietDto:
           $ref: '#/components/schemas/DietDto'
         overnightStayDto:
           $ref: '#/components/schemas/OvernightStayDto'
+        transportCostDto:
+          $ref: '#/components/schemas/TransportCostDto'
       required:
         - pesel
         - fromCity
@@ -211,8 +218,10 @@ components:
         - endDate
         - endTime
         - advancePayment
+        - otherExpenses
         - dietDto
         - overnightStayDto
+        - transportCostDto
 
     DietDto:
       type: object
@@ -289,13 +298,13 @@ components:
           minimum: 0
           example: 1
           nullable: false
-          description: Number of overnight stay without invoice
+          description: Number of overnight stays without invoice
         inputQuantityOfOvernightStayWithInvoice:
           type: integer
           minimum: 0
           example: 1
           nullable: false
-          description: Number of overnight stay with invoice
+          description: Number of overnight stays with invoice
         amountOfTotalOvernightsStayWithInvoice:
           type: number
           format: double
@@ -356,6 +365,113 @@ components:
         - amountOfTotalOvernightsStayWithInvoice
         - overnightStayAmount
 
+    TransportCostDto:
+      type: object
+      properties:
+        inputtedDaysNumberForUndocumentedLocalTransportCost:
+          type: integer
+          minimum: 0
+          example: 5
+          nullable: false
+          description: Number of days for undocumented local transport cost
+        documentedLocalTransportCost:
+          type: number
+          format: double
+          example: 50.00
+          nullable: false
+          description: Cost of documented local transport
+        meansOfTransport:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Bus
+          nullable: false
+          description: Means of transport
+        kilometersByCarEngineUpTo900cc:
+          type: integer
+          minimum: 0
+          example: 100
+          nullable: false
+          description: Kilometers by car engine up to 900cc
+        kilometersByCarEngineAbove900cc:
+          type: integer
+          minimum: 0
+          example: 150
+          nullable: false
+          description: Kilometers by car engine above 900cc
+        kilometersByMotorcycle:
+          type: integer
+          minimum: 0
+          example: 200
+          nullable: false
+          description: Kilometers by motorcycle
+        kilometersByMoped:
+          type: integer
+          minimum: 0
+          example: 50
+          nullable: false
+          description: Kilometers by moped
+        costOfTravelByPublicTransport:
+          type: number
+          format: double
+          example: 100.00
+          nullable: false
+          description: Cost of travel by public transport
+      required:
+        - inputtedDaysNumberForUndocumentedLocalTransportCost
+        - documentedLocalTransportCost
+        - meansOfTransport
+        - kilometersByCarEngineUpTo900cc
+        - kilometersByCarEngineAbove900cc
+        - kilometersByMotorcycle
+        - kilometersByMoped
+        - costOfTravelByPublicTransport
+
+    TransportCostResponseDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        inputtedDaysNumberForTransportCost:
+          type: integer
+          minimum: 0
+          example: 5
+        undocumentedLocalTransportCost:
+          type: number
+          format: double
+          example: 20.00
+        documentedLocalTransportCost:
+          type: number
+          format: double
+          example: 50.00
+        meansOfTransport:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Bus
+        costOfTravelByPublicTransport:
+          type: number
+          format: double
+          example: 100.00
+        costOfTravelByOwnTransport:
+          type: number
+          format: double
+          example: 150.00
+        transportCostAmount:
+          type: number
+          format: double
+          example: 200.00
+      required:
+        - id
+        - inputtedDaysNumberForTransportCost
+        - undocumentedLocalTransportCost
+        - documentedLocalTransportCost
+        - meansOfTransport
+        - costOfTravelByPublicTransport
+        - costOfTravelByOwnTransport
+        - transportCostAmount
+
     TravelResponseDto:
       type: object
       properties:
@@ -395,10 +511,16 @@ components:
           type: number
           format: double
           example: 100.00
+        otherExpenses:
+          type: number
+          format: double
+          example: 50.00
         dietResponse:
           $ref: '#/components/schemas/DietResponseDto'
         overnightStayResponseDto:
           $ref: '#/components/schemas/OvernightStayResponseDto'
+        transportCostResponseDto:
+          $ref: '#/components/schemas/TransportCostResponseDto'
       required:
         - id
         - pesel
@@ -410,5 +532,16 @@ components:
         - endTime
         - totalAmount
         - advancePayment
+        - otherExpenses
         - dietResponse
         - overnightStayResponseDto
+        - transportCostResponseDto
+
+  responses:
+    TransportException:
+      description: Transport exception occurred
+      content:
+        text/plain:
+          schema:
+            type: string
+            example: "Transport error: [error message]"
