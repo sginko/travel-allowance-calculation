@@ -38,11 +38,10 @@ async function sendDbtcRequest(evt) {
             costOfTravelByPublicTransport: parseFloat(formData.get("costOfTravelByPublicTransport")) ? parseFloat(formData.get("costOfTravelByPublicTransport")) : 0
         }
     };
-    //console.log(jsonObject);
     const jsonData = JSON.stringify(jsonObject);
-   // console.log("Sending data", jsonData);
 
     try {
+//        const response = await fetch('http://host.docker.internal:8080/api/v1/travels', {
         const response = await fetch('http://localhost:8080/api/v1/travels', {
             method: 'POST',
             headers: {
