@@ -57,6 +57,7 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>2.3.232</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -86,44 +87,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.openapitools</groupId>-->
-<!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--                <version>3.0.0-rc1</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>compile</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <generatorName>spring</generatorName>-->
-<!--                            <inputSpec>${project.basedir}/src/main/resources/contract/api.yaml</inputSpec>-->
-<!--                            <output>${project.build.directory}/generated-sources</output>-->
-<!--                            <apiPackage>pl.sginko.travelexpense.api</apiPackage>-->
-<!--                            <modelPackage>pl.sginko.travelexpense.model</modelPackage>-->
-<!--                            <supportingFilesToGenerate>-->
-<!--                                ApiUtil.java-->
-<!--                            </supportingFilesToGenerate>-->
-<!--                            <configOptions>-->
-<!--                                <groupId>${project.groupId}</groupId>-->
-<!--                                <artifactId>${project.artifactId}</artifactId>-->
-<!--                                <artifactVersion>${project.version}</artifactVersion>-->
-<!--                                <delegatePattern>true</delegatePattern>-->
-<!--                                <sourceFolder>swagger</sourceFolder>-->
-<!--                                <library>spring-mvc</library>-->
-<!--                                <interfaceOnly>true</interfaceOnly>-->
-<!--                                <useBeanValidation>true</useBeanValidation>-->
-<!--                                <dateLibrary>java8</dateLibrary>-->
-<!--                                <java8>true</java8>-->
-<!--                            </configOptions>-->
-<!--                            <ignoreFileOverride>${project.basedir}/.openapi-generator-ignore</ignoreFileOverride>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-
 <!--            <plugin>-->
 <!--                <groupId>org.openapitools</groupId>-->
 <!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->

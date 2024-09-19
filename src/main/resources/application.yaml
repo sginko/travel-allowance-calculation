@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: travel-allowance-calculator
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/travel_allowance
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
