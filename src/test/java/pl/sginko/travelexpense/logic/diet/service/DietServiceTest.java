@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest(classes = TravelExpenseApplication.class)
+@SpringBootTest
 @ActiveProfiles("test")
 class DietServiceTest {
     private final BigDecimal DAILY_ALLOWANCE = new BigDecimal(45);
@@ -35,6 +35,7 @@ class DietServiceTest {
     void should_calculate_food_amount_when_breakfast_is_0_lunch_is_0_dinner_is_0() {
         //GIVEN
         when(travelRequestDto.getDietDto()).thenReturn(dietDto);
+
         when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
         when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
         when(dietDto.getNumberOfLunches()).thenReturn(0);
