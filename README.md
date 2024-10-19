@@ -1,4 +1,4 @@
-# 🚀 Travel Expense Management System
+# Travel Expense Management System
 
 **Travel Expense Management System** is an application designed to manage business travel expenses. It helps users calculate travel costs, generate detailed reports in PDF format, and store travel-related data in a PostgreSQL database.
 
@@ -7,7 +7,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
 
-## 📜 Project Overview
+## Project Overview
 
 The **Travel Expense Management System** simplifies the process of managing travel expenses. The system allows users to:
 
@@ -18,7 +18,7 @@ The **Travel Expense Management System** simplifies the process of managing trav
 
 ---
 
-## 🎯 Key Features
+## Key Features
 
 - **Expense Calculation**: Automatically calculates travel costs, including daily allowances, transport costs, and accommodation fees.
 - **PDF Report Generation**: Generates detailed travel expense reports in PDF format, which can be downloaded or viewed online.
@@ -27,7 +27,7 @@ The **Travel Expense Management System** simplifies the process of managing trav
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 The project is built using:
 
@@ -39,7 +39,7 @@ The project is built using:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
