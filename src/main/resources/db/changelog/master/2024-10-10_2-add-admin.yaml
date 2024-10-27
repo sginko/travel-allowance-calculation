@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Sergi
+      changes:
+        - insert:
+            tableName: my_users
+            columns:
+              - column:
+                  name: email
+                  value: admin@admin.com
+              - column:
+                  name: password
+                  value: $2a$10$lBMKADSge2dHEDWENpgTsu8eC3yLR6k9YmJxr.43HCmO/6HXrHgyi
+              - column:
+                  name: name
+                  value: admin
+              - column:
+                  name: surname
+                  value: admin
+              - column:
+                  name: roles
+                  value: ROLE_ADMIN

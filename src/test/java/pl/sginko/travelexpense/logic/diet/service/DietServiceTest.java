@@ -5,9 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import pl.sginko.travelexpense.TravelExpenseApplication;
-import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
-import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travelexpense.diet.service.DietService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

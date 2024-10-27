@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: Sergi
+      changes:
+        - createTable:
+            tableName: SPRING_SESSION
+            columns:
+              - column:
+                  name: PRIMARY_ID
+                  type: char(36)
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: SESSION_ID
+                  type: char(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: CREATION_TIME
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: LAST_ACCESS_TIME
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: MAX_INACTIVE_INTERVAL
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: EXPIRY_TIME
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: PRINCIPAL_NAME
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+
+  - changeSet:
+      id: 8
+      author: Sergi
+      changes:
+        - createIndex:
+            tableName: SPRING_SESSION
+            indexName: IDX_SESSION_EXPIRY
+            columns:
+              - column:
+                  name: EXPIRY_TIME
+
+  - changeSet:
+      id: 9
+      author: Sergi
+      changes:
+        - createSequence:
+            sequenceName: BOOK_ENTITY_SEQ
+            startValue: 1
+            incrementBy: 50
+
+        - createIndex:
+            tableName: SPRING_SESSION
+            indexName: IDX_SESSION_PRINCIPAL
+            columns:
+              - column:
+                  name: PRINCIPAL_NAME

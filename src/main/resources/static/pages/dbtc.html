@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>Kalkulator krajowej podróży służbowej</title>
+    <link rel="stylesheet" href="../styles/dbtc-styles.css">
+</head>
+
+<body>
+<h1>Kalkulator krajowej podróży służbowej</h1>
+<div class="dbtc-container">
+    <h4>Wprowadź dane podróży:</h4>
+    <form name="dbtc-form" id="dbtc-form">
+        <label for="pesel">Pesel
+            <input id="pesel-field" name="pesel" type="text" minlength="11" maxlength="11" required>
+        </label>
+        <label for="dailyAllowance">Wysokość diety za dobę podróży
+            <input name="dailyAllowance" type="number" id="dailyAllowance" min="2" placeholder="45">
+        </label>
+        <label for="fromCity">Miasto wyjazду
+            <input name="fromCity" type="text" id="fromCity" required>
+        </label>
+        <label for="toCity">Miasto przyjazdu
+            <input name="toCity" type="text" id="toCity" required>
+        </label>
+        <label for="startDate">Data wyjazду
+            <input name="startDate" type="date" id="startDate" required>
+        </label>
+        <label for="startTime">Godzina wyjazdu
+            <input name="startTime" type="time" id="startTime" required>
+        </label>
+        <label for="endDate">Data powrotu:
+            <input name="endDate" type="date" id="endDate" required>
+        </label>
+        <label for="endTime">Godzina powrotu
+            <input name="endTime" type="time" id="endTime" required>
+        </label>
+        <br><br><br>
+        <label for="numberOfBreakfasts">Liczba śniadań
+            <input name="numberOfBreakfasts" type="number" id="numberOfBreakfasts" min="0" placeholder="0">
+        </label>
+        <label for="numberOfLunches">Liczba obiadów
+            <input name="numberOfLunches" type="number" id="numberOfLunches" min="0" placeholder="0">
+        </label>
+        <label for="numberOfDinners">Liczba kolacji
+            <input name="numberOfDinners" type="number" id="numberOfDinners" min="0" placeholder="0">
+        </label>
+        <br><br><br>
+        <label for="inputQuantityOfOvernightStayWithoutInvoice">Liczba noclegów, za które przysługuje ryczałt:
+            <input name="inputQuantityOfOvernightStayWithoutInvoice" type="number" id="inputQuantityOfOvernightStayWithoutInvoice" min="0" placeholder="0">
+        </label>
+        <label for="inputQuantityOfOvernightStayWithInvoice">Liczba noclegów stwierdzonych rachunkiem:
+            <input name="inputQuantityOfOvernightStayWithInvoice" type="number" id="inputQuantityOfOvernightStayWithInvoice" min="0" placeholder="0">
+        </label>
+        <label for="isInvoiceAmountGreaterAllowed">Czy pracodawca zgadza się na wyższe koszty?
+            <input type="checkbox" name="isInvoiceAmountGreaterAllowed" id="isInvoiceAmountGreaterAllowed">
+        </label>
+        <label for="amountOfTotalOvernightsStayWithInvoice">Koszt noclegów stwierdzony rachunkiem:
+            <input name="amountOfTotalOvernightsStayWithInvoice" type="number" id="amountOfTotalOvernightsStayWithInvoice" min="0" placeholder="0">
+        </label>
+        <br><br><br>
+        <label for="inputtedDaysNumberForUndocumentedLocalTransportCost">Ilość dób, za które przysługuje ryczałt za dojazdy:
+            <input name="inputtedDaysNumberForUndocumentedLocalTransportCost" type="number" id="inputtedDaysNumberForUndocumentedLocalTransportCost" min="0" placeholder="0">
+        </label>
+        <label for="documentedLocalTransportCost">Kwota z tytułu zwrotu udokumentowanych kosztów dojazdów:
+            <input name="documentedLocalTransportCost" type="number" id="documentedLocalTransportCost" min="0" placeholder="0">
+        </label>
+        <label for="meansOfTransport">Rodzaj środka transportu:
+            <input name="meansOfTransport" type="text" id="meansOfTransport" required>
+        </label>
+        <label for="costOfTravelByPublicTransport">Cena biletu za przejazd:
+            <input name="costOfTravelByPublicTransport" type="number" id="costOfTravelByPublicTransport" min="0" placeholder="0">
+        </label>
+        <label for="kilometersByCarEngineUpTo900cc">Samochodem osobowym o pojemności silnika do 900 cm3:
+            <input name="kilometersByCarEngineUpTo900cc" type="number" id="kilometersByCarEngineUpTo900cc" min="0" placeholder="0">
+        </label>
+        <label for="kilometersByCarEngineAbove900cc">Samochodem osobowym o pojemności silnika pow. 900 cm3:
+            <input name="kilometersByCarEngineAbove900cc" type="number" id="kilometersByCarEngineAbove900cc" min="0" placeholder="0">
+        </label>
+        <label for="kilometersByMotorcycle"> Motocyklem:
+            <input name="kilometersByMotorcycle" type="number" id="kilometersByMotorcycle" min="0" placeholder="0">
+        </label>
+        <label for="kilometersByMoped"> Motorowerem:
+            <input name="kilometersByMoped" type="number" id="kilometersByMoped" min="0" placeholder="0">
+        </label>
+        <br><br><br>
+        <label for="otherExpenses"> Inne wydatki:
+            <input name="otherExpenses" type="number" id="otherExpenses" min="0" placeholder="0">
+        </label>
+        <br><br><br>
+        <label for="advancePayment">Pobrano zaliczkę:
+            <input name="advancePayment" type="number" id="advancePayment" min="0" placeholder="0">
+        </label>
+        <input type="submit" value="Calculate">
+    </form>
+</div>
+<script src="../javascript/dbtc-work.js"></script>
+<script src="../javascript/validatePesel.js"></script>
+</body>
+</html>

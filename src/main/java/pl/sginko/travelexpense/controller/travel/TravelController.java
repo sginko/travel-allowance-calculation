@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.logic.pdfDocument.service.PdfDocumentService;
-import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
-import pl.sginko.travelexpense.logic.travel.model.dto.TravelResponseDto;
-import pl.sginko.travelexpense.logic.travel.service.TravelService;
+import pl.sginko.travelexpense.logic.travelexpense.pdfDocument.service.PdfDocumentService;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travel.service.TravelService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ class TravelController {
     private final PdfDocumentService pdfDocumentService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping("/new")
     public TravelResponseDto calculateTravelExpenses(@RequestBody TravelRequestDto requestDto) {
         return travelService.calculateTravelExpenses(requestDto);
     }

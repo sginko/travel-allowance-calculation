@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import pl.sginko.travelexpense.logic.diet.model.dto.DietDto;
-import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
-import pl.sginko.travelexpense.logic.overnightStay.model.dto.OvernightStayDto;
-import pl.sginko.travelexpense.logic.travel.model.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayDto;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.service.OvernightStayService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

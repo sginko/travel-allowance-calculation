@@ -11,9 +11,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.sginko.travelexpense.logic.overnightStay.exception.OvernightStayException;
-import pl.sginko.travelexpense.logic.transport.exception.TransportException;
-import pl.sginko.travelexpense.logic.travel.exception.TravelException;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
+import pl.sginko.travelexpense.logic.travelexpense.transport.exception.TransportException;
+import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
