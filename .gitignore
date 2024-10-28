@@ -12,6 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
+.application-local.yaml
 
 ### IntelliJ IDEA ###
 .idea
@@ -32,5 +33,3 @@ build/
 ### VS Code ###
 .vscode/
 /PRINT/
-
-application-local.yaml
