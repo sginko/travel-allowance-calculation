@@ -42,7 +42,7 @@ async function sendDbtcRequest(evt) {
 
     try {
 //        const response = await fetch('http://host.docker.internal:8080/api/v1/travels', {
-        const response = await fetch('http://localhost:8080/api/v1/travels/new', {
+        const response = await fetch('http://localhost:8080/api/v1/travels/new-travel', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

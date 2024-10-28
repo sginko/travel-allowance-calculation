@@ -41,13 +41,15 @@ public class TravelMapper {
     }
 
     public TravelEntity toEntity(TravelRequestDto travelRequestDto) {
-        UserEntity userByPesel = userReaderService.findUserByEmail(travelRequestDto.getEmail());
+        UserEntity userByEmail = userReaderService.findUserByEmail(travelRequestDto.getEmail());
+
         DietDto dietDto = travelRequestDto.getDietDto();
         OvernightStayDto overnightStayDto = travelRequestDto.getOvernightStayDto();
         TransportCostDto transportCostDto = travelRequestDto.getTransportCostDto();
+
         return new TravelEntity(travelRequestDto.getFromCity(), travelRequestDto.getToCity(), travelRequestDto.getStartDate(),
                 travelRequestDto.getStartTime(), travelRequestDto.getEndDate(), travelRequestDto.getEndTime(),
-                userByPesel, travelRequestDto.getAdvancePayment(), dietDto.getDailyAllowance(), dietDto.getNumberOfBreakfasts(),
+                userByEmail, travelRequestDto.getAdvancePayment(), dietDto.getDailyAllowance(), dietDto.getNumberOfBreakfasts(),
                 dietDto.getNumberOfLunches(), dietDto.getNumberOfDinners(), overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice(),
                 overnightStayDto.getInputQuantityOfOvernightStayWithInvoice(), overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice(),
                 overnightStayDto.getIsInvoiceAmountGreaterAllowed(), transportCostDto.getInputtedDaysNumberForUndocumentedLocalTransportCost(),

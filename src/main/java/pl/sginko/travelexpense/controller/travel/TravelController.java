@@ -24,7 +24,7 @@ class TravelController {
     private final PdfDocumentService pdfDocumentService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/new")
+    @PostMapping("/new-travel")
     public TravelResponseDto calculateTravelExpenses(@RequestBody TravelRequestDto requestDto) {
         return travelService.calculateTravelExpenses(requestDto);
     }

@@ -4,27 +4,32 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.sginko.travelexpense.logic.auth.dto.UserRequestDto;
+import pl.sginko.travelexpense.logic.auth.dto.UserResponseDto;
 import pl.sginko.travelexpense.logic.auth.service.userService.UserService;
+
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/v1/travels")
 public class UserController {
-    private UserService service;
+    private UserService userService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/new-user")
     public void addUser(@RequestBody UserRequestDto userRequestDto) {
-        service.addUser(userRequestDto);
+        userService.addUser(userRequestDto);
     }
 
-    @GetMapping("/apps")
-    public String pageWithLogin() {
-        return "You have successfully logged in!";
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/all-users")
+    public List<UserResponseDto> findAllUsers() {
+        return userService.findAllUser();
     }
 
-    @GetMapping("/site")
-    public String anotherPage() {
-        return "Welcome to main page!";
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{email}/change-role")
+    public void changeUserRoleToAccountant(@PathVariable("email") String email) {
+        userService.changeUserRoleToAccountant(email);
     }
 }

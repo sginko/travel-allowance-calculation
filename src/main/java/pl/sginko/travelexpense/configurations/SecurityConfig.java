@@ -42,9 +42,10 @@ public class SecurityConfig {
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/login", "/pages/login.html", "/pages/register.html", "/pages/dbtc-work.html",
-                                "/api/v1/travels/new-user", "/styles/**", "/javascript/**", "/api/v1/travels/new").permitAll()
-                        .requestMatchers("/api/v1/travels/apps").hasRole("ADMIN")
+                        .requestMatchers("/login", "/pages/login.html", "/pages/register.html", "/styles/**",
+                                "/javascript/**", "/api/v1/travels/new-user", "/api/v1/travels/new-travel").permitAll()
+                        .requestMatchers("/api/v1/travels//{email}/change-role",
+                                "/api/v1/travels/all-users").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -91,14 +92,7 @@ public class SecurityConfig {
         return provider;
     }
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring()
-//                .requestMatchers("/static/**", "/styles/**", "/js/**", "/pages/**")
-//                .requestMatchers(HttpMethod.OPTIONS, "/**");
-//    }
-
-        @Bean
+    @Bean
     public AuthenticationSuccessHandler myAuthenticationSuccessHandler() {
         return (request, response, authentication) -> {
             RequestCache requestCache = new HttpSessionRequestCache();
@@ -143,5 +137,12 @@ public class SecurityConfig {
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
+//    }
+
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring()
+//                .requestMatchers("/static/**", "/styles/**", "/js/**", "/pages/**")
+//                .requestMatchers(HttpMethod.OPTIONS, "/**");
 //    }
 }

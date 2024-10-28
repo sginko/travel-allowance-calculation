@@ -2,11 +2,12 @@ package pl.sginko.travelexpense.logic.auth.service.userService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import pl.sginko.travelexpense.logic.auth.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.auth.dto.UserResponseDto;
+import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.auth.exception.UserException;
 import pl.sginko.travelexpense.logic.auth.mapper.UserMapper;
-import pl.sginko.travelexpense.logic.auth.dto.UserRequestDto;
-import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.auth.repository.UserRepository;
 
 import java.util.List;
@@ -38,6 +39,15 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream()
                 .map(entity -> userMapper.fromEntity(entity))
                 .toList();
+    }
+
+    @Transactional
+    @Override
+    public void changeUserRoleToAccountant(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
+//        userEntity.setRoles("ROLE_ACCOUNTANT");
+        userEntity.changeRoleToAccountant();
     }
 
     @Override

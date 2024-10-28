@@ -1,7 +1,5 @@
 package pl.sginko.travelexpense.logic.auth.service.userService;
 
-//import pl.ginko.auth_faktura.logic.model.dto.UserRequestDto;
-
 import pl.sginko.travelexpense.logic.auth.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.auth.dto.UserResponseDto;
 
@@ -14,6 +12,8 @@ public interface UserService {
     void registerOAuth2User(String email, String name, String surname);
 
     List<UserResponseDto> findAllUser();
+
+    void changeUserRoleToAccountant(String email);
 
     UserResponseDto findUserByEmail(String email);
 }
