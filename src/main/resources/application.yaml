@@ -1,6 +1,10 @@
 spring:
+  profiles:
+    active: local
+
   application:
     name: auth-faktura
+
   session:
     store-type: jdbc
     timeout: 30s
@@ -16,11 +20,6 @@ spring:
       ddl-auto: update
     show-sql: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
-  #  security:
-  #    user:
-  #      name: admin
-  #      password: admin
 
   liquibase:
     enabled: true
@@ -49,68 +48,3 @@ logging:
     org:
       springframework:
         security: DEBUG
-
-
-
-
-
-
-
-
-
-
-#
-#spring:
-#  application:
-#    name: travel-allowance-calculator
-#  session:
-#    store-type: jdbc
-#    timeout: 30s
-#    cleanup-cron: 1 * * * * *
-#
-#  datasource:
-#    url: jdbc:postgresql://postgres:5432/travel_allowance
-#    username: postgres
-#    password: admin
-##    driver-class-name: org.postgresql.Driver
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#
-##  jpa:
-##    hibernate:
-##      ddl-auto: update
-##    properties:
-##      hibernate:
-##        dialect: org.hibernate.dialect.PostgreSQLDialect
-#
-#  liquibase:
-#    enabled: true
-#    change-log: classpath:db/changelog/db.changelog-master.yaml
-#
-#    security:
-#      oauth2:
-#        client:
-#          registration:
-#            google:
-#              client-id: 850220704064-8qv76pr9d2258pg6sn9n36n76tve3qcp.apps.googleusercontent.com
-#              client-secret: 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
-#              client-name: google
-#              authorization-grant-type: authorization_code
-#              scope: profile, email
-#              redirect-uri: "{baseUrl}/login/oauth2/code/google"
-#          provider:
-#            google:
-#              authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
-#              token-uri: https://oauth2.googleapis.com/token
-#              user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-#              user-name-attribute: sub
-#
-#  logging:
-#    level:
-#      org:
-#        springframework:
-#          security: DEBUG
