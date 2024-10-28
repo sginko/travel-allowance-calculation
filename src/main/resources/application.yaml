@@ -31,8 +31,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 850220704064-8qv76pr9d2258pg6sn9n36n76tve3qcp.apps.googleusercontent.com
-            client-secret: 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
+            client-id:
+            client-secret:
             client-name: google
             authorization-grant-type: authorization_code
             scope: profile, email

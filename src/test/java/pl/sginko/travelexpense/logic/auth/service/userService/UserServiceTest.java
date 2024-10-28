@@ -33,8 +33,8 @@ class UserServiceTest {
         String email = "test@mail.com";
         String name = "name";
         String surname = "surname";
-        String password = "password";
-        UserRequestDto userRequestDto = new UserRequestDto(email, name, surname, password);
+        String roles = "roles";
+        UserRequestDto userRequestDto = new UserRequestDto(email, name, surname, roles);
 
         // WHEN
         userService.addUser(userRequestDto);
@@ -49,8 +49,8 @@ class UserServiceTest {
         String email = "test@mail.com";
         String name = "name";
         String surname = "surname";
-        String password = "password";
-        UserRequestDto userRequestDto = new UserRequestDto(email, name, surname, password);
+        String roles = "roles";
+        UserRequestDto userRequestDto = new UserRequestDto(email, name, surname, roles);
         userService.addUser(userRequestDto);
 
         // WHEN
