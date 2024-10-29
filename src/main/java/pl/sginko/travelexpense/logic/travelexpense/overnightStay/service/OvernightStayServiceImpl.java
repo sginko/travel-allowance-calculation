@@ -12,12 +12,4 @@ public class OvernightStayServiceImpl implements OvernightStayService {
         overnightStayEntity.calculateOvernightStayAmounts();
         return overnightStayEntity;
     }
-
-//    @Override
-//    public BigDecimal calculateOvernightStay(final TravelRequestDto travelRequestDto) {
-////        BigDecimal amountOfOvernightStayWithoutInvoice = calculateAmountOfOvernightStayWithoutInvoice(travelRequestDto);
-////        BigDecimal amountOfOvernightStayWithInvoice = calculateAmountOfOvernightStayWithInvoice(travelRequestDto);
-//        return amountOfOvernightStayWithInvoice.add(amountOfOvernightStayWithoutInvoice);
-//    }
-
 }

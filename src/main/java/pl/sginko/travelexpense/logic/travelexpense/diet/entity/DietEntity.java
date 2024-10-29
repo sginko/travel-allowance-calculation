@@ -5,14 +5,9 @@ import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 import java.math.BigDecimal;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -65,40 +60,40 @@ public class DietEntity {
     private BigDecimal calculateDietAmount() {
         long hoursInTravel = travelEntity.getDurationInHours();
 
-        BigDecimal halfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
-        BigDecimal dietAmount = BigDecimal.ZERO;
+        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
+//        BigDecimal dietAmount = BigDecimal.ZERO;
 
         if (hoursInTravel <= 24) {
             if (hoursInTravel < 8) {
                 dietAmount = BigDecimal.ZERO;
             } else if (hoursInTravel < 12) {
-                dietAmount = halfDailyAllowance;
+                dietAmount = fiftyPercentOfDailyAllowance;
             } else {
                 dietAmount = dailyAllowance;
             }
         } else {
             long fullDays = hoursInTravel / 24;
             long remainingHours = hoursInTravel % 24;
-            BigDecimal totalForFullDays = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
+            BigDecimal totalAmountForFullDays = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
 
-            if (remainingHours < 8) {
-                dietAmount = totalForFullDays;
-            } else if (remainingHours < 12) {
-                dietAmount = totalForFullDays.add(halfDailyAllowance);
+            if (remainingHours == 0) {
+                dietAmount = dietAmount.add(totalAmountForFullDays.add(BigDecimal.ZERO));
+            } else if (remainingHours < 8) {
+                dietAmount = dietAmount.add(totalAmountForFullDays.add(fiftyPercentOfDailyAllowance));
             } else {
-                dietAmount = totalForFullDays.add(dailyAllowance);
+                dietAmount = dietAmount.add(totalAmountForFullDays.add(dailyAllowance));
             }
         }
         return dietAmount;
     }
 
     private BigDecimal calculateFoodAmount() {
-        BigDecimal halfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
-        BigDecimal quarterDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.25));
+        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
+        BigDecimal twentyFivePercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.25));
 
-        BigDecimal breakfastCost = quarterDailyAllowance.multiply(BigDecimal.valueOf(numberOfBreakfasts));
-        BigDecimal lunchCost = halfDailyAllowance.multiply(BigDecimal.valueOf(numberOfLunches));
-        BigDecimal dinnerCost = quarterDailyAllowance.multiply(BigDecimal.valueOf(numberOfDinners));
+        BigDecimal breakfastCost = twentyFivePercentOfDailyAllowance.multiply(BigDecimal.valueOf(numberOfBreakfasts));
+        BigDecimal lunchCost = fiftyPercentOfDailyAllowance.multiply(BigDecimal.valueOf(numberOfLunches));
+        BigDecimal dinnerCost = twentyFivePercentOfDailyAllowance.multiply(BigDecimal.valueOf(numberOfDinners));
 
         return breakfastCost.add(lunchCost).add(dinnerCost).negate();
     }

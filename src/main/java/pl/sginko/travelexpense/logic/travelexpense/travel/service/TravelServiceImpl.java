@@ -3,7 +3,6 @@ package pl.sginko.travelexpense.logic.travelexpense.travel.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sginko.travelexpense.logic.auth.service.userService.UserReaderService;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.diet.mapper.DietMapper;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
@@ -20,7 +19,6 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepos
 @Service
 public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
-    private final UserReaderService userReaderService;
     private final TravelMapper travelMapper;
     private final DietMapper dietMapper;
     private final OvernightStayMapper overnightStayMapper;

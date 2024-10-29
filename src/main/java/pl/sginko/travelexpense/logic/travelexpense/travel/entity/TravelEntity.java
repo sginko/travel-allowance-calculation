@@ -108,10 +108,6 @@ public class TravelEntity {
         this.totalAmount = dietTotal.add(overnightStayTotal).add(transportTotal).add(otherExpenses).subtract(advancePayment);
     }
 
-    public void updateUser(UserEntity userEntity) {
-        this.userEntity = userEntity;
-    }
-
     public long getDurationInHours() {
         return Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
     }

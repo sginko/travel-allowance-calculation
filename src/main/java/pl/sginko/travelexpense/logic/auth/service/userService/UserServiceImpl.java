@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
     public void changeUserRoleToAccountant(String email) {
         UserEntity userEntity = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
-//        userEntity.setRoles("ROLE_ACCOUNTANT");
         userEntity.changeRoleToAccountant();
     }
 

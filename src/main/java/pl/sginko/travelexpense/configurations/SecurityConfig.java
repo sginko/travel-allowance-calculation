@@ -66,21 +66,6 @@ public class SecurityConfig {
 
 //                .formLogin(withDefaults())
                 .httpBasic(withDefaults());
-
-//        // Настройка Remember Me
-//        http.rememberMe(rememberMeConfigurer ->
-//                rememberMeConfigurer
-//                        .tokenValiditySeconds(86400)
-//                        .rememberMeParameter("remember-me")
-//        );
-
-//        // Настройка сессии
-//        http.sessionManagement(sessionManagementConfigurer ->
-//                sessionManagementConfigurer
-//                        .sessionFixation(sessionFixationConfigurer ->
-//                                sessionFixationConfigurer.migrateSession()
-//                        )
-//        );
         return http.build();
     }
 
@@ -106,43 +91,4 @@ public class SecurityConfig {
             }
         };
     }
-
-//    @Bean
-//    public AuthenticationSuccessHandler oAuth2SuccessHandler() {
-//        return (request, response, authentication) -> {
-//            var oAuth2User = (OAuth2User) authentication.getPrincipal();
-//            String email = oAuth2User.getAttribute("email");
-//            String name = oAuth2User.getAttribute("name");
-//            String surname = oAuth2User.getAttribute("family_name");
-//
-//            userService.registerOAuth2User(email, name, surname);
-//
-//            response.sendRedirect("/pages/main.html");
-//        };
-//    }
-
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.addAllowedOrigin("http://localhost:63342");
-//        configuration.addAllowedHeader("*");
-//        configuration.addAllowedMethod("*");
-//        configuration.setAllowCredentials(true);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring()
-//                .requestMatchers("/static/**", "/styles/**", "/js/**", "/pages/**")
-//                .requestMatchers(HttpMethod.OPTIONS, "/**");
-//    }
 }
