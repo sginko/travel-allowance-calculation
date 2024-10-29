@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.logic.travelexpense.transport.exception.TransportException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 import java.math.BigDecimal;
@@ -69,37 +70,89 @@ public class TransportCostEntity {
     @Column(nullable = false)
     private BigDecimal transportCostAmount;
 
+    private static final BigDecimal COST_BY_CAR_ENGINE_UP_TO_900_CC = BigDecimal.valueOf(0.89);
+    private static final BigDecimal COST_BY_CAR_ENGINE_ABOVE_900_CC = BigDecimal.valueOf(1.15);
+    private static final BigDecimal COST_BY_MOTORCYCLE = BigDecimal.valueOf(0.69);
+    private static final BigDecimal COST_BY_MOPED = BigDecimal.valueOf(0.42);
+
+
     public TransportCostEntity(TravelEntity travelEntity, Integer inputtedDaysNumberForUndocumentedTransportCost, BigDecimal documentedLocalTransportCost,
                                String meansOfTransport, BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
                                Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped) {
         this.travelEntity = travelEntity;
-        this.inputtedDaysNumberForUndocumentedTransportCost = inputtedDaysNumberForUndocumentedTransportCost;
-        this.documentedLocalTransportCost = documentedLocalTransportCost;
+        this.inputtedDaysNumberForUndocumentedTransportCost = inputtedDaysNumberForUndocumentedTransportCost != null ? inputtedDaysNumberForUndocumentedTransportCost : 0;
+        this.documentedLocalTransportCost = documentedLocalTransportCost != null ? documentedLocalTransportCost : BigDecimal.ZERO;
         this.meansOfTransport = meansOfTransport;
-        this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;
-        this.kilometersByCarEngineUpTo900cc = kilometersByCarEngineUpTo900cc;
-        this.kilometersByCarEngineAbove900cc = kilometersByCarEngineAbove900cc;
-        this.kilometersByMotorcycle = kilometersByMotorcycle;
-        this.kilometersByMoped = kilometersByMoped;
+        this.costOfTravelByPublicTransport = costOfTravelByPublicTransport != null ? costOfTravelByPublicTransport : BigDecimal.ZERO;
+        this.kilometersByCarEngineUpTo900cc = kilometersByCarEngineUpTo900cc != null ? kilometersByCarEngineUpTo900cc : 0L;
+        this.kilometersByCarEngineAbove900cc = kilometersByCarEngineAbove900cc != null ? kilometersByCarEngineAbove900cc : 0L;
+        this.kilometersByMotorcycle = kilometersByMotorcycle != null ? kilometersByMotorcycle : 0L;
+        this.kilometersByMoped = kilometersByMoped != null ? kilometersByMoped : 0L;
     }
 
-    public void updateUndocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
-        this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
+    public void calculateTransportCostAmounts() {
+        this.undocumentedLocalTransportCost = calculateUndocumentedLocalTransportCost();
+        this.costOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport();
+        this.totalCostOfTravelByOwnAndPublicTransport = costOfTravelByPublicTransport.add(costOfTravelByOwnTransport);
+        this.transportCostAmount = undocumentedLocalTransportCost.add(documentedLocalTransportCost)
+                .add(costOfTravelByPublicTransport).add(costOfTravelByOwnTransport);
     }
 
-    public void updateCostOfTravelByPublicTransport(BigDecimal costOfTravelByPublicTransport) {
-        this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;
+    private BigDecimal calculateUndocumentedLocalTransportCost() {
+        BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
+        BigDecimal dailyUndocumentedLocalTransportCost = dailyAllowance.multiply(BigDecimal.valueOf(0.20));
+        long daysInTravel = travelEntity.getDurationInDays();
+
+        if (inputtedDaysNumberForUndocumentedTransportCost > daysInTravel) {
+            throw new TransportException("The number of days entered for undocumented Local Transport Costs is greater than the number of days on the trip");
+        }
+        return dailyUndocumentedLocalTransportCost.multiply(BigDecimal.valueOf(inputtedDaysNumberForUndocumentedTransportCost));
     }
 
-    public void updateCostOfTravelByOwnTransport(BigDecimal costOfTravelByOwnTransport) {
-        this.costOfTravelByOwnTransport = costOfTravelByOwnTransport;
+    private BigDecimal calculateCostOfTravelByOwnTransport() {
+        BigDecimal amountCostByCarEngineUpTo900Cc = COST_BY_CAR_ENGINE_UP_TO_900_CC.multiply(BigDecimal.valueOf(kilometersByCarEngineUpTo900cc));
+        BigDecimal amountCostByCarEngineAbove900Cc = COST_BY_CAR_ENGINE_ABOVE_900_CC.multiply(BigDecimal.valueOf(kilometersByCarEngineAbove900cc));
+        BigDecimal amountCostByMotorcycle = COST_BY_MOTORCYCLE.multiply(BigDecimal.valueOf(kilometersByMotorcycle));
+        BigDecimal amountCostByMoped = COST_BY_MOPED.multiply(BigDecimal.valueOf(kilometersByMoped));
+
+        return amountCostByCarEngineUpTo900Cc.add(amountCostByCarEngineAbove900Cc)
+                .add(amountCostByMotorcycle).add(amountCostByMoped);
     }
 
-    public void updateTransportCostAmount(BigDecimal transportCostAmount) {
-        this.transportCostAmount = transportCostAmount;
-    }
-
-    public void updateTotalCostOfTravelByOwnAndPublicTransport(BigDecimal totalCostOfTravelByOwnAndPublicTransport) {
-        this.totalCostOfTravelByOwnAndPublicTransport = totalCostOfTravelByOwnAndPublicTransport;
-    }
+//    public BigDecimal getTransportCostAmount() {
+//        return transportCostAmount;
+//    }
+//    public TransportCostEntity(TravelEntity travelEntity, Integer inputtedDaysNumberForUndocumentedTransportCost, BigDecimal documentedLocalTransportCost,
+//                               String meansOfTransport, BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
+//                               Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped) {
+//        this.travelEntity = travelEntity;
+//        this.inputtedDaysNumberForUndocumentedTransportCost = inputtedDaysNumberForUndocumentedTransportCost;
+//        this.documentedLocalTransportCost = documentedLocalTransportCost;
+//        this.meansOfTransport = meansOfTransport;
+//        this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;
+//        this.kilometersByCarEngineUpTo900cc = kilometersByCarEngineUpTo900cc;
+//        this.kilometersByCarEngineAbove900cc = kilometersByCarEngineAbove900cc;
+//        this.kilometersByMotorcycle = kilometersByMotorcycle;
+//        this.kilometersByMoped = kilometersByMoped;
+//    }
+//
+//    public void updateUndocumentedLocalTransportCost(BigDecimal undocumentedLocalTransportCost) {
+//        this.undocumentedLocalTransportCost = undocumentedLocalTransportCost;
+//    }
+//
+//    public void updateCostOfTravelByPublicTransport(BigDecimal costOfTravelByPublicTransport) {
+//        this.costOfTravelByPublicTransport = costOfTravelByPublicTransport;
+//    }
+//
+//    public void updateCostOfTravelByOwnTransport(BigDecimal costOfTravelByOwnTransport) {
+//        this.costOfTravelByOwnTransport = costOfTravelByOwnTransport;
+//    }
+//
+//    public void updateTransportCostAmount(BigDecimal transportCostAmount) {
+//        this.transportCostAmount = transportCostAmount;
+//    }
+//
+//    public void updateTotalCostOfTravelByOwnAndPublicTransport(BigDecimal totalCostOfTravelByOwnAndPublicTransport) {
+//        this.totalCostOfTravelByOwnAndPublicTransport = totalCostOfTravelByOwnAndPublicTransport;
+//    }
 }

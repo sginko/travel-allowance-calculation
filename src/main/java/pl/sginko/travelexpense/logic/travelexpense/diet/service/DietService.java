@@ -1,14 +1,9 @@
 package pl.sginko.travelexpense.logic.travelexpense.diet.service;
 
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
-
-import java.math.BigDecimal;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
+import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 
 public interface DietService {
 
-    BigDecimal calculateDiet(final TravelRequestDto travelRequestDto);
-
-    BigDecimal calculateDietAmount(final TravelRequestDto travelRequestDto);
-
-    BigDecimal calculateFoodAmount(final TravelRequestDto travelRequestDto);
+    DietEntity createDietEntity(DietDto dietDto, DietEntity dietEntity);
 }

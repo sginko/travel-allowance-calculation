@@ -1,18 +1,9 @@
 package pl.sginko.travelexpense.logic.travelexpense.overnightStay.service;
 
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
-
-import java.math.BigDecimal;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayDto;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 
 public interface OvernightStayService {
 
-    BigDecimal calculateOvernightStay(TravelRequestDto travelRequestDto);
-
-    BigDecimal calculateAmountOfOvernightStayWithoutInvoice(TravelRequestDto travelRequestDto);
-
-    BigDecimal calculateAmountOfOvernightStayWithInvoice(TravelRequestDto travelRequestDto);
-
-    Integer calculateQuantityOfOvernightStay(TravelRequestDto travelRequestDto);
-
-    Integer calculateTotalInputQuantityOfOvernightStay(TravelRequestDto travelRequestDto);
+    OvernightStayEntity createOvernightStayEntity(OvernightStayDto overnightStayDto, OvernightStayEntity overnightStayEntity);
 }

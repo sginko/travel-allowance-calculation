@@ -12,9 +12,9 @@ import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
-//import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -26,7 +26,7 @@ public class TravelEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity userEntity;
 
@@ -76,15 +76,8 @@ public class TravelEntity {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
-    public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime,
-                        LocalDate endDate, LocalTime endTime, UserEntity userEntity,
-                        BigDecimal advancePayment, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
-                        Integer numberOfLunches, Integer numberOfDinners, Integer inputQuantityOfOvernightStayWithoutInvoice,
-                        Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
-                        Boolean isInvoiceAmountGreaterAllowed, Integer inputtedDaysNumberForUndocumentedTransportCost,
-                        BigDecimal documentedLocalTransportCost, String meansOfTransport, BigDecimal costOfTravelByPublicTransport,
-                        Long kilometersByCarEngineUpTo900cc, Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle,
-                        Long kilometersByMoped, BigDecimal otherExpenses) {
+    public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime, LocalDate endDate,
+                        LocalTime endTime, UserEntity userEntity, BigDecimal advancePayment, BigDecimal otherExpenses) {
         this.userEntity = userEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;
@@ -93,20 +86,42 @@ public class TravelEntity {
         this.endDate = endDate;
         this.endTime = endTime;
         this.advancePayment = advancePayment;
-        this.dietEntity = new DietEntity(this, dailyAllowance, numberOfBreakfasts, numberOfLunches, numberOfDinners);
-        this.overnightStayEntity = new OvernightStayEntity(this, inputQuantityOfOvernightStayWithoutInvoice,
-                inputQuantityOfOvernightStayWithInvoice, amountOfTotalOvernightsStayWithInvoice, isInvoiceAmountGreaterAllowed);
-        this.transportCostEntity = new TransportCostEntity(this, inputtedDaysNumberForUndocumentedTransportCost,
-                documentedLocalTransportCost, meansOfTransport, costOfTravelByPublicTransport, kilometersByCarEngineUpTo900cc,
-                kilometersByCarEngineAbove900cc, kilometersByMotorcycle, kilometersByMoped);
         this.otherExpenses = otherExpenses;
     }
 
-    public void updateTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
+    public void updateDietEntity(DietEntity dietEntity) {
+        this.dietEntity = dietEntity;
     }
 
-    public void updateUser(UserEntity userByPesel) {
-        this.userEntity = userByPesel;
+    public void updateOvernightStayEntity(OvernightStayEntity overnightStayEntity) {
+        this.overnightStayEntity = overnightStayEntity;
+    }
+
+    public void updateTransportCostEntity(TransportCostEntity transportCostEntity) {
+        this.transportCostEntity = transportCostEntity;
+    }
+
+    public void updateTotalAmount() {
+        BigDecimal dietTotal = dietEntity != null ? dietEntity.getTotalDietAmount() : BigDecimal.ZERO;
+        BigDecimal overnightStayTotal = overnightStayEntity != null ? overnightStayEntity.getOvernightStayAmount() : BigDecimal.ZERO;
+        BigDecimal transportTotal = transportCostEntity != null ? transportCostEntity.getTransportCostAmount() : BigDecimal.ZERO;
+        this.totalAmount = dietTotal.add(overnightStayTotal).add(transportTotal).add(otherExpenses).subtract(advancePayment);
+    }
+
+    public void updateUser(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
+    public long getDurationInHours() {
+        return Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
+    }
+
+    public long getDurationInDays() {
+        long hours = getDurationInHours();
+        long days = hours / 24;
+        if (hours % 24 > 0) {
+            days += 1;
+        }
+        return days;
     }
 }

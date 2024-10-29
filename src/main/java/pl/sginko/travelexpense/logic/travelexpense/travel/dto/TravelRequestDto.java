@@ -20,7 +20,6 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
     @NotNull(message = "Email cannot be null")
-//    @Size(min = 11, max = 11, message = "Pesel must be exactly 11 characters")
     private String email;
 
     @NotBlank(message = "From city cannot be blank")

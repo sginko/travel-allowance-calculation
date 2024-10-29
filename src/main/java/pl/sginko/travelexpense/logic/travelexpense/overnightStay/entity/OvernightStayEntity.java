@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 import java.math.BigDecimal;
@@ -52,25 +53,40 @@ public class OvernightStayEntity {
                                Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
                                Boolean isInvoiceAmountGreaterAllowed) {
         this.travelEntity = travelEntity;
-        this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice;
-        this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice;
-        this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice;
-        this.isInvoiceAmountGreaterAllowed = isInvoiceAmountGreaterAllowed;
+        this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice != null ? inputQuantityOfOvernightStayWithoutInvoice : 0;
+        this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice != null ? inputQuantityOfOvernightStayWithInvoice : 0;
+        this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice != null ? amountOfTotalOvernightsStayWithInvoice : BigDecimal.ZERO;
+        this.isInvoiceAmountGreaterAllowed = isInvoiceAmountGreaterAllowed != null ? isInvoiceAmountGreaterAllowed : false;
     }
 
-    public void updateQuantityOfOvernightStay(Integer quantityOfOvernightStay) {
-        this.quantityOfOvernightStay = quantityOfOvernightStay;
+    public void calculateOvernightStayAmounts() {
+        this.quantityOfOvernightStay = calculateQuantityOfOvernightStay();
+        this.totalInputQuantityOfOvernightStay = inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
+        validateInputNights();
+
+        this.amountOfTotalOvernightsStayWithoutInvoice = calculateAmountOfOvernightStayWithoutInvoice();
+        this.overnightStayAmount = amountOfTotalOvernightsStayWithoutInvoice.add(amountOfTotalOvernightsStayWithInvoice);
     }
 
-    public void updateTotalInputQuantityOfOvernightStay(Integer totalInputQuantityOfOvernightStay) {
-        this.totalInputQuantityOfOvernightStay = totalInputQuantityOfOvernightStay;
+    private int calculateQuantityOfOvernightStay() {
+        long hoursInTravel = travelEntity.getDurationInHours();
+        int nights = (int) (hoursInTravel / 24);
+
+        if (hoursInTravel % 24 >= 6) {
+            nights += 1;
+        }
+
+        return nights;
     }
 
-    public void updateAmountOfTotalOvernightsStayWithoutInvoice(BigDecimal amountOfTotalOvernightsStayWithoutInvoice) {
-        this.amountOfTotalOvernightsStayWithoutInvoice = amountOfTotalOvernightsStayWithoutInvoice;
+    private void validateInputNights() {
+        if (totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
+            throw new OvernightStayException("The number of nights entered for overnight stay is greater than the number of nights on the trip");
+        }
     }
 
-    public void updateOvernightStayAmount(BigDecimal overnightStayAmount) {
-        this.overnightStayAmount = overnightStayAmount;
+    private BigDecimal calculateAmountOfOvernightStayWithoutInvoice() {
+        BigDecimal oneNightWithoutInvoice = travelEntity.getDietEntity().getDailyAllowance().multiply(BigDecimal.valueOf(1.5));
+        return oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
     }
 }
