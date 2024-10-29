@@ -16,8 +16,6 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
-//import pl.sginko.travelexpense.logic.user.model.entity.UserEntity;
-//import pl.sginko.travelexpense.logic.user.service.UserReaderService;
 
 import java.math.BigDecimal;
 
