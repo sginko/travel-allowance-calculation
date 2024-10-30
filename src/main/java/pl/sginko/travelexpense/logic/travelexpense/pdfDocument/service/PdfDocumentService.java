@@ -63,12 +63,12 @@ public class PdfDocumentService {
         );
 
         //without Docker
-//        String templatePath = "src/main/resources/print/template.pdf";
-//        String outputPath = "src/main/resources/print/changed_template.pdf";
+        String templatePath = "src/main/resources/print/template.pdf";
+        String outputPath = "src/main/resources/print/changed_template.pdf";
 
         //with Docker
-        String templatePath = "/app/resources/print/template.pdf";
-        String outputPath = "/app/resources/print/changed_template.pdf";
+//        String templatePath = "/app/resources/print/template.pdf";
+//        String outputPath = "/app/resources/print/changed_template.pdf";
 
         fillTemplate(templatePath, outputPath, replacements);
     }

@@ -92,6 +92,8 @@ public class TransportCostEntity {
         this.kilometersByCarEngineAbove900cc = kilometersByCarEngineAbove900cc != null ? kilometersByCarEngineAbove900cc : 0;
         this.kilometersByMotorcycle = kilometersByMotorcycle != null ? kilometersByMotorcycle : 0;
         this.kilometersByMoped = kilometersByMoped != null ? kilometersByMoped : 0;
+
+        this.costOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport();
         this.transportCostAmount = calculateTransportCostAmount();
         this.totalCostOfTravelByOwnAndPublicTransport = calculateTotalCostOfTravelByOwnAndPublicTransport();
         this.undocumentedLocalTransportCost = calculateUndocumentedLocalTransportCost();
