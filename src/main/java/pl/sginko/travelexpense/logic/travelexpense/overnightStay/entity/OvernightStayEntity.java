@@ -9,6 +9,8 @@ import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.Overn
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -57,36 +59,73 @@ public class OvernightStayEntity {
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice != null ? inputQuantityOfOvernightStayWithInvoice : 0;
         this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice != null ? amountOfTotalOvernightsStayWithInvoice : BigDecimal.ZERO;
         this.isInvoiceAmountGreaterAllowed = isInvoiceAmountGreaterAllowed != null ? isInvoiceAmountGreaterAllowed : false;
-    }
-
-    public void calculateOvernightStayAmounts() {
         this.quantityOfOvernightStay = calculateQuantityOfOvernightStay();
-        this.totalInputQuantityOfOvernightStay = inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
-        validateInputNights();
-
+        this.totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay();
         this.amountOfTotalOvernightsStayWithoutInvoice = calculateAmountOfOvernightStayWithoutInvoice();
-        this.overnightStayAmount = amountOfTotalOvernightsStayWithoutInvoice.add(amountOfTotalOvernightsStayWithInvoice);
+        this.overnightStayAmount = calculateOvernightStay();
     }
 
-    private int calculateQuantityOfOvernightStay() {
-        long hoursInTravel = travelEntity.getDurationInHours();
-        int nights = (int) (hoursInTravel / 24);
-
-        if (hoursInTravel % 24 >= 6) {
-            nights += 1;
-        }
-
-        return nights;
-    }
-
-    private void validateInputNights() {
-        if (totalInputQuantityOfOvernightStay > quantityOfOvernightStay) {
-            throw new OvernightStayException("The number of nights entered for overnight stay is greater than the number of nights on the trip");
-        }
+    public BigDecimal calculateOvernightStay() {
+        return calculateAmountOfOvernightStayWithInvoice().add(amountOfTotalOvernightsStayWithoutInvoice);
     }
 
     private BigDecimal calculateAmountOfOvernightStayWithoutInvoice() {
-        BigDecimal oneNightWithoutInvoice = travelEntity.getDietEntity().getDailyAllowance().multiply(BigDecimal.valueOf(1.5));
+        checkQuantityOfNightInTravel();
+        BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
+        BigDecimal oneNightWithoutInvoice = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
         return oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
+    }
+
+    private BigDecimal calculateAmountOfOvernightStayWithInvoice() {
+        checkQuantityOfNightInTravel();
+        BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
+
+        if (!isInvoiceAmountGreaterAllowed) {
+            BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
+            if (amountOfTotalOvernightsStayWithInvoice.compareTo(maxAmountForOneNightWithInvoice) > 0) {
+                throw new OvernightStayException("Total amount exceeds the maximum allowable amount");
+            }
+        }
+        return amountOfTotalOvernightsStayWithInvoice;
+    }
+
+    private Integer calculateQuantityOfOvernightStay() {
+        Integer quantity = 0;
+        LocalDateTime startDateTime = LocalDateTime.of(travelEntity.getStartDate(), travelEntity.getStartTime());
+        LocalDateTime endDateTime = LocalDateTime.of(travelEntity.getEndDate(), travelEntity.getEndTime());
+
+        while (startDateTime.isBefore(endDateTime)) {
+            LocalDateTime endOfCurrentNight = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
+            if (endDateTime.isBefore(endOfCurrentNight)) {
+                endOfCurrentNight = endDateTime;
+            }
+
+            LocalDateTime startOfCurrentNight = startDateTime.withHour(21).withMinute(0).withSecond(0);
+            if (startDateTime.isAfter(startOfCurrentNight)) {
+                startOfCurrentNight = startDateTime;
+            }
+
+            if (Duration.between(startOfCurrentNight, endOfCurrentNight).toHours() >= 6) {
+                quantity++;
+            }
+
+            startDateTime = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);
+        }
+        return quantity;
+    }
+
+    private Integer calculateTotalInputQuantityOfOvernightStay() {
+        return inputQuantityOfOvernightStayWithInvoice + inputQuantityOfOvernightStayWithoutInvoice;
+    }
+
+    private void checkQuantityOfNightInTravel() {
+        Integer totalInputQuantity = calculateTotalInputQuantityOfOvernightStay();
+        Integer calculatedQuantityOfOvernightStay = calculateQuantityOfOvernightStay();
+
+        if (inputQuantityOfOvernightStayWithInvoice > calculatedQuantityOfOvernightStay ||
+                inputQuantityOfOvernightStayWithoutInvoice > calculatedQuantityOfOvernightStay ||
+                totalInputQuantity > calculatedQuantityOfOvernightStay) {
+            throw new OvernightStayException("The number of nights entered for overnight stay is greater than the number of nights on the trip");
+        }
     }
 }

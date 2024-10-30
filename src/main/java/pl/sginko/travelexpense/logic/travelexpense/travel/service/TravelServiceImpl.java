@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
-import pl.sginko.travelexpense.logic.travelexpense.diet.mapper.DietMapper;
+import pl.sginko.travelexpense.logic.travelexpense.diet.service.DietService;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
-import pl.sginko.travelexpense.logic.travelexpense.overnightStay.mapper.OvernightStayMapper;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.service.OvernightStayService;
 import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.transport.mapper.TransportCostMapper;
+import pl.sginko.travelexpense.logic.travelexpense.transport.service.TransportCostService;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
@@ -20,25 +20,22 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepos
 public class TravelServiceImpl implements TravelService {
     private final TravelRepository travelRepository;
     private final TravelMapper travelMapper;
-    private final DietMapper dietMapper;
-    private final OvernightStayMapper overnightStayMapper;
-    private final TransportCostMapper transportCostMapper;
+    private final DietService dietService;
+    private final OvernightStayService overnightStayService;
+    private final TransportCostService transportCostService;
 
     @Override
     @Transactional
     public TravelResponseDto calculateTravelExpenses(final TravelRequestDto travelRequestDto) {
         TravelEntity travelEntity = travelMapper.toTravelEntity(travelRequestDto);
 
-        DietEntity dietEntity = dietMapper.toEntity(travelRequestDto.getDietDto(), travelEntity);
-        dietEntity.calculateDietAmounts();
+        DietEntity dietEntity = dietService.createDietEntity(travelRequestDto.getDietDto(), travelEntity);
         travelEntity.updateDietEntity(dietEntity);
 
-        OvernightStayEntity overnightStayEntity = overnightStayMapper.toEntity(travelRequestDto.getOvernightStayDto(), travelEntity);
-        overnightStayEntity.calculateOvernightStayAmounts();
+        OvernightStayEntity overnightStayEntity = overnightStayService.createOvernightStayEntity(travelRequestDto.getOvernightStayDto(), travelEntity);
         travelEntity.updateOvernightStayEntity(overnightStayEntity);
 
-        TransportCostEntity transportCostEntity = transportCostMapper.toEntity(travelRequestDto.getTransportCostDto(), travelEntity);
-        transportCostEntity.calculateTransportCostAmounts();
+        TransportCostEntity transportCostEntity = transportCostService.createTransportCostEntity(travelEntity, travelRequestDto.getTransportCostDto());
         travelEntity.updateTransportCostEntity(transportCostEntity);
 
         travelEntity.updateTotalAmount();

@@ -50,9 +50,6 @@ public class DietEntity {
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
-    }
-
-    public void calculateDietAmounts() {
         this.dietAmount = calculateDietAmount();
         this.foodAmount = calculateFoodAmount();
     }
@@ -61,28 +58,36 @@ public class DietEntity {
         long hoursInTravel = travelEntity.getDurationInHours();
 
         BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
-//        BigDecimal dietAmount = BigDecimal.ZERO;
+        BigDecimal dietAmount = BigDecimal.ZERO;
 
         if (hoursInTravel <= 24) {
-            if (hoursInTravel < 8) {
-                dietAmount = BigDecimal.ZERO;
-            } else if (hoursInTravel < 12) {
-                dietAmount = fiftyPercentOfDailyAllowance;
-            } else {
-                dietAmount = dailyAllowance;
-            }
+            dietAmount = (hoursInTravel < 8) ? BigDecimal.ZERO :
+                    (hoursInTravel < 12) ? fiftyPercentOfDailyAllowance :
+                            dailyAllowance;
+//            if (hoursInTravel < 8) {
+//                dietAmount = BigDecimal.ZERO;
+//            } else if (hoursInTravel < 12) {
+//                dietAmount = fiftyPercentOfDailyAllowance;
+//            } else {
+//                dietAmount = dailyAllowance;
+//            }
         } else {
             long fullDays = hoursInTravel / 24;
             long remainingHours = hoursInTravel % 24;
             BigDecimal totalAmountForFullDays = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
 
-            if (remainingHours == 0) {
-                dietAmount = dietAmount.add(totalAmountForFullDays.add(BigDecimal.ZERO));
-            } else if (remainingHours < 8) {
-                dietAmount = dietAmount.add(totalAmountForFullDays.add(fiftyPercentOfDailyAllowance));
-            } else {
-                dietAmount = dietAmount.add(totalAmountForFullDays.add(dailyAllowance));
-            }
+            dietAmount = totalAmountForFullDays.add(
+                    (remainingHours == 0) ? BigDecimal.ZERO :
+                            (remainingHours < 8) ? fiftyPercentOfDailyAllowance :
+                                    dailyAllowance);
+
+//            if (remainingHours == 0) {
+//                dietAmount = dietAmount.add(totalAmountForFullDays.add(BigDecimal.ZERO));
+//            } else if (remainingHours < 8) {
+//                dietAmount = dietAmount.add(totalAmountForFullDays.add(fiftyPercentOfDailyAllowance));
+//            } else {
+//                dietAmount = dietAmount.add(totalAmountForFullDays.add(dailyAllowance));
+//            }
         }
         return dietAmount;
     }
@@ -98,7 +103,7 @@ public class DietEntity {
         return breakfastCost.add(lunchCost).add(dinnerCost).negate();
     }
 
-    public BigDecimal getTotalDietAmount() {
+    public BigDecimal calculateDiet() {
         return dietAmount.add(foodAmount);
     }
 }
