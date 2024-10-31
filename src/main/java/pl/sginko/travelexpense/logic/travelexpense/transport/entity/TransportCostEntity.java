@@ -12,8 +12,6 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -105,11 +103,11 @@ public class TransportCostEntity {
                 .add(calculateCostOfTravelByOwnTransport());
     }
 
-    public BigDecimal calculateTotalCostOfTravelByOwnAndPublicTransport() {
+    private BigDecimal calculateTotalCostOfTravelByOwnAndPublicTransport() {
         return costOfTravelByPublicTransport.add(calculateCostOfTravelByOwnTransport());
     }
 
-    public BigDecimal calculateUndocumentedLocalTransportCost() {
+    private BigDecimal calculateUndocumentedLocalTransportCost() {
         BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
         BigDecimal dailyUndocumentedLocalTransportCost = dailyAllowance.multiply(BigDecimal.valueOf(0.20));
         Long daysInTravel = getDaysInTravel();
@@ -120,7 +118,7 @@ public class TransportCostEntity {
         return dailyUndocumentedLocalTransportCost.multiply(BigDecimal.valueOf(inputtedDaysNumberForUndocumentedTransportCost));
     }
 
-    public BigDecimal calculateCostOfTravelByOwnTransport() {
+    private BigDecimal calculateCostOfTravelByOwnTransport() {
         BigDecimal amountCostByCarEngineUpTo900Cc = COST_BY_CAR_ENGINE_UP_TO_900_CC.multiply(BigDecimal.valueOf(kilometersByCarEngineUpTo900cc));
         BigDecimal amountCostByCarEngineAboveTo900Cc = COST_BY_CAR_ENGINE_ABOVE_900_CC.multiply(BigDecimal.valueOf(kilometersByCarEngineAbove900cc));
         BigDecimal amountCostByMotorcycle = COST_BY_MOTORCYCLE.multiply(BigDecimal.valueOf(kilometersByMotorcycle));
@@ -129,16 +127,16 @@ public class TransportCostEntity {
         return amountCostByCarEngineUpTo900Cc.add(amountCostByCarEngineAboveTo900Cc).add(amountCostByMotorcycle).add(amountCostByMoped);
     }
 
-    public Long getDaysInTravel() {
-        LocalDate startDate = travelEntity.getStartDate();
-        LocalTime startTime = travelEntity.getStartTime();
-        LocalDate endDate = travelEntity.getEndDate();
-        LocalTime endTime = travelEntity.getEndTime();
-
-        long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
+    private Long getDaysInTravel() {
+        long hoursInTravel = getDurationInHours();
         long daysInTravel = hoursInTravel / 24;
         long remainingHours = hoursInTravel % 24;
 
         return remainingHours > 0 ? daysInTravel + 1 : daysInTravel;
+    }
+
+    private long getDurationInHours() {
+        return Duration.between(travelEntity.getStartTime().atDate(travelEntity.getStartDate()),
+                travelEntity.getEndTime().atDate(travelEntity.getEndDate())).toHours();
     }
 }

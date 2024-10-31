@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -55,7 +58,13 @@ public class DietEntity {
     }
 
     private BigDecimal calculateDietAmount() {
-        long hoursInTravel = travelEntity.getDurationInHours();
+//        LocalDate startDate = travelEntity.getStartDate();
+//        LocalTime startTime = travelEntity.getStartTime();
+//        LocalDate endDate = travelEntity.getEndDate();
+//        LocalTime endTime = travelEntity.getEndTime();
+//        long hoursInTravel = Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
+
+        long hoursInTravel = getDurationInHours();
 
         BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
         BigDecimal dietAmount = BigDecimal.ZERO;
@@ -101,6 +110,11 @@ public class DietEntity {
         BigDecimal dinnerCost = twentyFivePercentOfDailyAllowance.multiply(BigDecimal.valueOf(numberOfDinners));
 
         return breakfastCost.add(lunchCost).add(dinnerCost).negate();
+    }
+
+    private long getDurationInHours() {
+        return Duration.between(travelEntity.getStartTime().atDate(travelEntity.getStartDate()),
+                travelEntity.getEndTime().atDate(travelEntity.getEndDate())).toHours();
     }
 
     public BigDecimal calculateDiet() {
