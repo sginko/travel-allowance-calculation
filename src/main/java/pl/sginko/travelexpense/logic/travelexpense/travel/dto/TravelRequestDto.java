@@ -19,8 +19,8 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelRequestDto {
-    @NotNull(message = "Email cannot be null")
-    private String email;
+//    @NotNull(message = "Email cannot be null")
+//    private String email;
 
     @NotBlank(message = "From city cannot be blank")
     @Size(min = 2, max = 50, message = "City name should be between 2 and 50 characters")

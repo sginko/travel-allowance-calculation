@@ -6,7 +6,7 @@ async function sendDbtcRequest(evt) {
 
     const formData = new FormData(form);
     const jsonObject = {
-        email: formData.get("email"),
+//        email: formData.get("email"),
         fromCity: formData.get("fromCity"),
         toCity: formData.get("toCity"),
         startDate: formData.get("startDate"),

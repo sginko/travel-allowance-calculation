@@ -18,10 +18,10 @@ public class TravelMapper {
     private final DietMapper dietMapper;
     private final OvernightStayMapper overnightStayMapper;
     private final TransportCostMapper transportCostMapper;
-    private final UserReaderService userReaderService;
+//    private final UserReaderService userReaderService;
 
-    public TravelEntity toTravelEntity(TravelRequestDto travelRequestDto) {
-        UserEntity userByEmail = userReaderService.findUserByEmail(travelRequestDto.getEmail());
+    public TravelEntity toTravelEntity(TravelRequestDto travelRequestDto, UserEntity userEntity) {
+//        UserEntity userByEmail = userReaderService.findUserByEmail(travelRequestDto.getEmail());
         return new TravelEntity(
                 travelRequestDto.getFromCity(),
                 travelRequestDto.getToCity(),
@@ -29,7 +29,7 @@ public class TravelMapper {
                 travelRequestDto.getStartTime(),
                 travelRequestDto.getEndDate(),
                 travelRequestDto.getEndTime(),
-                userByEmail,
+                userEntity,
                 travelRequestDto.getAdvancePayment(),
                 travelRequestDto.getOtherExpenses()
         );

@@ -46,8 +46,14 @@ public class SecurityConfig {
                                 "/javascript/**", "/api/v1/travels/new-user", "/api/v1/travels/new-travel",
                                 "/api/v1/travels/print/**", "/api/v1/travels/print/changed_template.pdf",
                                 "/pages/dbtc-work.html", "/pages/results.html").permitAll()
+
                         .requestMatchers("/api/v1/travels//{email}/change-role",
                                 "/api/v1/travels/all-users").hasRole("ADMIN")
+
+                        .requestMatchers("/api/v1/travels/new-travel", "/api/v1/travels/print/**",
+                                "/api/v1/travels/print/changed_template.pdf", "/pages/dbtc-work.html",
+                                "/pages/results.html").hasRole("USER")
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

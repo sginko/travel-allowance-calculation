@@ -1,8 +1,14 @@
 package pl.sginko.travelexpense.logic.travelexpense.travel.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
+import pl.sginko.travelexpense.logic.auth.exception.UserException;
+import pl.sginko.travelexpense.logic.auth.service.userService.UserReaderService;
+import pl.sginko.travelexpense.logic.auth.util.AuthenticationUtil;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.diet.service.DietService;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
@@ -23,11 +29,27 @@ public class TravelServiceImpl implements TravelService {
     private final DietService dietService;
     private final OvernightStayService overnightStayService;
     private final TransportCostService transportCostService;
+    private final UserReaderService userReaderService;
 
     @Override
     @Transactional
     public TravelResponseDto calculateTravelExpenses(final TravelRequestDto travelRequestDto) {
-        TravelEntity travelEntity = travelMapper.toTravelEntity(travelRequestDto);
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String email;
+//
+//        if (principal instanceof User) {
+//            User user = (User) principal;
+//            email = user.getUsername();
+//        } else if (principal instanceof String) {
+//            email = (String) principal;
+//        } else {
+//            throw new UserException("Failed to retrieve the user's email from Principal");
+//        }
+        String email = AuthenticationUtil.getCurrentUserEmail();
+
+        UserEntity currentUser = userReaderService.findUserByEmail(email);
+
+        TravelEntity travelEntity = travelMapper.toTravelEntity(travelRequestDto, currentUser);
 
         DietEntity dietEntity = dietService.createDietEntity(travelRequestDto.getDietDto(), travelEntity);
         travelEntity.updateDietEntity(dietEntity);
