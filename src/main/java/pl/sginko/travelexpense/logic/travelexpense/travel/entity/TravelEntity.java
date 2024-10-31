@@ -102,7 +102,6 @@ public class TravelEntity {
     }
 
     public void updateTotalAmount() {
-//        BigDecimal dietTotal = dietEntity != null ? dietEntity.getTotalDietAmount() : BigDecimal.ZERO;
         BigDecimal dietTotal = dietEntity != null ? dietEntity.calculateDiet() : BigDecimal.ZERO;
         BigDecimal overnightStayTotal = overnightStayEntity != null ? overnightStayEntity.getOvernightStayAmount() : BigDecimal.ZERO;
         BigDecimal transportTotal = transportCostEntity != null ? transportCostEntity.getTransportCostAmount() : BigDecimal.ZERO;

@@ -78,7 +78,6 @@ public class TransportCostEntity {
     private static final BigDecimal COST_BY_MOTORCYCLE = BigDecimal.valueOf(0.69);
     private static final BigDecimal COST_BY_MOPED = BigDecimal.valueOf(0.42);
 
-
     public TransportCostEntity(TravelEntity travelEntity, Integer inputtedDaysNumberForUndocumentedTransportCost,
                                BigDecimal documentedLocalTransportCost, String meansOfTransport,
                                BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
