@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.travelexpense.pdfDocument.service;
+package pl.sginko.travelexpense.logic.pdfDocument.service;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
 import org.apache.pdfbox.pdmodel.PDDocument;

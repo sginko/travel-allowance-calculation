@@ -14,6 +14,6 @@ public class UserReaderServiceImpl implements UserReaderService {
     @Override
     public UserEntity findUserByEmail(String email) {
         return userReaderRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException("Can not find employee with this email: " + email));
+                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
     }
 }

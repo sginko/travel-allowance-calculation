@@ -49,17 +49,4 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
         userEntity.changeRoleToAccountant();
     }
-
-    @Override
-    public UserResponseDto findUserByEmail(String email) {
-//        if (email == null || email.isEmpty()) {
-//            throw new UserException("Email cannot be null or empty");
-//        }
-//        return userReaderRepository.findByEmail(email)
-//                .orElseThrow(() -> new UserException("Cannot find employee with this email: " + email));
-
-        UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
-        return userMapper.fromEntity(userEntity);
-    }
 }

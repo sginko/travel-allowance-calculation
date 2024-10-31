@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.logic.travelexpense.pdfDocument.service.PdfDocumentService;
+import pl.sginko.travelexpense.logic.pdfDocument.service.PdfDocumentService;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.service.TravelService;

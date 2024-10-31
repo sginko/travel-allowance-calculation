@@ -14,6 +14,4 @@ public interface UserService {
     List<UserResponseDto> findAllUser();
 
     void changeUserRoleToAccountant(String email);
-
-    UserResponseDto findUserByEmail(String email);
 }

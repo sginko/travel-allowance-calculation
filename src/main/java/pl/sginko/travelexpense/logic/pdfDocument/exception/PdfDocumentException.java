@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.travelexpense.pdfDocument.exception;
+package pl.sginko.travelexpense.logic.pdfDocument.exception;
 
 import java.io.IOException;
 
