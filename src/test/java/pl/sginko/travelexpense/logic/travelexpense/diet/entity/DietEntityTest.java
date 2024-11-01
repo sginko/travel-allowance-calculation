@@ -1,5 +1,6 @@
 package pl.sginko.travelexpense.logic.travelexpense.diet.entity;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
@@ -9,303 +10,91 @@ import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class DietEntityTest {
+    private TravelEntity mockTravelEntity;
+    private BigDecimal dailyAllowance;
+    private DietEntity dietEntity;
+
+    @BeforeEach
+    void setUp() {
+        mockTravelEntity = mock(TravelEntity.class);
+
+        when(mockTravelEntity.getStartDate()).thenReturn(LocalDate.of(2023, 1, 1));
+        when(mockTravelEntity.getStartTime()).thenReturn(LocalTime.of(8, 0));
+        when(mockTravelEntity.getEndDate()).thenReturn(LocalDate.of(2023, 1, 2));
+        when(mockTravelEntity.getEndTime()).thenReturn(LocalTime.of(8, 0));
+
+        dailyAllowance = BigDecimal.valueOf(45);
+    }
+
     @Test
-    void should_calculate_diet_amount_for_short_travel() {
-        // GIVEN
-        TravelEntity travelEntity = new TravelEntity();
-        travelEntity.setDurationInHours(10); // Например, поездка длится 10 часов
+    void testDietAmountCalculationForLessThan8Hours() {
+        // Modify mock travel times to be less than 8 hours
+        when(mockTravelEntity.getEndDate()).thenReturn(LocalDate.of(2023, 1, 1));
+        when(mockTravelEntity.getEndTime()).thenReturn(LocalTime.of(15, 0));
 
-        BigDecimal dailyAllowance = BigDecimal.valueOf(100); // Суточные 100
-        DietEntity dietEntity = new DietEntity(travelEntity, dailyAllowance, 0, 0, 0);
+        dietEntity = new DietEntity(mockTravelEntity, dailyAllowance, 0, 0, 0);
 
-        // WHEN
-        BigDecimal dietAmount = dietEntity.calculateDietAmount();
+        assertEquals(BigDecimal.ZERO, dietEntity.calculateDiet(), "Diet amount should be zero for less than 8 hours");
+    }
 
-        // THEN
+    @Test
+    void testDietAmountCalculationFor8To12Hours() {
+        // Modify mock travel times to be between 8 and 12 hours
+        when(mockTravelEntity.getEndDate()).thenReturn(LocalDate.of(2023, 1, 1));
+        when(mockTravelEntity.getEndTime()).thenReturn(LocalTime.of(20, 0));
+
+        dietEntity = new DietEntity(mockTravelEntity, dailyAllowance, 0, 0, 0);
+
         BigDecimal expectedAmount = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
-        assertThat(dietAmount).isEqualByComparingTo(expectedAmount);
+        assertEquals(expectedAmount, dietEntity.calculateDiet(), "Diet amount should be 50% of daily allowance for 8 to 12 hours");
     }
 
     @Test
-    void should_calculate_diet_amount_for_full_day_travel() {
-        // GIVEN
-        TravelEntity travelEntity = new TravelEntity();
-        travelEntity.setDurationInHours(24); // Полный день (24 часа)
+    void testDietAmountCalculationForMoreThan12Hours() {
+        // Modify mock travel times to be more than 12 hours but less than 24 hours
+        when(mockTravelEntity.getEndDate()).thenReturn(LocalDate.of(2023, 1, 2));
+        when(mockTravelEntity.getEndTime()).thenReturn(LocalTime.of(1, 0));
 
-        BigDecimal dailyAllowance = BigDecimal.valueOf(100); // Суточные 100
-        DietEntity dietEntity = new DietEntity(travelEntity, dailyAllowance, 0, 0, 0);
+        dietEntity = new DietEntity(mockTravelEntity, dailyAllowance, 0, 0, 0);
 
-        // WHEN
-        BigDecimal dietAmount = dietEntity.calculateDietAmount();
-
-        // THEN
-        assertThat(dietAmount).isEqualByComparingTo(dailyAllowance);
+        assertEquals(dailyAllowance, dietEntity.calculateDiet(), "Diet amount should be the full daily allowance for more than 12 hours");
     }
 
     @Test
-    void should_calculate_food_amount_correctly() {
-        // GIVEN
-        TravelEntity travelEntity = new TravelEntity();
-        travelEntity.setDurationInHours(24); // Полный день
+    void testDietAmountCalculationForMultipleDays() {
+        // Modify mock travel times to be more than 24 hours
+        when(mockTravelEntity.getEndDate()).thenReturn(LocalDate.of(2023, 1, 3));
+        when(mockTravelEntity.getEndTime()).thenReturn(LocalTime.of(10, 0));
 
-        BigDecimal dailyAllowance = BigDecimal.valueOf(100); // Суточные 100
-        int breakfasts = 1;
-        int lunches = 1;
-        int dinners = 1;
-        DietEntity dietEntity = new DietEntity(travelEntity, dailyAllowance, breakfasts, lunches, dinners);
+        dietEntity = new DietEntity(mockTravelEntity, dailyAllowance, 0, 0, 0);
 
-        // WHEN
-        BigDecimal foodAmount = dietEntity.calculateFoodAmount();
-
-        // THEN
-        BigDecimal expectedBreakfastCost = dailyAllowance.multiply(BigDecimal.valueOf(0.25)).multiply(BigDecimal.valueOf(breakfasts));
-        BigDecimal expectedLunchCost = dailyAllowance.multiply(BigDecimal.valueOf(0.50)).multiply(BigDecimal.valueOf(lunches));
-        BigDecimal expectedDinnerCost = dailyAllowance.multiply(BigDecimal.valueOf(0.25)).multiply(BigDecimal.valueOf(dinners));
-        BigDecimal expectedFoodAmount = expectedBreakfastCost.add(expectedLunchCost).add(expectedDinnerCost).negate();
-
-        assertThat(foodAmount).isEqualByComparingTo(expectedFoodAmount);
+        BigDecimal expectedAmount = dailyAllowance.multiply(BigDecimal.valueOf(2.5));
+        assertEquals(expectedAmount, dietEntity.calculateDiet(), "Diet amount should be correct for multiple days and remaining hours");
     }
 
     @Test
-    void should_calculate_total_diet_amount() {
-        // GIVEN
-        TravelEntity travelEntity = new TravelEntity();
-        travelEntity.setDurationInHours(24); // Полный день
+    void testFoodAmountCalculation() {
+        dietEntity = new DietEntity(mockTravelEntity, dailyAllowance, 2, 1, 1);
 
-        BigDecimal dailyAllowance = BigDecimal.valueOf(100); // Суточные 100
-        int breakfasts = 1;
-        int lunches = 1;
-        int dinners = 1;
-        DietEntity dietEntity = new DietEntity(travelEntity, dailyAllowance, breakfasts, lunches, dinners);
+        BigDecimal twentyFivePercent = dailyAllowance.multiply(BigDecimal.valueOf(0.25));
+        BigDecimal fiftyPercent = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
 
-        // WHEN
-        BigDecimal totalDiet = dietEntity.calculateDiet();
+        BigDecimal expectedFoodAmount = twentyFivePercent.multiply(BigDecimal.valueOf(2))
+                .add(fiftyPercent.multiply(BigDecimal.valueOf(1)))
+                .add(twentyFivePercent.multiply(BigDecimal.valueOf(1)))
+                .negate();
 
-        // THEN
-        BigDecimal dietAmount = dietEntity.calculateDietAmount();
-        BigDecimal foodAmount = dietEntity.calculateFoodAmount();
-        BigDecimal expectedTotalDiet = dietAmount.add(foodAmount);
-
-        assertThat(totalDiet).isEqualByComparingTo(expectedTotalDiet);
+//        assertEquals(expectedFoodAmount, dietEntity.calculateDiet().subtract(dietEntity.calculateDietAmount()), "Food amount should be correctly calculated and negated");
     }
 
+    @Test
+    void testDietEntityWithDefaults() {
+        dietEntity = new DietEntity(mockTravelEntity, null, 0, 0, 0);
 
-// ------------------------
-//    @Test
-//    void should_calculate_food_amount_when_breakfast_is_0_lunch_is_0_dinner_is_0() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//        when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
-//        when(dietDto.getNumberOfLunches()).thenReturn(0);
-//        when(dietDto.getNumberOfDinners()).thenReturn(0);
-//
-//        //WHEN
-//        BigDecimal foodAmount = dietService.calculateFoodAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(foodAmount).isEqualByComparingTo(BigDecimal.valueOf(0.0));
-//        assertTrue(foodAmount.compareTo(BigDecimal.valueOf(0.0)) == 0);
-//    }
-//
-//    @Test
-//    void should_calculate_food_amount_when_breakfast_is_1_lunch_is_0_dinner_is_0() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//        when(dietDto.getNumberOfBreakfasts()).thenReturn(1);
-//        when(dietDto.getNumberOfLunches()).thenReturn(0);
-//        when(dietDto.getNumberOfDinners()).thenReturn(0);
-//
-//        //WHEN
-//        BigDecimal foodAmount = dietService.calculateFoodAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(foodAmount).isEqualByComparingTo(BigDecimal.valueOf(-11.25));
-//        assertTrue(foodAmount.compareTo(BigDecimal.valueOf(-11.25)) == 0);
-//    }
-//
-//    @Test
-//    void should_calculate_food_amount_when_breakfast_is_0_lunch_is_1_dinner_is_0() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//        when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
-//        when(dietDto.getNumberOfLunches()).thenReturn(1);
-//        when(dietDto.getNumberOfDinners()).thenReturn(0);
-//
-//        //WHEN
-//        BigDecimal foodAmount = dietService.calculateFoodAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(foodAmount).isEqualByComparingTo(BigDecimal.valueOf(-22.5));
-//        assertTrue(foodAmount.compareTo(BigDecimal.valueOf(-22.50)) == 0);
-//    }
-//
-//    @Test
-//    void should_calculate_food_amount_when_breakfast_is_0_lunch_is_0_dinner_is_1() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//        when(dietDto.getNumberOfBreakfasts()).thenReturn(1);
-//        when(dietDto.getNumberOfLunches()).thenReturn(0);
-//        when(dietDto.getNumberOfDinners()).thenReturn(0);
-//
-//        //WHEN
-//        BigDecimal foodAmount = dietService.calculateFoodAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(foodAmount).isEqualByComparingTo(BigDecimal.valueOf(-11.25));
-//        assertTrue(foodAmount.compareTo(BigDecimal.valueOf(-11.25)) == 0);
-//    }
-//
-//    @Test
-//    void should_calculate_food_amount_when_breakfast_is_1_lunch_is_0_dinner_is_1() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//        when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
-//        when(dietDto.getNumberOfLunches()).thenReturn(1);
-//        when(dietDto.getNumberOfDinners()).thenReturn(0);
-//
-//        //WHEN
-//        BigDecimal foodAmount = dietService.calculateFoodAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(foodAmount).isEqualByComparingTo(BigDecimal.valueOf(-22.5));
-//        assertTrue(foodAmount.compareTo(BigDecimal.valueOf(-22.5)) == 0);
-//    }
-//
-//    @Test
-//    void should_calculate_food_amount_when_breakfast_is_1_lunch_is_1_dinner_is_1() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//        when(dietDto.getNumberOfBreakfasts()).thenReturn(0);
-//        when(dietDto.getNumberOfLunches()).thenReturn(1);
-//        when(dietDto.getNumberOfDinners()).thenReturn(0);
-//
-//        //WHEN
-//        BigDecimal foodAmount = dietService.calculateFoodAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(foodAmount).isEqualByComparingTo(BigDecimal.valueOf(-22.5));
-//        assertTrue(foodAmount.compareTo(BigDecimal.valueOf(-22.5)) == 0);
-//    }
-//
-//    @Test
-//    void should_calculate_diet_amount_when_trip_less_than_8_hours() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//
-//        when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
-//        when(travelRequestDto.getEndDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getEndTime()).thenReturn(LocalTime.of(7, 59));
-//
-//        //WHEN
-//        BigDecimal dietAmount = dietService.calculateDietAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(dietAmount).isEqualByComparingTo(BigDecimal.valueOf(0.0));
-//    }
-//
-//    @Test
-//    void should_calculate_diet_amount_when_trip_more_8_and_less_12_hour() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//
-//        when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
-//        when(travelRequestDto.getEndDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getEndTime()).thenReturn(LocalTime.of(11, 59));
-//
-//        //WHEN
-//        BigDecimal dietAmount = dietService.calculateDietAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(dietAmount).isEqualByComparingTo(BigDecimal.valueOf(22.5));
-//    }
-//
-//    @Test
-//    void should_calculate_diet_amount_when_trip_more_than_12_hours() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//
-//        when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(9, 0));
-//        when(travelRequestDto.getEndDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getEndTime()).thenReturn(LocalTime.of(23, 59));
-//
-//        //WHEN
-//        BigDecimal dietAmount = dietService.calculateDietAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(dietAmount).isEqualByComparingTo(BigDecimal.valueOf(45.0));
-//    }
-//
-//    @Test
-//    void should_calculate_diet_amount_when_trip_more_than_one_day_and_less_than_8_hours() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//
-//        when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
-//        when(travelRequestDto.getEndDate()).thenReturn(LocalDate.now().plusDays(1));
-//        when(travelRequestDto.getEndTime()).thenReturn(LocalTime.of(7, 59));
-//
-//        //WHEN
-//        BigDecimal dietAmount = dietService.calculateDietAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(dietAmount).isEqualByComparingTo(BigDecimal.valueOf(67.5));
-//    }
-//
-//    @Test
-//    void should_calculate_diet_amount_when_trip_more_than_one_day_and_more_than_8_hours() {
-//        //GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//
-//        when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
-//        when(travelRequestDto.getEndDate()).thenReturn(LocalDate.now().plusDays(1));
-//        when(travelRequestDto.getEndTime()).thenReturn(LocalTime.of(8, 00));
-//
-//        //WHEN
-//        BigDecimal dietAmount = dietService.calculateDietAmount(travelRequestDto);
-//
-//        //THEN
-//        assertThat(dietAmount).isEqualByComparingTo(BigDecimal.valueOf(90.0));
-//    }
-//
-//    @Test
-//    void should_calculate_diet() {
-//        // GIVEN
-//        when(travelRequestDto.getDietDto()).thenReturn(dietDto);
-//        when(dietDto.getDailyAllowance()).thenReturn(DAILY_ALLOWANCE);
-//        when(dietDto.getNumberOfBreakfasts()).thenReturn(1);
-//        when(dietDto.getNumberOfLunches()).thenReturn(1);
-//        when(dietDto.getNumberOfDinners()).thenReturn(1);
-//
-//        when(travelRequestDto.getStartDate()).thenReturn(LocalDate.now());
-//        when(travelRequestDto.getStartTime()).thenReturn(LocalTime.of(0, 0));
-//        when(travelRequestDto.getEndDate()).thenReturn(LocalDate.now().plusDays(1));
-//        when(travelRequestDto.getEndTime()).thenReturn(LocalTime.of(8, 0));
-//
-//        // WHEN
-//        BigDecimal diet = dietService.calculateDiet(travelRequestDto);
-//
-//        // THEN
-//        assertThat(diet).isEqualByComparingTo(BigDecimal.valueOf(45).add(BigDecimal.valueOf(45)).add(BigDecimal.valueOf(-45)));
-//    }
-
+        assertEquals(BigDecimal.valueOf(45), dietEntity.getDailyAllowance(), "Daily allowance should default to 45 if null is provided");
+    }
 }

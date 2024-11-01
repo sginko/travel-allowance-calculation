@@ -9,7 +9,7 @@ public interface UserService {
 
     void addUser(UserRequestDto userRequestDto);
 
-    void registerOAuth2User(String email, String name, String surname);
+    void saveOAuth2User(String email, String name, String surname);
 
     List<UserResponseDto> findAllUser();
 

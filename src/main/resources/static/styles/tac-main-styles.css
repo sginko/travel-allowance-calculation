@@ -37,7 +37,7 @@ a::after{
     height:40px;
     width:120px;
 }
-.Login-button, .Register-button, .Login-button2, .loggout-main-button, .profile-main-button, .travel-button{
+.Login-button, .Register-button, .Travel-button, .loggout-main-button, .profile-main-button, .travel-main-button {
     position: absolute;
     top:10px;
     width:108px;
@@ -48,7 +48,7 @@ a::after{
     transition: color .5s;
 }
 .Login-button{
-    right:170px;
+    right:180px;
     color:white;
     border:2px solid rgb(50, 100, 255);
     background-color:rgb(50, 100, 255);
@@ -58,39 +58,43 @@ a::after{
     border:2px solid rgb(50, 100, 255);
     background-color:white;
 }
-.Login-button2{
-    right:310px;
+.Travel-button{
+    right:500px;
     color:white;
-    border:2px solid rgb(85, 216, 142);
-    background-color:rgb(85, 216, 142);
+    border:2px solid rgb(16, 16, 92);
+    background-color:rgb(16, 16, 92);
 }
-.loggout-main-button, .profile-main-button, .travel-button{
+.loggout-main-button, .profile-main-button, .travel-main-button{
     border:2px solid rgb(50, 100, 255);
     background-color:rgb(50, 100, 255);
+}
+.travel-main-button{
+    border:2px solid rgb(16, 16, 92);
+    background-color:rgb(16, 16, 92);
 }
 .Login-button a{
     color: white;
 }
-.Login-button2 a{
+.Travel-button a{
     font-size:12px;
     color: white;
+    background-color:rgb(16, 16, 92);
 }
 .Register-button a{
     color:rgb(50, 100, 255);
 }
-.loggout-main-button a, .profile-main-button a{
+.loggout-main-button a, .profile-main-button a, .travel-main-button a{
     font-size:12px;
     color: white;
+}
+.travel-main-button{
+  right:500px;
 }
 .loggout-main-button{
     right:180px;
 }
 .profile-main-button{
   right:30px;
-}
-.loggout-main-button a, .profile-main-button a{
-    font-size:12px;
-    color: white;
 }
 .Login-button:hover{
     cursor: pointer;

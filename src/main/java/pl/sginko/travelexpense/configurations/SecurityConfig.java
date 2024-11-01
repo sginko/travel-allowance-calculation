@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,6 +19,9 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -43,9 +49,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login", "/pages/login.html", "/pages/register.html", "/styles/**",
-                                "/javascript/**", "/api/v1/travels/new-user", "/api/v1/travels/new-travel",
-                                "/api/v1/travels/print/**", "/api/v1/travels/print/changed_template.pdf",
-                                "/pages/dbtc-work.html", "/pages/results.html").permitAll()
+                                "/javascript/**", "/api/v1/travels/new-user").permitAll()
+                        // "/pages/dbtc-work.html", "/pages/results.html", "/api/v1/travels/new-travel",
+                        // "/api/v1/travels/print/**", "/api/v1/travels/print/changed_template.pdf"
 
                         .requestMatchers("/api/v1/travels//{email}/change-role",
                                 "/api/v1/travels/all-users").hasRole("ADMIN")
@@ -70,7 +76,12 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/index.html")
                         .permitAll()
                 )
-                .oauth2Login(oauth2LoginConfigurer -> oauth2LoginConfigurer.successHandler(customOAuth2AuthenticationSuccessHandler))
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(customOAuth2AuthenticationSuccessHandler)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userAuthoritiesMapper(userAuthoritiesMapper())
+                        )
+                )
 
 //                .formLogin(withDefaults())
                 .httpBasic(withDefaults());
@@ -97,6 +108,16 @@ public class SecurityConfig {
             } else {
                 response.sendRedirect("/pages/main.html");
             }
+        };
+    }
+
+    @Bean
+    public GrantedAuthoritiesMapper userAuthoritiesMapper() {
+        return (authorities) -> {
+            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+            mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            mappedAuthorities.addAll(authorities);
+            return mappedAuthorities;
         };
     }
 }

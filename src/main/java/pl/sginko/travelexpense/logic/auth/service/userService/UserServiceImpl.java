@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerOAuth2User(String email, String name, String surname) {
+    public void saveOAuth2User(String email, String name, String surname) {
         if (userRepository.findByEmail(email).isEmpty()) {
             UserEntity newUser = userMapper.toEntityFromOAuth2(email, name, surname);
             userRepository.save(newUser);

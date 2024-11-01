@@ -1,7 +1,7 @@
 function displayErrorBox(id, errorText) {
     const errorBox = document.getElementById(id);
     const span = errorBox.querySelector('span');
-    span.textContent = 'Anulowano dodawanie użytkownika.';
+    span.textContent = 'Error';
     const p = errorBox.querySelector('p');
     p.textContent = `${errorText.message}`;
     errorBox.classList.add('box-animation');
