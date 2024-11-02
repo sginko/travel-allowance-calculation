@@ -6,5 +6,5 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 public interface TransportCostService {
 
-    TransportCostEntity createTransportCostEntity(TravelEntity travelEntity, TransportCostDto transportCostDto);
+    TransportCostEntity createTransportCostEntity(TransportCostDto transportCostDto, TravelEntity travelEntity);
 }

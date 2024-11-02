@@ -11,12 +11,13 @@ import pl.sginko.travelexpense.logic.travelexpense.transport.dto.TransportCostRe
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelResponseDto {
-    private Long id;
+    private UUID techId;
     private String email;
     private String fromCity;
     private String toCity;

@@ -18,6 +18,9 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class TravelServiceImpl implements TravelService {
@@ -31,7 +34,6 @@ public class TravelServiceImpl implements TravelService {
     @Override
     @Transactional
     public TravelResponseDto calculateTravelExpenses(final TravelRequestDto travelRequestDto) {
-
         String email = AuthenticationUtil.getCurrentUserEmail();
         UserEntity currentUser = userReaderService.findUserByEmail(email);
 
@@ -43,7 +45,7 @@ public class TravelServiceImpl implements TravelService {
         OvernightStayEntity overnightStayEntity = overnightStayService.createOvernightStayEntity(travelRequestDto.getOvernightStayDto(), travelEntity);
         travelEntity.updateOvernightStayEntity(overnightStayEntity);
 
-        TransportCostEntity transportCostEntity = transportCostService.createTransportCostEntity(travelEntity, travelRequestDto.getTransportCostDto());
+        TransportCostEntity transportCostEntity = transportCostService.createTransportCostEntity(travelRequestDto.getTransportCostDto(), travelEntity);
         travelEntity.updateTransportCostEntity(transportCostEntity);
 
         travelEntity.updateTotalAmount();
@@ -51,5 +53,14 @@ public class TravelServiceImpl implements TravelService {
         travelRepository.save(travelEntity);
 
         return travelMapper.toResponseDto(travelEntity);
+    }
+
+    public List<TravelResponseDto> getAllTravelsByUser() {
+        String email = AuthenticationUtil.getCurrentUserEmail();
+//        UserEntity currentUser = userReaderService.findUserByEmail(email);
+        List<TravelEntity> allByUserEntityEmail = travelRepository.findAllByUserEntity_Email(email);
+        return allByUserEntityEmail.stream()
+                .map(entity -> travelMapper.toResponseDto(entity))
+                .collect(Collectors.toList());
     }
 }

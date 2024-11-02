@@ -58,7 +58,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/v1/travels/new-travel", "/api/v1/travels/print/**",
                                 "/api/v1/travels/print/changed_template.pdf", "/pages/dbtc-work.html",
-                                "/pages/results.html").hasRole("USER")
+                                "/pages/results.html", "/api/v1/travels/get-all-travels").hasRole("USER")
 
                         .anyRequest().authenticated()
                 )

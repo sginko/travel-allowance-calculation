@@ -14,9 +14,9 @@ import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.Overnigh
 import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -25,6 +25,9 @@ public class TravelEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private UUID techId;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -78,6 +81,7 @@ public class TravelEntity {
 
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime, LocalDate endDate,
                         LocalTime endTime, UserEntity userEntity, BigDecimal advancePayment, BigDecimal otherExpenses) {
+        this.techId = UUID.randomUUID();
         this.userEntity = userEntity;
         this.fromCity = fromCity;
         this.toCity = toCity;

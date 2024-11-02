@@ -37,7 +37,7 @@ public class TravelMapper {
 
     public TravelResponseDto toResponseDto(TravelEntity entity) {
         return new TravelResponseDto(
-                entity.getId(),
+                entity.getTechId(),
                 entity.getUserEntity().getEmail(),
                 entity.getFromCity(),
                 entity.getToCity(),

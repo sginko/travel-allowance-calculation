@@ -15,6 +15,7 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.service.TravelService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -27,6 +28,12 @@ class TravelController {
     @PostMapping("/new-travel")
     public TravelResponseDto calculateTravelExpenses(@RequestBody TravelRequestDto requestDto) {
         return travelService.calculateTravelExpenses(requestDto);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/get-all-travels")
+    public List<TravelResponseDto> getAllTravelsByUser() {
+        return travelService.getAllTravelsByUser();
     }
 
     @PostMapping("/print/{id}")

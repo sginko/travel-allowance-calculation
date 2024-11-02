@@ -7,15 +7,13 @@ import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCos
 import pl.sginko.travelexpense.logic.travelexpense.transport.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
-import java.math.BigDecimal;
-
 @AllArgsConstructor
 @Service
 public class TransportCostServiceImpl implements TransportCostService {
     private final TransportCostMapper transportCostMapper;
 
     @Override
-    public TransportCostEntity createTransportCostEntity(TravelEntity travelEntity, TransportCostDto transportCostDto) {
+    public TransportCostEntity createTransportCostEntity(TransportCostDto transportCostDto, TravelEntity travelEntity) {
         return transportCostMapper.toEntity(transportCostDto, travelEntity);
     }
 }
