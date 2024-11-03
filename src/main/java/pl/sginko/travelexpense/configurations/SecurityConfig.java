@@ -50,8 +50,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login", "/pages/login.html", "/styles/**", "/javascript/**",
                                 "/pages/register.html", "/api/v1/users/new-user").permitAll()
-                        // "/pages/dbtc-work.html", "/pages/results.html", "/api/v1/travels/new-travel",
-                        // "/api/v1/travels/print/**", "/api/v1/travels/print/changed_template.pdf"
 
                         .requestMatchers("/api/v1/travels//{email}/change-role",
                                 "/api/v1/travels/all-users").hasRole("ADMIN")
@@ -59,15 +57,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/travels/new-travel", "/api/v1/travels/print/**",
                                 "/api/v1/travels/print/changed_template.pdf", "/pages/dbtc-work.html",
                                 "/pages/results.html", "/api/v1/travels/get-all-user-travels",
-                                "/api/v1/travels/delete-all-user-travels", "/api/v1/travels/delete-travel-by-id").hasRole("USER")
+                                "/api/v1/travels/delete-all-user-travels", "/api/v1/travels/{id}/delete-travel-by-id").hasRole("USER")
 
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                                 .loginPage("/pages/login.html")
                                 .loginProcessingUrl("/login")
-//                                .usernameParameter("email")
-//                                .defaultSuccessUrl("/static/pages/main.html", true)
                                 .successHandler(myAuthenticationSuccessHandler())
                                 .failureUrl("/pages/login.html?error=true")
                                 .permitAll()
@@ -83,8 +79,6 @@ public class SecurityConfig {
                                 .userAuthoritiesMapper(userAuthoritiesMapper())
                         )
                 )
-
-//                .formLogin(withDefaults())
                 .httpBasic(withDefaults());
         return http.build();
     }

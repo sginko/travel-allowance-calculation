@@ -15,10 +15,12 @@ import pl.sginko.travelexpense.logic.travelexpense.transport.service.TransportCo
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -75,6 +77,12 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public void deleteTravelByIdByUser(UUID techId) {
         String email = AuthenticationUtil.getCurrentUserEmail();
-        travelRepository.deleteTravelByUserEntity_EmailAndTechId(email, techId);
+        Optional<TravelEntity> optionalTravelEntity = travelRepository.findByTechIdAndUserEntity_Email(techId, email);
+
+        if (optionalTravelEntity.isPresent()) {
+            travelRepository.delete(optionalTravelEntity.get());
+        } else {
+            throw new TravelException("Travel with techId " + techId + " not found for user " + email);
+        }
     }
 }

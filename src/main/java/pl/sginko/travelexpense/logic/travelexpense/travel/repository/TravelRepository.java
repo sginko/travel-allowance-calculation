@@ -1,5 +1,6 @@
 package pl.sginko.travelexpense.logic.travelexpense.travel.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +19,5 @@ public interface TravelRepository extends JpaRepository<TravelEntity, Long> {
 
     void deleteAllByUserEntity_Email(String email);
 
-    @Modifying
-    @Query("DELETE FROM travel t WHERE t.userEntity.email = :email AND t.techId = :techId")
-    void deleteTravelByUserEntity_EmailAndTechId(@Param("email") String email, @Param("techId") UUID techId);
+    Optional<TravelEntity> findByTechIdAndUserEntity_Email(UUID techId, String email);
 }
