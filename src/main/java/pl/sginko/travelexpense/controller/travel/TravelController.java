@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -31,10 +32,22 @@ class TravelController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/get-all-travels")
+    @GetMapping("/get-all-user-travels")
     public List<TravelResponseDto> getAllTravelsByUser() {
         return travelService.getAllTravelsByUser();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/delete-all-user-travels")
+    public void deleteAllTravelsByUser() {
+        travelService.deleteAllTravelsByUser();
+    }
+
+//    @ResponseStatus(HttpStatus.OK)
+//    @DeleteMapping("/{id}/delete-travel-by-id")
+//    public void deleteTravelByIdByUser(@PathVariable("id") UUID techId) {
+//        travelService.deleteTravelByIdByUser(techId);
+//    }
 
     @PostMapping("/print/{id}")
     public ResponseEntity<Void> print(@PathVariable("id") Long id) {

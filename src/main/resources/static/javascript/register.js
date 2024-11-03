@@ -9,7 +9,7 @@ async function submitForm(evt) {
     const dataBody = JSON.stringify(Object.fromEntries(regFormData.entries()));
     
     try {
-        const request = await fetch('http://localhost:8080/api/v1/ginko/new-user', {
+        const request = await fetch('http://localhost:8080/api/v1/users/new-user', {
             headers: {
                 'Content-type': 'application/json',
                 'Accept': 'application/json'

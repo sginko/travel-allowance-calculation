@@ -19,6 +19,7 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -57,10 +58,22 @@ public class TravelServiceImpl implements TravelService {
 
     public List<TravelResponseDto> getAllTravelsByUser() {
         String email = AuthenticationUtil.getCurrentUserEmail();
-//        UserEntity currentUser = userReaderService.findUserByEmail(email);
         List<TravelEntity> allByUserEntityEmail = travelRepository.findAllByUserEntity_Email(email);
         return allByUserEntityEmail.stream()
                 .map(entity -> travelMapper.toResponseDto(entity))
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    @Override
+    public void deleteAllTravelsByUser() {
+        String email = AuthenticationUtil.getCurrentUserEmail();
+       travelRepository.deleteAllByUserEntity_Email(email);
+    }
+
+//    @Override
+//    public void deleteTravelByIdByUser(UUID techId) {
+//        String email = AuthenticationUtil.getCurrentUserEmail();
+//        travelRepository.deleteTravelByUserEntity_Email(email, techId);
+//    }
 }

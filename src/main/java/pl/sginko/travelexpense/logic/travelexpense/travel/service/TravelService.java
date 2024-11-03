@@ -4,10 +4,15 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TravelService {
 
+    TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto);
+
     List<TravelResponseDto> getAllTravelsByUser();
 
-    TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto);
+    void deleteAllTravelsByUser();
+
+//    void deleteTravelByIdByUser(UUID techId);
 }
