@@ -5,7 +5,7 @@ function addValues() {
     if (storedValues === null) {
         alert('Brak wartości z kalkulatora, ładowanie z obiektu');
         const pjson = `{
-            "id": 1,
+            "techId": "3b7851b1-f545-46ae-b474-9e8dbaf2d8fb",
             "pesel": 12345678901,
             "fromCity": "Warsaw",
             "toCity": "Krakow",
@@ -38,14 +38,14 @@ function addValues() {
         const objectAsProperty = storedValues[prop];
         if (typeof objectAsProperty === 'object') {
             for (let prop2 in objectAsProperty) {
-                if (prop2 !== 'id') setSpanTextContent(objectAsProperty[prop2], prop2);
+                if (prop2 !== 'techId') setSpanTextContent(objectAsProperty[prop2], prop2);
             }
         } else {
             setSpanTextContent(storedValues[prop], prop);
         }
     }
     const inputToPrint = document.getElementById('input-print-id');
-    inputToPrint.value = storedValues.id;
+    inputToPrint.value = storedValues.techId;
     localStorage.clear();
 }
 
@@ -69,7 +69,8 @@ async function fetchPdfDocument(evt) {
     console.log(formBody);
 
     try {
-        const response = await fetch(`http://localhost:8080/api/v1/travels/print/${formToPrintData.get('id')}`, {
+        const techId = formToPrintData.get('techId');
+        const response = await fetch(`http://localhost:8080/api/v1/travels/print/${formToPrintData.get('techId')}`, {
             method: 'POST'
         });
         if (!response.ok) {

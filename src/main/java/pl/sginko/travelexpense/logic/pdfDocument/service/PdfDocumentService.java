@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.logic.pdfDocument.service;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
+import lombok.AllArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
@@ -17,19 +18,18 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import static java.util.Map.entry;
 
+@AllArgsConstructor
 @Service
 public class PdfDocumentService {
     private final TravelRepository travelRepository;
 
-    public PdfDocumentService(TravelRepository travelRepository) {
-        this.travelRepository = travelRepository;
-    }
-
-    public void generatePdfDocument(Long id) throws IOException {
-        TravelEntity travelEntity = travelRepository.findById(id).orElseThrow(() -> new TravelException("Travel not found"));
+    public void generatePdfDocument(UUID techId) throws IOException {
+        TravelEntity travelEntity = travelRepository.findByTechId(techId)
+                .orElseThrow(() -> new TravelException("Travel not found"));
         DietEntity dietEntity = travelEntity.getDietEntity();
         OvernightStayEntity overnightStayEntity = travelEntity.getOvernightStayEntity();
         TransportCostEntity transportCostEntity = travelEntity.getTransportCostEntity();

@@ -14,5 +14,5 @@ public interface TravelService {
 
     void deleteAllTravelsByUser();
 
-//    void deleteTravelByIdByUser(UUID techId);
+    void deleteTravelByIdByUser(UUID techId);
 }

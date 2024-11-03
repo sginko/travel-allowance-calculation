@@ -43,16 +43,16 @@ class TravelController {
         travelService.deleteAllTravelsByUser();
     }
 
-//    @ResponseStatus(HttpStatus.OK)
-//    @DeleteMapping("/{id}/delete-travel-by-id")
-//    public void deleteTravelByIdByUser(@PathVariable("id") UUID techId) {
-//        travelService.deleteTravelByIdByUser(techId);
-//    }
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}/delete-travel-by-id")
+    public void deleteTravelByIdByUser(@PathVariable("id") UUID techId) {
+        travelService.deleteTravelByIdByUser(techId);
+    }
 
-    @PostMapping("/print/{id}")
-    public ResponseEntity<Void> print(@PathVariable("id") Long id) {
+    @PostMapping("/print/{techId}")
+    public ResponseEntity<Void> print(@PathVariable("techId") UUID techId) {
         try {
-            pdfDocumentService.generatePdfDocument(id);
+            pdfDocumentService.generatePdfDocument(techId);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
