@@ -64,13 +64,13 @@ public class TravelEntity {
     @Column(nullable = false)
     private BigDecimal advancePayment;
 
-    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private DietEntity dietEntity;
 
-    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private OvernightStayEntity overnightStayEntity;
 
-    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private TransportCostEntity transportCostEntity;
 
     @Column(nullable = false)
@@ -111,17 +111,4 @@ public class TravelEntity {
         BigDecimal transportTotal = transportCostEntity != null ? transportCostEntity.getTransportCostAmount() : BigDecimal.ZERO;
         this.totalAmount = dietTotal.add(overnightStayTotal).add(transportTotal).add(otherExpenses).subtract(advancePayment);
     }
-
-//    public long getDurationInHours() {
-//        return Duration.between(startTime.atDate(startDate), endTime.atDate(endDate)).toHours();
-//    }
-//
-//    public long getDurationInDays() {
-//        long hours = getDurationInHours();
-//        long days = hours / 24;
-//        if (hours % 24 > 0) {
-//            days += 1;
-//        }
-//        return days;
-//    }
 }
