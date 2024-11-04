@@ -70,7 +70,7 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public void deleteAllTravelsByUser() {
         String email = AuthenticationUtil.getCurrentUserEmail();
-       travelRepository.deleteAllByUserEntity_Email(email);
+        travelRepository.deleteAllByUserEntity_Email(email);
     }
 
     @Transactional
