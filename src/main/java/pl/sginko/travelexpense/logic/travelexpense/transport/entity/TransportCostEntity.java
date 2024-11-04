@@ -97,10 +97,23 @@ public class TransportCostEntity {
     }
 
     public BigDecimal calculateTransportCostAmount() {
-        return calculateUndocumentedLocalTransportCost()
-                .add(documentedLocalTransportCost)
+        BigDecimal totalAmount = BigDecimal.ZERO;
+
+        if (documentedLocalTransportCost.compareTo(BigDecimal.ZERO) > 0) {
+            totalAmount = documentedLocalTransportCost;
+        } else {
+            totalAmount = undocumentedLocalTransportCost;
+        }
+        totalAmount = totalAmount
                 .add(costOfTravelByPublicTransport)
-                .add(calculateCostOfTravelByOwnTransport());
+                .add(costOfTravelByOwnTransport);
+
+        return totalAmount;
+
+//        return calculateUndocumentedLocalTransportCost()
+//                .add(documentedLocalTransportCost)
+//                .add(costOfTravelByPublicTransport)
+//                .add(calculateCostOfTravelByOwnTransport());
     }
 
     private BigDecimal calculateTotalCostOfTravelByOwnAndPublicTransport() {
@@ -108,6 +121,10 @@ public class TransportCostEntity {
     }
 
     private BigDecimal calculateUndocumentedLocalTransportCost() {
+        if (documentedLocalTransportCost.compareTo(BigDecimal.ZERO) > 0) {
+            return BigDecimal.ZERO;
+        }
+
         BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
         BigDecimal dailyUndocumentedLocalTransportCost = dailyAllowance.multiply(BigDecimal.valueOf(0.20));
         Long daysInTravel = getDaysInTravel();
@@ -115,6 +132,7 @@ public class TransportCostEntity {
         if (inputtedDaysNumberForUndocumentedTransportCost > daysInTravel) {
             throw new TransportException("The number of days entered for undocumented Local Transport Costs is greater than the number of days on the trip");
         }
+
         return dailyUndocumentedLocalTransportCost.multiply(BigDecimal.valueOf(inputtedDaysNumberForUndocumentedTransportCost));
     }
 

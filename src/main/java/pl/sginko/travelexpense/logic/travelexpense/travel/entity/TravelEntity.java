@@ -12,9 +12,11 @@ import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.UUID;
 
@@ -91,6 +93,7 @@ public class TravelEntity {
         this.endTime = endTime;
         this.advancePayment = advancePayment;
         this.otherExpenses = otherExpenses;
+        validateDates();
     }
 
     public void updateDietEntity(DietEntity dietEntity) {
@@ -110,5 +113,14 @@ public class TravelEntity {
         BigDecimal overnightStayTotal = overnightStayEntity != null ? overnightStayEntity.getOvernightStayAmount() : BigDecimal.ZERO;
         BigDecimal transportTotal = transportCostEntity != null ? transportCostEntity.getTransportCostAmount() : BigDecimal.ZERO;
         this.totalAmount = dietTotal.add(overnightStayTotal).add(transportTotal).add(otherExpenses).subtract(advancePayment);
+    }
+
+    private void validateDates() {
+        LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new TravelException("End date and time cannot be before start date and time");
+        }
     }
 }
