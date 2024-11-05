@@ -16,7 +16,7 @@ import java.time.Duration;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "transport")
+@Table(name = "transport_cost")
 public class TransportCostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
