@@ -37,17 +37,17 @@ class TravelController {
         return travelService.getAllTravelsByUser();
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/delete-all-user-travels")
-    public void deleteAllTravelsByUser() {
-        travelService.deleteAllTravelsByUser();
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{id}/delete-travel-by-id")
-    public void deleteTravelByIdByUser(@PathVariable("id") UUID techId) {
-        travelService.deleteTravelByIdByUser(techId);
-    }
+//    @ResponseStatus(HttpStatus.OK)
+//    @DeleteMapping("/delete-all-user-travels")
+//    public void deleteAllTravelsByUser() {
+//        travelService.deleteAllTravelsByUser();
+//    }
+//
+//    @ResponseStatus(HttpStatus.OK)
+//    @DeleteMapping("/{id}/delete-travel-by-id")
+//    public void deleteTravelByIdByUser(@PathVariable("id") UUID techId) {
+//        travelService.deleteTravelByIdByUser(techId);
+//    }
 
     @PostMapping("/print/{techId}")
     public ResponseEntity<Void> print(@PathVariable("techId") UUID techId) {

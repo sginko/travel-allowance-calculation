@@ -22,7 +22,7 @@ public class OvernightStayDto {
     private Integer inputQuantityOfOvernightStayWithInvoice;
 
     @NotNull(message = "Amount of total overnight stays with invoice cannot be null")
-    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
+    private BigDecimal totalAmountOfOvernightsStayWithInvoice;
 
     @NotNull(message = "Invoice amount greater allowed flag cannot be null")
     Boolean isInvoiceAmountGreaterAllowed;

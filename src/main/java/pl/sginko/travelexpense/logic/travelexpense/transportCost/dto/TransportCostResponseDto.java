@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.travelexpense.transport.dto;
+package pl.sginko.travelexpense.logic.travelexpense.transportCost.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class TransportCostResponseDto {
     private Long id;
-    private Integer inputtedDaysNumberForTransportCost;
+    private Integer daysForTransportCost;
     private BigDecimal undocumentedLocalTransportCost;
     private BigDecimal documentedLocalTransportCost;
     private String meansOfTransport;

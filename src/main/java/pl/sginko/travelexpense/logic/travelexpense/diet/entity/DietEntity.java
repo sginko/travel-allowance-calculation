@@ -56,13 +56,7 @@ public class DietEntity {
     }
 
     public BigDecimal calculateDiet() {
-        return dietAmount.add(foodAmount);
-    }
-
-    //    private long getDurationInHours() {
-    public long getDurationInHours() {
-        return Duration.between(travelEntity.getStartTime().atDate(travelEntity.getStartDate()),
-                travelEntity.getEndTime().atDate(travelEntity.getEndDate())).toHours();
+        return dietAmount.subtract(foodAmount);
     }
 
     private BigDecimal calculateDietAmount() {
@@ -117,6 +111,11 @@ public class DietEntity {
         BigDecimal lunchCost = fiftyPercentOfDailyAllowance.multiply(BigDecimal.valueOf(numberOfLunches));
         BigDecimal dinnerCost = twentyFivePercentOfDailyAllowance.multiply(BigDecimal.valueOf(numberOfDinners));
 
-        return breakfastCost.add(lunchCost).add(dinnerCost).negate();
+        return breakfastCost.add(lunchCost).add(dinnerCost);
+    }
+
+    private long getDurationInHours() {
+        return Duration.between(travelEntity.getStartTime().atDate(travelEntity.getStartDate()),
+                travelEntity.getEndTime().atDate(travelEntity.getEndDate())).toHours();
     }
 }

@@ -1,6 +1,5 @@
-package pl.sginko.travelexpense.logic.travelexpense.transport.dto;
+package pl.sginko.travelexpense.logic.travelexpense.transportCost.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,8 +14,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class TransportCostDto {
-    @NotNull(message = "Inputted days number for undocumented local transport cannot be null")
-    private Integer inputtedDaysNumberForUndocumentedLocalTransportCost;
+    @NotNull(message = "Days number for undocumented local transport cannot be null")
+    private Integer daysForUndocumentedLocalTransportCost;
 
     @NotNull(message = "Documented local transport cost cannot be null")
     private BigDecimal documentedLocalTransportCost;

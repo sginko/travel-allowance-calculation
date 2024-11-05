@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.logic.travelexpense.transport.exception;
+package pl.sginko.travelexpense.logic.travelexpense.transportCost.exception;
 
 public class TransportException extends RuntimeException {
 

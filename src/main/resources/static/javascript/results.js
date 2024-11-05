@@ -5,7 +5,7 @@ function addValues() {
     let storedValues = JSON.parse(localStorage.getItem('resultValues'));
     if (storedValues === null) {
         alert('Brak wartości z kalkulatora, ładowanie z obiektu');
-        const pjson = `{"id": 1,"pesel": 12345678901, "fromCity": "Warsaw", "toCity": "Krakow", "startDate": "2023-01-01", "startTime": "08:00:00", "endDate": "2023-01-02", "endTime": "18:00:00", "totalAmount": 300, "advancePayment": 100, "dietResponse": {"id": 1,"dietAmount": 135, "numberOfBreakfasts": 1, "numberOfLunches": 1, "numberOfDinners": 1}, "overnightStayResponseDto": {"id": 1, "inputQuantityOfOvernightStayWithoutInvoice": 1, "amountOfTotalOvernightsStayWithoutInvoice": 50, "inputQuantityOfOvernightStayWithInvoice": 1,"amountOfTotalOvernightsStayWithInvoice": 100, "overnightStayAmount": 150}}`
+        const pjson = `{"id": 1,"pesel": 12345678901, "fromCity": "Warsaw", "toCity": "Krakow", "startDate": "2023-01-01", "startTime": "08:00:00", "endDate": "2023-01-02", "endTime": "18:00:00", "totalAmount": 300, "advancePayment": 100, "dietResponse": {"id": 1,"dietAmount": 135, "numberOfBreakfasts": 1, "numberOfLunches": 1, "numberOfDinners": 1}, "overnightStayResponseDto": {"id": 1, "inputQuantityOfOvernightStayWithoutInvoice": 1, "totalAmountOfOvernightsStayWithoutInvoice": 50, "inputQuantityOfOvernightStayWithInvoice": 1,"totalAmountOfOvernightsStayWithInvoice": 100, "overnightStayAmount": 150}}`
         storedValues = JSON.parse(pjson);
     }
     console.log(storedValues);

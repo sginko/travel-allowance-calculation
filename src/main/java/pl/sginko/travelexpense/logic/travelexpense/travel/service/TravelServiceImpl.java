@@ -10,8 +10,8 @@ import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.diet.service.DietService;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.service.OvernightStayService;
-import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.transport.service.TransportCostService;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.service.TransportCostService;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
@@ -66,23 +66,23 @@ public class TravelServiceImpl implements TravelService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
-    @Override
-    public void deleteAllTravelsByUser() {
-        String email = AuthenticationUtil.getCurrentUserEmail();
-        travelRepository.deleteAllByUserEntity_Email(email);
-    }
-
-    @Transactional
-    @Override
-    public void deleteTravelByIdByUser(UUID techId) {
-        String email = AuthenticationUtil.getCurrentUserEmail();
-        Optional<TravelEntity> optionalTravelEntity = travelRepository.findByTechIdAndUserEntity_Email(techId, email);
-
-        if (optionalTravelEntity.isPresent()) {
-            travelRepository.delete(optionalTravelEntity.get());
-        } else {
-            throw new TravelException("Travel with techId " + techId + " not found for user " + email);
-        }
-    }
+//    @Transactional
+//    @Override
+//    public void deleteAllTravelsByUser() {
+//        String email = AuthenticationUtil.getCurrentUserEmail();
+//        travelRepository.deleteAllByUserEntity_Email(email);
+//    }
+//
+//    @Transactional
+//    @Override
+//    public void deleteTravelByIdByUser(UUID techId) {
+//        String email = AuthenticationUtil.getCurrentUserEmail();
+//        Optional<TravelEntity> optionalTravelEntity = travelRepository.findByTechIdAndUserEntity_Email(techId, email);
+//
+//        if (optionalTravelEntity.isPresent()) {
+//            travelRepository.delete(optionalTravelEntity.get());
+//        } else {
+//            throw new TravelException("Travel with techId " + techId + " not found for user " + email);
+//        }
+//    }
 }

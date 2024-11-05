@@ -1,10 +1,10 @@
-package pl.sginko.travelexpense.logic.travelexpense.transport.service;
+package pl.sginko.travelexpense.logic.travelexpense.transportCost.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.sginko.travelexpense.logic.travelexpense.transport.dto.TransportCostDto;
-import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.transport.mapper.TransportCostMapper;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostDto;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 @AllArgsConstructor

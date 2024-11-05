@@ -15,9 +15,9 @@ public class OvernightStayMapper {
                 entity.getQuantityOfOvernightStay(),
                 entity.getTotalInputQuantityOfOvernightStay(),
                 entity.getInputQuantityOfOvernightStayWithoutInvoice(),
-                entity.getAmountOfTotalOvernightsStayWithoutInvoice(),
+                entity.getTotalAmountOfOvernightsStayWithoutInvoice(),
                 entity.getInputQuantityOfOvernightStayWithInvoice(),
-                entity.getAmountOfTotalOvernightsStayWithInvoice(),
+                entity.getTotalAmountOfOvernightsStayWithInvoice(),
                 entity.getOvernightStayAmount());
     }
 
@@ -26,7 +26,7 @@ public class OvernightStayMapper {
                 travelEntity,
                 overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice(),
                 overnightStayDto.getInputQuantityOfOvernightStayWithInvoice(),
-                overnightStayDto.getAmountOfTotalOvernightsStayWithInvoice(),
+                overnightStayDto.getTotalAmountOfOvernightsStayWithInvoice(),
                 overnightStayDto.getIsInvoiceAmountGreaterAllowed()
         );
     }

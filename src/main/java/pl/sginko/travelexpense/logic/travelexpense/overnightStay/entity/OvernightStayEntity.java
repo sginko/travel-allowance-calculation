@@ -30,14 +30,14 @@ public class OvernightStayEntity {
     private Integer inputQuantityOfOvernightStayWithoutInvoice;
 
     @Column(nullable = false)
-    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
+    private BigDecimal totalAmountOfOvernightsStayWithoutInvoice;
 
     @Min(value = 0, message = "Number of overnight stay with invoice cannot be negative")
     @Column(nullable = false)
     private Integer inputQuantityOfOvernightStayWithInvoice;
 
     @Column(nullable = false)
-    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
+    private BigDecimal totalAmountOfOvernightsStayWithInvoice;
 
     @Column(nullable = false)
     private BigDecimal overnightStayAmount;
@@ -52,41 +52,41 @@ public class OvernightStayEntity {
     private Boolean isInvoiceAmountGreaterAllowed;
 
     public OvernightStayEntity(TravelEntity travelEntity, Integer inputQuantityOfOvernightStayWithoutInvoice,
-                               Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal amountOfTotalOvernightsStayWithInvoice,
+                               Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal totalAmountOfOvernightsStayWithInvoice,
                                Boolean isInvoiceAmountGreaterAllowed) {
         this.travelEntity = travelEntity;
         this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice != null ? inputQuantityOfOvernightStayWithoutInvoice : 0;
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice != null ? inputQuantityOfOvernightStayWithInvoice : 0;
-        this.amountOfTotalOvernightsStayWithInvoice = amountOfTotalOvernightsStayWithInvoice != null ? amountOfTotalOvernightsStayWithInvoice : BigDecimal.ZERO;
+        this.totalAmountOfOvernightsStayWithInvoice = totalAmountOfOvernightsStayWithInvoice != null ? totalAmountOfOvernightsStayWithInvoice : BigDecimal.ZERO;
         this.isInvoiceAmountGreaterAllowed = isInvoiceAmountGreaterAllowed != null ? isInvoiceAmountGreaterAllowed : false;
         this.quantityOfOvernightStay = calculateQuantityOfOvernightStay();
         this.totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay();
-        this.amountOfTotalOvernightsStayWithoutInvoice = calculateAmountOfOvernightStayWithoutInvoice();
+        this.totalAmountOfOvernightsStayWithoutInvoice = calculateTotalAmountOfOvernightStayWithoutInvoice();
         this.overnightStayAmount = calculateOvernightStay();
     }
 
     public BigDecimal calculateOvernightStay() {
-        return calculateAmountOfOvernightStayWithInvoice().add(amountOfTotalOvernightsStayWithoutInvoice);
+        return calculateTotalAmountOfOvernightStayWithInvoice().add(totalAmountOfOvernightsStayWithoutInvoice);
     }
 
-    private BigDecimal calculateAmountOfOvernightStayWithoutInvoice() {
+    private BigDecimal calculateTotalAmountOfOvernightStayWithoutInvoice() {
         checkQuantityOfNightInTravel();
         BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
         BigDecimal oneNightWithoutInvoice = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
         return oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
     }
 
-    private BigDecimal calculateAmountOfOvernightStayWithInvoice() {
+    private BigDecimal calculateTotalAmountOfOvernightStayWithInvoice() {
         checkQuantityOfNightInTravel();
         BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
 
         if (!isInvoiceAmountGreaterAllowed) {
             BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
-            if (amountOfTotalOvernightsStayWithInvoice.compareTo(maxAmountForOneNightWithInvoice) > 0) {
+            if (totalAmountOfOvernightsStayWithInvoice.compareTo(maxAmountForOneNightWithInvoice) > 0) {
                 throw new OvernightStayException("Total amount exceeds the maximum allowable amount");
             }
         }
-        return amountOfTotalOvernightsStayWithInvoice;
+        return totalAmountOfOvernightsStayWithInvoice;
     }
 
     private Integer calculateQuantityOfOvernightStay() {

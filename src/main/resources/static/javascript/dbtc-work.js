@@ -24,11 +24,11 @@ async function sendDbtcRequest(evt) {
         overnightStayDto: {
             inputQuantityOfOvernightStayWithoutInvoice: parseInt(formData.get("inputQuantityOfOvernightStayWithoutInvoice")) ? parseInt(formData.get("inputQuantityOfOvernightStayWithoutInvoice")) : 0,
             inputQuantityOfOvernightStayWithInvoice: parseInt(formData.get("inputQuantityOfOvernightStayWithInvoice")) ? parseInt(formData.get("inputQuantityOfOvernightStayWithInvoice")) : 0,
-            amountOfTotalOvernightsStayWithInvoice: parseFloat(formData.get("amountOfTotalOvernightsStayWithInvoice")) ? parseFloat(formData.get("amountOfTotalOvernightsStayWithInvoice")) : 0,
+            amountOfTotalOvernightsStayWithInvoice: parseFloat(formData.get("totalAmountOfOvernightsStayWithInvoice")) ? parseFloat(formData.get("totalAmountOfOvernightsStayWithInvoice")) : 0,
             isInvoiceAmountGreaterAllowed: Boolean(form["isInvoiceAmountGreaterAllowed"].checked)
         },
         transportCostDto: {
-            inputtedDaysNumberForUndocumentedLocalTransportCost: parseInt(formData.get("inputtedDaysNumberForUndocumentedLocalTransportCost")) ? parseInt(formData.get("inputtedDaysNumberForUndocumentedLocalTransportCost")) : 0,
+            inputtedDaysNumberForUndocumentedLocalTransportCost: parseInt(formData.get("daysForUndocumentedTransportCost")) ? parseInt(formData.get("daysForUndocumentedTransportCost")) : 0,
             documentedLocalTransportCost: parseFloat(formData.get("documentedLocalTransportCost")) ? parseFloat(formData.get("documentedLocalTransportCost")) : 0,
             meansOfTransport: formData.get("meansOfTransport"),
             kilometersByCarEngineUpTo900cc: parseInt(formData.get("kilometersByCarEngineUpTo900cc")) ? parseInt(formData.get("kilometersByCarEngineUpTo900cc")) : 0,

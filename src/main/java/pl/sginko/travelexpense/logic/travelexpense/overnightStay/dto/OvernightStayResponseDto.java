@@ -15,8 +15,8 @@ public class OvernightStayResponseDto {
     private Integer quantityOfOvernightStay;
     private Integer totalInputQuantityOfOvernightStay;
     private Integer inputQuantityOfOvernightStayWithoutInvoice;
-    private BigDecimal amountOfTotalOvernightsStayWithoutInvoice;
+    private BigDecimal totalAmountOfOvernightsStayWithoutInvoice;
     private Integer inputQuantityOfOvernightStayWithInvoice;
-    private BigDecimal amountOfTotalOvernightsStayWithInvoice;
+    private BigDecimal totalAmountOfOvernightsStayWithInvoice;
     private BigDecimal overnightStayAmount;
 }

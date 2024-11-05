@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
-import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 
 import java.math.BigDecimal;

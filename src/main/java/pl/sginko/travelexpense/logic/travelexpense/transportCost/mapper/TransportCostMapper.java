@@ -1,9 +1,9 @@
-package pl.sginko.travelexpense.logic.travelexpense.transport.mapper;
+package pl.sginko.travelexpense.logic.travelexpense.transportCost.mapper;
 
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.logic.travelexpense.transport.dto.TransportCostDto;
-import pl.sginko.travelexpense.logic.travelexpense.transport.dto.TransportCostResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostDto;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 @Component
@@ -12,7 +12,7 @@ public class TransportCostMapper {
     public TransportCostResponseDto toResponseDto(TransportCostEntity entity) {
         return new TransportCostResponseDto(
                 entity.getId(),
-                entity.getInputtedDaysNumberForUndocumentedTransportCost(),
+                entity.getDaysForUndocumentedTransportCost(),
                 entity.getUndocumentedLocalTransportCost(),
                 entity.getDocumentedLocalTransportCost(),
                 entity.getMeansOfTransport(),
@@ -24,7 +24,7 @@ public class TransportCostMapper {
     public TransportCostEntity toEntity(TransportCostDto transportCostDto, TravelEntity travelEntity) {
         return new TransportCostEntity(
                 travelEntity,
-                transportCostDto.getInputtedDaysNumberForUndocumentedLocalTransportCost(),
+                transportCostDto.getDaysForUndocumentedLocalTransportCost(),
                 transportCostDto.getDocumentedLocalTransportCost(),
                 transportCostDto.getMeansOfTransport(),
                 transportCostDto.getCostOfTravelByPublicTransport(),

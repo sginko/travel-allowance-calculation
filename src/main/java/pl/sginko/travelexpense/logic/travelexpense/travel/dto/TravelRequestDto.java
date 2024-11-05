@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayDto;
-import pl.sginko.travelexpense.logic.travelexpense.transport.dto.TransportCostDto;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.transport.dto.TransportCostResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostResponseDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

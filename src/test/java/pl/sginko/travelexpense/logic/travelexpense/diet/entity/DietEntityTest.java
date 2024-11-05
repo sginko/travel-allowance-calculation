@@ -12,7 +12,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DietEntityTest {
     @Test
-    void should_calculate_dietAmount_exactly_8_hours() {
+    void should_return_zero_dietAmount_when_travel_duration_is_less_than_8_hours() {
+        // GIVEN
+        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+                LocalDate.now(), LocalTime.of(8, 0),
+                LocalDate.now(), LocalTime.of(15, 0),
+                null, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
+
+//        // WHEN
+//        BigDecimal dietAmount = dietEntity.getDietAmount();
+//        long duration = dietEntity.getDurationInHours();
+//        BigDecimal expectedDietAmount = BigDecimal.valueOf(0);
+//
+//        // THEN
+//        assertThat(duration).isEqualTo(7);
+//        assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
+
+        // WHEN
+        BigDecimal dietAmount = dietEntity.getDietAmount();
+        BigDecimal expectedDietAmount = BigDecimal.valueOf(0);
+
+        // THEN
+        assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
+    }
+
+    @Test
+    void should_return_half_daily_allowance_when_travel_duration_is_exactly_8_hours() {
         // GIVEN
         TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
@@ -23,36 +50,14 @@ class DietEntityTest {
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
-        long duration = dietEntity.getDurationInHours();
         BigDecimal expectedDietAmount = BigDecimal.valueOf(22.5);
 
         // THEN
-        assertThat(duration).isEqualTo(8);
         assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
     }
 
     @Test
-    void should_calculate_dietAmount_less_than_8_hours() {
-        // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
-                LocalDate.now(), LocalTime.of(8, 0),
-                LocalDate.now(), LocalTime.of(15, 0),
-                null, BigDecimal.ZERO, BigDecimal.ZERO);
-
-        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
-
-        // WHEN
-        BigDecimal dietAmount = dietEntity.getDietAmount();
-        long duration = dietEntity.getDurationInHours();
-        BigDecimal expectedDietAmount = BigDecimal.valueOf(0);
-
-        // THEN
-        assertThat(duration).isEqualTo(7);
-        assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
-    }
-
-    @Test
-    void should_calculate_dietAmount_between_8_and_12_hours() {
+    void should_return_half_daily_allowance_when_travel_duration_is_between_8_and_12_hours() {
         // GIVEN
         TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
@@ -63,36 +68,14 @@ class DietEntityTest {
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
-        long duration = dietEntity.getDurationInHours();
         BigDecimal expectedDietAmount = BigDecimal.valueOf(22.5);
 
         // THEN
-        assertThat(duration).isEqualTo(9);
         assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
     }
 
     @Test
-    void should_calculate_dietAmount_more_than_12_hours() {
-        // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
-                LocalDate.now(), LocalTime.of(8, 0),
-                LocalDate.now(), LocalTime.of(21, 0),
-                null, BigDecimal.ZERO, BigDecimal.ZERO);
-
-        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
-
-        // WHEN
-        BigDecimal dietAmount = dietEntity.getDietAmount();
-        long duration = dietEntity.getDurationInHours();
-        BigDecimal expectedDietAmount = BigDecimal.valueOf(45);
-
-        // THEN
-        assertThat(duration).isEqualTo(13);
-        assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
-    }
-
-    @Test
-    void should_calculate_dietAmount_exactly_12_hours() {
+    void should_return_full_daily_allowance_when_travel_duration_is_exactly_12_hours() {
         // GIVEN
         TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
@@ -103,16 +86,32 @@ class DietEntityTest {
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
-        long duration = dietEntity.getDurationInHours();
         BigDecimal expectedDietAmount = BigDecimal.valueOf(45);
 
         // THEN
-        assertThat(duration).isEqualTo(12);
         assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
     }
 
     @Test
-    void should_calculate_dietAmount_multiple_days() {
+    void should_return_full_daily_allowance_when_travel_duration_is_more_than_12_hours() {
+        // GIVEN
+        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+                LocalDate.now(), LocalTime.of(8, 0),
+                LocalDate.now(), LocalTime.of(21, 0),
+                null, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
+
+        // WHEN
+        BigDecimal dietAmount = dietEntity.getDietAmount();
+        BigDecimal expectedDietAmount = BigDecimal.valueOf(45);
+
+        // THEN
+        assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
+    }
+
+    @Test
+    void should_calculate_dietAmount_for_multiple_days() {
         // GIVEN
         TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
@@ -123,16 +122,32 @@ class DietEntityTest {
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
-        long duration = dietEntity.getDurationInHours();
         BigDecimal expectedDietAmount = BigDecimal.valueOf(112.5);
 
         // THEN
-        assertThat(duration).isEqualTo(50);
         assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
     }
 
     @Test
-    void should_calculate_foodAmount() {
+    void should_return_correct_dietAmount_when_remainingHours_is_zero() {
+        // GIVEN
+        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+                LocalDate.now(), LocalTime.of(8, 0),
+                LocalDate.now().plusDays(2), LocalTime.of(8, 0), // Точно 48 часов (2 полных дня)
+                null, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
+
+        // WHEN
+        BigDecimal dietAmount = dietEntity.getDietAmount();
+        BigDecimal expectedDietAmount = BigDecimal.valueOf(90);
+
+        // THEN
+        assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
+    }
+
+    @Test
+    void should_calculate_foodAmount_based_on_provided_meals() {
         // GIVEN
         TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
@@ -143,14 +158,32 @@ class DietEntityTest {
 
         // WHEN
         BigDecimal foodAmount = dietEntity.getFoodAmount();
-        BigDecimal expectedFoodAmount = BigDecimal.valueOf(-45);
+        BigDecimal expectedFoodAmount = BigDecimal.valueOf(45);
 
         // THEN
         assertThat(foodAmount).isEqualByComparingTo(expectedFoodAmount);
     }
 
     @Test
-    void should_calculate_totalDietAmount() {
+    void should_calculate_foodAmount_for_different_meal_combinations() {
+        // GIVEN
+        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+                LocalDate.now(), LocalTime.of(8, 0),
+                LocalDate.now().plusDays(1), LocalTime.of(18, 0),
+                null, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 2, 1, 1);
+
+        // WHEN
+        BigDecimal foodAmount = dietEntity.getFoodAmount();
+        BigDecimal expectedFoodAmount = BigDecimal.valueOf(22.5 + 22.5 + 11.25);
+
+        // THEN
+        assertThat(foodAmount).isEqualByComparingTo(expectedFoodAmount);
+    }
+
+    @Test
+    void should_calculate_totalDietAmount_as_difference_between_diet_and_foodAmounts() {
         // GIVEN
         TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
@@ -165,6 +198,6 @@ class DietEntityTest {
         BigDecimal foodAmount = dietEntity.getFoodAmount();
 
         // THEN
-        assertEquals(expectedTotalDiet, dietAmount.add(foodAmount));
+        assertEquals(expectedTotalDiet, dietAmount.subtract(foodAmount));
     }
 }

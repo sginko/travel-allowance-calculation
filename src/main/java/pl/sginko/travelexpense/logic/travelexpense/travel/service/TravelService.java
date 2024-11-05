@@ -11,8 +11,8 @@ public interface TravelService {
     TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto);
 
     List<TravelResponseDto> getAllTravelsByUser();
-
-    void deleteAllTravelsByUser();
-
-    void deleteTravelByIdByUser(UUID techId);
+//
+//    void deleteAllTravelsByUser();
+//
+//    void deleteTravelByIdByUser(UUID techId);
 }

@@ -8,7 +8,7 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
-import pl.sginko.travelexpense.logic.travelexpense.transport.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
@@ -50,8 +50,8 @@ public class PdfDocumentService {
                 entry("totalAmountWords", numberToWords(travelEntity.getTotalAmount())),
                 entry("dietAmount", String.valueOf(dietEntity.getDietAmount())),
                 entry("foodAmount", String.valueOf(dietEntity.getFoodAmount())),
-                entry("overnightStayWithInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithInvoice())),
-                entry("overnightStayWithoutInvoice", String.valueOf(overnightStayEntity.getAmountOfTotalOvernightsStayWithoutInvoice())),
+                entry("overnightStayWithInvoice", String.valueOf(overnightStayEntity.getTotalAmountOfOvernightsStayWithInvoice())),
+                entry("overnightStayWithoutInvoice", String.valueOf(overnightStayEntity.getTotalAmountOfOvernightsStayWithoutInvoice())),
                 entry("advancePayment", String.valueOf(travelEntity.getAdvancePayment())),
                 entry("advancePaymentWords", numberToWords(travelEntity.getAdvancePayment())),
                 entry("undocumentedLocalTransportCost", String.valueOf(transportCostEntity.getUndocumentedLocalTransportCost())),
