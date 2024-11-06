@@ -49,4 +49,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
         userEntity.changeRoleToAccountant();
     }
+
+    @Transactional
+    @Override
+    public void changeUserRoleToManager(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
+        userEntity.changeRoleToManager();
+    }
 }

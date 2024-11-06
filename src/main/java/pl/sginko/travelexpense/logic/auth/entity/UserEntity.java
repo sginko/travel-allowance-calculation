@@ -42,4 +42,8 @@ public class UserEntity {
     public void changeRoleToAccountant() {
         this.roles = "ROLE_ACCOUNTANT";
     }
+
+    public void changeRoleToManager() {
+        this.roles = "ROLE_MANAGER";
+    }
 }

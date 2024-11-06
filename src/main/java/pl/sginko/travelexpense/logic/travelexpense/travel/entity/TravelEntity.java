@@ -81,6 +81,10 @@ public class TravelEntity {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TravelStatus status;
+
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime, LocalDate endDate,
                         LocalTime endTime, UserEntity userEntity, BigDecimal advancePayment, BigDecimal otherExpenses) {
         this.techId = UUID.randomUUID();
@@ -93,6 +97,7 @@ public class TravelEntity {
         this.endTime = endTime;
         this.advancePayment = advancePayment;
         this.otherExpenses = otherExpenses;
+        this.status = TravelStatus.ACCEPTED;
         validateDates();
     }
 

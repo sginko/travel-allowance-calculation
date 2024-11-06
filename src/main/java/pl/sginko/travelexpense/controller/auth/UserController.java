@@ -28,8 +28,14 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PatchMapping("/{email}/change-role")
+    @PatchMapping("/{email}/change-role-to-accountant")
     public void changeUserRoleToAccountant(@PathVariable("email") String email) {
         userService.changeUserRoleToAccountant(email);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{email}/change-role-to-manager")
+    public void changeUserRoleToManager(@PathVariable("email") String email) {
+        userService.changeUserRoleToManager(email);
     }
 }

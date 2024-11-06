@@ -57,16 +57,19 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/travels/new-travel", "/api/v1/travels/print/**",
                                 "/api/v1/travels/print/changed_template.pdf", "/pages/dbtc-work.html",
                                 "/pages/results.html", "/api/v1/travels/get-all-user-travels",
-                                "/api/v1/travels/delete-all-user-travels", "/api/v1/travels/{id}/delete-travel-by-id").hasRole("USER")
+                                "/api/v1/travels/delete-all-user-travels",
+                                "/api/v1/travels/{id}/delete-travel-by-id").hasAnyRole("USER", "MANAGER", "ACCOUNTANT")
+
+                        .requestMatchers("/api/v1/approvals/**").hasAnyRole("MANAGER", "ACCOUNTANT")
 
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                                .loginPage("/pages/login.html")
-                                .loginProcessingUrl("/login")
-                                .successHandler(myAuthenticationSuccessHandler())
-                                .failureUrl("/pages/login.html?error=true")
-                                .permitAll()
+                        .loginPage("/pages/login.html")
+                        .loginProcessingUrl("/login")
+                        .successHandler(myAuthenticationSuccessHandler())
+                        .failureUrl("/pages/login.html?error=true")
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
