@@ -3,6 +3,5 @@ package pl.sginko.travelexpense.logic.auth.entity;
 public enum Roles {
     ROLE_USER,
     ROLE_MANAGER,
-    ROLE_ACCOUNTANT,
-    ROLE_ADMIN
+    ROLE_ACCOUNTANT
 }

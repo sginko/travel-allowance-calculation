@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.logic.auth.entity.Roles;
 import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.approval.entity.ApprovalEntity;
@@ -130,6 +131,86 @@ public class TravelEntity {
         this.totalAmount = dietTotal.add(overnightStayTotal).add(transportTotal).add(otherExpenses).subtract(advancePayment);
     }
 
+    public void addApproval(ApprovalEntity approval) {
+        this.approvals.add(approval);
+    }
+
+    public void addApprovalsForRoles(List<UserEntity> accountants, List<UserEntity> managers) {
+        accountants.stream()
+                .map(accountant -> new ApprovalEntity(this, accountant, Roles.ROLE_ACCOUNTANT))
+                .forEach(approval -> addApproval(approval));
+
+        managers.stream()
+                .map(manager -> new ApprovalEntity(this, manager, Roles.ROLE_MANAGER))
+                .forEach(approval -> addApproval(approval));
+
+//        for (UserEntity accountant : accountants) {
+//            this.addApproval(new ApprovalEntity(this, accountant, Roles.ROLE_ACCOUNTANT));
+//        }
+//
+//        for (UserEntity manager : managers) {
+//            this.addApproval(new ApprovalEntity(this, manager, Roles.ROLE_MANAGER));
+//        }
+    }
+
+    public void updateStatusBasedOnApprovals() {
+//        if (anyApprovalRejected(this)) {
+//            changeStatus(TravelStatus.REJECTED);
+//
+//        } else if (allApprovalsApproved(this)) {
+//            changeStatus(TravelStatus.APPROVED);
+//
+//        } else if (anyApprovalPending(this)) {
+//            changeStatus(TravelStatus.IN_PROCESS);
+//        }
+
+        if (anyApprovalRejected()) {
+            changeStatus(TravelStatus.REJECTED);
+
+        } else if (isApprovedByAtLeastOneRole(Roles.ROLE_ACCOUNTANT) && isApprovedByAtLeastOneRole(Roles.ROLE_MANAGER)) {
+            changeStatus(TravelStatus.APPROVED);
+
+        } else {
+            changeStatus(TravelStatus.IN_PROCESS);
+        }
+    }
+
+    private boolean anyApprovalRejected() {
+        return approvals.stream()
+                .anyMatch(approval -> approval.getStatus() == ApprovalStatus.REJECTED);
+    }
+
+    private boolean isApprovedByAtLeastOneRole(Roles role) {
+        return approvals.stream()
+                .filter(approval -> approval.getRole() == role)
+                .anyMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);
+    }
+
+    public void changeStatus(TravelStatus status) {
+        this.status = status;
+    }
+
+    public void validateStatusForApproval() {
+        if (this.status == TravelStatus.APPROVED || this.status == TravelStatus.REJECTED) {
+            throw new ApprovalException("The travel report has already been finalized and cannot be modified.");
+        }
+    }
+
+//    private boolean anyApprovalRejected(TravelEntity travelEntity) {
+//        return travelEntity.getApprovals().stream()
+//                .anyMatch(approval -> approval.getStatus() == ApprovalStatus.REJECTED);
+//    }
+//
+//    private boolean anyApprovalPending(TravelEntity travelEntity) {
+//        return travelEntity.getApprovals().stream()
+//                .anyMatch(approval -> approval.getStatus() == ApprovalStatus.PENDING);
+//    }
+//
+//    private boolean allApprovalsApproved(TravelEntity travelEntity) {
+//        return travelEntity.getApprovals().stream()
+//                .allMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);
+//    }
+
     private void validateDates() {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
@@ -138,44 +219,4 @@ public class TravelEntity {
             throw new TravelException("End date and time cannot be before start date and time");
         }
     }
-
-    public void changeStatus(TravelStatus status) {
-        this.status = status;
-    }
-
-    public void addApproval(ApprovalEntity approval) {
-        this.approvals.add(approval);
-    }
-
-    public boolean isApprovedByRole(Roles role) {
-        return approvals.stream()
-                .anyMatch(approval -> approval.getRole() == role && approval.getStatus() == ApprovalStatus.APPROVED);
-    }
-
-    public boolean isRejectedByAnyRole() {
-        return approvals.stream()
-                .anyMatch(approval -> approval.getStatus() == ApprovalStatus.REJECTED);
-    }
-
-    public void addApprovalsForRoles(List<UserEntity> accountants, List<UserEntity> managers) {
-        for (UserEntity accountant : accountants) {
-            this.addApproval(new ApprovalEntity(this, accountant, Roles.ROLE_ACCOUNTANT));
-        }
-
-        for (UserEntity manager : managers) {
-            this.addApproval(new ApprovalEntity(this, manager, Roles.ROLE_MANAGER));
-        }
-    }
-
-//    // Метод для проверки, завершены ли все утверждения
-//    public boolean areAllApprovalsCompleted() {
-//        return approvals.stream()
-//                .allMatch(approval -> approval.getStatus() != ApprovalStatus.PENDING);
-//    }
-//
-//    // Метод для проверки, все ли утверждения одобрены
-//    public boolean areAllApprovalsApproved() {
-//        return approvals.stream()
-//                .allMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);
-//    }
 }
