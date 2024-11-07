@@ -55,12 +55,13 @@ public class SecurityConfig {
                                 "/api/v1/travels/{email}/change-role-to-manager",
                                 "/api/v1/travels/all-users").hasRole("ADMIN")
 
+                        .requestMatchers("/api/v1/approvals/**").hasAnyRole("MANAGER", "ACCOUNTANT")
+
                         .requestMatchers("/api/v1/travels/print/**", "/api/v1/travels/print/changed_template.pdf",
                                 "/pages/dbtc-work.html", "/pages/results.html",
                                 "/api/v1/travels/**").hasAnyRole("USER", "MANAGER", "ACCOUNTANT")
-                        //"/api/v1/travels/delete-all-user-travels", "/api/v1/travels/{id}/delete-travel-by-id"
 
-                        .requestMatchers("/api/v1/approvals/**").hasAnyRole("MANAGER", "ACCOUNTANT")
+
 
                         .anyRequest().authenticated()
                 )

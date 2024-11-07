@@ -32,12 +32,6 @@ public class ApprovalEntity {
     @Column(nullable = false)
     private Roles role;
 
-//    public ApprovalEntity(TravelEntity travelEntity, UserEntity approver) {
-//        this.travelEntity = travelEntity;
-//        this.approver = approver;
-//        this.status = ApprovalStatus.PENDING;
-//    }
-
     public ApprovalEntity(TravelEntity travelEntity, UserEntity approver, Roles role) {
         this.travelEntity = travelEntity;
         this.approver = approver;
