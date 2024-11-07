@@ -3,6 +3,8 @@ package pl.sginko.travelexpense.logic.travelexpense.travel.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sginko.travelexpense.logic.approval.entity.ApprovalEntity;
+import pl.sginko.travelexpense.logic.auth.entity.Roles;
 import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.auth.service.userService.UserReaderService;
 import pl.sginko.travelexpense.logic.auth.util.AuthenticationUtil;
@@ -14,7 +16,9 @@ import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.Transpor
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.service.TransportCostService;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelSubmissionResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
 import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
@@ -36,11 +40,13 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     @Transactional
-    public TravelResponseDto calculateTravelExpenses(final TravelRequestDto travelRequestDto) {
+    public TravelSubmissionResponseDto calculateTravelExpenses(final TravelRequestDto travelRequestDto) {
         String email = AuthenticationUtil.getCurrentUserEmail();
         UserEntity currentUser = userReaderService.findUserByEmail(email);
 
         TravelEntity travelEntity = travelMapper.toTravelEntity(travelRequestDto, currentUser);
+
+        travelEntity.changeStatus(TravelStatus.SUBMITTED);
 
         DietEntity dietEntity = dietService.createDietEntity(travelRequestDto.getDietDto(), travelEntity);
         travelEntity.updateDietEntity(dietEntity);
@@ -53,9 +59,14 @@ public class TravelServiceImpl implements TravelService {
 
         travelEntity.updateTotalAmount();
 
+        List<UserEntity> accountants = userReaderService.findUsersByRole(Roles.ROLE_ACCOUNTANT);
+        List<UserEntity> managers = userReaderService.findUsersByRole(Roles.ROLE_MANAGER);
+        travelEntity.addApprovalsForRoles(accountants, managers);
+
         travelRepository.save(travelEntity);
 
-        return travelMapper.toResponseDto(travelEntity);
+//        return travelMapper.toResponseDto(travelEntity);
+        return travelMapper.toTravelSubmissionResponseDto(travelEntity);
     }
 
     public List<TravelResponseDto> getAllTravelsByUser() {
@@ -65,6 +76,14 @@ public class TravelServiceImpl implements TravelService {
                 .map(entity -> travelMapper.toResponseDto(entity))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public TravelSubmissionResponseDto getTravelByTechId(UUID techId) {
+        TravelEntity travelEntity = travelRepository.findByTechId(techId)
+                .orElseThrow(() -> new TravelException("Travel not found"));
+        return travelMapper.toTravelSubmissionResponseDto(travelEntity);
+    }
+
 
 //    @Transactional
 //    @Override

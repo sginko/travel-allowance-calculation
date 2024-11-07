@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.logic.inboxMessage.InboxService;
 import pl.sginko.travelexpense.logic.pdfDocument.service.PdfDocumentService;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelSubmissionResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.service.TravelService;
 
 import java.io.File;
@@ -24,26 +24,31 @@ import java.util.UUID;
 @RequestMapping("/api/v1/travels")
 class TravelController {
     private final TravelService travelService;
-    private final InboxService inboxService;
     private final PdfDocumentService pdfDocumentService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/new-travel")
-    public TravelResponseDto calculateTravelExpenses(@RequestBody TravelRequestDto requestDto) {
+    @PostMapping
+    public TravelSubmissionResponseDto calculateTravelExpenses(@RequestBody TravelRequestDto requestDto) {
         return travelService.calculateTravelExpenses(requestDto);
     }
 
-    @PostMapping("/new-travel")
-    public ResponseEntity<Void> receiveTravelRequest(@RequestBody TravelRequestDto requestDto) {
-        inboxService.saveIncomingMessage(requestDto);
-        return ResponseEntity.accepted().build();
-    }
-
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/get-all-user-travels")
+    @GetMapping
     public List<TravelResponseDto> getAllTravelsByUser() {
         return travelService.getAllTravelsByUser();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{techId}")
+    public TravelSubmissionResponseDto getTravelByTechId(@PathVariable("techId") UUID techId) {
+        return travelService.getTravelByTechId(techId);
+    }
+
+
+
+
+
+
 
 //    @ResponseStatus(HttpStatus.OK)
 //    @DeleteMapping("/delete-all-user-travels")

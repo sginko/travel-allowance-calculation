@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.logic.auth.service.userDetailService;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,6 +11,7 @@ import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.auth.repository.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -21,9 +23,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRoles().name());
+
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority(user.getRoles())));
+                List.of(authority));
+//                List.of(new SimpleGrantedAuthority(user.getRoles())));
     }
 }

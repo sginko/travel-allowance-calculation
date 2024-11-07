@@ -8,7 +8,10 @@ import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.logic.auth.entity.Roles;
 import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
+import pl.sginko.travelexpense.logic.approval.entity.ApprovalEntity;
+import pl.sginko.travelexpense.logic.approval.entity.ApprovalStatus;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
@@ -18,6 +21,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -66,13 +72,13 @@ public class TravelEntity {
     @Column(nullable = false)
     private BigDecimal advancePayment;
 
-    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
     private DietEntity dietEntity;
 
-    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
     private OvernightStayEntity overnightStayEntity;
 
-    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "travelEntity", cascade = CascadeType.ALL)
     private TransportCostEntity transportCostEntity;
 
     @Column(nullable = false)
@@ -81,9 +87,13 @@ public class TravelEntity {
     @Column(nullable = false)
     private BigDecimal totalAmount;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TravelStatus status;
+
+    @OneToMany(mappedBy = "travelEntity", cascade = CascadeType.ALL)
+    private Set<ApprovalEntity> approvals = new HashSet<>();
+
 
     public TravelEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime, LocalDate endDate,
                         LocalTime endTime, UserEntity userEntity, BigDecimal advancePayment, BigDecimal otherExpenses) {
@@ -97,7 +107,7 @@ public class TravelEntity {
         this.endTime = endTime;
         this.advancePayment = advancePayment;
         this.otherExpenses = otherExpenses;
-        this.status = TravelStatus.ACCEPTED;
+        this.status = TravelStatus.SUBMITTED;
         validateDates();
     }
 
@@ -128,4 +138,44 @@ public class TravelEntity {
             throw new TravelException("End date and time cannot be before start date and time");
         }
     }
+
+    public void changeStatus(TravelStatus status) {
+        this.status = status;
+    }
+
+    public void addApproval(ApprovalEntity approval) {
+        this.approvals.add(approval);
+    }
+
+    public boolean isApprovedByRole(Roles role) {
+        return approvals.stream()
+                .anyMatch(approval -> approval.getRole() == role && approval.getStatus() == ApprovalStatus.APPROVED);
+    }
+
+    public boolean isRejectedByAnyRole() {
+        return approvals.stream()
+                .anyMatch(approval -> approval.getStatus() == ApprovalStatus.REJECTED);
+    }
+
+    public void addApprovalsForRoles(List<UserEntity> accountants, List<UserEntity> managers) {
+        for (UserEntity accountant : accountants) {
+            this.addApproval(new ApprovalEntity(this, accountant, Roles.ROLE_ACCOUNTANT));
+        }
+
+        for (UserEntity manager : managers) {
+            this.addApproval(new ApprovalEntity(this, manager, Roles.ROLE_MANAGER));
+        }
+    }
+
+//    // Метод для проверки, завершены ли все утверждения
+//    public boolean areAllApprovalsCompleted() {
+//        return approvals.stream()
+//                .allMatch(approval -> approval.getStatus() != ApprovalStatus.PENDING);
+//    }
+//
+//    // Метод для проверки, все ли утверждения одобрены
+//    public boolean areAllApprovalsApproved() {
+//        return approvals.stream()
+//                .allMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);
+//    }
 }

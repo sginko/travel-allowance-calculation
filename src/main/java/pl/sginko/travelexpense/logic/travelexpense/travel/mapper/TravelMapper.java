@@ -8,6 +8,7 @@ import pl.sginko.travelexpense.logic.travelexpense.overnightStay.mapper.Overnigh
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelSubmissionResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 
@@ -49,5 +50,9 @@ public class TravelMapper {
                 overnightStayMapper.toResponseDto(entity.getOvernightStayEntity()),
                 transportCostMapper.toResponseDto(entity.getTransportCostEntity())
         );
+    }
+
+    public TravelSubmissionResponseDto toTravelSubmissionResponseDto(TravelEntity entity) {
+        return new TravelSubmissionResponseDto(entity.getTechId(), entity.getStatus());
     }
 }
