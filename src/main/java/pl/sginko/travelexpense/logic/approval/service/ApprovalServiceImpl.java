@@ -66,7 +66,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 
     private List<TravelResponseDto> mapTravelsToResponseDtos(List<TravelEntity> travels) {
         return travels.stream()
-                .map(travelMapper::toResponseDto)
+                .map(entity -> travelMapper.toResponseDto(entity))
                 .collect(Collectors.toList());
     }
 

@@ -22,7 +22,7 @@ class UserEntityTest {
         assertThat(user.getName()).isEqualTo(name);
         assertThat(user.getSurname()).isEqualTo(surname);
         assertThat(user.getPassword()).isEqualTo(password);
-        assertThat(user.getRoles()).isEqualTo("ROLE_USER");
+        assertThat(user.getRoles()).isEqualTo(Roles.ROLE_USER);
     }
 
     @Test
@@ -39,6 +39,6 @@ class UserEntityTest {
         user.changeRoleToAccountant();
 
         // THEN
-        assertThat(user.getRoles()).isEqualTo("ROLE_ACCOUNTANT");
+        assertThat(user.getRoles()).isEqualTo(Roles.ROLE_ACCOUNTANT);
     }
 }

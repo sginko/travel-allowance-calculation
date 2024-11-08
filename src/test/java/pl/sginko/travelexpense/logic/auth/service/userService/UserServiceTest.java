@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import pl.sginko.travelexpense.logic.auth.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.auth.dto.UserResponseDto;
+import pl.sginko.travelexpense.logic.auth.entity.Roles;
 import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.auth.exception.UserException;
 import pl.sginko.travelexpense.logic.auth.repository.UserRepository;
@@ -86,6 +87,6 @@ class UserServiceTest {
 
         // THEN
         UserEntity user = userRepository.findByEmail(EMAIL).orElseThrow();
-        assertThat(user.getRoles()).isEqualTo("ROLE_ACCOUNTANT");
+        assertThat(user.getRoles()).isEqualTo(Roles.ROLE_ACCOUNTANT);
     }
 }
