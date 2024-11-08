@@ -1,6 +1,5 @@
 package pl.sginko.travelexpense.logic.approval.service;
 
-import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelExcept
 import pl.sginko.travelexpense.logic.travelexpense.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -31,26 +29,37 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final ApprovalRepository approvalRepository;
     private final UserRepository userRepository;
     private final TravelMapper travelMapper;
-//    private final EmailService emailService;
+
+//    @Transactional
+//    @Override
+//    public List<TravelResponseDto> getPendingApprovals(String approverEmail) {
+//        UserEntity approver = userRepository.findByEmail(approverEmail)
+//                .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
+//
+//        Roles approverRole = approver.getRoles();
+//
+//        List<TravelEntity> travels = travelRepository.findByStatusIn(
+//                List.of(TravelStatus.SUBMITTED, TravelStatus.IN_PROCESS));
+//
+//        List<TravelEntity> pendingTravels = travels.stream()
+//                .filter(travel -> !approvalRepository.existsByTravelEntityAndRole(travel, approverRole))
+//                .collect(Collectors.toList());
+//
+//        return pendingTravels.stream()
+//                .map(travelMapper::toResponseDto)
+//                .collect(Collectors.toList());
+//    }
 
     @Transactional
     @Override
     public List<TravelResponseDto> getPendingApprovals(String approverEmail) {
-        UserEntity approver = userRepository.findByEmail(approverEmail)
-                .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
-
+        UserEntity approver = findApproverByEmail(approverEmail);
         Roles approverRole = approver.getRoles();
 
-        List<TravelEntity> travels = travelRepository.findByStatusIn(
-                List.of(TravelStatus.SUBMITTED, TravelStatus.IN_PROCESS));
+        List<TravelEntity> travels = getTravelsByStatuses(List.of(TravelStatus.SUBMITTED, TravelStatus.IN_PROCESS));
+        List<TravelEntity> pendingTravels = filterPendingTravels(travels, approverRole);
 
-        List<TravelEntity> pendingTravels = travels.stream()
-                .filter(travel -> !approvalRepository.existsByTravelEntityAndRole(travel, approverRole))
-                .collect(Collectors.toList());
-
-        return pendingTravels.stream()
-                .map(travelMapper::toResponseDto)
-                .collect(Collectors.toList());
+        return mapTravelsToResponseDtos(pendingTravels);
     }
 
     @Transactional
@@ -63,6 +72,22 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public void rejectTravel(UUID travelId, String approverEmail) {
         processApproval(travelId, approverEmail, ApprovalStatus.REJECTED);
+    }
+
+    private List<TravelEntity> getTravelsByStatuses(List<TravelStatus> statuses) {
+        return travelRepository.findByStatusIn(statuses);
+    }
+
+    private List<TravelEntity> filterPendingTravels(List<TravelEntity> travels, Roles approverRole) {
+        return travels.stream()
+                .filter(travel -> !approvalRepository.existsByTravelEntityAndRole(travel, approverRole))
+                .collect(Collectors.toList());
+    }
+
+    private List<TravelResponseDto> mapTravelsToResponseDtos(List<TravelEntity> travels) {
+        return travels.stream()
+                .map(travelMapper::toResponseDto)
+                .collect(Collectors.toList());
     }
 
     private void processApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {

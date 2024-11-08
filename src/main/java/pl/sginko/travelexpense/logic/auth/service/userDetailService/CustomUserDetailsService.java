@@ -3,6 +3,7 @@ package pl.sginko.travelexpense.logic.auth.service.userDetailService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +12,6 @@ import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.auth.repository.UserRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         GrantedAuthority authority = new SimpleGrantedAuthority(user.getRoles().name());
 
-        return new org.springframework.security.core.userdetails.User(
+        return new User(
                 user.getEmail(),
                 user.getPassword(),
                 List.of(authority));

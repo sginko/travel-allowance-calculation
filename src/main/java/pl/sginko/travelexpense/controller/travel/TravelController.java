@@ -45,11 +45,6 @@ class TravelController {
     }
 
 
-
-
-
-
-
 //    @ResponseStatus(HttpStatus.OK)
 //    @DeleteMapping("/delete-all-user-travels")
 //    public void deleteAllTravelsByUser() {

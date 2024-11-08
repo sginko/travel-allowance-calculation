@@ -3,8 +3,8 @@ package pl.sginko.travelexpense.controller.approval;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.logic.auth.util.AuthenticationUtil;
 import pl.sginko.travelexpense.logic.approval.service.ApprovalService;
+import pl.sginko.travelexpense.logic.auth.util.AuthenticationUtil;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 
 import java.util.List;

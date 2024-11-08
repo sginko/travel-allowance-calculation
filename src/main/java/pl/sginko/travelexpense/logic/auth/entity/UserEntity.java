@@ -41,12 +41,10 @@ public class UserEntity {
     }
 
     public void changeRoleToAccountant() {
-//        this.roles = "ROLE_ACCOUNTANT";
         this.roles = Roles.ROLE_ACCOUNTANT;
     }
 
     public void changeRoleToManager() {
-//        this.roles = "ROLE_MANAGER";
         this.roles = Roles.ROLE_MANAGER;
     }
 }

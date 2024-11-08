@@ -21,9 +21,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void addUser(UserRequestDto userRequestDto) {
-        if (userRepository.findByEmail(userRequestDto.getEmail()).isPresent()) {
-            throw new UserException("User with this email already exists");
-        }
+        checkUserExistsOrThrow(userRequestDto.getEmail());
         userRepository.save(userMapper.toEntity(userRequestDto));
     }
 
@@ -45,16 +43,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void changeUserRoleToAccountant(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
+        UserEntity userEntity = findUserByEmailOrThrow(email);
         userEntity.changeRoleToAccountant();
     }
 
     @Transactional
     @Override
     public void changeUserRoleToManager(String email) {
-        UserEntity userEntity = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
+        UserEntity userEntity = findUserByEmailOrThrow(email);
         userEntity.changeRoleToManager();
+    }
+
+    private void checkUserExistsOrThrow(String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new UserException("User with this email already exists");
+        }
+    }
+
+    private UserEntity findUserByEmailOrThrow(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
     }
 }
