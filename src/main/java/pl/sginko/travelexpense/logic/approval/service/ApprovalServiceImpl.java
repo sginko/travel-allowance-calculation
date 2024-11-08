@@ -30,26 +30,6 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final UserRepository userRepository;
     private final TravelMapper travelMapper;
 
-//    @Transactional
-//    @Override
-//    public List<TravelResponseDto> getPendingApprovals(String approverEmail) {
-//        UserEntity approver = userRepository.findByEmail(approverEmail)
-//                .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
-//
-//        Roles approverRole = approver.getRoles();
-//
-//        List<TravelEntity> travels = travelRepository.findByStatusIn(
-//                List.of(TravelStatus.SUBMITTED, TravelStatus.IN_PROCESS));
-//
-//        List<TravelEntity> pendingTravels = travels.stream()
-//                .filter(travel -> !approvalRepository.existsByTravelEntityAndRole(travel, approverRole))
-//                .collect(Collectors.toList());
-//
-//        return pendingTravels.stream()
-//                .map(travelMapper::toResponseDto)
-//                .collect(Collectors.toList());
-//    }
-
     @Transactional
     @Override
     public List<TravelResponseDto> getPendingApprovals(String approverEmail) {
