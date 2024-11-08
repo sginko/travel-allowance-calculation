@@ -66,27 +66,34 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     private void processApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
-        UserEntity approver = userRepository.findByEmail(approverEmail)
-                .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
+        UserEntity approver = findApproverByEmail(approverEmail);
+        TravelEntity travelEntity = findTravelByTechId(travelId);
+        Roles approverRole = approver.getRoles();
 
-        TravelEntity travelEntity = travelRepository.findByTechId(travelId)
-                .orElseThrow(() -> new TravelException("Travel not found"));
+        validateApprovalStatus(travelEntity, approverRole);
 
-        Roles approverRole  = approver.getRoles();
-
-        boolean alreadyApproved = approvalRepository.existsByTravelEntityAndRole(travelEntity, approverRole);
-        if (alreadyApproved) {
-            throw new ApprovalException("Approval has already been processed by a " + approverRole);
-        }
-
-        ApprovalEntity approval = new ApprovalEntity(travelEntity, approver, approver.getRoles());
-
+        ApprovalEntity approval = new ApprovalEntity(travelEntity, approver, approverRole);
         approval.validateApprovalStatus();
-
         approval.updateStatus(newStatus);
 
         approvalRepository.save(approval);
-
         travelEntity.updateStatusBasedOnApprovals();
+    }
+
+    private UserEntity findApproverByEmail(String approverEmail) {
+        return userRepository.findByEmail(approverEmail)
+                .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
+    }
+
+    private TravelEntity findTravelByTechId(UUID techId) {
+        return travelRepository.findByTechId(techId)
+                .orElseThrow(() -> new TravelException("Travel not found"));
+    }
+
+    private void validateApprovalStatus(TravelEntity travelEntity, Roles role) {
+        boolean alreadyApproved = approvalRepository.existsByTravelEntityAndRole(travelEntity, role);
+        if (alreadyApproved) {
+            throw new ApprovalException("Approval has already been processed by a " + role);
+        }
     }
 }
