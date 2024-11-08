@@ -10,6 +10,8 @@ import pl.sginko.travelexpense.logic.auth.entity.Roles;
 import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
+import java.util.Objects;
+
 
 @DynamicUpdate
 @Getter
@@ -54,5 +56,20 @@ public class ApprovalEntity {
         if (this.status != ApprovalStatus.PENDING) {
             throw new ApprovalException("Approval already processed for approver: " + approverEmail);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ApprovalEntity)) return false;
+        ApprovalEntity that = (ApprovalEntity) o;
+        return Objects.equals(travelEntity.getId(), that.travelEntity.getId()) &&
+                Objects.equals(approver.getId(), that.approver.getId()) &&
+                role == that.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(travelEntity.getId(), approver.getId(), role);
     }
 }

@@ -8,6 +8,7 @@ import pl.sginko.travelexpense.logic.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.logic.approval.entity.ApprovalStatus;
 import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.logic.approval.repository.ApprovalRepository;
+import pl.sginko.travelexpense.logic.auth.entity.Roles;
 import pl.sginko.travelexpense.logic.auth.entity.UserEntity;
 import pl.sginko.travelexpense.logic.auth.exception.UserException;
 import pl.sginko.travelexpense.logic.auth.repository.UserRepository;
@@ -37,7 +38,13 @@ public class ApprovalServiceImpl implements ApprovalService {
         UserEntity approver = userRepository.findByEmail(approverEmail)
                 .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
 
-        List<ApprovalEntity> pendingApprovals = approvalRepository.findByApproverAndStatus(approver, ApprovalStatus.PENDING);
+        List<ApprovalEntity> pendingApprovals = approvalRepository.findByApproverAndStatus(approver, ApprovalStatus.PENDING)
+                .stream()
+                .filter(approval -> {
+                    TravelEntity travel = approval.getTravelEntity();
+                    return travel.getStatus() != TravelStatus.APPROVED && travel.getStatus() != TravelStatus.REJECTED;
+                })
+                .collect(Collectors.toList());
 
         return pendingApprovals.stream()
                 .map(approval -> travelMapper.toResponseDto(approval.getTravelEntity()))
@@ -73,10 +80,25 @@ public class ApprovalServiceImpl implements ApprovalService {
             approval.validatePendingStatus(approverEmail);
 
             approval.updateStatus(newStatus);
+
+//            deletePendingApprovalsForTravel(travelEntity);
+
+//            deletePendingApprovalsForRole(travelEntity, approver.getRoles());
+
             travelEntity.updateStatusBasedOnApprovals();
+
+            if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
+                deletePendingApprovalsForTravel(travelEntity);
+            }
+
         } catch (OptimisticLockException e) {
             throw new ApprovalException("Data has been modified by another user. Please refresh the page and try again.");
         }
+    }
+
+    private void deletePendingApprovalsForTravel(TravelEntity travelEntity) {
+        List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntityAndStatus(travelEntity, ApprovalStatus.PENDING);
+        approvalRepository.deleteAll(pendingApprovals);
     }
 
     private void validateTravelStatus(TravelEntity travelEntity) {
@@ -90,4 +112,27 @@ public class ApprovalServiceImpl implements ApprovalService {
             throw new ApprovalException("Approval already processed for approver: " + approverEmail);
         }
     }
+
+//    private void deletePendingApprovalsForRole(TravelEntity travelEntity, Roles role) {
+//        List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntityAndStatus(travelEntity, ApprovalStatus.PENDING)
+//                .stream()
+//                .filter(approval -> approval.getRole().equals(role))
+//                .collect(Collectors.toList());
+//        approvalRepository.deleteAll(pendingApprovals);
+//    }
+
+//    private void deletePendingApprovalsForTravel(TravelEntity travelEntity) {
+//        if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
+//            List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntityAndStatus(travelEntity, ApprovalStatus.PENDING);
+//            approvalRepository.deleteAll(pendingApprovals);
+//        }
+
+//        if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
+//            List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntity(travelEntity)
+//                    .stream()
+//                    .filter(approval -> approval.getStatus() == ApprovalStatus.PENDING)
+//                    .collect(Collectors.toList());
+//            approvalRepository.deleteAll(pendingApprovals);
+//        }
+//    }
 }

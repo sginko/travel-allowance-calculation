@@ -163,13 +163,22 @@ public class TravelEntity {
 //        } else if (anyApprovalPending(this)) {
 //            changeStatus(TravelStatus.IN_PROCESS);
 //        }
+// wer2
+//        if (anyApprovalRejected()) {
+//            changeStatus(TravelStatus.REJECTED);
+//
+//        } else if (isApprovedByAtLeastOneRole(Roles.ROLE_ACCOUNTANT) && isApprovedByAtLeastOneRole(Roles.ROLE_MANAGER)) {
+//            changeStatus(TravelStatus.APPROVED);
+//
+//        } else {
+//            changeStatus(TravelStatus.IN_PROCESS);
+//        }
 
+        //wer3
         if (anyApprovalRejected()) {
             changeStatus(TravelStatus.REJECTED);
-
-        } else if (isApprovedByAtLeastOneRole(Roles.ROLE_ACCOUNTANT) && isApprovedByAtLeastOneRole(Roles.ROLE_MANAGER)) {
+        } else if (isApprovedByRole(Roles.ROLE_ACCOUNTANT) && isApprovedByRole(Roles.ROLE_MANAGER)) {
             changeStatus(TravelStatus.APPROVED);
-
         } else {
             changeStatus(TravelStatus.IN_PROCESS);
         }
@@ -180,11 +189,17 @@ public class TravelEntity {
                 .anyMatch(approval -> approval.getStatus() == ApprovalStatus.REJECTED);
     }
 
-    private boolean isApprovedByAtLeastOneRole(Roles role) {
+    private boolean isApprovedByRole(Roles role) {
         return approvals.stream()
                 .filter(approval -> approval.getRole() == role)
                 .anyMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);
     }
+
+//    private boolean isApprovedByAtLeastOneRole(Roles role) {
+//        return approvals.stream()
+//                .filter(approval -> approval.getRole() == role)
+//                .anyMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);
+//    }
 
     public void changeStatus(TravelStatus status) {
         this.status = status;

@@ -51,17 +51,15 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/pages/login.html", "/styles/**", "/javascript/**",
                                 "/pages/register.html", "/api/v1/users/new-user").permitAll()
 
-                        .requestMatchers("/api/v1/travels/{email}/change-role-to-accountant",
-                                "/api/v1/travels/{email}/change-role-to-manager",
-                                "/api/v1/travels/all-users").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/users/{email}/change-role-to-accountant",
+                                "/api/v1/users/{email}/change-role-to-manager",
+                                "/api/v1/users/all-users").hasRole("ADMIN")
 
                         .requestMatchers("/api/v1/approvals/**").hasAnyRole("MANAGER", "ACCOUNTANT")
 
                         .requestMatchers("/api/v1/travels/print/**", "/api/v1/travels/print/changed_template.pdf",
                                 "/pages/dbtc-work.html", "/pages/results.html",
                                 "/api/v1/travels/**").hasAnyRole("USER", "MANAGER", "ACCOUNTANT")
-
-
 
                         .anyRequest().authenticated()
                 )

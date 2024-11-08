@@ -14,4 +14,8 @@ public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> 
     List<ApprovalEntity> findByApproverAndStatus(UserEntity approver, ApprovalStatus status);
 
     Optional<ApprovalEntity> findByTravelEntityAndApprover(TravelEntity travelEntity, UserEntity approver);
+
+    List<ApprovalEntity> findByTravelEntityAndStatus(TravelEntity travelEntity, ApprovalStatus status);
+
+    List<ApprovalEntity> findByTravelEntity(TravelEntity travelEntity);
 }
