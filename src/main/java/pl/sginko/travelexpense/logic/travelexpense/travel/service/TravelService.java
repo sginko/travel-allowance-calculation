@@ -15,8 +15,4 @@ public interface TravelService {
     List<TravelResponseDto> getAllTravelsByUser();
 
     TravelSubmissionResponseDto getTravelByTechId(UUID techId);
-//
-//    void deleteAllTravelsByUser();
-//
-//    void deleteTravelByIdByUser(UUID techId);
 }

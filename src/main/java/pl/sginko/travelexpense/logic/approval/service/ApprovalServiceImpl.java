@@ -19,6 +19,7 @@ import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelExcept
 import pl.sginko.travelexpense.logic.travelexpense.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,16 +39,17 @@ public class ApprovalServiceImpl implements ApprovalService {
         UserEntity approver = userRepository.findByEmail(approverEmail)
                 .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
 
-        List<ApprovalEntity> pendingApprovals = approvalRepository.findByApproverAndStatus(approver, ApprovalStatus.PENDING)
-                .stream()
-                .filter(approval -> {
-                    TravelEntity travel = approval.getTravelEntity();
-                    return travel.getStatus() != TravelStatus.APPROVED && travel.getStatus() != TravelStatus.REJECTED;
-                })
+        Roles approverRole = approver.getRoles();
+
+        List<TravelEntity> travels = travelRepository.findByStatusIn(
+                List.of(TravelStatus.SUBMITTED, TravelStatus.IN_PROCESS));
+
+        List<TravelEntity> pendingTravels = travels.stream()
+                .filter(travel -> !approvalRepository.existsByTravelEntityAndRole(travel, approverRole))
                 .collect(Collectors.toList());
 
-        return pendingApprovals.stream()
-                .map(approval -> travelMapper.toResponseDto(approval.getTravelEntity()))
+        return pendingTravels.stream()
+                .map(travelMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +59,6 @@ public class ApprovalServiceImpl implements ApprovalService {
         processApproval(travelId, approverEmail, ApprovalStatus.APPROVED);
     }
 
-    //    @Retryable(value = OptimisticLockException.class, maxAttempts = 3, backoff = @Backoff(delay = 1000))
     @Transactional
     @Override
     public void rejectTravel(UUID travelId, String approverEmail) {
@@ -65,74 +66,27 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     private void processApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
-        try {
-            UserEntity approver = userRepository.findByEmail(approverEmail)
-                    .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
+        UserEntity approver = userRepository.findByEmail(approverEmail)
+                .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
 
-            TravelEntity travelEntity = travelRepository.findByTechId(travelId)
-                    .orElseThrow(() -> new TravelException("Travel not found"));
+        TravelEntity travelEntity = travelRepository.findByTechId(travelId)
+                .orElseThrow(() -> new TravelException("Travel not found"));
 
-            travelEntity.validateStatusForApproval();
+        Roles approverRole  = approver.getRoles();
 
-            ApprovalEntity approval = approvalRepository.findByTravelEntityAndApprover(travelEntity, approver)
-                    .orElseThrow(() -> new ApprovalException("Approval not found for approver: " + approverEmail));
-
-            approval.validatePendingStatus(approverEmail);
-
-            approval.updateStatus(newStatus);
-
-//            deletePendingApprovalsForTravel(travelEntity);
-
-//            deletePendingApprovalsForRole(travelEntity, approver.getRoles());
-
-            travelEntity.updateStatusBasedOnApprovals();
-
-            if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
-                deletePendingApprovalsForTravel(travelEntity);
-            }
-
-        } catch (OptimisticLockException e) {
-            throw new ApprovalException("Data has been modified by another user. Please refresh the page and try again.");
+        boolean alreadyApproved = approvalRepository.existsByTravelEntityAndRole(travelEntity, approverRole);
+        if (alreadyApproved) {
+            throw new ApprovalException("Approval has already been processed by a " + approverRole);
         }
+
+        ApprovalEntity approval = new ApprovalEntity(travelEntity, approver, approver.getRoles());
+
+        approval.validateApprovalStatus();
+
+        approval.updateStatus(newStatus);
+
+        approvalRepository.save(approval);
+
+        travelEntity.updateStatusBasedOnApprovals();
     }
-
-    private void deletePendingApprovalsForTravel(TravelEntity travelEntity) {
-        List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntityAndStatus(travelEntity, ApprovalStatus.PENDING);
-        approvalRepository.deleteAll(pendingApprovals);
-    }
-
-    private void validateTravelStatus(TravelEntity travelEntity) {
-        if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
-            throw new ApprovalException("The travel report has already been finalized and cannot be modified.");
-        }
-    }
-
-    private void validateApprovalStatus(ApprovalEntity approval, String approverEmail) {
-        if (approval.getStatus() != ApprovalStatus.PENDING) {
-            throw new ApprovalException("Approval already processed for approver: " + approverEmail);
-        }
-    }
-
-//    private void deletePendingApprovalsForRole(TravelEntity travelEntity, Roles role) {
-//        List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntityAndStatus(travelEntity, ApprovalStatus.PENDING)
-//                .stream()
-//                .filter(approval -> approval.getRole().equals(role))
-//                .collect(Collectors.toList());
-//        approvalRepository.deleteAll(pendingApprovals);
-//    }
-
-//    private void deletePendingApprovalsForTravel(TravelEntity travelEntity) {
-//        if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
-//            List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntityAndStatus(travelEntity, ApprovalStatus.PENDING);
-//            approvalRepository.deleteAll(pendingApprovals);
-//        }
-
-//        if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
-//            List<ApprovalEntity> pendingApprovals = approvalRepository.findByTravelEntity(travelEntity)
-//                    .stream()
-//                    .filter(approval -> approval.getStatus() == ApprovalStatus.PENDING)
-//                    .collect(Collectors.toList());
-//            approvalRepository.deleteAll(pendingApprovals);
-//        }
-//    }
 }

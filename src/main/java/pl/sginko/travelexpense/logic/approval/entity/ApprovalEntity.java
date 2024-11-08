@@ -52,9 +52,9 @@ public class ApprovalEntity {
         this.status = newStatus;
     }
 
-    public void validatePendingStatus(String approverEmail) {
+    public void validateApprovalStatus() {
         if (this.status != ApprovalStatus.PENDING) {
-            throw new ApprovalException("Approval already processed for approver: " + approverEmail);
+            throw new ApprovalException("Approval already processed.");
         }
     }
 
