@@ -1,11 +1,13 @@
 package pl.sginko.travelexpense.domen.approval.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.domen.actionLog.ActionLogService;
 import pl.sginko.travelexpense.domen.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.domen.approval.entity.ApprovalStatus;
+import pl.sginko.travelexpense.domen.approval.event.ApprovalEvent;
 import pl.sginko.travelexpense.domen.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.domen.approval.repository.ApprovalRepository;
 import pl.sginko.travelexpense.domen.auth.entity.Roles;
@@ -32,7 +34,9 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final UserRepository userRepository;
     private final TravelMapper travelMapper;
     private final ActionLogService actionLogService;
-    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
+//    private final EmailService emailService;
+
 
     @Transactional
     @Override
@@ -88,17 +92,27 @@ public class ApprovalServiceImpl implements ApprovalService {
         approvalRepository.save(approval);
         travelEntity.updateStatusBasedOnApprovals();
 
-        actionLogService.logAction("Status report: "+ travelEntity.getTechId() + " updated to: " + newStatus, travelEntity.getId(), approver.getId());
+        actionLogService.logAction("Status report: " + travelEntity.getTechId() + " updated to: "
+                + newStatus, travelEntity.getId(), approver.getId());
 
-        notifyUserIfStatusChanged(travelEntity);
+//        notifyUserIfStatusChanged(travelEntity);
+        publishApprovalEvent(travelEntity);
     }
 
-    private void notifyUserIfStatusChanged(TravelEntity travelEntity) {
-        String userEmail = travelEntity.getUserEntity().getEmail();
-        if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
-            emailService.sendApprovalNotification(userEmail, travelEntity.getTechId(), travelEntity.getStatus());
+    private void publishApprovalEvent(TravelEntity travelEntity) {
+        TravelStatus travelStatus = travelEntity.getStatus();
+        if (travelStatus == TravelStatus.APPROVED || travelStatus == TravelStatus.REJECTED) {
+            ApprovalEvent event = new ApprovalEvent(travelEntity.getTechId(), travelEntity.getUserEntity().getEmail(), travelStatus);
+            eventPublisher.publishEvent(event);
         }
     }
+
+//    private void notifyUserIfStatusChanged(TravelEntity travelEntity) {
+//        String userEmail = travelEntity.getUserEntity().getEmail();
+//        if (travelEntity.getStatus() == TravelStatus.APPROVED || travelEntity.getStatus() == TravelStatus.REJECTED) {
+//            emailService.sendApprovalNotification(userEmail, travelEntity.getTechId(), travelEntity.getStatus());
+//        }
+//    }
 
     private UserEntity findApproverByEmail(String approverEmail) {
         return userRepository.findByEmail(approverEmail)

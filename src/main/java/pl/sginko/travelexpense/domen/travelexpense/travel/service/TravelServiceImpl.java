@@ -1,6 +1,7 @@
 package pl.sginko.travelexpense.domen.travelexpense.travel.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import pl.sginko.travelexpense.domen.travelexpense.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.domen.travelexpense.travel.dto.TravelSubmissionResponseDto;
 import pl.sginko.travelexpense.domen.travelexpense.travel.entity.TravelEntity;
 import pl.sginko.travelexpense.domen.travelexpense.travel.entity.TravelStatus;
+import pl.sginko.travelexpense.domen.travelexpense.travel.event.TravelSubmissionEvent;
 import pl.sginko.travelexpense.domen.travelexpense.travel.exception.TravelException;
 import pl.sginko.travelexpense.domen.travelexpense.travel.mapper.TravelMapper;
 import pl.sginko.travelexpense.domen.travelexpense.travel.repository.TravelRepository;
@@ -37,7 +39,8 @@ public class TravelServiceImpl implements TravelService {
     private final OvernightStayService overnightStayService;
     private final TransportCostService transportCostService;
     private final UserReaderService userReaderService;
-    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
+//    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -62,9 +65,19 @@ public class TravelServiceImpl implements TravelService {
 
         travelRepository.save(travelEntity);
 
-        emailService.sendSubmissionNotification(currentUser.getEmail(), travelEntity.getTechId());
+//        emailService.sendSubmissionNotification(currentUser.getEmail(), travelEntity.getTechId());
+
+        publishSubmintEvent(travelEntity, currentUser);
 
         return travelMapper.toTravelSubmissionResponseDto(travelEntity);
+    }
+
+    private void publishSubmintEvent(TravelEntity travelEntity, UserEntity currentUser) {
+        TravelSubmissionEvent submissionEvent = new TravelSubmissionEvent(
+                travelEntity.getTechId(),
+                currentUser.getEmail()
+        );
+        eventPublisher.publishEvent(submissionEvent);
     }
 
     @Override
@@ -92,4 +105,6 @@ public class TravelServiceImpl implements TravelService {
         oldReports.forEach(entity -> travelRepository.delete(entity));
         System.out.println("Old reports was deleted.");
     }
+
+
 }

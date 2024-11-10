@@ -14,7 +14,7 @@ import java.util.UUID;
 public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
 
-    @Async
+//    @Async
     @Override
     public void sendSubmissionNotification(String toEmail, UUID travelTechId) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -25,7 +25,7 @@ public class EmailServiceImpl implements EmailService {
         mailSender.send(message);
     }
 
-    @Async
+//    @Async
     @Override
     public void sendApprovalNotification(String toEmail, UUID travelTechId, TravelStatus status) {
         SimpleMailMessage message = new SimpleMailMessage();
