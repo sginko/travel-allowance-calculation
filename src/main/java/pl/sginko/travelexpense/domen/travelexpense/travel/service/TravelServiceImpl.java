@@ -96,7 +96,7 @@ public class TravelServiceImpl implements TravelService {
         return travelMapper.toTravelSubmissionResponseDto(travelEntity);
     }
 
-    @Scheduled(cron = "0 44 19 * * *")
+    @Scheduled(cron = "0 54 21 * * *")
     @Transactional
     public void cleanupOldReports() {
         LocalDate cutoffDate = LocalDate.now().minusDays(1);
