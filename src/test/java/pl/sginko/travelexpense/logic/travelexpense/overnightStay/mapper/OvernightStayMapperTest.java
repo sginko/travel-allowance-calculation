@@ -1,0 +1,76 @@
+package pl.sginko.travelexpense.logic.travelexpense.overnightStay.mapper;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayDto;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+class OvernightStayMapperTest {
+    private OvernightStayMapper overnightStayMapper;
+    private TravelEntity travelEntity;
+
+    @BeforeEach
+    void setUp() {
+        overnightStayMapper = new OvernightStayMapper();
+        travelEntity = new TravelEntity("CityA", "CityB",
+                LocalDate.now(), LocalTime.of(20, 0),
+                LocalDate.now().plusDays(1), LocalTime.of(6, 0),
+                null, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45),
+                0, 0, 0);
+        travelEntity.updateDietEntity(dietEntity);
+    }
+
+    @Test
+    void should_map_OvernightStayDto_to_OvernightStayEntity_correctly() {
+        // GIVEN
+        // Убедитесь, что количество ночей совпадает с расчетной продолжительностью поездки
+        OvernightStayDto overnightStayDto = new OvernightStayDto(1, 0,
+                BigDecimal.valueOf(500), true);
+
+        // WHEN
+        OvernightStayEntity overnightStayEntity = overnightStayMapper.toEntity(overnightStayDto, travelEntity);
+
+        // THEN
+        assertThat(overnightStayEntity).isNotNull();
+        assertThat(overnightStayEntity.getInputQuantityOfOvernightStayWithoutInvoice()).isEqualTo(1);
+        assertThat(overnightStayEntity.getInputQuantityOfOvernightStayWithInvoice()).isEqualTo(0);
+        assertThat(overnightStayEntity.getTotalAmountOfOvernightsStayWithInvoice()).isEqualByComparingTo(BigDecimal.valueOf(500));
+        assertThat(overnightStayEntity.getIsInvoiceAmountGreaterAllowed()).isTrue();
+        assertThat(overnightStayEntity.getTravelEntity()).isEqualTo(travelEntity);
+    }
+
+    @Test
+    void should_map_OvernightStayEntity_to_OvernightStayResponseDto_correctly() {
+        // GIVEN
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity, 1,
+                0, BigDecimal.valueOf(500), true);
+
+        // WHEN
+        OvernightStayResponseDto overnightStayResponseDto = overnightStayMapper.toResponseDto(overnightStayEntity);
+
+        // THEN
+        assertThat(overnightStayResponseDto).isNotNull();
+        assertThat(overnightStayResponseDto.getId()).isEqualTo(overnightStayEntity.getId());
+        assertThat(overnightStayResponseDto.getInputQuantityOfOvernightStayWithoutInvoice())
+                .isEqualTo(overnightStayEntity.getInputQuantityOfOvernightStayWithoutInvoice());
+        assertThat(overnightStayResponseDto.getInputQuantityOfOvernightStayWithInvoice())
+                .isEqualTo(overnightStayEntity.getInputQuantityOfOvernightStayWithInvoice());
+        assertThat(overnightStayResponseDto.getTotalAmountOfOvernightsStayWithInvoice())
+                .isEqualByComparingTo(overnightStayEntity.getTotalAmountOfOvernightsStayWithInvoice());
+        assertThat(overnightStayResponseDto.getTotalAmountOfOvernightsStayWithoutInvoice())
+                .isEqualByComparingTo(overnightStayEntity.getTotalAmountOfOvernightsStayWithoutInvoice());
+        assertThat(overnightStayResponseDto.getOvernightStayAmount())
+                .isEqualByComparingTo(overnightStayEntity.getOvernightStayAmount());
+    }
+}

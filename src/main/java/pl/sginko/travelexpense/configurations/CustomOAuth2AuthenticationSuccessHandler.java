@@ -10,7 +10,7 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.domen.auth.service.userService.UserService;
+import pl.sginko.travelexpense.logic.user.service.userService.UserService;
 
 import java.io.IOException;
 
