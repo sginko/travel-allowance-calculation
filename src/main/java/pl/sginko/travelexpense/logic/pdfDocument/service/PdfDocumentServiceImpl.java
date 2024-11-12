@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.springframework.stereotype.Service;
+import pl.sginko.travelexpense.logic.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
@@ -60,8 +61,7 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
                 entry("meansOfTransport", String.valueOf(transportCostEntity.getMeansOfTransport())),
                 entry("totalCostOfTravelByOwnAndPublicTransport", String.valueOf(transportCostEntity.getTotalCostOfTravelByOwnAndPublicTransport())),
                 entry("transportCostAmount", String.valueOf(transportCostEntity.getTransportCostAmount())),
-                entry("otherExpenses", String.valueOf(travelEntity.getOtherExpenses()))
-        );
+                entry("otherExpenses", String.valueOf(travelEntity.getOtherExpenses())));
 
         //without Docker
         String templatePath = "src/main/resources/print/template.pdf";
@@ -95,6 +95,8 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
                 acroForm.flatten();
             }
             document.save(outputPath);
+        } catch (IOException e) {
+            throw new PdfDocumentException("Error processing PDF template: " + e.getMessage());
         }
     }
 

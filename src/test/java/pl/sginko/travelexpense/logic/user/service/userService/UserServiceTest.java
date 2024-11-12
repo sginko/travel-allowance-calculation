@@ -1,15 +1,18 @@
-package pl.sginko.travelexpense.logic.auth.service.userService;
+package pl.sginko.travelexpense.logic.user.service.userService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.user.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.user.dto.UserResponseDto;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
+import pl.sginko.travelexpense.logic.user.exception.UserException;
 import pl.sginko.travelexpense.logic.user.mapper.UserMapper;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
 import pl.sginko.travelexpense.logic.user.service.userService.UserServiceImpl;
@@ -60,21 +63,22 @@ class UserServiceTest {
         verify(userRepository, times(1)).save(userEntity);
     }
 
-//    @Test
-//    void should_throw_exception_when_user_already_exists() {
-//        // GIVEN
-//        when(userRepository.findByEmail(userRequestDto.getEmail())).thenReturn(Optional.of(userEntity));
-//
-//        // WHEN
-//        Executable executable = () -> userService.addUser(userRequestDto);
-//
-//        // THEN
+    @Test
+    void should_throw_exception_when_user_already_exists() {
+        // GIVEN
+        when(userRepository.findByEmail(userRequestDto.getEmail())).thenReturn(Optional.of(userEntity));
+
+        // WHEN
+        Executable e = () -> userService.addUser(userRequestDto);
+
+        // THEN
+        assertThrows(UserException.class, e);
 //        assertThatThrownBy(executable)
 //                .isInstanceOf(UserException.class)
 //                .hasMessage("User with this email already exists");
-//        verify(userRepository, times(1)).findByEmail(userRequestDto.getEmail());
-//        verify(userRepository, never()).save(any(UserEntity.class));
-//    }
+        verify(userRepository, times(1)).findByEmail(userRequestDto.getEmail());
+        verify(userRepository, never()).save(any(UserEntity.class));
+    }
 
     @Test
     void should_find_all_users() {
@@ -152,5 +156,33 @@ class UserServiceTest {
         verify(userRepository, times(1)).findByEmail(email);
         verify(userMapper, never()).toEntityFromOAuth2(anyString(), anyString(), anyString());
         verify(userRepository, never()).save(any(UserEntity.class));
+    }
+
+    @Test
+    void should_throw_exception_when_changing_role_to_accountant_for_nonexistent_user() {
+        // GIVEN
+        String email = "nonexistent@example.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // WHEN
+        Executable e = () -> userService.changeUserRoleToAccountant(email);
+
+        // THEN
+        assertThrows(UserException.class, e, "Can not find user with this email: " + email);
+        verify(userRepository, times(1)).findByEmail(email);
+    }
+
+    @Test
+    void should_throw_exception_when_changing_role_to_manager_for_nonexistent_user() {
+        // GIVEN
+        String email = "nonexistent@example.com";
+        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+
+        // WHEN
+        Executable e = () -> userService.changeUserRoleToManager(email);
+
+        // THEN
+        assertThrows(UserException.class, e, "Can not find user with this email: " + email);
+        verify(userRepository, times(1)).findByEmail(email);
     }
 }

@@ -113,4 +113,19 @@ class DietEntityTest {
         // THEN
         assertEquals(expectedTotalDiet, dietAmount.subtract(foodAmount));
     }
+
+    @Test
+    void should_return_full_dailyAllowance_when_travel_duration_is_greater_than_12_but_less_than_24_hours() {
+        // GIVEN
+        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+                START_DATE, START_TIME, START_DATE, LocalTime.of(21, 0), null, BigDecimal.ZERO, BigDecimal.ZERO);
+        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 0, 0, 0);
+
+        // WHEN
+        BigDecimal dietAmount = dietEntity.getDietAmount();
+        BigDecimal expectedDietAmount = DAILY_ALLOWANCE;
+
+        // THEN
+        assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
+    }
 }

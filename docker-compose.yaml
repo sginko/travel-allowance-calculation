@@ -43,10 +43,10 @@ services:
     container_name: nginx_gateway
     ports:
       - "80:80"
-      - "443:443"  # Jeśli używasz SSL
+      - "443:443"  # for SSL
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/ssl:/etc/nginx/ssl:ro  # Jeśli używasz SSL
+      - ./nginx/ssl:/etc/nginx/ssl:ro  # for SSL
     depends_on:
       - javaapp
     networks:
