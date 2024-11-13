@@ -5,7 +5,7 @@ import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightSt
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 @Component
 public class OvernightStayMapper {
@@ -22,9 +22,9 @@ public class OvernightStayMapper {
                 entity.getOvernightStayAmount());
     }
 
-    public OvernightStayEntity toEntity(OvernightStayDto overnightStayDto, TravelEntity travelEntity) {
+    public OvernightStayEntity toEntity(OvernightStayDto overnightStayDto, TravelReportEntity travelReportEntity) {
         return new OvernightStayEntity(
-                travelEntity,
+                travelReportEntity,
                 overnightStayDto.getInputQuantityOfOvernightStayWithoutInvoice(),
                 overnightStayDto.getInputQuantityOfOvernightStayWithInvoice(),
                 overnightStayDto.getTotalAmountOfOvernightsStayWithInvoice(),

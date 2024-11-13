@@ -9,10 +9,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.sginko.travelexpense.logic.pdfDocument.service.PdfDocumentService;
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelSubmissionResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.travel.service.TravelService;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportRequestDto;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportSubmissionResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.service.TravelReportService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,31 +24,31 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/travels")
 class TravelController {
-    private final TravelService travelService;
+    private final TravelReportService travelReportService;
     private final PdfDocumentService pdfDocumentService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public TravelSubmissionResponseDto createTravelExpenseReport(@RequestBody TravelRequestDto requestDto) {
-        return travelService.createTravelExpenseReport(requestDto);
+    public TravelReportSubmissionResponseDto createTravelExpenseReport(@RequestBody TravelReportRequestDto requestDto) {
+        return travelReportService.createTravelExpenseReport(requestDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<TravelResponseDto> getUserTravelExpenseReports() {
-        return travelService.getUserTravelExpenseReports();
+    public List<TravelReportResponseDto> getUserTravelExpenseReports() {
+        return travelReportService.getUserTravelExpenseReports();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{techId}")
-    public TravelSubmissionResponseDto getTravelExpenseReportById(@PathVariable("techId") UUID techId) {
-        return travelService.getTravelExpenseReportById(techId);
+    public TravelReportSubmissionResponseDto getTravelExpenseReportById(@PathVariable("techId") UUID techId) {
+        return travelReportService.getTravelExpenseReportById(techId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/update/{techId}")
     public void updateTravelExpenseReportById(@PathVariable("techId") UUID techId, @RequestBody JsonPatch patch) {
-        travelService.updateTravelExpenseReportById(techId, patch);
+        travelReportService.updateTravelExpenseReportById(techId, patch);
     }
 
 

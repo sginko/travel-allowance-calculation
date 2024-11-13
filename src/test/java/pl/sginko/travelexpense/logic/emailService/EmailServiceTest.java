@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportStatus;
 
 import java.util.UUID;
 
@@ -45,7 +45,7 @@ class EmailServiceTest {
         // GIVEN
         String toEmail = "user@example.com";
         UUID travelTechId = UUID.randomUUID();
-        TravelStatus status = TravelStatus.APPROVED;
+        TravelReportStatus status = TravelReportStatus.APPROVED;
 
         // WHEN
         emailService.sendApprovalNotification(toEmail, travelTechId, status);
@@ -59,7 +59,7 @@ class EmailServiceTest {
         // GIVEN
         String toEmail = "user@example.com";
         UUID travelTechId = UUID.randomUUID();
-        TravelStatus status = TravelStatus.APPROVED;
+        TravelReportStatus status = TravelReportStatus.APPROVED;
 
         doThrow(new RuntimeException("Email server error"))
                 .when(mailSender).send(any(SimpleMailMessage.class));

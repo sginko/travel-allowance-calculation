@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pl.sginko.travelexpense.logic.approval.service.ApprovalService;
 import pl.sginko.travelexpense.logic.user.util.AuthenticationUtil;
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +18,7 @@ public class ApprovalController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pending")
-    public List<TravelResponseDto> getPendingApprovals() {
+    public List<TravelReportResponseDto> getPendingApprovals() {
         String approverEmail = AuthenticationUtil.getCurrentUserEmail();
         return approvalService.getPendingApprovals(approverEmail);
     }

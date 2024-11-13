@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -22,7 +22,7 @@ public class DietEntity {
 
     @OneToOne
     @JoinColumn(name = "travel_id", nullable = false)
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @Column(nullable = false)
     private BigDecimal dailyAllowance;
@@ -45,10 +45,10 @@ public class DietEntity {
     @Column(nullable = false)
     private BigDecimal foodAmount;
 
-    public DietEntity(TravelEntity travelEntity, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
+    public DietEntity(TravelReportEntity travelReportEntity, BigDecimal dailyAllowance, Integer numberOfBreakfasts,
                       Integer numberOfLunches, Integer numberOfDinners) {
         this.dailyAllowance = dailyAllowance != null ? dailyAllowance : BigDecimal.valueOf(45);
-        this.travelEntity = travelEntity;
+        this.travelReportEntity = travelReportEntity;
         this.numberOfBreakfasts = numberOfBreakfasts;
         this.numberOfLunches = numberOfLunches;
         this.numberOfDinners = numberOfDinners;
@@ -103,7 +103,7 @@ public class DietEntity {
     }
 
     private long getTravelDurationInHours() {
-        return Duration.between(travelEntity.getStartTime().atDate(travelEntity.getStartDate()),
-                travelEntity.getEndTime().atDate(travelEntity.getEndDate())).toHours();
+        return Duration.between(travelReportEntity.getStartTime().atDate(travelReportEntity.getStartDate()),
+                travelReportEntity.getEndTime().atDate(travelReportEntity.getEndDate())).toHours();
     }
 }

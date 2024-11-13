@@ -10,23 +10,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 import pl.sginko.travelexpense.logic.actionLog.service.ActionLogService;
 import pl.sginko.travelexpense.logic.approval.entity.ApprovalEntity;
-import pl.sginko.travelexpense.logic.approval.event.ApprovalEvent;
 import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.logic.approval.repository.ApprovalRepository;
-import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
-import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.repository.TravelReportRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,7 +32,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ApprovalServiceTest {
     @Mock
-    private TravelRepository travelRepository;
+    private TravelReportRepository travelReportRepository;
 
     @Mock
     private ApprovalRepository approvalRepository;
@@ -56,7 +50,7 @@ class ApprovalServiceTest {
     private ApprovalServiceImpl approvalService;
 
     private UserEntity approver;
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
     private UUID travelId;
 
     @BeforeEach
@@ -64,11 +58,11 @@ class ApprovalServiceTest {
         approver = new UserEntity("approver@example.com", "Approver", "User", "password");
         approver.changeRoleToManager();
 
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(18, 0),
                 approver, BigDecimal.ZERO, BigDecimal.ZERO);
-        travelId = travelEntity.getTechId();
+        travelId = travelReportEntity.getTechId();
     }
 
 //    @Test
@@ -93,8 +87,8 @@ class ApprovalServiceTest {
     void should_throw_exception_when_approval_already_processed() {
         // GIVEN
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
-        when(travelRepository.findByTechId(travelId)).thenReturn(Optional.of(travelEntity));
-        when(approvalRepository.existsByTravelEntityAndRole(eq(travelEntity), eq(approver.getRoles()))).thenReturn(true);
+        when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
+        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travelReportEntity), eq(approver.getRoles()))).thenReturn(true);
 
         // WHEN
         Executable executable = () -> approvalService.approveTravel(travelId, approver.getEmail());
@@ -109,13 +103,13 @@ class ApprovalServiceTest {
     void should_throw_exception_when_travel_not_found() {
         // GIVEN
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
-        when(travelRepository.findByTechId(travelId)).thenReturn(Optional.empty());
+        when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.empty());
 
         // WHEN
         Executable executable = () -> approvalService.approveTravel(travelId, approver.getEmail());
 
         // THEN
-        TravelException exception = assertThrows(TravelException.class, executable);
+        TravelReportException exception = assertThrows(TravelReportException.class, executable);
         assertThat(exception.getMessage()).isEqualTo("Travel not found");
         verify(approvalRepository, never()).save(any(ApprovalEntity.class));
     }

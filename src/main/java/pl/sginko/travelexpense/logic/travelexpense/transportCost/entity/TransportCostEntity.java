@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.exception.TransportException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -25,7 +25,7 @@ public class TransportCostEntity {
 
     @OneToOne
     @JoinColumn(name = "travel_id", nullable = false)
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @NotNull(message = "Days For Undocumented Transport Cost cannot be null")
     @Column(nullable = false)
@@ -78,11 +78,11 @@ public class TransportCostEntity {
     private static final BigDecimal COST_BY_MOTORCYCLE = BigDecimal.valueOf(0.69);
     private static final BigDecimal COST_BY_MOPED = BigDecimal.valueOf(0.42);
 
-    public TransportCostEntity(TravelEntity travelEntity, Integer daysForUndocumentedLocalTransportCost,
+    public TransportCostEntity(TravelReportEntity travelReportEntity, Integer daysForUndocumentedLocalTransportCost,
                                BigDecimal documentedLocalTransportCost, String meansOfTransport,
                                BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
                                Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped) {
-        this.travelEntity = travelEntity;
+        this.travelReportEntity = travelReportEntity;
         this.daysForUndocumentedLocalTransportCost = daysForUndocumentedLocalTransportCost != null ? daysForUndocumentedLocalTransportCost : 0;
         this.documentedLocalTransportCost = documentedLocalTransportCost != null ? documentedLocalTransportCost : BigDecimal.ZERO;
         this.meansOfTransport = meansOfTransport != null ? meansOfTransport : "";
@@ -135,7 +135,7 @@ public class TransportCostEntity {
             return BigDecimal.ZERO;
         }
 
-        BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
+        BigDecimal dailyAllowance = travelReportEntity.getDietEntity().getDailyAllowance();
         BigDecimal dailyUndocumentedLocalTransportCost = dailyAllowance.multiply(BigDecimal.valueOf(0.20));
         Long daysInTravel = getDaysInTravel();
 
@@ -167,7 +167,7 @@ public class TransportCostEntity {
     }
 
     private long getDurationInHours() {
-        return Duration.between(travelEntity.getStartTime().atDate(travelEntity.getStartDate()),
-                travelEntity.getEndTime().atDate(travelEntity.getEndDate())).toHours();
+        return Duration.between(travelReportEntity.getStartTime().atDate(travelReportEntity.getStartDate()),
+                travelReportEntity.getEndTime().atDate(travelReportEntity.getEndDate())).toHours();
     }
 }

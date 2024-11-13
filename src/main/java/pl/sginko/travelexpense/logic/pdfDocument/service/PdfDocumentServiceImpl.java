@@ -10,9 +10,9 @@ import pl.sginko.travelexpense.logic.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.repository.TravelReportRepository;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,42 +26,42 @@ import static java.util.Map.entry;
 @AllArgsConstructor
 @Service
 public class PdfDocumentServiceImpl implements PdfDocumentService {
-    private final TravelRepository travelRepository;
+    private final TravelReportRepository travelReportRepository;
 
     @Override
     public void generateTravelExpenseReportPdf(UUID techId) throws IOException {
-        TravelEntity travelEntity = travelRepository.findByTechId(techId)
-                .orElseThrow(() -> new TravelException("Travel not found"));
-        DietEntity dietEntity = travelEntity.getDietEntity();
-        OvernightStayEntity overnightStayEntity = travelEntity.getOvernightStayEntity();
-        TransportCostEntity transportCostEntity = travelEntity.getTransportCostEntity();
+        TravelReportEntity travelReportEntity = travelReportRepository.findByTechId(techId)
+                .orElseThrow(() -> new TravelReportException("Travel not found"));
+        DietEntity dietEntity = travelReportEntity.getDietEntity();
+        OvernightStayEntity overnightStayEntity = travelReportEntity.getOvernightStayEntity();
+        TransportCostEntity transportCostEntity = travelReportEntity.getTransportCostEntity();
 
         Map<String, String> replacements = Map.ofEntries(
-                entry("fullName", travelEntity.getUserEntity().getName() + " " + travelEntity.getUserEntity().getSurname()),
+                entry("fullName", travelReportEntity.getUserEntity().getName() + " " + travelReportEntity.getUserEntity().getSurname()),
 //                entry("position", travelEntity.getUserEntity().getPosition()),
-                entry("fromCity", travelEntity.getFromCity()),
-                entry("toCity", travelEntity.getToCity()),
-                entry("startDate", travelEntity.getStartDate().toString()),
-                entry("startTime", travelEntity.getStartTime().toString()),
-                entry("endDate", travelEntity.getEndDate().toString()),
-                entry("endTime", travelEntity.getEndTime().toString()),
+                entry("fromCity", travelReportEntity.getFromCity()),
+                entry("toCity", travelReportEntity.getToCity()),
+                entry("startDate", travelReportEntity.getStartDate().toString()),
+                entry("startTime", travelReportEntity.getStartTime().toString()),
+                entry("endDate", travelReportEntity.getEndDate().toString()),
+                entry("endTime", travelReportEntity.getEndTime().toString()),
                 entry("countBreakfast", String.valueOf(dietEntity.getNumberOfBreakfasts())),
                 entry("countLunch", String.valueOf(dietEntity.getNumberOfLunches())),
                 entry("countDinner", String.valueOf(dietEntity.getNumberOfDinners())),
-                entry("totalAmount", String.valueOf(travelEntity.getTotalAmount())),
-                entry("totalAmountWords", numberToWords(travelEntity.getTotalAmount())),
+                entry("totalAmount", String.valueOf(travelReportEntity.getTotalAmount())),
+                entry("totalAmountWords", numberToWords(travelReportEntity.getTotalAmount())),
                 entry("dietAmount", String.valueOf(dietEntity.getDietAmount())),
                 entry("foodAmount", String.valueOf(dietEntity.getFoodAmount())),
                 entry("overnightStayWithInvoice", String.valueOf(overnightStayEntity.getTotalAmountOfOvernightsStayWithInvoice())),
                 entry("overnightStayWithoutInvoice", String.valueOf(overnightStayEntity.getTotalAmountOfOvernightsStayWithoutInvoice())),
-                entry("advancePayment", String.valueOf(travelEntity.getAdvancePayment())),
-                entry("advancePaymentWords", numberToWords(travelEntity.getAdvancePayment())),
+                entry("advancePayment", String.valueOf(travelReportEntity.getAdvancePayment())),
+                entry("advancePaymentWords", numberToWords(travelReportEntity.getAdvancePayment())),
                 entry("undocumentedLocalTransportCost", String.valueOf(transportCostEntity.getUndocumentedLocalTransportCost())),
                 entry("documentedLocalTransportCost", String.valueOf(transportCostEntity.getDocumentedLocalTransportCost())),
                 entry("meansOfTransport", String.valueOf(transportCostEntity.getMeansOfTransport())),
                 entry("totalCostOfTravelByOwnAndPublicTransport", String.valueOf(transportCostEntity.getTotalCostOfTravelByOwnAndPublicTransport())),
                 entry("transportCostAmount", String.valueOf(transportCostEntity.getTransportCostAmount())),
-                entry("otherExpenses", String.valueOf(travelEntity.getOtherExpenses())));
+                entry("otherExpenses", String.valueOf(travelReportEntity.getOtherExpenses())));
 
         //without Docker
         String templatePath = "src/main/resources/print/template.pdf";

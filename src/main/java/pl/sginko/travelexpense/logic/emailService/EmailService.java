@@ -1,6 +1,6 @@
 package pl.sginko.travelexpense.logic.emailService;
 
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportStatus;
 
 import java.util.UUID;
 
@@ -10,5 +10,5 @@ public interface EmailService {
 
     void sendSubmissionNotification(String toEmail, UUID travelTechId);
 
-    void sendApprovalNotification(String toEmail, UUID travelTechId, TravelStatus status);
+    void sendApprovalNotification(String toEmail, UUID travelTechId, TravelReportStatus status);
 }

@@ -2,7 +2,7 @@ package pl.sginko.travelexpense.logic.approval.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportStatus;
 
 import java.util.UUID;
 
@@ -11,5 +11,5 @@ import java.util.UUID;
 public class ApprovalEvent {
     private final UUID travelTechId;
     private final String userEmail;
-    private final TravelStatus status;
+    private final TravelReportStatus status;
 }

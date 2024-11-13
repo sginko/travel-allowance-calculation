@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.exception.TransportException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,25 +15,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TransportCostEntityTest {
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
     private DietEntity dietEntity;
 
     @BeforeEach
     void setUp() {
         // Инициализируем базовые объекты для тестов
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(18, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
-        dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
+        dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45), 0, 0, 0);
 
-        travelEntity.setDietDetails(dietEntity);
+        travelReportEntity.setDietDetails(dietEntity);
     }
 
     @Test
     void should_calculate_cost_of_travel_by_own_transport() {
         // GIVEN
-        TransportCostEntity transportCostEntity = new TransportCostEntity(travelEntity,
+        TransportCostEntity transportCostEntity = new TransportCostEntity(travelReportEntity,
                 0, BigDecimal.ZERO, "", BigDecimal.ZERO,
                 100L, 200L, 50L, 30L);
 
@@ -48,7 +48,7 @@ class TransportCostEntityTest {
     @Test
     void should_calculate_undocumented_local_transport_cost() {
         // GIVEN
-        TransportCostEntity transportCostEntity = new TransportCostEntity(travelEntity,
+        TransportCostEntity transportCostEntity = new TransportCostEntity(travelReportEntity,
                 2, BigDecimal.ZERO, "", BigDecimal.ZERO,
                 0L, 0L, 0L, 0L);
 
@@ -64,7 +64,7 @@ class TransportCostEntityTest {
     @Test
     void should_calculate_transport_cost_amount_with_documented_local_transport() {
         // GIVEN
-        TransportCostEntity transportCostEntity = new TransportCostEntity(travelEntity,
+        TransportCostEntity transportCostEntity = new TransportCostEntity(travelReportEntity,
                 1, BigDecimal.valueOf(100), "", BigDecimal.valueOf(200),
                 0L, 0L, 0L, 0L);
 
@@ -79,7 +79,7 @@ class TransportCostEntityTest {
     @Test
     void should_calculate_transport_cost_amount_with_undocumented_local_transport() {
         // GIVEN
-        TransportCostEntity transportCostEntity = new TransportCostEntity(travelEntity,
+        TransportCostEntity transportCostEntity = new TransportCostEntity(travelReportEntity,
                 1, BigDecimal.ZERO, "", BigDecimal.valueOf(200),
                 0L, 0L, 0L, 0L);
 
@@ -95,7 +95,7 @@ class TransportCostEntityTest {
     @Test
     void should_throw_exception_when_days_for_undocumented_cost_exceeds_days_in_travel() {
         // WHEN
-        Executable e = () -> new TransportCostEntity(travelEntity,
+        Executable e = () -> new TransportCostEntity(travelReportEntity,
                 3, BigDecimal.ZERO, "", BigDecimal.ZERO,
                 0L, 0L, 0L, 0L);
 

@@ -1,13 +1,13 @@
 package pl.sginko.travelexpense.logic.approval.service;
 
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ApprovalService {
 
-    List<TravelResponseDto> getPendingApprovals(String approverEmail);
+    List<TravelReportResponseDto> getPendingApprovals(String approverEmail);
 
     void approveTravel(UUID travelId, String approverEmail);
 

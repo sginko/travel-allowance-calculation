@@ -14,12 +14,12 @@ import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
 import pl.sginko.travelexpense.logic.user.exception.UserException;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
-import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
-import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.mapper.TravelMapper;
-import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportStatus;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.mapper.TravelReportMapper;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.repository.TravelReportRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,22 +28,22 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class ApprovalServiceImpl implements ApprovalService {
-    private final TravelRepository travelRepository;
+    private final TravelReportRepository travelReportRepository;
     private final ApprovalRepository approvalRepository;
     private final UserRepository userRepository;
-    private final TravelMapper travelMapper;
+    private final TravelReportMapper travelReportMapper;
     private final ActionLogService actionLogService;
     private final ApplicationEventPublisher eventPublisher;
 //    private final ApprovalProcessingService approvalProcessingService;
 //    private final EmailService emailService;
 
     @Override
-    public List<TravelResponseDto> getPendingApprovals(String approverEmail) {
+    public List<TravelReportResponseDto> getPendingApprovals(String approverEmail) {
         UserEntity approver = findApproverByEmail(approverEmail);
         Roles approverRole = approver.getRoles();
 
-        List<TravelEntity> travels = getTravelsByStatuses(List.of(TravelStatus.SUBMITTED, TravelStatus.IN_PROCESS));
-        List<TravelEntity> pendingTravels = filterPendingTravels(travels, approverRole);
+        List<TravelReportEntity> travels = getTravelsByStatuses(List.of(TravelReportStatus.SUBMITTED, TravelReportStatus.IN_PROCESS));
+        List<TravelReportEntity> pendingTravels = filterPendingTravels(travels, approverRole);
 
         return mapTravelsToResponseDtos(pendingTravels);
     }
@@ -60,48 +60,47 @@ public class ApprovalServiceImpl implements ApprovalService {
         processApproval(travelId, approverEmail, ApprovalStatus.REJECTED);
     }
 
-    private List<TravelEntity> getTravelsByStatuses(List<TravelStatus> statuses) {
-        return travelRepository.findByStatusIn(statuses);
+    private List<TravelReportEntity> getTravelsByStatuses(List<TravelReportStatus> statuses) {
+        return travelReportRepository.findByStatusIn(statuses);
     }
 
-    private List<TravelEntity> filterPendingTravels(List<TravelEntity> travels, Roles approverRole) {
+    private List<TravelReportEntity> filterPendingTravels(List<TravelReportEntity> travels, Roles approverRole) {
         return travels.stream()
-                .filter(travel -> !approvalRepository.existsByTravelEntityAndRole(travel, approverRole))
+                .filter(travel -> !approvalRepository.existsByTravelReportEntityAndRole(travel, approverRole))
                 .collect(Collectors.toList());
     }
 
-    private List<TravelResponseDto> mapTravelsToResponseDtos(List<TravelEntity> travels) {
+    private List<TravelReportResponseDto> mapTravelsToResponseDtos(List<TravelReportEntity> travels) {
         return travels.stream()
-                .map(entity -> travelMapper.toResponseDto(entity))
+                .map(entity -> travelReportMapper.toResponseDto(entity))
                 .collect(Collectors.toList());
     }
 
-    @Transactional
     private void processApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
         UserEntity approver = findApproverByEmail(approverEmail);
         Roles approverRole = approver.getRoles();
-        TravelEntity travelEntity = findTravelByTechId(travelId);
+        TravelReportEntity travelReportEntity = findTravelByTechId(travelId);
 
-        validateApprovalStatus(travelEntity, approverRole);
+        validateApprovalStatus(travelReportEntity, approverRole);
 
-        ApprovalEntity approval = new ApprovalEntity(travelEntity, approver, approverRole);
+        ApprovalEntity approval = new ApprovalEntity(travelReportEntity, approver, approverRole);
         approval.validateApprovalStatus();
         approval.updateStatus(newStatus);
 
         approvalRepository.save(approval);
-        travelEntity.updateTravelReportStatusFromApprovals();
+        travelReportEntity.updateTravelReportStatusFromApprovals();
 
-        actionLogService.logAction("Status report: " + travelEntity.getTechId() + " updated to: "
-                + newStatus, travelEntity.getId(), approver.getId());
+        actionLogService.logAction("Status report: " + travelReportEntity.getTechId() + " updated to: "
+                + newStatus, travelReportEntity.getId(), approver.getId());
 
 //        notifyUserIfStatusChanged(travelEntity);
-        publishApprovalEvent(travelEntity);
+        publishApprovalEvent(travelReportEntity);
     }
 
-    private void publishApprovalEvent(TravelEntity travelEntity) {
-        TravelStatus travelStatus = travelEntity.getStatus();
-        if (travelStatus == TravelStatus.APPROVED || travelStatus == TravelStatus.REJECTED) {
-            ApprovalEvent event = new ApprovalEvent(travelEntity.getTechId(), travelEntity.getUserEntity().getEmail(), travelStatus);
+    private void publishApprovalEvent(TravelReportEntity travelReportEntity) {
+        TravelReportStatus travelReportStatus = travelReportEntity.getStatus();
+        if (travelReportStatus == TravelReportStatus.APPROVED || travelReportStatus == TravelReportStatus.REJECTED) {
+            ApprovalEvent event = new ApprovalEvent(travelReportEntity.getTechId(), travelReportEntity.getUserEntity().getEmail(), travelReportStatus);
             eventPublisher.publishEvent(event);
         }
     }
@@ -118,13 +117,13 @@ public class ApprovalServiceImpl implements ApprovalService {
                 .orElseThrow(() -> new UserException("Cannot find user with email: " + approverEmail));
     }
 
-    private TravelEntity findTravelByTechId(UUID techId) {
-        return travelRepository.findByTechId(techId)
-                .orElseThrow(() -> new TravelException("Travel not found"));
+    private TravelReportEntity findTravelByTechId(UUID techId) {
+        return travelReportRepository.findByTechId(techId)
+                .orElseThrow(() -> new TravelReportException("Travel not found"));
     }
 
-    private void validateApprovalStatus(TravelEntity travelEntity, Roles role) {
-        boolean alreadyApproved = approvalRepository.existsByTravelEntityAndRole(travelEntity, role);
+    private void validateApprovalStatus(TravelReportEntity travelReportEntity, Roles role) {
+        boolean alreadyApproved = approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, role);
         if (alreadyApproved) {
             throw new ApprovalException("Approval has already been processed by a " + role);
         }

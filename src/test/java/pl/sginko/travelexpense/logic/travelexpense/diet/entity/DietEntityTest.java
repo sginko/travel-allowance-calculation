@@ -1,7 +1,7 @@
 package pl.sginko.travelexpense.logic.travelexpense.diet.entity;
 
 import org.junit.jupiter.api.Test;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,9 +21,9 @@ class DietEntityTest {
     @Test
     void should_return_zero_dietAmount_when_travel_duration_is_less_than_8_hours() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE, END_TIME_SHORT, null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 0, 0, 0);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -36,9 +36,9 @@ class DietEntityTest {
     @Test
     void should_return_half_dailyAllowance_when_travel_duration_is_exactly_8_hours() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE, END_TIME_8_HOURS, null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 0, 0, 0);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -51,9 +51,9 @@ class DietEntityTest {
     @Test
     void should_return_half_dailyAllowance_when_travel_duration_is_exactly_12_hours() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE, END_TIME_12_HOURS, null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 0, 0, 0);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -66,10 +66,10 @@ class DietEntityTest {
     @Test
     void should_calculate_dietAmount_for_multiple_days() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE.plusDays(2), END_TIME_8_HOURS, null,
                 BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 0, 0, 0);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -82,10 +82,10 @@ class DietEntityTest {
     @Test
     void should_calculate_foodAmount_based_on_provided_meals() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE.plusDays(1), LocalTime.of(18, 0), null,
                 BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 1, 1, 1);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 1, 1, 1);
 
         // WHEN
         BigDecimal foodAmount = dietEntity.getFoodAmount();
@@ -100,10 +100,10 @@ class DietEntityTest {
     @Test
     void should_calculate_totalDietAmount_as_difference_between_diet_and_foodAmounts() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE.plusDays(1), LocalTime.of(18, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 1, 1, 1);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 1, 1, 1);
 
         // WHEN
         BigDecimal expectedTotalDiet = dietEntity.calculateTotalDiet();
@@ -117,9 +117,9 @@ class DietEntityTest {
     @Test
     void should_return_full_dailyAllowance_when_travel_duration_is_greater_than_12_but_less_than_24_hours() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE, LocalTime.of(21, 0), null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 0, 0, 0);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();

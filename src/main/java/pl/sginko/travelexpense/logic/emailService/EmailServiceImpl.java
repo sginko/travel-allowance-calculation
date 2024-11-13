@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportStatus;
 
 import java.util.UUID;
 
@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
 //    @Async
     @Override
-    public void sendApprovalNotification(String toEmail, UUID travelTechId, TravelStatus status) {
+    public void sendApprovalNotification(String toEmail, UUID travelTechId, TravelReportStatus status) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("ksiegowosc@ginkota.pl");
         message.setTo(toEmail);
@@ -43,7 +43,7 @@ public class EmailServiceImpl implements EmailService {
                 "Ginkota";
     }
 
-    private String buildApprovalEmailContent(UUID travelTechId, TravelStatus status) {
+    private String buildApprovalEmailContent(UUID travelTechId, TravelReportStatus status) {
         return "Dear User,\n\n" +
                 "Your travel expense report with ID " + travelTechId + " has been " +
                 status.name().toLowerCase() + ".\n" +

@@ -6,7 +6,7 @@ import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,18 +16,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class TransportCostMapperTest {
     private TransportCostMapper transportCostMapper;
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @BeforeEach
     void setUp() {
         transportCostMapper = new TransportCostMapper();
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
                 LocalDate.now().plusDays(2), LocalTime.of(20, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
 
-        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
-        travelEntity.setDietDetails(dietEntity);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45), 0, 0, 0);
+        travelReportEntity.setDietDetails(dietEntity);
     }
 
     @Test
@@ -38,7 +38,7 @@ class TransportCostMapperTest {
                 200L, 50L, 30L);
 
         // WHEN
-        TransportCostEntity transportCostEntity = transportCostMapper.toEntity(transportCostDto, travelEntity);
+        TransportCostEntity transportCostEntity = transportCostMapper.toEntity(transportCostDto, travelReportEntity);
 
         // THEN
         assertThat(transportCostEntity).isNotNull();
@@ -50,13 +50,13 @@ class TransportCostMapperTest {
         assertThat(transportCostEntity.getKilometersByCarEngineAbove900cc()).isEqualTo(200L);
         assertThat(transportCostEntity.getKilometersByMotorcycle()).isEqualTo(50L);
         assertThat(transportCostEntity.getKilometersByMoped()).isEqualTo(30L);
-        assertThat(transportCostEntity.getTravelEntity()).isEqualTo(travelEntity);
+        assertThat(transportCostEntity.getTravelReportEntity()).isEqualTo(travelReportEntity);
     }
 
     @Test
     void should_map_TransportCostEntity_to_TransportCostResponseDto_correctly() {
         // GIVEN
-        TransportCostEntity transportCostEntity = new TransportCostEntity(travelEntity, 2,
+        TransportCostEntity transportCostEntity = new TransportCostEntity(travelReportEntity, 2,
                 BigDecimal.valueOf(300), "Bus", BigDecimal.valueOf(150), 100L,
                 200L, 50L, 30L);
 

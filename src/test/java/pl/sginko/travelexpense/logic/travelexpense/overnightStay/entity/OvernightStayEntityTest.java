@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,25 +15,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OvernightStayEntityTest {
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
     private DietEntity dietEntity;
 
     @BeforeEach
     void setUp() {
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(20, 0),
                 LocalDate.now().plusDays(2), LocalTime.of(6, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
 
-        dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
+        dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45), 0, 0, 0);
 
-        travelEntity.setDietDetails(dietEntity);
+        travelReportEntity.setDietDetails(dietEntity);
     }
 
     @Test
     void should_calculate_quantity_of_overnightStay_correctly() {
         // GIVEN
-        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity,
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelReportEntity,
                 0, 0,
                 BigDecimal.ZERO, false);
 
@@ -47,7 +47,7 @@ class OvernightStayEntityTest {
     @Test
     void should_calculate_amountOfOvernightStay_without_invoice() {
         // GIVEN
-        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity,
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelReportEntity,
                 2, 0,
                 BigDecimal.ZERO, false);
 
@@ -62,7 +62,7 @@ class OvernightStayEntityTest {
     @Test
     void should_calculate_amountOfOvernightStay_when_invoice_amount_exceeds_limit_with_permission() {
         // GIVEN
-        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity,
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelReportEntity,
                 0, 1,
                 BigDecimal.valueOf(901), true);
 
@@ -76,7 +76,7 @@ class OvernightStayEntityTest {
     @Test
     void should_throw_exception_when_invoice_amount_exceeds_limit_without_permission() {
         // WHEN
-        Executable e = () -> new OvernightStayEntity(travelEntity,
+        Executable e = () -> new OvernightStayEntity(travelReportEntity,
                 0, 1,
                 BigDecimal.valueOf(901), false);
 
@@ -87,7 +87,7 @@ class OvernightStayEntityTest {
     @Test
     void should_calculate_totalOvernightStayAmount() {
         // GIVEN
-        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity,
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelReportEntity,
                 1, 1,
                 BigDecimal.valueOf(900), false);
 
@@ -104,17 +104,17 @@ class OvernightStayEntityTest {
     @Test
     void should_not_calculate_amount_for_short_night_without_invoice() {
         // GIVEN
-        TravelEntity travelEntity = new TravelEntity("CityA", "CityB",
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(23, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(4, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
 
-        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45),
+        DietEntity dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45),
                 0, 0, 0);
 
-        travelEntity.setDietDetails(dietEntity);
+        travelReportEntity.setDietDetails(dietEntity);
 
-        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity,
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelReportEntity,
                 0, 0,
                 BigDecimal.ZERO, false);
 
@@ -128,7 +128,7 @@ class OvernightStayEntityTest {
     @Test
     void should_throw_OvernightStayException_when_input_quantity_exceeds_calculated_quantity_of_overnight_stay() {
         // WHEN
-        Executable e = () -> new OvernightStayEntity(travelEntity,
+        Executable e = () -> new OvernightStayEntity(travelReportEntity,
                 2, 1,
                 BigDecimal.ZERO, false);
 

@@ -8,9 +8,9 @@ import org.mockito.MockitoAnnotations;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.repository.TravelRepository;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.repository.TravelReportRepository;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
 
 import java.io.File;
@@ -27,13 +27,13 @@ import static org.mockito.Mockito.when;
 
 class PdfDocumentServiceTest {
     @Mock
-    private TravelRepository travelRepository;
+    private TravelReportRepository travelReportRepository;
 
     @InjectMocks
     private PdfDocumentServiceImpl pdfDocumentService;
 
     @Mock
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @Mock
     private DietEntity dietEntity;
@@ -73,22 +73,22 @@ class PdfDocumentServiceTest {
         when(transportCostEntity.getTotalCostOfTravelByOwnAndPublicTransport()).thenReturn(BigDecimal.valueOf(150));
         when(transportCostEntity.getTransportCostAmount()).thenReturn(BigDecimal.valueOf(100));
 
-        when(travelEntity.getTechId()).thenReturn(techId);
-        when(travelEntity.getUserEntity()).thenReturn(userEntity);
-        when(travelEntity.getFromCity()).thenReturn("CityA");
-        when(travelEntity.getToCity()).thenReturn("CityB");
-        when(travelEntity.getStartDate()).thenReturn(LocalDate.now());
-        when(travelEntity.getStartTime()).thenReturn(LocalTime.of(8, 0));
-        when(travelEntity.getEndDate()).thenReturn(LocalDate.now().plusDays(1));
-        when(travelEntity.getEndTime()).thenReturn(LocalTime.of(18, 0));
-        when(travelEntity.getDietEntity()).thenReturn(dietEntity);
-        when(travelEntity.getOvernightStayEntity()).thenReturn(overnightStayEntity);
-        when(travelEntity.getTransportCostEntity()).thenReturn(transportCostEntity);
-        when(travelEntity.getAdvancePayment()).thenReturn(BigDecimal.valueOf(500));
-        when(travelEntity.getOtherExpenses()).thenReturn(BigDecimal.valueOf(200));
-        when(travelEntity.getTotalAmount()).thenReturn(BigDecimal.valueOf(1000));
+        when(travelReportEntity.getTechId()).thenReturn(techId);
+        when(travelReportEntity.getUserEntity()).thenReturn(userEntity);
+        when(travelReportEntity.getFromCity()).thenReturn("CityA");
+        when(travelReportEntity.getToCity()).thenReturn("CityB");
+        when(travelReportEntity.getStartDate()).thenReturn(LocalDate.now());
+        when(travelReportEntity.getStartTime()).thenReturn(LocalTime.of(8, 0));
+        when(travelReportEntity.getEndDate()).thenReturn(LocalDate.now().plusDays(1));
+        when(travelReportEntity.getEndTime()).thenReturn(LocalTime.of(18, 0));
+        when(travelReportEntity.getDietEntity()).thenReturn(dietEntity);
+        when(travelReportEntity.getOvernightStayEntity()).thenReturn(overnightStayEntity);
+        when(travelReportEntity.getTransportCostEntity()).thenReturn(transportCostEntity);
+        when(travelReportEntity.getAdvancePayment()).thenReturn(BigDecimal.valueOf(500));
+        when(travelReportEntity.getOtherExpenses()).thenReturn(BigDecimal.valueOf(200));
+        when(travelReportEntity.getTotalAmount()).thenReturn(BigDecimal.valueOf(1000));
 
-        when(travelRepository.findByTechId(techId)).thenReturn(Optional.of(travelEntity));
+        when(travelReportRepository.findByTechId(techId)).thenReturn(Optional.of(travelReportEntity));
     }
 
     @Test
@@ -106,10 +106,10 @@ class PdfDocumentServiceTest {
     void should_throw_exception_when_travel_not_found() {
         // GIVEN
         UUID invalidTechId = UUID.randomUUID();
-        when(travelRepository.findByTechId(invalidTechId)).thenReturn(Optional.empty());
+        when(travelReportRepository.findByTechId(invalidTechId)).thenReturn(Optional.empty());
 
         // WHEN & THEN
-        assertThrows(TravelException.class, () -> pdfDocumentService.generateTravelExpenseReportPdf(invalidTechId));
+        assertThrows(TravelReportException.class, () -> pdfDocumentService.generateTravelExpenseReportPdf(invalidTechId));
     }
 
 //    @Test

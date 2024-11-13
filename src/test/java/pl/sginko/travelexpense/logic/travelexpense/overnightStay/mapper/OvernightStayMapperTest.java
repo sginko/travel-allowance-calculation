@@ -6,7 +6,7 @@ import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,19 +16,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class OvernightStayMapperTest {
     private OvernightStayMapper overnightStayMapper;
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @BeforeEach
     void setUp() {
         overnightStayMapper = new OvernightStayMapper();
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(20, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(6, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
 
-        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45),
+        DietEntity dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45),
                 0, 0, 0);
-        travelEntity.setDietDetails(dietEntity);
+        travelReportEntity.setDietDetails(dietEntity);
     }
 
     @Test
@@ -39,7 +39,7 @@ class OvernightStayMapperTest {
                 BigDecimal.valueOf(500), true);
 
         // WHEN
-        OvernightStayEntity overnightStayEntity = overnightStayMapper.toEntity(overnightStayDto, travelEntity);
+        OvernightStayEntity overnightStayEntity = overnightStayMapper.toEntity(overnightStayDto, travelReportEntity);
 
         // THEN
         assertThat(overnightStayEntity).isNotNull();
@@ -47,13 +47,13 @@ class OvernightStayMapperTest {
         assertThat(overnightStayEntity.getInputQuantityOfOvernightStayWithInvoice()).isEqualTo(0);
         assertThat(overnightStayEntity.getTotalAmountOfOvernightsStayWithInvoice()).isEqualByComparingTo(BigDecimal.valueOf(500));
         assertThat(overnightStayEntity.getIsInvoiceAmountGreaterAllowed()).isTrue();
-        assertThat(overnightStayEntity.getTravelEntity()).isEqualTo(travelEntity);
+        assertThat(overnightStayEntity.getTravelReportEntity()).isEqualTo(travelReportEntity);
     }
 
     @Test
     void should_map_OvernightStayEntity_to_OvernightStayResponseDto_correctly() {
         // GIVEN
-        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity, 1,
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelReportEntity, 1,
                 0, BigDecimal.valueOf(500), true);
 
         // WHEN

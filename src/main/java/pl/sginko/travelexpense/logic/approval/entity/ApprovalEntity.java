@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
-@EqualsAndHashCode(of = {"travelEntity", "approver", "role"})
+@EqualsAndHashCode(of = {"travelReportEntity", "approver", "role"})
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity(name = "approval")
@@ -21,7 +21,7 @@ public class ApprovalEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "travel_id", nullable = false)
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -38,8 +38,8 @@ public class ApprovalEntity {
     @Version
     private Long version;
 
-    public ApprovalEntity(TravelEntity travelEntity, UserEntity approver, Roles role) {
-        this.travelEntity = travelEntity;
+    public ApprovalEntity(TravelReportEntity travelReportEntity, UserEntity approver, Roles role) {
+        this.travelReportEntity = travelReportEntity;
         this.approver = approver;
         this.role = role;
         this.status = ApprovalStatus.PENDING;

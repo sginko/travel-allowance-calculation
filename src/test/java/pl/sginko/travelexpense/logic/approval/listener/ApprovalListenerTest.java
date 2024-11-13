@@ -6,7 +6,7 @@ import org.mockito.*;
 import org.springframework.context.ApplicationEventPublisher;
 import pl.sginko.travelexpense.logic.approval.event.ApprovalEvent;
 import pl.sginko.travelexpense.logic.emailService.EmailService;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelStatus;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportStatus;
 
 import java.util.UUID;
 
@@ -31,7 +31,7 @@ class ApprovalListenerTest {
     @Test
     void should_handle_approval_event_and_send_email_successfully() {
         // GIVEN
-        ApprovalEvent event = new ApprovalEvent(UUID.randomUUID(), "user@example.com", TravelStatus.APPROVED);
+        ApprovalEvent event = new ApprovalEvent(UUID.randomUUID(), "user@example.com", TravelReportStatus.APPROVED);
 
         // WHEN
         approvalListener.handleApprovalEvent(event);
@@ -43,7 +43,7 @@ class ApprovalListenerTest {
     @Test
     void should_handle_approval_event_and_log_error_when_email_fails() {
         // GIVEN
-        ApprovalEvent event = new ApprovalEvent(UUID.randomUUID(), "user@example.com", TravelStatus.APPROVED);
+        ApprovalEvent event = new ApprovalEvent(UUID.randomUUID(), "user@example.com", TravelReportStatus.APPROVED);
         doThrow(new RuntimeException("Email server down"))
                 .when(emailService).sendApprovalNotification(event.getUserEmail(), event.getTravelTechId(), event.getStatus());
 

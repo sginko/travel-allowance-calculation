@@ -9,7 +9,7 @@ import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.mapper.TransportCostMapper;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,38 +28,38 @@ class TransportCostServiceTest {
     @InjectMocks
     private TransportCostServiceImpl transportCostService;
 
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
     private TransportCostEntity transportCostEntity;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(18, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
 
-        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45),
+        DietEntity dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45),
                 0, 0, 0);
 
-        travelEntity.setDietDetails(dietEntity);
+        travelReportEntity.setDietDetails(dietEntity);
 
-        transportCostEntity = new TransportCostEntity(travelEntity,
+        transportCostEntity = new TransportCostEntity(travelReportEntity,
                 2, BigDecimal.valueOf(100), "Bus",
                 BigDecimal.valueOf(50), 100L, 200L,
                 50L, 30L);
 
-        when(transportCostMapper.toEntity(transportCostDto, travelEntity)).thenReturn(transportCostEntity);
+        when(transportCostMapper.toEntity(transportCostDto, travelReportEntity)).thenReturn(transportCostEntity);
     }
 
     @Test
     void should_create_transport_cost_entity() {
         // WHEN
-        TransportCostEntity result = transportCostService.createTransportCostEntity(transportCostDto, travelEntity);
+        TransportCostEntity result = transportCostService.createTransportCostEntity(transportCostDto, travelReportEntity);
 
         // THEN
         assertThat(result).isEqualTo(transportCostEntity);
-        verify(transportCostMapper, times(1)).toEntity(transportCostDto, travelEntity);
+        verify(transportCostMapper, times(1)).toEntity(transportCostDto, travelReportEntity);
     }
 }

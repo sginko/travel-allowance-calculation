@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,12 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DietMapperTest {
     private DietMapper dietMapper;
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @BeforeEach
     void setUp() {
         dietMapper = new DietMapper();
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(18, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
@@ -32,7 +32,7 @@ class DietMapperTest {
         DietDto dietDto = new DietDto(BigDecimal.valueOf(45), 1, 1, 1);
 
         // WHEN
-        DietEntity dietEntity = dietMapper.toEntity(dietDto, travelEntity);
+        DietEntity dietEntity = dietMapper.toEntity(dietDto, travelReportEntity);
 
         // THEN
         assertThat(dietEntity).isNotNull();
@@ -40,13 +40,13 @@ class DietMapperTest {
         assertThat(dietEntity.getNumberOfBreakfasts()).isEqualTo(1);
         assertThat(dietEntity.getNumberOfLunches()).isEqualTo(1);
         assertThat(dietEntity.getNumberOfDinners()).isEqualTo(1);
-        assertThat(dietEntity.getTravelEntity()).isEqualTo(travelEntity);
+        assertThat(dietEntity.getTravelReportEntity()).isEqualTo(travelReportEntity);
     }
 
     @Test
     void should_map_DietEntity_to_DietResponseDto_correctly() {
         // GIVEN
-        DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 1, 1, 1);
+        DietEntity dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45), 1, 1, 1);
 
         // WHEN
         DietResponseDto dietResponseDto = dietMapper.toResponseDto(dietEntity);

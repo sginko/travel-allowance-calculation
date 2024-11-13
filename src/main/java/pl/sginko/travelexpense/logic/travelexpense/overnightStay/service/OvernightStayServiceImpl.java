@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.mapper.OvernightStayMapper;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 @AllArgsConstructor
 @Service
@@ -13,8 +13,8 @@ public class OvernightStayServiceImpl implements OvernightStayService {
     private final OvernightStayMapper overnightStayMapper;
 
     @Override
-    public OvernightStayEntity createOvernightStayEntity(OvernightStayDto overnightStayDto, TravelEntity travelEntity) {
-        OvernightStayEntity overnightStayEntity = overnightStayMapper.toEntity(overnightStayDto, travelEntity);
+    public OvernightStayEntity createOvernightStayEntity(OvernightStayDto overnightStayDto, TravelReportEntity travelReportEntity) {
+        OvernightStayEntity overnightStayEntity = overnightStayMapper.toEntity(overnightStayDto, travelReportEntity);
         return overnightStayEntity;
     }
 }

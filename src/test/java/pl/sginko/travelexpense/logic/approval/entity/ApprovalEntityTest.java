@@ -6,7 +6,7 @@ import org.junit.jupiter.api.function.Executable;
 import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ApprovalEntityTest {
     private ApprovalEntity approvalEntity;
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
     private UserEntity approver;
 
     private static final Roles DEFAULT_ROLE = Roles.ROLE_MANAGER;
@@ -28,11 +28,11 @@ class ApprovalEntityTest {
     void setUp() {
         approver = new UserEntity("approver@example.com", "Approver", "User", "password");
         approver.changeRoleToManager();
-        travelEntity = new TravelEntity("CityA", "CityB",
+        travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(8, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(18, 0),
                 approver, BigDecimal.ZERO, BigDecimal.ZERO);
-        approvalEntity = new ApprovalEntity(travelEntity, approver, DEFAULT_ROLE);
+        approvalEntity = new ApprovalEntity(travelReportEntity, approver, DEFAULT_ROLE);
     }
 
     @Test
@@ -78,7 +78,7 @@ class ApprovalEntityTest {
     @Test
     void equals_should_return_true_for_entities_with_same_travel_approver_and_role() {
         // GIVEN
-        ApprovalEntity anotherApproval = new ApprovalEntity(travelEntity, approver, DEFAULT_ROLE);
+        ApprovalEntity anotherApproval = new ApprovalEntity(travelReportEntity, approver, DEFAULT_ROLE);
 
         // THEN
         assertThat(approvalEntity).isEqualTo(anotherApproval);
@@ -87,7 +87,7 @@ class ApprovalEntityTest {
     @Test
     void equals_should_return_false_for_different_travel_entity() {
         // GIVEN
-        TravelEntity differentTravel = new TravelEntity("CityX", "CityY",
+        TravelReportEntity differentTravel = new TravelReportEntity("CityX", "CityY",
                 LocalDate.now(), LocalTime.of(9, 0),
                 LocalDate.now().plusDays(2), LocalTime.of(19, 0),
                 approver, BigDecimal.ZERO, BigDecimal.ZERO);
@@ -102,7 +102,7 @@ class ApprovalEntityTest {
         // GIVEN
         UserEntity differentApprover = new UserEntity("different@example.com", "Different", "Approver", "password");
         differentApprover.changeRoleToAccountant();
-        ApprovalEntity differentApproval = new ApprovalEntity(travelEntity, differentApprover, DEFAULT_ROLE);
+        ApprovalEntity differentApproval = new ApprovalEntity(travelReportEntity, differentApprover, DEFAULT_ROLE);
 
         // THEN
         assertThat(approvalEntity).isNotEqualTo(differentApproval);
@@ -111,7 +111,7 @@ class ApprovalEntityTest {
     @Test
     void equals_should_return_false_for_different_role() {
         // GIVEN
-        ApprovalEntity differentApproval = new ApprovalEntity(travelEntity, approver, Roles.ROLE_ACCOUNTANT);
+        ApprovalEntity differentApproval = new ApprovalEntity(travelReportEntity, approver, Roles.ROLE_ACCOUNTANT);
 
         // THEN
         assertThat(approvalEntity).isNotEqualTo(differentApproval);

@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -24,7 +24,7 @@ public class OvernightStayEntity {
 
     @OneToOne
     @JoinColumn(name = "travel_id", nullable = false)
-    private TravelEntity travelEntity;
+    private TravelReportEntity travelReportEntity;
 
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")
     @Column(nullable = false)
@@ -52,10 +52,10 @@ public class OvernightStayEntity {
     @Column(nullable = false)
     private Boolean isInvoiceAmountGreaterAllowed;
 
-    public OvernightStayEntity(TravelEntity travelEntity, Integer inputQuantityOfOvernightStayWithoutInvoice,
+    public OvernightStayEntity(TravelReportEntity travelReportEntity, Integer inputQuantityOfOvernightStayWithoutInvoice,
                                Integer inputQuantityOfOvernightStayWithInvoice, BigDecimal totalAmountOfOvernightsStayWithInvoice,
                                Boolean isInvoiceAmountGreaterAllowed) {
-        this.travelEntity = travelEntity;
+        this.travelReportEntity = travelReportEntity;
         this.inputQuantityOfOvernightStayWithoutInvoice = inputQuantityOfOvernightStayWithoutInvoice != null ? inputQuantityOfOvernightStayWithoutInvoice : 0;
         this.inputQuantityOfOvernightStayWithInvoice = inputQuantityOfOvernightStayWithInvoice != null ? inputQuantityOfOvernightStayWithInvoice : 0;
         this.totalAmountOfOvernightsStayWithInvoice = totalAmountOfOvernightsStayWithInvoice != null ? totalAmountOfOvernightsStayWithInvoice : BigDecimal.ZERO;
@@ -84,14 +84,14 @@ public class OvernightStayEntity {
 
     private BigDecimal calculateTotalAmountOfOvernightStayWithoutInvoice() {
         checkQuantityOfNightInTravel();
-        BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
+        BigDecimal dailyAllowance = travelReportEntity.getDietEntity().getDailyAllowance();
         BigDecimal oneNightWithoutInvoice = dailyAllowance.multiply(BigDecimal.valueOf(1.5));
         return oneNightWithoutInvoice.multiply(BigDecimal.valueOf(inputQuantityOfOvernightStayWithoutInvoice));
     }
 
     private BigDecimal calculateTotalAmountOfOvernightStayWithInvoice() {
         checkQuantityOfNightInTravel();
-        BigDecimal dailyAllowance = travelEntity.getDietEntity().getDailyAllowance();
+        BigDecimal dailyAllowance = travelReportEntity.getDietEntity().getDailyAllowance();
 
         if (!isInvoiceAmountGreaterAllowed) {
             BigDecimal maxAmountForOneNightWithInvoice = dailyAllowance.multiply(BigDecimal.valueOf(20));
@@ -104,8 +104,8 @@ public class OvernightStayEntity {
 
     private Integer calculateQuantityOfOvernightStay() {
         Integer quantity = 0;
-        LocalDateTime startDateTime = LocalDateTime.of(travelEntity.getStartDate(), travelEntity.getStartTime());
-        LocalDateTime endDateTime = LocalDateTime.of(travelEntity.getEndDate(), travelEntity.getEndTime());
+        LocalDateTime startDateTime = LocalDateTime.of(travelReportEntity.getStartDate(), travelReportEntity.getStartTime());
+        LocalDateTime endDateTime = LocalDateTime.of(travelReportEntity.getEndDate(), travelReportEntity.getEndTime());
 
         while (startDateTime.isBefore(endDateTime)) {
             LocalDateTime endOfCurrentNight = startDateTime.plusDays(1).withHour(7).withMinute(0).withSecond(0);

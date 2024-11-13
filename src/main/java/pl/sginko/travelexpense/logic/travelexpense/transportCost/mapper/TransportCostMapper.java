@@ -5,7 +5,7 @@ import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCo
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 @Component
 public class TransportCostMapper {
@@ -22,9 +22,9 @@ public class TransportCostMapper {
                 entity.getTransportCostAmount());
     }
 
-    public TransportCostEntity toEntity(TransportCostDto transportCostDto, TravelEntity travelEntity) {
+    public TransportCostEntity toEntity(TransportCostDto transportCostDto, TravelReportEntity travelReportEntity) {
         return new TransportCostEntity(
-                travelEntity,
+                travelReportEntity,
                 transportCostDto.getDaysForUndocumentedLocalTransportCost(),
                 transportCostDto.getDocumentedLocalTransportCost(),
                 transportCostDto.getMeansOfTransport(),

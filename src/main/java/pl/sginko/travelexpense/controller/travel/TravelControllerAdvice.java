@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.exception.TransportException;
-import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
 
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class TravelControllerAdvice {
 
-    @ExceptionHandler(TravelException.class)
-    public ResponseEntity<Response> handleTravelException(TravelException e) {
+    @ExceptionHandler(TravelReportException.class)
+    public ResponseEntity<Response> handleTravelException(TravelReportException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
     }

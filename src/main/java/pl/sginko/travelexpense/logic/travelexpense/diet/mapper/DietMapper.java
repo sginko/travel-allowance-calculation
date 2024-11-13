@@ -5,7 +5,7 @@ import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 @Component
 public class DietMapper {
@@ -20,9 +20,9 @@ public class DietMapper {
                 entity.getDietAmount());
     }
 
-    public DietEntity toEntity(DietDto dietDto, TravelEntity travelEntity) {
+    public DietEntity toEntity(DietDto dietDto, TravelReportEntity travelReportEntity) {
         return new DietEntity(
-                travelEntity,
+                travelReportEntity,
                 dietDto.getDailyAllowance(),
                 dietDto.getNumberOfBreakfasts(),
                 dietDto.getNumberOfLunches(),
