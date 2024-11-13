@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import pl.sginko.travelexpense.logic.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -96,7 +94,7 @@ class PdfDocumentServiceTest {
     @Test
     void should_generate_pdf_document() throws IOException {
         // WHEN
-        pdfDocumentService.generatePdfDocument(techId);
+        pdfDocumentService.generateTravelExpenseReportPdf(techId);
 
         // THEN
         File outputFile = new File("src/main/resources/print/changed_template.pdf");
@@ -111,7 +109,7 @@ class PdfDocumentServiceTest {
         when(travelRepository.findByTechId(invalidTechId)).thenReturn(Optional.empty());
 
         // WHEN & THEN
-        assertThrows(TravelException.class, () -> pdfDocumentService.generatePdfDocument(invalidTechId));
+        assertThrows(TravelException.class, () -> pdfDocumentService.generateTravelExpenseReportPdf(invalidTechId));
     }
 
 //    @Test

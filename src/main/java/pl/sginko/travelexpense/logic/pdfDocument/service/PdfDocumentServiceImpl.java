@@ -29,7 +29,7 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
     private final TravelRepository travelRepository;
 
     @Override
-    public void generatePdfDocument(UUID techId) throws IOException {
+    public void generateTravelExpenseReportPdf(UUID techId) throws IOException {
         TravelEntity travelEntity = travelRepository.findByTechId(techId)
                 .orElseThrow(() -> new TravelException("Travel not found"));
         DietEntity dietEntity = travelEntity.getDietEntity();

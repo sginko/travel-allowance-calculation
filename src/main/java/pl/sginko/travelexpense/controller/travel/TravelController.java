@@ -1,5 +1,6 @@
 package pl.sginko.travelexpense.controller.travel;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -28,20 +29,26 @@ class TravelController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public TravelSubmissionResponseDto calculateTravelExpenses(@RequestBody TravelRequestDto requestDto) {
-        return travelService.calculateTravelExpenses(requestDto);
+    public TravelSubmissionResponseDto createTravelExpenseReport(@RequestBody TravelRequestDto requestDto) {
+        return travelService.createTravelExpenseReport(requestDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<TravelResponseDto> getAllTravelsByUser() {
-        return travelService.getAllTravelsByUser();
+    public List<TravelResponseDto> getUserTravelExpenseReports() {
+        return travelService.getUserTravelExpenseReports();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{techId}")
-    public TravelSubmissionResponseDto getTravelByTechId(@PathVariable("techId") UUID techId) {
-        return travelService.getTravelByTechId(techId);
+    public TravelSubmissionResponseDto getTravelExpenseReportById(@PathVariable("techId") UUID techId) {
+        return travelService.getTravelExpenseReportById(techId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/update/{techId}")
+    public void updateTravelExpenseReportById(@PathVariable("techId") UUID techId, @RequestBody JsonPatch patch) {
+        travelService.updateTravelExpenseReportById(techId, patch);
     }
 
 
@@ -58,9 +65,9 @@ class TravelController {
 //    }
 
     @PostMapping("/print/{techId}")
-    public ResponseEntity<Void> print(@PathVariable("techId") UUID techId) {
+    public ResponseEntity<Void> generateTravelExpenseReportPdf(@PathVariable("techId") UUID techId) {
         try {
-            pdfDocumentService.generatePdfDocument(techId);
+            pdfDocumentService.generateTravelExpenseReportPdf(techId);
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.status(500).build();
@@ -71,7 +78,7 @@ class TravelController {
     }
 
     @GetMapping("/print/changed_template.pdf")
-    public ResponseEntity<InputStreamResource> getChangedTemplate() {
+    public ResponseEntity<InputStreamResource> getTravelExpenseReportPdf() {
         try {
             File file = new File("src/main/resources/print/changed_template.pdf"); //without Docker
 //            File file = new File("/app/resources/print/changed_template.pdf"); //with Docker

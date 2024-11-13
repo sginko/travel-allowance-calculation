@@ -1,5 +1,6 @@
 package pl.sginko.travelexpense.logic.travelexpense.travel.service;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelSubmissionResponseDto;
@@ -10,11 +11,14 @@ import java.util.UUID;
 public interface TravelService {
 
     //    TravelResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto);
-    TravelSubmissionResponseDto calculateTravelExpenses(TravelRequestDto travelRequestDto);
 
-    List<TravelResponseDto> getAllTravelsByUser();
+    TravelSubmissionResponseDto createTravelExpenseReport(TravelRequestDto travelRequestDto);
 
-    TravelSubmissionResponseDto getTravelByTechId(UUID techId);
+    List<TravelResponseDto> getUserTravelExpenseReports();
+
+    TravelSubmissionResponseDto getTravelExpenseReportById(UUID techId);
 
     void cleanupOldReports();
+
+    void updateTravelExpenseReportById(UUID techId, JsonPatch patch);
 }

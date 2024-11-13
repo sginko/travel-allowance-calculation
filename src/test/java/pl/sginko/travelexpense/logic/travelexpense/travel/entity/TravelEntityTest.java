@@ -10,7 +10,6 @@ import pl.sginko.travelexpense.logic.approval.entity.ApprovalStatus;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
-import pl.sginko.travelexpense.logic.travelexpense.transportCost.exception.TransportException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
@@ -49,9 +48,9 @@ class TravelEntityTest {
                 LocalDate.of(2024, 11, 6), LocalTime.of(15, 0),
                 userEntity, BigDecimal.valueOf(50), BigDecimal.valueOf(100));
 
-        travelEntity.updateDietEntity(dietEntity);
-        travelEntity.updateOvernightStayEntity(overnightStayEntity);
-        travelEntity.updateTransportCostEntity(transportCostEntity);
+        travelEntity.setDietDetails(dietEntity);
+        travelEntity.setOvernightStayDetails(overnightStayEntity);
+        travelEntity.setTransportCostDetails(transportCostEntity);
     }
 
     @Test
@@ -69,12 +68,12 @@ class TravelEntityTest {
     @Test
     void should_calculate_total_amount_correctly() {
         // GIVEN
-        when(dietEntity.calculateDiet()).thenReturn(BigDecimal.valueOf(200));
+        when(dietEntity.calculateTotalDiet()).thenReturn(BigDecimal.valueOf(200));
         when(overnightStayEntity.getOvernightStayAmount()).thenReturn(BigDecimal.valueOf(150));
         when(transportCostEntity.getTransportCostAmount()).thenReturn(BigDecimal.valueOf(300));
 
         // WHEN
-        travelEntity.updateTotalAmount();
+        travelEntity.calculateTotalAmount();
 
         // THEN
         BigDecimal expectedTotal = BigDecimal.valueOf(200 + 150 + 300 + 100 - 50);
@@ -91,7 +90,7 @@ class TravelEntityTest {
         travelEntity.getApprovals().addAll(approvals);
 
         // WHEN
-        travelEntity.updateStatusBasedOnApprovals();
+        travelEntity.updateTravelReportStatusFromApprovals();
 
         // THEN
         assertThat(travelEntity.getStatus()).isEqualTo(TravelStatus.REJECTED);
@@ -110,7 +109,7 @@ class TravelEntityTest {
         travelEntity.getApprovals().add(accountantApproval);
 
         // WHEN
-        travelEntity.updateStatusBasedOnApprovals();
+        travelEntity.updateTravelReportStatusFromApprovals();
 
         // THEN
         assertThat(travelEntity.getStatus()).isEqualTo(TravelStatus.APPROVED);
@@ -125,7 +124,7 @@ class TravelEntityTest {
         travelEntity.getApprovals().add(managerApproval);
 
         // WHEN
-        travelEntity.updateStatusBasedOnApprovals();
+        travelEntity.updateTravelReportStatusFromApprovals();
 
         // THEN
         assertThat(travelEntity.getStatus()).isEqualTo(TravelStatus.IN_PROCESS);

@@ -102,7 +102,7 @@ class TravelServiceTest {
 
         dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
 
-        travelEntity.updateDietEntity(dietEntity);
+        travelEntity.setDietDetails(dietEntity);
 
         overnightStayEntity = new OvernightStayEntity(travelEntity, 1,
                 0, BigDecimal.valueOf(500), false);
@@ -136,7 +136,7 @@ class TravelServiceTest {
     @Test
     void should_calculate_travel_expenses_and_create_travel_submission_response() {
         // WHEN
-        TravelSubmissionResponseDto response = travelService.calculateTravelExpenses(travelRequestDto);
+        TravelSubmissionResponseDto response = travelService.createTravelExpenseReport(travelRequestDto);
 
         // THEN
         assertThat(response.getTechId()).isEqualTo(travelEntity.getTechId());
@@ -164,7 +164,7 @@ class TravelServiceTest {
                         LocalTime.of(18, 0), BigDecimal.valueOf(50), BigDecimal.valueOf(200),
                         BigDecimal.valueOf(100), null, null, null));
 
-        List<TravelResponseDto> travels = travelService.getAllTravelsByUser();
+        List<TravelResponseDto> travels = travelService.getUserTravelExpenseReports();
 
         assertThat(travels).hasSize(1);
         assertThat(travels.get(0).getFromCity()).isEqualTo("CityA");
@@ -178,7 +178,7 @@ class TravelServiceTest {
                 new TravelSubmissionResponseDto(techId, TravelStatus.SUBMITTED)
         );
 
-        TravelSubmissionResponseDto response = travelService.getTravelByTechId(techId);
+        TravelSubmissionResponseDto response = travelService.getTravelExpenseReportById(techId);
 
         assertThat(response.getTechId()).isEqualTo(techId);
         assertThat(response.getStatus()).isEqualTo(TravelStatus.SUBMITTED);
@@ -189,7 +189,7 @@ class TravelServiceTest {
         UUID techId = UUID.randomUUID();
         when(travelRepository.findByTechId(techId)).thenReturn(Optional.empty());
 
-        assertThrows(TravelException.class, () -> travelService.getTravelByTechId(techId));
+        assertThrows(TravelException.class, () -> travelService.getTravelExpenseReportById(techId));
     }
 
     @Test

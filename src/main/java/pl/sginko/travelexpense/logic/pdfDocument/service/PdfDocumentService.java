@@ -5,5 +5,5 @@ import java.util.UUID;
 
 public interface PdfDocumentService {
 
-    void generatePdfDocument(UUID techId) throws IOException;
+    void generateTravelExpenseReportPdf(UUID techId) throws IOException;
 }

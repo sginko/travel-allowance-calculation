@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
@@ -62,11 +63,23 @@ public class OvernightStayEntity {
         this.quantityOfOvernightStay = calculateQuantityOfOvernightStay();
         this.totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay();
         this.totalAmountOfOvernightsStayWithoutInvoice = calculateTotalAmountOfOvernightStayWithoutInvoice();
-        this.overnightStayAmount = calculateOvernightStay();
+        this.overnightStayAmount = calculateOvernightStayAmount();
     }
 
-    public BigDecimal calculateOvernightStay() {
+    public BigDecimal calculateOvernightStayAmount() {
         return calculateTotalAmountOfOvernightStayWithInvoice().add(totalAmountOfOvernightsStayWithoutInvoice);
+    }
+
+    public void updateOvernightStayDetails(OvernightStayEditDto overnightStayEditDto) {
+        this.inputQuantityOfOvernightStayWithoutInvoice = overnightStayEditDto.getInputQuantityOfOvernightStayWithoutInvoice();
+        this.inputQuantityOfOvernightStayWithInvoice = overnightStayEditDto.getInputQuantityOfOvernightStayWithInvoice();
+        this.totalAmountOfOvernightsStayWithInvoice = overnightStayEditDto.getTotalAmountOfOvernightsStayWithInvoice();
+        this.isInvoiceAmountGreaterAllowed = overnightStayEditDto.getIsInvoiceAmountGreaterAllowed();
+
+        this.totalInputQuantityOfOvernightStay = calculateTotalInputQuantityOfOvernightStay();
+        this.quantityOfOvernightStay = calculateQuantityOfOvernightStay();
+        this.totalAmountOfOvernightsStayWithoutInvoice = calculateTotalAmountOfOvernightStayWithoutInvoice();
+        this.overnightStayAmount = calculateOvernightStayAmount();
     }
 
     private BigDecimal calculateTotalAmountOfOvernightStayWithoutInvoice() {

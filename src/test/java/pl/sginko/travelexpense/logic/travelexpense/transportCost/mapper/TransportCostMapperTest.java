@@ -27,7 +27,7 @@ class TransportCostMapperTest {
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
 
         DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
-        travelEntity.updateDietEntity(dietEntity);
+        travelEntity.setDietDetails(dietEntity);
     }
 
     @Test
@@ -42,7 +42,7 @@ class TransportCostMapperTest {
 
         // THEN
         assertThat(transportCostEntity).isNotNull();
-        assertThat(transportCostEntity.getDaysForUndocumentedTransportCost()).isEqualTo(2);
+        assertThat(transportCostEntity.getDaysForUndocumentedLocalTransportCost()).isEqualTo(2);
         assertThat(transportCostEntity.getDocumentedLocalTransportCost()).isEqualByComparingTo(BigDecimal.valueOf(300));
         assertThat(transportCostEntity.getMeansOfTransport()).isEqualTo("Bus");
         assertThat(transportCostEntity.getCostOfTravelByPublicTransport()).isEqualByComparingTo(BigDecimal.valueOf(150));
@@ -66,7 +66,7 @@ class TransportCostMapperTest {
         // THEN
         assertThat(transportCostResponseDto).isNotNull();
         assertThat(transportCostResponseDto.getId()).isEqualTo(transportCostEntity.getId());
-        assertThat(transportCostResponseDto.getDaysForTransportCost()).isEqualTo(transportCostEntity.getDaysForUndocumentedTransportCost());
+        assertThat(transportCostResponseDto.getDaysForTransportCost()).isEqualTo(transportCostEntity.getDaysForUndocumentedLocalTransportCost());
         assertThat(transportCostResponseDto.getUndocumentedLocalTransportCost())
                 .isEqualByComparingTo(transportCostEntity.getUndocumentedLocalTransportCost());
         assertThat(transportCostResponseDto.getDocumentedLocalTransportCost())

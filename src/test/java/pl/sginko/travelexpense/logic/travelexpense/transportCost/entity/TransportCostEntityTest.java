@@ -27,7 +27,7 @@ class TransportCostEntityTest {
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
         dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
 
-        travelEntity.updateDietEntity(dietEntity);
+        travelEntity.setDietDetails(dietEntity);
     }
 
     @Test

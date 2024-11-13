@@ -89,7 +89,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         approval.updateStatus(newStatus);
 
         approvalRepository.save(approval);
-        travelEntity.updateStatusBasedOnApprovals();
+        travelEntity.updateTravelReportStatusFromApprovals();
 
         actionLogService.logAction("Status report: " + travelEntity.getTechId() + " updated to: "
                 + newStatus, travelEntity.getId(), approver.getId());

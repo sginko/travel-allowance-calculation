@@ -44,7 +44,7 @@ class OvernightStayServiceTest {
         DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45),
                 0, 0, 0);
 
-        travelEntity.updateDietEntity(dietEntity);
+        travelEntity.setDietDetails(dietEntity);
 
         overnightStayEntity = new OvernightStayEntity(travelEntity,
                 1, 0,

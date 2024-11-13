@@ -27,7 +27,7 @@ class OvernightStayEntityTest {
 
         dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45), 0, 0, 0);
 
-        travelEntity.updateDietEntity(dietEntity);
+        travelEntity.setDietDetails(dietEntity);
     }
 
     @Test
@@ -92,7 +92,7 @@ class OvernightStayEntityTest {
                 BigDecimal.valueOf(900), false);
 
         // WHEN
-        BigDecimal totalOvernightStayAmount = overnightStayEntity.calculateOvernightStay();
+        BigDecimal totalOvernightStayAmount = overnightStayEntity.calculateOvernightStayAmount();
 
         // THEN
         BigDecimal expectedTotal = overnightStayEntity.getTotalAmountOfOvernightsStayWithInvoice()
@@ -112,7 +112,7 @@ class OvernightStayEntityTest {
         DietEntity dietEntity = new DietEntity(travelEntity, BigDecimal.valueOf(45),
                 0, 0, 0);
 
-        travelEntity.updateDietEntity(dietEntity);
+        travelEntity.setDietDetails(dietEntity);
 
         OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelEntity,
                 0, 0,

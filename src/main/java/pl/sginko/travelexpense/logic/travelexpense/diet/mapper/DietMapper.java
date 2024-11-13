@@ -2,6 +2,7 @@ package pl.sginko.travelexpense.logic.travelexpense.diet.mapper;
 
 import org.springframework.stereotype.Component;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
@@ -26,5 +27,13 @@ public class DietMapper {
                 dietDto.getNumberOfBreakfasts(),
                 dietDto.getNumberOfLunches(),
                 dietDto.getNumberOfDinners());
+    }
+
+    public DietEditDto toDietEditDto(DietEntity entity) {
+        return new DietEditDto(
+                entity.getDailyAllowance(),
+                entity.getNumberOfBreakfasts(),
+                entity.getNumberOfLunches(),
+                entity.getNumberOfDinners());
     }
 }

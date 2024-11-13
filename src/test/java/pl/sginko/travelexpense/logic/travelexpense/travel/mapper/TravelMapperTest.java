@@ -23,7 +23,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -104,7 +103,7 @@ class TravelMapperTest {
     @Test
     void should_map_TravelEntity_to_TravelSubmissionResponseDto_correctly() {
         // WHEN
-        travelEntity.changeStatus(TravelStatus.APPROVED);
+        travelEntity.updateStatus(TravelStatus.APPROVED);
         TravelSubmissionResponseDto submissionResponseDto = travelMapper.toTravelSubmissionResponseDto(travelEntity);
 
         // THEN

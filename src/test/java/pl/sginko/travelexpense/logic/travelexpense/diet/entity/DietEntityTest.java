@@ -106,7 +106,7 @@ class DietEntityTest {
         DietEntity dietEntity = new DietEntity(travelEntity, DAILY_ALLOWANCE, 1, 1, 1);
 
         // WHEN
-        BigDecimal expectedTotalDiet = dietEntity.calculateDiet();
+        BigDecimal expectedTotalDiet = dietEntity.calculateTotalDiet();
         BigDecimal dietAmount = dietEntity.getDietAmount();
         BigDecimal foodAmount = dietEntity.getFoodAmount();
 

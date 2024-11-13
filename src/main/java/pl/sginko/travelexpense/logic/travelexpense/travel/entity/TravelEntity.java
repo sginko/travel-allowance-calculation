@@ -13,6 +13,7 @@ import pl.sginko.travelexpense.logic.approval.entity.ApprovalStatus;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travel.dto.TravelEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.exception.TravelException;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
@@ -109,43 +110,70 @@ public class TravelEntity {
         validateDates();
     }
 
-    public void updateDietEntity(DietEntity dietEntity) {
+    public void setDietDetails(DietEntity dietEntity) {
         this.dietEntity = dietEntity;
     }
 
-    public void updateOvernightStayEntity(OvernightStayEntity overnightStayEntity) {
+    public void setOvernightStayDetails(OvernightStayEntity overnightStayEntity) {
         this.overnightStayEntity = overnightStayEntity;
     }
 
-    public void updateTransportCostEntity(TransportCostEntity transportCostEntity) {
+    public void setTransportCostDetails(TransportCostEntity transportCostEntity) {
         this.transportCostEntity = transportCostEntity;
     }
 
-    public void updateTotalAmount() {
-        BigDecimal dietTotal = dietEntity != null ? dietEntity.calculateDiet() : BigDecimal.ZERO;
+    public void calculateTotalAmount() {
+        BigDecimal dietTotal = dietEntity != null ? dietEntity.calculateTotalDiet() : BigDecimal.ZERO;
         BigDecimal overnightStayTotal = overnightStayEntity != null ? overnightStayEntity.getOvernightStayAmount() : BigDecimal.ZERO;
         BigDecimal transportTotal = transportCostEntity != null ? transportCostEntity.getTransportCostAmount() : BigDecimal.ZERO;
+
         this.totalAmount = dietTotal.add(overnightStayTotal).add(transportTotal).add(otherExpenses).subtract(advancePayment);
     }
 
-    public void updateStatusBasedOnApprovals() {
+    public void updateTravelReportStatusFromApprovals() {
         if (anyApprovalRejected()) {
-            changeStatus(TravelStatus.REJECTED);
+            updateStatus(TravelStatus.REJECTED);
         } else {
             boolean accountantApproved = isApprovedByAtLeastOneRole(Roles.ROLE_ACCOUNTANT);
             boolean managerApproved = isApprovedByAtLeastOneRole(Roles.ROLE_MANAGER);
 
             if (accountantApproved && managerApproved) {
-                changeStatus(TravelStatus.APPROVED);
+                updateStatus(TravelStatus.APPROVED);
             } else {
-                changeStatus(TravelStatus.IN_PROCESS);
+                updateStatus(TravelStatus.IN_PROCESS);
             }
         }
     }
 
-
-    public void changeStatus(TravelStatus status) {
+    public void updateStatus(TravelStatus status) {
         this.status = status;
+    }
+
+    public void updateTravelDetails(TravelEditDto travelEditDto) {
+        this.fromCity = travelEditDto.getFromCity();
+        this.toCity = travelEditDto.getToCity();
+        this.startDate = travelEditDto.getStartDate();
+        this.startTime = travelEditDto.getStartTime();
+        this.endDate = travelEditDto.getEndDate();
+        this.endTime = travelEditDto.getEndTime();
+        this.advancePayment = travelEditDto.getAdvancePayment();
+        this.otherExpenses = travelEditDto.getOtherExpenses();
+
+        validateDates();
+
+        if (this.dietEntity != null && travelEditDto.getDietEditDtoDto() != null) {
+            this.dietEntity.updateDietDetails(travelEditDto.getDietEditDtoDto());
+        }
+
+        if (this.overnightStayEntity != null && travelEditDto.getOvernightStayEditDto() != null) {
+            this.overnightStayEntity.updateOvernightStayDetails(travelEditDto.getOvernightStayEditDto());
+        }
+
+        if (this.transportCostEntity != null && travelEditDto.getTransportCostEditDto() != null) {
+            this.transportCostEntity.updateTransportCostDetails(travelEditDto.getTransportCostEditDto());
+        }
+
+        calculateTotalAmount();
     }
 
     private boolean anyApprovalRejected() {

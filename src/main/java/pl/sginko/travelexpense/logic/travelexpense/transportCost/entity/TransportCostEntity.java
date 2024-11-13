@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.exception.TransportException;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
@@ -28,7 +29,7 @@ public class TransportCostEntity {
 
     @NotNull(message = "Days For Undocumented Transport Cost cannot be null")
     @Column(nullable = false)
-    private Integer daysForUndocumentedTransportCost;
+    private Integer daysForUndocumentedLocalTransportCost;
 
     @Column(nullable = false)
     private BigDecimal undocumentedLocalTransportCost;
@@ -77,12 +78,12 @@ public class TransportCostEntity {
     private static final BigDecimal COST_BY_MOTORCYCLE = BigDecimal.valueOf(0.69);
     private static final BigDecimal COST_BY_MOPED = BigDecimal.valueOf(0.42);
 
-    public TransportCostEntity(TravelEntity travelEntity, Integer daysForUndocumentedTransportCost,
+    public TransportCostEntity(TravelEntity travelEntity, Integer daysForUndocumentedLocalTransportCost,
                                BigDecimal documentedLocalTransportCost, String meansOfTransport,
                                BigDecimal costOfTravelByPublicTransport, Long kilometersByCarEngineUpTo900cc,
                                Long kilometersByCarEngineAbove900cc, Long kilometersByMotorcycle, Long kilometersByMoped) {
         this.travelEntity = travelEntity;
-        this.daysForUndocumentedTransportCost = daysForUndocumentedTransportCost != null ? daysForUndocumentedTransportCost : 0;
+        this.daysForUndocumentedLocalTransportCost = daysForUndocumentedLocalTransportCost != null ? daysForUndocumentedLocalTransportCost : 0;
         this.documentedLocalTransportCost = documentedLocalTransportCost != null ? documentedLocalTransportCost : BigDecimal.ZERO;
         this.meansOfTransport = meansOfTransport != null ? meansOfTransport : "";
         this.costOfTravelByPublicTransport = costOfTravelByPublicTransport != null ? costOfTravelByPublicTransport : BigDecimal.ZERO;
@@ -93,11 +94,11 @@ public class TransportCostEntity {
 
         this.costOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport();
         this.undocumentedLocalTransportCost = calculateUndocumentedLocalTransportCost();
-        this.transportCostAmount = calculateTransportCost();
+        this.transportCostAmount = calculateTransportCostAmount();
         this.totalCostOfTravelByOwnAndPublicTransport = calculateTotalCostOfTravelByOwnAndPublicTransport();
     }
 
-    public BigDecimal calculateTransportCost() {
+    public BigDecimal calculateTransportCostAmount() {
         BigDecimal totalAmount = BigDecimal.ZERO;
 
         if (documentedLocalTransportCost.compareTo(BigDecimal.ZERO) > 0) {
@@ -107,6 +108,22 @@ public class TransportCostEntity {
         }
 
         return totalAmount.add(costOfTravelByPublicTransport).add(costOfTravelByOwnTransport);
+    }
+
+    public void updateTransportCostDetails(TransportCostEditDto transportCostEditDto) {
+        this.daysForUndocumentedLocalTransportCost = transportCostEditDto.getDaysForUndocumentedLocalTransportCost();
+        this.documentedLocalTransportCost = transportCostEditDto.getDocumentedLocalTransportCost();
+        this.meansOfTransport = transportCostEditDto.getMeansOfTransport();
+        this.costOfTravelByPublicTransport = transportCostEditDto.getCostOfTravelByPublicTransport();
+        this.kilometersByCarEngineUpTo900cc = transportCostEditDto.getKilometersByCarEngineUpTo900cc();
+        this.kilometersByCarEngineAbove900cc = transportCostEditDto.getKilometersByCarEngineAbove900cc();
+        this.kilometersByMotorcycle = transportCostEditDto.getKilometersByMotorcycle();
+        this.kilometersByMoped = transportCostEditDto.getKilometersByMoped();
+
+        this.costOfTravelByOwnTransport = calculateCostOfTravelByOwnTransport();
+        this.undocumentedLocalTransportCost = calculateUndocumentedLocalTransportCost();
+        this.transportCostAmount = calculateTransportCostAmount();
+        this.totalCostOfTravelByOwnAndPublicTransport = calculateTotalCostOfTravelByOwnAndPublicTransport();
     }
 
     private BigDecimal calculateTotalCostOfTravelByOwnAndPublicTransport() {
@@ -122,11 +139,11 @@ public class TransportCostEntity {
         BigDecimal dailyUndocumentedLocalTransportCost = dailyAllowance.multiply(BigDecimal.valueOf(0.20));
         Long daysInTravel = getDaysInTravel();
 
-        if (daysForUndocumentedTransportCost > daysInTravel) {
+        if (daysForUndocumentedLocalTransportCost > daysInTravel) {
             throw new TransportException("The number of days entered for undocumented Local Transport Costs is greater than the number of days on the trip");
         }
 
-        return dailyUndocumentedLocalTransportCost.multiply(BigDecimal.valueOf(daysForUndocumentedTransportCost));
+        return dailyUndocumentedLocalTransportCost.multiply(BigDecimal.valueOf(daysForUndocumentedLocalTransportCost));
     }
 
     private BigDecimal calculateCostOfTravelByOwnTransport() {

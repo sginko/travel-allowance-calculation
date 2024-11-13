@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.travel.entity.TravelEntity;
 
 import java.math.BigDecimal;
@@ -55,12 +56,22 @@ public class DietEntity {
         this.foodAmount = calculateFoodAmount();
     }
 
-    public BigDecimal calculateDiet() {
+    public BigDecimal calculateTotalDiet() {
         return dietAmount.subtract(foodAmount);
     }
 
+    public void updateDietDetails(DietEditDto dietEditDto) {
+        this.dailyAllowance = dietEditDto.getDailyAllowance();
+        this.numberOfBreakfasts = dietEditDto.getNumberOfBreakfasts();
+        this.numberOfLunches = dietEditDto.getNumberOfLunches();
+        this.numberOfDinners = dietEditDto.getNumberOfDinners();
+
+        this.dietAmount = calculateDietAmount();
+        this.foodAmount = calculateFoodAmount();
+    }
+
     private BigDecimal calculateDietAmount() {
-        long hoursInTravel = getDurationInHours();
+        long hoursInTravel = getTravelDurationInHours();
         BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
         BigDecimal dietAmount = BigDecimal.ZERO;
 
@@ -91,7 +102,7 @@ public class DietEntity {
         return breakfastCost.add(lunchCost).add(dinnerCost);
     }
 
-    private long getDurationInHours() {
+    private long getTravelDurationInHours() {
         return Duration.between(travelEntity.getStartTime().atDate(travelEntity.getStartDate()),
                 travelEntity.getEndTime().atDate(travelEntity.getEndDate())).toHours();
     }
