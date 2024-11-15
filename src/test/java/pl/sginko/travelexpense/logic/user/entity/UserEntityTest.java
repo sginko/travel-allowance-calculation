@@ -17,7 +17,7 @@ class UserEntityTest {
     @Test
     public void should_create_user_entity() {
         // GIVEN
-        String email = "test@test.com";
+        String email = "user@test.com";
         String name = "name";
         String surname = "surname";
         String password = "password";
@@ -36,7 +36,7 @@ class UserEntityTest {
     @Test
     public void should_change_role_to_accountant() {
         // GIVEN
-        String email = "test@test.com";
+        String email = "user@test.com";
         String name = "name";
         String surname = "surname";
         String password = "password";
@@ -86,7 +86,7 @@ class UserEntityTest {
     @Test
     public void should_fail_when_password_is_too_short() {
         // GIVEN
-        String email = "test@test.com";
+        String email = "user@test.com";
         String name = "name";
         String surname = "surname";
         String shortPassword = "short";

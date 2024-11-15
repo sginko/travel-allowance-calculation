@@ -24,23 +24,23 @@ class AuthenticationUtilTest {
     }
 
     @Test
-    void shouldReturnEmailFromUserPrincipal() {
+    void should_return_email_from_user_principal() {
         // GIVEN
-        User user = new User("user@example.com", "password", List.of());
+        User user = new User("user@test.com", "password", List.of());
         SecurityContextHolder.getContext().setAuthentication(new TestingAuthenticationToken(user, null));
 
         // WHEN
         String email = AuthenticationUtil.getCurrentUserEmail();
 
         // THEN
-        assertThat(email).isEqualTo("user@example.com");
+        assertThat(email).isEqualTo("user@test.com");
     }
 
     @Test
-    void shouldReturnEmailFromOAuth2UserPrincipal() {
+    void should_return_email_from_OAuth2User_principal() {
         // GIVEN
         OAuth2User oauthUser = mock(OAuth2User.class);
-        when(oauthUser.getAttributes()).thenReturn(Map.of("email", "oauth@example.com"));
+        when(oauthUser.getAttributes()).thenReturn(Map.of("email", "oauth@test.com"));
         OAuth2AuthenticationToken authToken = new OAuth2AuthenticationToken(oauthUser, List.of(), "google");
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
@@ -48,11 +48,11 @@ class AuthenticationUtilTest {
         String email = AuthenticationUtil.getCurrentUserEmail();
 
         // THEN
-        assertThat(email).isEqualTo("oauth@example.com");
+        assertThat(email).isEqualTo("oauth@test.com");
     }
 
     @Test
-    void shouldThrowExceptionForAnonymousUser() {
+    void should_throw_exception_for_anonymous_user() {
         // GIVEN
         SecurityContextHolder.getContext().setAuthentication(new TestingAuthenticationToken("anonymousUser", null));
 
@@ -61,7 +61,7 @@ class AuthenticationUtilTest {
     }
 
     @Test
-    void shouldThrowExceptionIfEmailNotPresentInOAuth2UserAttributes() {
+    void should_throw_exception_if_email_not_present_in_OAuth2User_attributes() {
         // GIVEN
         OAuth2User oauthUser = mock(OAuth2User.class);
         when(oauthUser.getAttributes()).thenReturn(Map.of());
@@ -73,7 +73,7 @@ class AuthenticationUtilTest {
     }
 
     @Test
-    void shouldThrowExceptionIfAuthenticationIsNull() {
+    void should_throw_exception_if_authentication_is_null() {
         // GIVEN
         SecurityContextHolder.clearContext();
 
@@ -82,7 +82,7 @@ class AuthenticationUtilTest {
     }
 
     @Test
-    void shouldThrowExceptionForUnknownPrincipalType() {
+    void should_throw_exception_for_unknown_principal_type() {
         // GIVEN
         SecurityContextHolder.getContext().setAuthentication(new TestingAuthenticationToken(new Object(), null));
 

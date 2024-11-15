@@ -29,18 +29,18 @@ class UserMapperTest {
     @Test
     void should_map_to_entity_with_encoded_password() {
         // GIVEN
-        UserRequestDto requestDto = new UserRequestDto("user@example.com", "John", "Doe", "password123");
-        String encodedPassword = "encodedPassword123";
+        UserRequestDto requestDto = new UserRequestDto("user@test.com", "name", "surname", "password");
+        String encodedPassword = "encodedPassword";
 
-        when(passwordEncoder.encode("password123")).thenReturn(encodedPassword);
+        when(passwordEncoder.encode("password")).thenReturn(encodedPassword);
 
         // WHEN
         UserEntity userEntity = userMapper.toEntity(requestDto);
 
         // THEN
-        assertThat(userEntity.getEmail()).isEqualTo("user@example.com");
-        assertThat(userEntity.getName()).isEqualTo("John");
-        assertThat(userEntity.getSurname()).isEqualTo("Doe");
+        assertThat(userEntity.getEmail()).isEqualTo("user@test.com");
+        assertThat(userEntity.getName()).isEqualTo("name");
+        assertThat(userEntity.getSurname()).isEqualTo("surname");
         assertThat(userEntity.getPassword()).isEqualTo(encodedPassword);
         assertThat(userEntity.getRoles()).isEqualTo(Roles.ROLE_USER);
     }
@@ -48,7 +48,7 @@ class UserMapperTest {
     @Test
     void should_map_to_entity_from_oauth2() {
         // GIVEN
-        String email = "oauth@example.com";
+        String email = "oauth@test.com";
         String name = "OAuth";
         String surname = "User";
 
@@ -66,16 +66,16 @@ class UserMapperTest {
     @Test
     void should_map_from_entity_to_response_dto() {
         // GIVEN
-        UserEntity userEntity = new UserEntity("user@example.com", "John", "Doe", "password123");
+        UserEntity userEntity = new UserEntity("user@test.com", "name", "surname", "password");
         userEntity.changeRoleToAccountant();
 
         // WHEN
         UserResponseDto responseDto = userMapper.fromEntity(userEntity);
 
         // THEN
-        assertThat(responseDto.getEmail()).isEqualTo("user@example.com");
-        assertThat(responseDto.getName()).isEqualTo("John");
-        assertThat(responseDto.getSurname()).isEqualTo("Doe");
+        assertThat(responseDto.getEmail()).isEqualTo("user@test.com");
+        assertThat(responseDto.getName()).isEqualTo("name");
+        assertThat(responseDto.getSurname()).isEqualTo("surname");
         assertThat(responseDto.getRoles()).isEqualTo(Roles.ROLE_ACCOUNTANT);
     }
 }

@@ -29,7 +29,7 @@ class UserReaderServiceTest {
 
     @BeforeEach
     void setUp() {
-        userEntity = new UserEntity("test@example.com", "John", "Doe", "password123");
+        userEntity = new UserEntity("user@test.com", "name", "surname", "password");
     }
 
     @Test
@@ -48,7 +48,7 @@ class UserReaderServiceTest {
     @Test
     void should_throw_exception_when_user_not_found_by_email() {
         // GIVEN
-        String email = "nonexistent@example.com";
+        String email = "nonexistent@test.com";
         when(userReaderRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         // WHEN

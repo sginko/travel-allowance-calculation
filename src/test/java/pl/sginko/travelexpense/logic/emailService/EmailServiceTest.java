@@ -2,9 +2,11 @@ package pl.sginko.travelexpense.logic.emailService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportStatus;
@@ -15,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class EmailServiceTest {
     @Mock
     private JavaMailSender mailSender;
@@ -22,15 +25,10 @@ class EmailServiceTest {
     @InjectMocks
     private EmailServiceImpl emailService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void should_send_submission_notification_successfully() {
         // GIVEN
-        String toEmail = "user@example.com";
+        String toEmail = "user@test.com";
         UUID travelTechId = UUID.randomUUID();
 
         // WHEN
@@ -43,7 +41,7 @@ class EmailServiceTest {
     @Test
     void should_send_approval_notification_successfully() {
         // GIVEN
-        String toEmail = "user@example.com";
+        String toEmail = "user@test.com";
         UUID travelTechId = UUID.randomUUID();
         TravelReportStatus status = TravelReportStatus.APPROVED;
 
@@ -57,7 +55,7 @@ class EmailServiceTest {
     @Test
     void should_throw_exception_when_sending_email_fails() {
         // GIVEN
-        String toEmail = "user@example.com";
+        String toEmail = "user@test.com";
         UUID travelTechId = UUID.randomUUID();
         TravelReportStatus status = TravelReportStatus.APPROVED;
 

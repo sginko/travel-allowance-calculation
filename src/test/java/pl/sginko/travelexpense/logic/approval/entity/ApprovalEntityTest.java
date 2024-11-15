@@ -27,7 +27,7 @@ class ApprovalEntityTest {
 
     @BeforeEach
     void setUp() {
-        approver = new UserEntity("approver@test.com", "Approver", "User", "password");
+        approver = new UserEntity("approver@test.com", "approver", "user", "password");
 
         approver.changeRoleToManager();
 
@@ -104,7 +104,7 @@ class ApprovalEntityTest {
     @Test
     void equals_should_return_false_for_different_approver() {
         // GIVEN
-        UserEntity differentApprover = new UserEntity("different@example.com", "Different", "Approver", "password");
+        UserEntity differentApprover = new UserEntity("different@test.com", "different", "approver", "password");
         differentApprover.changeRoleToAccountant();
         ApprovalEntity differentApproval = new ApprovalEntity(travelReportEntity, differentApprover, DEFAULT_ROLE);
 
