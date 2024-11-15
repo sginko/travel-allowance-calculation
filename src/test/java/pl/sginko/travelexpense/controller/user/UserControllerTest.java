@@ -222,6 +222,4 @@ class UserControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Can not find user with this email: " + email));
     }
-
-
 }
