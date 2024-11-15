@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.user.exception.UserException;
+import pl.sginko.travelexpense.logic.user.exception.UserNotFoundException;
 
 import java.util.stream.Collectors;
 
@@ -17,9 +18,15 @@ import java.util.stream.Collectors;
 public class UserControllerAdvice {
 
     @ExceptionHandler(UserException.class)
-    public ResponseEntity<UserControllerAdvice.Response> handleUserException(UserException e) {
-        UserControllerAdvice.Response response = new Response(e.getMessage());
+    public ResponseEntity<Response> handleUserException(UserException e) {
+        Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Response> handleUserNotFoundException(UserNotFoundException e) {
+        Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

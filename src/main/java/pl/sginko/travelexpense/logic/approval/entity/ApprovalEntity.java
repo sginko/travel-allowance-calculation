@@ -20,7 +20,7 @@ public class ApprovalEntity {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "travel_report_id", nullable = false)
+    @JoinColumn(name = "travel_id", nullable = false)
     private TravelReportEntity travelReportEntity;
 
     @ManyToOne(optional = false)

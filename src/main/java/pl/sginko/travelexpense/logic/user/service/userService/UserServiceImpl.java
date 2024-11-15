@@ -7,6 +7,7 @@ import pl.sginko.travelexpense.logic.user.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.user.dto.UserResponseDto;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
 import pl.sginko.travelexpense.logic.user.exception.UserException;
+import pl.sginko.travelexpense.logic.user.exception.UserNotFoundException;
 import pl.sginko.travelexpense.logic.user.mapper.UserMapper;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
 
@@ -62,6 +63,6 @@ public class UserServiceImpl implements UserService {
 
     private UserEntity findUserByEmailOrThrow(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserException("Can not find user with this email: " + email));
+                .orElseThrow(() -> new UserNotFoundException("Can not find user with this email: " + email));
     }
 }
