@@ -72,13 +72,19 @@ public class TravelReportEntity {
     @Column(nullable = false)
     private BigDecimal advancePayment;
 
-    @OneToOne(mappedBy = "travelReportEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    //    @OneToOne(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "diet_id", nullable = false)
     private DietEntity dietEntity;
 
-    @OneToOne(mappedBy = "travelReportEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    //    @OneToOne(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "overnightStay_id", nullable = false)
     private OvernightStayEntity overnightStayEntity;
 
-    @OneToOne(mappedBy = "travelReportEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    //    @OneToOne(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "transportCost_id", nullable = false)
     private TransportCostEntity transportCostEntity;
 
     @Column(nullable = false)
@@ -91,7 +97,7 @@ public class TravelReportEntity {
     @Column(nullable = false)
     private TravelReportStatus status;
 
-    @OneToMany(mappedBy = "travelReportEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<ApprovalEntity> approvals = new HashSet<>();
 
     public TravelReportEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime, LocalDate endDate,
@@ -161,8 +167,8 @@ public class TravelReportEntity {
 
         validateDates();
 
-        if (this.dietEntity != null && travelReportEditDto.getDietEditDtoDto() != null) {
-            this.dietEntity.updateDietDetails(travelReportEditDto.getDietEditDtoDto());
+        if (this.dietEntity != null && travelReportEditDto.getDietEditDto() != null) {
+            this.dietEntity.updateDietDetails(travelReportEditDto.getDietEditDto());
         }
 
         if (this.overnightStayEntity != null && travelReportEditDto.getOvernightStayEditDto() != null) {

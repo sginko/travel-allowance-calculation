@@ -1,10 +1,10 @@
 package pl.sginko.travelexpense.logic.travelexpense.diet.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.diet.mapper.DietMapper;
@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class DietServiceTest {
     @Mock
     private DietMapper dietMapper;
@@ -28,24 +29,18 @@ class DietServiceTest {
     @Mock
     private DietDto dietDto;
 
-    private TravelReportEntity travelReportEntity;
-
-    private DietEntity dietEntity;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        travelReportEntity = new TravelReportEntity("CityA", "CityB", LocalDate.now(), LocalTime.of(8, 0),
-                LocalDate.now().plusDays(1), LocalTime.of(18, 0), null, BigDecimal.ZERO, BigDecimal.ZERO);
-
-        dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45), 1, 1, 1);
-
-        when(dietMapper.toEntity(dietDto, travelReportEntity)).thenReturn(dietEntity);
-    }
-
     @Test
     void should_create_DietEntity() {
+        //GIVEN
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB", LocalDate.now(),
+                LocalTime.of(8, 0), LocalDate.now().plusDays(1), LocalTime.of(18, 0),
+                null, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45),
+                1, 1, 1);
+
+        when(dietMapper.toEntity(dietDto, travelReportEntity)).thenReturn(dietEntity);
+
         // WHEN
         DietEntity result = dietService.createDietEntity(dietDto, travelReportEntity);
 

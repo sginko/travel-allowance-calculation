@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostDto;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
@@ -78,5 +79,35 @@ class TransportCostMapperTest {
                 .isEqualByComparingTo(transportCostEntity.getCostOfTravelByOwnTransport());
         assertThat(transportCostResponseDto.getTransportCostAmount())
                 .isEqualByComparingTo(transportCostEntity.getTransportCostAmount());
+    }
+
+    @Test
+    void should_map_TransportCostEntity_to_TransportCostEditDto_correctly() {
+        // GIVEN
+        TransportCostEntity transportCostEntity = new TransportCostEntity(travelReportEntity, 2,
+                BigDecimal.valueOf(300), "Bus", BigDecimal.valueOf(150), 100L,
+                200L, 50L, 30L);
+
+        // WHEN
+        TransportCostEditDto transportCostEditDto = transportCostMapper.toTransportCosEditDto(transportCostEntity);
+
+        // THEN
+        assertThat(transportCostEditDto).isNotNull();
+        assertThat(transportCostEditDto.getDaysForUndocumentedLocalTransportCost())
+                .isEqualTo(transportCostEntity.getDaysForUndocumentedLocalTransportCost());
+        assertThat(transportCostEditDto.getDocumentedLocalTransportCost())
+                .isEqualByComparingTo(transportCostEntity.getDocumentedLocalTransportCost());
+        assertThat(transportCostEditDto.getMeansOfTransport())
+                .isEqualTo(transportCostEntity.getMeansOfTransport());
+        assertThat(transportCostEditDto.getCostOfTravelByPublicTransport())
+                .isEqualByComparingTo(transportCostEntity.getCostOfTravelByPublicTransport());
+        assertThat(transportCostEditDto.getKilometersByCarEngineUpTo900cc())
+                .isEqualTo(transportCostEntity.getKilometersByCarEngineUpTo900cc());
+        assertThat(transportCostEditDto.getKilometersByCarEngineAbove900cc())
+                .isEqualTo(transportCostEntity.getKilometersByCarEngineAbove900cc());
+        assertThat(transportCostEditDto.getKilometersByMotorcycle())
+                .isEqualTo(transportCostEntity.getKilometersByMotorcycle());
+        assertThat(transportCostEditDto.getKilometersByMoped())
+                .isEqualTo(transportCostEntity.getKilometersByMoped());
     }
 }

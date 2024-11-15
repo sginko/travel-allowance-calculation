@@ -6,9 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 @EqualsAndHashCode(of = {"travelReportEntity", "approver", "role"})
 @Getter
@@ -20,7 +20,7 @@ public class ApprovalEntity {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "travel_id", nullable = false)
+    @JoinColumn(name = "travel_report_id", nullable = false)
     private TravelReportEntity travelReportEntity;
 
     @ManyToOne(optional = false)

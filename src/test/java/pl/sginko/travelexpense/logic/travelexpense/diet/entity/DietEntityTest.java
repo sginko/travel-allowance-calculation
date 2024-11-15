@@ -1,9 +1,11 @@
 package pl.sginko.travelexpense.logic.travelexpense.diet.entity;
 
 import org.junit.jupiter.api.Test;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -23,7 +25,9 @@ class DietEntityTest {
         // GIVEN
         TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE, END_TIME_SHORT, null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE,
+                0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -38,7 +42,9 @@ class DietEntityTest {
         // GIVEN
         TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE, END_TIME_8_HOURS, null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE,
+                0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -53,7 +59,9 @@ class DietEntityTest {
         // GIVEN
         TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE, END_TIME_12_HOURS, null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE,
+                0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -69,7 +77,9 @@ class DietEntityTest {
         TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE.plusDays(2), END_TIME_8_HOURS, null,
                 BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE,
+                0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -85,7 +95,9 @@ class DietEntityTest {
         TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE.plusDays(1), LocalTime.of(18, 0), null,
                 BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 1, 1, 1);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE,
+                1, 1, 1);
 
         // WHEN
         BigDecimal foodAmount = dietEntity.getFoodAmount();
@@ -103,7 +115,9 @@ class DietEntityTest {
         TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 START_DATE, START_TIME, START_DATE.plusDays(1), LocalTime.of(18, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 1, 1, 1);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE,
+                1, 1, 1);
 
         // WHEN
         BigDecimal expectedTotalDiet = dietEntity.calculateTotalDiet();
@@ -118,8 +132,11 @@ class DietEntityTest {
     void should_return_full_dailyAllowance_when_travel_duration_is_greater_than_12_but_less_than_24_hours() {
         // GIVEN
         TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
-                START_DATE, START_TIME, START_DATE, LocalTime.of(21, 0), null, BigDecimal.ZERO, BigDecimal.ZERO);
-        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 0, 0, 0);
+                START_DATE, START_TIME, START_DATE, LocalTime.of(21, 0), null,
+                BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE,
+                0, 0, 0);
 
         // WHEN
         BigDecimal dietAmount = dietEntity.getDietAmount();
@@ -127,5 +144,76 @@ class DietEntityTest {
 
         // THEN
         assertThat(dietAmount).isEqualByComparingTo(expectedDietAmount);
+    }
+
+    @Test
+    void should_update_dietDetails_based_on_dietEditDto() {
+        // GIVEN
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
+                START_DATE, START_TIME, START_DATE.plusDays(1), LocalTime.of(18, 0),
+                null, BigDecimal.ZERO, BigDecimal.ZERO);
+
+        DietEntity dietEntity = new DietEntity(travelReportEntity, DAILY_ALLOWANCE, 1, 1, 1);
+
+        DietEditDto dietEditDto = new DietEditDto(BigDecimal.valueOf(50), 2, 2, 2);
+
+        // WHEN
+        dietEntity.updateDietDetails(dietEditDto);
+
+        // THEN
+        assertThat(dietEntity.getDailyAllowance()).isEqualByComparingTo(dietEditDto.getDailyAllowance());
+        assertThat(dietEntity.getNumberOfBreakfasts()).isEqualTo(dietEditDto.getNumberOfBreakfasts());
+        assertThat(dietEntity.getNumberOfLunches()).isEqualTo(dietEditDto.getNumberOfLunches());
+        assertThat(dietEntity.getNumberOfDinners()).isEqualTo(dietEditDto.getNumberOfDinners());
+
+        BigDecimal expectedDietAmount = calculateExpectedDietAmount(travelReportEntity, dietEntity.getDailyAllowance());
+        BigDecimal expectedFoodAmount = calculateExpectedFoodAmount(dietEntity);
+
+        assertThat(dietEntity.getDietAmount()).isEqualByComparingTo(expectedDietAmount);
+        assertThat(dietEntity.getFoodAmount()).isEqualByComparingTo(expectedFoodAmount);
+    }
+
+    private BigDecimal calculateExpectedDietAmount(TravelReportEntity travelReportEntity, BigDecimal dailyAllowance) {
+        long hoursInTravel = Duration.between(
+                travelReportEntity.getStartDate().atTime(travelReportEntity.getStartTime()),
+                travelReportEntity.getEndDate().atTime(travelReportEntity.getEndTime())).toHours();
+
+        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
+
+        BigDecimal dietAmount = BigDecimal.ZERO;
+        if (hoursInTravel <= 24) {
+            if (hoursInTravel < 8) {
+                dietAmount = BigDecimal.ZERO;
+            } else if (hoursInTravel <= 12) {
+                dietAmount = fiftyPercentOfDailyAllowance;
+            } else {
+                dietAmount = dailyAllowance;
+            }
+        } else {
+            long fullDays = hoursInTravel / 24;
+            long remainingHours = hoursInTravel % 24;
+            dietAmount = dailyAllowance.multiply(BigDecimal.valueOf(fullDays));
+
+            if (remainingHours > 0) {
+                if (remainingHours <= 8) {
+                    dietAmount = dietAmount.add(fiftyPercentOfDailyAllowance); // Исправлено
+                } else {
+                    dietAmount = dietAmount.add(dailyAllowance);
+                }
+            }
+        }
+        return dietAmount;
+    }
+
+    private BigDecimal calculateExpectedFoodAmount(DietEntity dietEntity) {
+        BigDecimal dailyAllowance = dietEntity.getDailyAllowance();
+        BigDecimal fiftyPercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.50));
+        BigDecimal twentyFivePercentOfDailyAllowance = dailyAllowance.multiply(BigDecimal.valueOf(0.25));
+
+        BigDecimal breakfastCost = twentyFivePercentOfDailyAllowance.multiply(BigDecimal.valueOf(dietEntity.getNumberOfBreakfasts()));
+        BigDecimal lunchCost = fiftyPercentOfDailyAllowance.multiply(BigDecimal.valueOf(dietEntity.getNumberOfLunches()));
+        BigDecimal dinnerCost = twentyFivePercentOfDailyAllowance.multiply(BigDecimal.valueOf(dietEntity.getNumberOfDinners()));
+
+        return breakfastCost.add(lunchCost).add(dinnerCost);
     }
 }

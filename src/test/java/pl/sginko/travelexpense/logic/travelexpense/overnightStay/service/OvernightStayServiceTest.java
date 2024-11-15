@@ -1,10 +1,10 @@
 package pl.sginko.travelexpense.logic.travelexpense.overnightStay.service;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class OvernightStayServiceTest {
     @Mock
     private OvernightStayMapper overnightStayMapper;
@@ -28,15 +29,10 @@ class OvernightStayServiceTest {
     @InjectMocks
     private OvernightStayServiceImpl overnightStayService;
 
-    private TravelReportEntity travelReportEntity;
-
-    private OvernightStayEntity overnightStayEntity;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-        travelReportEntity = new TravelReportEntity("CityA", "CityB",
+    @Test
+    void should_create_overnightStay_entity() {
+        //GIVEN
+        TravelReportEntity travelReportEntity = new TravelReportEntity("CityA", "CityB",
                 LocalDate.now(), LocalTime.of(20, 0),
                 LocalDate.now().plusDays(1), LocalTime.of(6, 0),
                 null, BigDecimal.ZERO, BigDecimal.ZERO);
@@ -46,15 +42,12 @@ class OvernightStayServiceTest {
 
         travelReportEntity.setDietDetails(dietEntity);
 
-        overnightStayEntity = new OvernightStayEntity(travelReportEntity,
+        OvernightStayEntity overnightStayEntity = new OvernightStayEntity(travelReportEntity,
                 1, 0,
                 BigDecimal.valueOf(500), false);
 
         when(overnightStayMapper.toEntity(overnightStayDto, travelReportEntity)).thenReturn(overnightStayEntity);
-    }
 
-    @Test
-    void should_create_overnightStay_entity() {
         // WHEN
         OvernightStayEntity result = overnightStayService.createOvernightStayEntity(overnightStayDto, travelReportEntity);
 

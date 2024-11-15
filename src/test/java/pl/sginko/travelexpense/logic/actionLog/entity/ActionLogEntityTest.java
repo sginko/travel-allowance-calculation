@@ -9,13 +9,13 @@ class ActionLogEntityTest {
     private ActionLogEntity actionLogEntity;
 
     private static final String INITIAL_MESSAGE = "Initial Message";
-    private static final Long INITIAL_TRAVEL_ID = 1L;
+    private static final Long INITIAL_TRAVEL_REPORT_ID = 1L;
     private static final Long INITIAL_APPROVER_ID = 2L;
     private static final long INITIAL_TIMESTAMP = System.currentTimeMillis();
 
     @BeforeEach
     void setUp() {
-        actionLogEntity = new ActionLogEntity(INITIAL_MESSAGE, INITIAL_TRAVEL_ID, INITIAL_APPROVER_ID, INITIAL_TIMESTAMP);
+        actionLogEntity = new ActionLogEntity(INITIAL_MESSAGE, INITIAL_TRAVEL_REPORT_ID, INITIAL_APPROVER_ID, INITIAL_TIMESTAMP);
     }
 
     @Test
@@ -39,7 +39,7 @@ class ActionLogEntityTest {
         actionLogEntity.updateTravelId(newTravelId);
 
         // THEN
-        assertThat(actionLogEntity.getTravelId()).isEqualTo(newTravelId);
+        assertThat(actionLogEntity.getTravelReportId()).isEqualTo(newTravelId);
     }
 
     @Test

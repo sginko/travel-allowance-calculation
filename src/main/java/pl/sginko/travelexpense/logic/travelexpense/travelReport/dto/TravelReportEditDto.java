@@ -46,7 +46,7 @@ public class TravelReportEditDto {
     private BigDecimal otherExpenses;
 
     @NotNull(message = "DietDto cannot be null")
-    private DietEditDto dietEditDtoDto;
+    private DietEditDto dietEditDto;
 
     @NotNull(message = "OvernightStayDto cannot be null")
     private OvernightStayEditDto overnightStayEditDto;

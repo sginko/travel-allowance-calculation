@@ -4,16 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ApprovalEntityTest {
     private ApprovalEntity approvalEntity;
@@ -26,12 +27,14 @@ class ApprovalEntityTest {
 
     @BeforeEach
     void setUp() {
-        approver = new UserEntity("approver@example.com", "Approver", "User", "password");
+        approver = new UserEntity("approver@test.com", "Approver", "User", "password");
+
         approver.changeRoleToManager();
-        travelReportEntity = new TravelReportEntity("CityA", "CityB",
-                LocalDate.now(), LocalTime.of(8, 0),
-                LocalDate.now().plusDays(1), LocalTime.of(18, 0),
+
+        travelReportEntity = new TravelReportEntity("CityA", "CityB", LocalDate.now(),
+                LocalTime.of(8, 0), LocalDate.now().plusDays(1), LocalTime.of(18, 0),
                 approver, BigDecimal.ZERO, BigDecimal.ZERO);
+
         approvalEntity = new ApprovalEntity(travelReportEntity, approver, DEFAULT_ROLE);
     }
 
@@ -91,6 +94,7 @@ class ApprovalEntityTest {
                 LocalDate.now(), LocalTime.of(9, 0),
                 LocalDate.now().plusDays(2), LocalTime.of(19, 0),
                 approver, BigDecimal.ZERO, BigDecimal.ZERO);
+
         ApprovalEntity differentApproval = new ApprovalEntity(differentTravel, approver, DEFAULT_ROLE);
 
         // THEN

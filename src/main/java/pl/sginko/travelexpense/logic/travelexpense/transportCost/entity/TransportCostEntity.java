@@ -23,8 +23,9 @@ public class TransportCostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "travel_id", nullable = false)
+    //    @OneToOne
+//    @JoinColumn(name = "travel_report_id", nullable = false)
+    @OneToOne(mappedBy = "transportCostEntity")
     private TravelReportEntity travelReportEntity;
 
     @NotNull(message = "Days For Undocumented Transport Cost cannot be null")

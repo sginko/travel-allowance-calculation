@@ -5,12 +5,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.mapper.DietMapper;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.mapper.OvernightStayMapper;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.mapper.TransportCostMapper;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportSubmissionResponseDto;
@@ -109,5 +113,34 @@ class TravelReportMapperTest {
         // THEN
         assertThat(submissionResponseDto).isNotNull();
         assertThat(submissionResponseDto.getStatus()).isEqualTo(TravelReportStatus.APPROVED);
+    }
+
+    @Test
+    void should_map_TravelEntity_to_TravelEditDto_correctly() {
+        // GIVEN
+        DietEditDto dietEditDto = mock(DietEditDto.class);
+        OvernightStayEditDto overnightStayEditDto = mock(OvernightStayEditDto.class);
+        TransportCostEditDto transportCostEditDto = mock(TransportCostEditDto.class);
+
+        when(dietMapper.toDietEditDto(travelReportEntity.getDietEntity())).thenReturn(dietEditDto);
+        when(overnightStayMapper.toOvernightStayEditDto(travelReportEntity.getOvernightStayEntity())).thenReturn(overnightStayEditDto);
+        when(transportCostMapper.toTransportCosEditDto(travelReportEntity.getTransportCostEntity())).thenReturn(transportCostEditDto);
+
+        // WHEN
+        TravelReportEditDto travelReportEditDto = travelReportMapper.toTravelEditDto(travelReportEntity);
+
+        // THEN
+        assertThat(travelReportEditDto).isNotNull();
+        assertThat(travelReportEditDto.getFromCity()).isEqualTo(travelReportEntity.getFromCity());
+        assertThat(travelReportEditDto.getToCity()).isEqualTo(travelReportEntity.getToCity());
+        assertThat(travelReportEditDto.getStartDate()).isEqualTo(travelReportEntity.getStartDate());
+        assertThat(travelReportEditDto.getStartTime()).isEqualTo(travelReportEntity.getStartTime());
+        assertThat(travelReportEditDto.getEndDate()).isEqualTo(travelReportEntity.getEndDate());
+        assertThat(travelReportEditDto.getEndTime()).isEqualTo(travelReportEntity.getEndTime());
+        assertThat(travelReportEditDto.getAdvancePayment()).isEqualByComparingTo(travelReportEntity.getAdvancePayment());
+        assertThat(travelReportEditDto.getOtherExpenses()).isEqualByComparingTo(travelReportEntity.getOtherExpenses());
+        assertThat(travelReportEditDto.getDietEditDto()).isEqualTo(dietEditDto);
+        assertThat(travelReportEditDto.getOvernightStayEditDto()).isEqualTo(overnightStayEditDto);
+        assertThat(travelReportEditDto.getTransportCostEditDto()).isEqualTo(transportCostEditDto);
     }
 }

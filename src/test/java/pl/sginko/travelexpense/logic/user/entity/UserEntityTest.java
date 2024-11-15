@@ -17,10 +17,10 @@ class UserEntityTest {
     @Test
     public void should_create_user_entity() {
         // GIVEN
-        String email = "test@example.com";
+        String email = "test@test.com";
         String name = "name";
         String surname = "surname";
-        String password = "password123";
+        String password = "password";
 
         // WHEN
         UserEntity user = new UserEntity(email, name, surname, password);
@@ -36,10 +36,10 @@ class UserEntityTest {
     @Test
     public void should_change_role_to_accountant() {
         // GIVEN
-        String email = "test@example.com";
+        String email = "test@test.com";
         String name = "name";
         String surname = "surname";
-        String password = "password123";
+        String password = "password";
 
         UserEntity user = new UserEntity(email, name, surname, password);
 
@@ -53,10 +53,10 @@ class UserEntityTest {
     @Test
     public void should_change_role_to_manager() {
         // GIVEN
-        String email = "manager@example.com";
-        String name = "Jane";
-        String surname = "Smith";
-        String password = "password456";
+        String email = "manager@test.com";
+        String name = "name";
+        String surname = "surname";
+        String password = "password";
 
         UserEntity user = new UserEntity(email, name, surname, password);
 
@@ -73,7 +73,7 @@ class UserEntityTest {
         String invalidEmail = "invalid-email";
         String name = "name";
         String surname = "surname";
-        String password = "password123";
+        String password = "password";
 
         // WHEN
         UserEntity user = new UserEntity(invalidEmail, name, surname, password);
@@ -86,7 +86,7 @@ class UserEntityTest {
     @Test
     public void should_fail_when_password_is_too_short() {
         // GIVEN
-        String email = "test@example.com";
+        String email = "test@test.com";
         String name = "name";
         String surname = "surname";
         String shortPassword = "short";

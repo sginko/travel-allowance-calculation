@@ -3,6 +3,7 @@ package pl.sginko.travelexpense.logic.travelexpense.diet.mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietDto;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.entity.TravelReportEntity;
@@ -59,5 +60,22 @@ class DietMapperTest {
         assertThat(dietResponseDto.getNumberOfDinners()).isEqualTo(dietEntity.getNumberOfDinners());
         assertThat(dietResponseDto.getFoodAmount()).isEqualByComparingTo(dietEntity.getFoodAmount());
         assertThat(dietResponseDto.getDietAmount()).isEqualByComparingTo(dietEntity.getDietAmount());
+    }
+
+    @Test
+    void should_map_DietEntity_to_DietEditDto_correctly() {
+        // GIVEN
+        DietEntity dietEntity = new DietEntity(travelReportEntity, BigDecimal.valueOf(45), 2,
+                3, 1);
+
+        // WHEN
+        DietEditDto dietEditDto = dietMapper.toDietEditDto(dietEntity);
+
+        // THEN
+        assertThat(dietEditDto).isNotNull();
+        assertThat(dietEditDto.getDailyAllowance()).isEqualByComparingTo(dietEntity.getDailyAllowance());
+        assertThat(dietEditDto.getNumberOfBreakfasts()).isEqualTo(dietEntity.getNumberOfBreakfasts());
+        assertThat(dietEditDto.getNumberOfLunches()).isEqualTo(dietEntity.getNumberOfLunches());
+        assertThat(dietEditDto.getNumberOfDinners()).isEqualTo(dietEntity.getNumberOfDinners());
     }
 }

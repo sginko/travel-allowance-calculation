@@ -48,7 +48,7 @@ class ActionLogServiceTest {
         // THEN
         verify(actionLogRepository, times(1)).save(argThat(log ->
                 log.getMessage().equals(message) &&
-                        log.getTravelId().equals(travelId) &&
+                        log.getTravelReportId().equals(travelId) &&
                         log.getApproverId().equals(approverId) &&
                         log.getTimestamp() > 0));
     }

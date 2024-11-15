@@ -20,8 +20,8 @@ public class DietEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "travel_id", nullable = false)
+    //    @JoinColumn(name = "travel_report_id", nullable = false)
+    @OneToOne(mappedBy = "dietEntity")
     private TravelReportEntity travelReportEntity;
 
     @Column(nullable = false)

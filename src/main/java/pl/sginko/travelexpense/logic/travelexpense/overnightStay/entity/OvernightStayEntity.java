@@ -22,8 +22,9 @@ public class OvernightStayEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "travel_id", nullable = false)
+    //    @OneToOne
+//    @JoinColumn(name = "travel_report_id", nullable = false)
+    @OneToOne(mappedBy = "overnightStayEntity")
     private TravelReportEntity travelReportEntity;
 
     @Min(value = 0, message = "Number of overnight stay without invoice cannot be negative")

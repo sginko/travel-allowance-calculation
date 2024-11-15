@@ -2,14 +2,19 @@ package pl.sginko.travelexpense.logic.travelexpense.travelReport.entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sginko.travelexpense.logic.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.logic.approval.entity.ApprovalStatus;
+import pl.sginko.travelexpense.logic.travelexpense.diet.dto.DietEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.diet.entity.DietEntity;
+import pl.sginko.travelexpense.logic.travelexpense.overnightStay.dto.OvernightStayEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.entity.OvernightStayEntity;
+import pl.sginko.travelexpense.logic.travelexpense.transportCost.dto.TransportCostEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.entity.TransportCostEntity;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportEditDto;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
@@ -22,8 +27,10 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class TravelReportEntityTest {
     @Mock
     private DietEntity dietEntity;
@@ -40,7 +47,6 @@ class TravelReportEntityTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
         userEntity = new UserEntity("user@example.com", "John", "Doe", "password123");
 
         travelReportEntity = new TravelReportEntity("CityA", "CityB",
@@ -128,5 +134,47 @@ class TravelReportEntityTest {
 
         // THEN
         assertThat(travelReportEntity.getStatus()).isEqualTo(TravelReportStatus.IN_PROCESS);
+    }
+
+    @Test
+    void should_update_travel_details_correctly() {
+        // GIVEN
+        DietEditDto dietEditDto = new DietEditDto(BigDecimal.valueOf(50), 2, 1, 1);
+
+        OvernightStayEditDto overnightStayEditDto = new OvernightStayEditDto(1,
+                1, BigDecimal.valueOf(180), true);
+
+        TransportCostEditDto transportCostEditDto = new TransportCostEditDto(2,
+                BigDecimal.valueOf(100), "Train", BigDecimal.valueOf(230),
+                0L, 100L, 0L, 0L);
+
+        TravelReportEditDto travelReportEditDto = new TravelReportEditDto("NewCityA", "NewCityB",
+                LocalDate.of(2024, 12, 1), LocalTime.of(8, 30),
+                LocalDate.of(2024, 12, 2), LocalTime.of(17, 45), BigDecimal.valueOf(80),
+                BigDecimal.valueOf(120), dietEditDto, overnightStayEditDto, transportCostEditDto);
+
+        when(dietEntity.calculateTotalDiet()).thenReturn(BigDecimal.valueOf(200));
+        when(overnightStayEntity.getOvernightStayAmount()).thenReturn(BigDecimal.valueOf(180));
+        when(transportCostEntity.getTransportCostAmount()).thenReturn(BigDecimal.valueOf(330));
+
+        // WHEN
+        travelReportEntity.updateTravelDetails(travelReportEditDto);
+
+        // THEN
+        assertThat(travelReportEntity.getFromCity()).isEqualTo("NewCityA");
+        assertThat(travelReportEntity.getToCity()).isEqualTo("NewCityB");
+        assertThat(travelReportEntity.getStartDate()).isEqualTo(LocalDate.of(2024, 12, 1));
+        assertThat(travelReportEntity.getStartTime()).isEqualTo(LocalTime.of(8, 30));
+        assertThat(travelReportEntity.getEndDate()).isEqualTo(LocalDate.of(2024, 12, 2));
+        assertThat(travelReportEntity.getEndTime()).isEqualTo(LocalTime.of(17, 45));
+        assertThat(travelReportEntity.getAdvancePayment()).isEqualByComparingTo(BigDecimal.valueOf(80));
+        assertThat(travelReportEntity.getOtherExpenses()).isEqualByComparingTo(BigDecimal.valueOf(120));
+
+        verify(dietEntity).updateDietDetails(dietEditDto);
+        verify(overnightStayEntity).updateOvernightStayDetails(overnightStayEditDto);
+        verify(transportCostEntity).updateTransportCostDetails(transportCostEditDto);
+
+        BigDecimal expectedTotal = BigDecimal.valueOf(200 + 180 + 330 + 120 - 80);
+        assertThat(travelReportEntity.getTotalAmount()).isEqualByComparingTo(expectedTotal);
     }
 }

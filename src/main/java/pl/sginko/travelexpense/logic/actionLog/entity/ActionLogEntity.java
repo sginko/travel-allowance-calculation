@@ -17,14 +17,14 @@ public class ActionLogEntity {
     private Long id;
 
     private String message;
-    private Long travelId;
+    private Long travelReportId;
     private Long approverId;
     private long timestamp;
 
 
-    public ActionLogEntity(String message, Long travelId, Long approverId, long timestamp) {
+    public ActionLogEntity(String message, Long travelReportId, Long approverId, long timestamp) {
         this.message = message;
-        this.travelId = travelId;
+        this.travelReportId = travelReportId;
         this.approverId = approverId;
         this.timestamp = timestamp;
     }
@@ -33,8 +33,8 @@ public class ActionLogEntity {
         this.message = message;
     }
 
-    public void updateTravelId(Long travelId) {
-        this.travelId = travelId;
+    public void updateTravelId(Long travelReportId) {
+        this.travelReportId = travelReportId;
     }
 
     public void updateApproverId(Long approverId) {

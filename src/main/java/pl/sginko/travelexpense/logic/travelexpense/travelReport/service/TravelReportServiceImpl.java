@@ -81,7 +81,9 @@ public class TravelReportServiceImpl implements TravelReportService {
     @Override
     public List<TravelReportResponseDto> getUserTravelExpenseReports() {
         String email = AuthenticationUtil.getCurrentUserEmail();
+
         List<TravelReportEntity> allByUserEntityEmail = travelReportRepository.findAllByUserEntity_Email(email);
+
         return allByUserEntityEmail.stream()
                 .map(entity -> travelReportMapper.toResponseDto(entity))
                 .collect(Collectors.toList());
@@ -116,23 +118,50 @@ public class TravelReportServiceImpl implements TravelReportService {
     @Transactional
     public void cleanupOldReports() {
         LocalDate cutoffDate = LocalDate.now().minusDays(1);
+
         List<TravelReportEntity> oldReports = travelReportRepository.findByStartDateBefore(cutoffDate);
 
         oldReports.forEach(entity -> travelReportRepository.delete(entity));
+
         System.out.println("Old reports was deleted.");
     }
 
     private TravelReportEntity getTravelEntity(UUID techId) {
-        TravelReportEntity travelReportEntity = travelReportRepository.findByTechId(techId)
+        String email = AuthenticationUtil.getCurrentUserEmail();
+
+        return travelReportRepository.findByTechIdAndUserEntity_Email(techId, email)
                 .orElseThrow(() -> new TravelReportException("Travel not found"));
-        return travelReportEntity;
     }
 
+//    private TravelReportEntity getTravelEntity2(UUID techId) {
+//        TravelReportEntity travelReportEntity = travelReportRepository.findByTechId(techId)
+//                .orElseThrow(() -> new TravelReportException("Travel not found"));
+//        return travelReportEntity;
+//    }
+
     private void publishSubmitEvent(TravelReportEntity travelReportEntity, UserEntity currentUser) {
-        TravelReportSubmissionEvent submissionEvent = new TravelReportSubmissionEvent(
-                travelReportEntity.getTechId(),
-                currentUser.getEmail()
-        );
+        TravelReportSubmissionEvent submissionEvent = new TravelReportSubmissionEvent(travelReportEntity.getTechId(),
+                currentUser.getEmail());
+
         eventPublisher.publishEvent(submissionEvent);
     }
+
+//    @Override
+//    public void deleteAllTravelsByUser() {
+//        String email = AuthenticationUtil.getCurrentUserEmail();
+//        travelRepository.deleteAllByUserEntity_Email(email);
+//    }
+//
+//    @Transactional
+//    @Override
+//    public void deleteTravelByIdByUser(UUID techId) {
+//        String email = AuthenticationUtil.getCurrentUserEmail();
+//        Optional<TravelEntity> optionalTravelEntity = travelRepository.findByTechIdAndUserEntity_Email(techId, email);
+//
+//        if (optionalTravelEntity.isPresent()) {
+//            travelRepository.delete(optionalTravelEntity.get());
+//        } else {
+//            throw new TravelException("Travel with techId " + techId + " not found for user " + email);
+//        }
+//    }
 }
