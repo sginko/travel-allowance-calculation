@@ -13,6 +13,7 @@ import pl.sginko.travelexpense.logic.user.dto.UserResponseDto;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
 import pl.sginko.travelexpense.logic.user.entity.UserEntity;
 import pl.sginko.travelexpense.logic.user.exception.UserException;
+import pl.sginko.travelexpense.logic.user.exception.UserNotFoundException;
 import pl.sginko.travelexpense.logic.user.mapper.UserMapper;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
 import pl.sginko.travelexpense.logic.user.service.userService.UserServiceImpl;
@@ -43,9 +44,9 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userRequestDto = new UserRequestDto("test@example.com", "John", "Doe", "password123");
-        userEntity = new UserEntity("test@example.com", "John", "Doe", "encodedPassword");
-        userResponseDto = new UserResponseDto("test@example.com", "John", "Doe", Roles.ROLE_USER);
+        userRequestDto = new UserRequestDto("test@test.com", "name", "surname", "password123");
+        userEntity = new UserEntity("test@test.com", "name", "surname", "encodedPassword");
+        userResponseDto = new UserResponseDto("test@test.com", "name", "surname", Roles.ROLE_USER);
     }
 
     @Test
@@ -73,9 +74,6 @@ class UserServiceTest {
 
         // THEN
         assertThrows(UserException.class, e);
-//        assertThatThrownBy(executable)
-//                .isInstanceOf(UserException.class)
-//                .hasMessage("User with this email already exists");
         verify(userRepository, times(1)).findByEmail(userRequestDto.getEmail());
         verify(userRepository, never()).save(any(UserEntity.class));
     }
@@ -124,7 +122,7 @@ class UserServiceTest {
     @Test
     void should_save_oauth2_user_if_not_exists() {
         // GIVEN
-        String email = "oauth@example.com";
+        String email = "oauth@test.com";
         String name = "OAuth";
         String surname = "User";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
@@ -143,7 +141,7 @@ class UserServiceTest {
     @Test
     void should_not_save_oauth2_user_if_exists() {
         // GIVEN
-        String email = "existing@example.com";
+        String email = "existing@test.com";
         String name = "Existing";
         String surname = "User";
         UserEntity existingUser = new UserEntity(email, name, surname, "password");
@@ -161,28 +159,28 @@ class UserServiceTest {
     @Test
     void should_throw_exception_when_changing_role_to_accountant_for_nonexistent_user() {
         // GIVEN
-        String email = "nonexistent@example.com";
+        String email = "nonexistent@test.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         // WHEN
         Executable e = () -> userService.changeUserRoleToAccountant(email);
 
         // THEN
-        assertThrows(UserException.class, e, "Can not find user with this email: " + email);
+        assertThrows(UserNotFoundException.class, e, "Can not find user with this email: " + email);
         verify(userRepository, times(1)).findByEmail(email);
     }
 
     @Test
     void should_throw_exception_when_changing_role_to_manager_for_nonexistent_user() {
         // GIVEN
-        String email = "nonexistent@example.com";
+        String email = "nonexistent@test.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         // WHEN
         Executable e = () -> userService.changeUserRoleToManager(email);
 
         // THEN
-        assertThrows(UserException.class, e, "Can not find user with this email: " + email);
+        assertThrows(UserNotFoundException.class, e, "Can not find user with this email: " + email);
         verify(userRepository, times(1)).findByEmail(email);
     }
 }
