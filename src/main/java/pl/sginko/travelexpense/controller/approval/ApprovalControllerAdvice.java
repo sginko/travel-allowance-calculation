@@ -9,14 +9,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportNotFoundException;
 
 @RestControllerAdvice
 public class ApprovalControllerAdvice {
 
     @ExceptionHandler(ApprovalException.class)
-    public ResponseEntity<ApprovalControllerAdvice.Response> handleApprovalException(ApprovalException e) {
-        ApprovalControllerAdvice.Response response = new ApprovalControllerAdvice.Response(e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_ACCEPTABLE);
+    public ResponseEntity<Response> handleApprovalException(ApprovalException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(e.getMessage()));
+    }
+
+    @ExceptionHandler(TravelReportNotFoundException.class)
+    public ResponseEntity<Response> handleTravelReportNotFoundException(TravelReportNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(ex.getMessage()));
     }
 
     @Getter

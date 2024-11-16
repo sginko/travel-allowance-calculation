@@ -133,35 +133,10 @@ public class TravelReportServiceImpl implements TravelReportService {
                 .orElseThrow(() -> new TravelReportException("Travel not found"));
     }
 
-//    private TravelReportEntity getTravelEntity2(UUID techId) {
-//        TravelReportEntity travelReportEntity = travelReportRepository.findByTechId(techId)
-//                .orElseThrow(() -> new TravelReportException("Travel not found"));
-//        return travelReportEntity;
-//    }
-
     private void publishSubmitEvent(TravelReportEntity travelReportEntity, UserEntity currentUser) {
         TravelReportSubmissionEvent submissionEvent = new TravelReportSubmissionEvent(travelReportEntity.getTechId(),
                 currentUser.getEmail());
 
         eventPublisher.publishEvent(submissionEvent);
     }
-
-//    @Override
-//    public void deleteAllTravelsByUser() {
-//        String email = AuthenticationUtil.getCurrentUserEmail();
-//        travelRepository.deleteAllByUserEntity_Email(email);
-//    }
-//
-//    @Transactional
-//    @Override
-//    public void deleteTravelByIdByUser(UUID techId) {
-//        String email = AuthenticationUtil.getCurrentUserEmail();
-//        Optional<TravelEntity> optionalTravelEntity = travelRepository.findByTechIdAndUserEntity_Email(techId, email);
-//
-//        if (optionalTravelEntity.isPresent()) {
-//            travelRepository.delete(optionalTravelEntity.get());
-//        } else {
-//            throw new TravelException("Travel with techId " + techId + " not found for user " + email);
-//        }
-//    }
 }
