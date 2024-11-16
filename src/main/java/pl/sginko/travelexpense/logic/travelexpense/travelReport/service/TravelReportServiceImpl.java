@@ -114,7 +114,7 @@ public class TravelReportServiceImpl implements TravelReportService {
         }
     }
 
-    @Scheduled(cron = "0 32 14 * * *")
+    @Scheduled(cron = "0 17 18 * * *")
     @Transactional
     public void cleanupOldReports() {
         LocalDate cutoffDate = LocalDate.now().minusDays(1);

@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.travelexpense.transportCost.exception.TransportException;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportNotFoundException;
 
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class TravelControllerAdvice {
+public class TravelReportControllerAdvice {
 
     @ExceptionHandler(TravelReportException.class)
     public ResponseEntity<Response> handleTravelException(TravelReportException e) {
@@ -52,6 +53,11 @@ public class TravelControllerAdvice {
     public ResponseEntity<Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.PRECONDITION_FAILED);
+    }
+
+    @ExceptionHandler(TravelReportNotFoundException.class)
+    public ResponseEntity<Response> handleTravelReportNotFound(TravelReportNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Response(e.getMessage()));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

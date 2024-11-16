@@ -7,7 +7,6 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
 import pl.sginko.travelexpense.logic.user.dto.UserRequestDto;
 import pl.sginko.travelexpense.logic.user.dto.UserResponseDto;
 import pl.sginko.travelexpense.logic.user.entity.Roles;
@@ -16,14 +15,12 @@ import pl.sginko.travelexpense.logic.user.exception.UserException;
 import pl.sginko.travelexpense.logic.user.exception.UserNotFoundException;
 import pl.sginko.travelexpense.logic.user.mapper.UserMapper;
 import pl.sginko.travelexpense.logic.user.repository.UserRepository;
-import pl.sginko.travelexpense.logic.user.service.userService.UserServiceImpl;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 

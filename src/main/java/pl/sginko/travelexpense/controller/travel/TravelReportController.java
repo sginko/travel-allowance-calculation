@@ -12,6 +12,7 @@ import pl.sginko.travelexpense.logic.pdfDocument.service.PdfDocumentService;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportRequestDto;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportSubmissionResponseDto;
+import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportNotFoundException;
 import pl.sginko.travelexpense.logic.travelexpense.travelReport.service.TravelReportService;
 
 import java.io.File;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/travels")
-class TravelController {
+class TravelReportController {
     private final TravelReportService travelReportService;
     private final PdfDocumentService pdfDocumentService;
 
@@ -52,36 +53,41 @@ class TravelController {
     }
 
 
-//    @ResponseStatus(HttpStatus.OK)
-//    @DeleteMapping("/delete-all-user-travels")
-//    public void deleteAllTravelsByUser() {
-//        travelService.deleteAllTravelsByUser();
-//    }
-//
-//    @ResponseStatus(HttpStatus.OK)
-//    @DeleteMapping("/{id}/delete-travel-by-id")
-//    public void deleteTravelByIdByUser(@PathVariable("id") UUID techId) {
-//        travelService.deleteTravelByIdByUser(techId);
-//    }
-
     @PostMapping("/print/{techId}")
     public ResponseEntity<Void> generateTravelExpenseReportPdf(@PathVariable("techId") UUID techId) {
         try {
             pdfDocumentService.generateTravelExpenseReportPdf(techId);
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .header("Location", "/api/v1/travels/print/changed_template.pdf")
+                    .build();
+        } catch (TravelReportNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(302)
-                .header("Location", "/api/v1/travels/print/changed_template.pdf")
-                .build();
     }
+
+//    @PostMapping("/print/{techId}")
+//    public ResponseEntity<Void> generateTravelExpenseReportPdf(@PathVariable("techId") UUID techId) {
+//        try {
+//            pdfDocumentService.generateTravelExpenseReportPdf(techId);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(500).build();
+//        }
+//        return ResponseEntity.status(302)
+//                .header("Location", "/api/v1/travels/print/changed_template.pdf")
+//                .build();
+//    }
 
     @GetMapping("/print/changed_template.pdf")
     public ResponseEntity<InputStreamResource> getTravelExpenseReportPdf() {
         try {
             File file = new File("src/main/resources/print/changed_template.pdf"); //without Docker
 //            File file = new File("/app/resources/print/changed_template.pdf"); //with Docker
+            if (!file.exists() || !file.canRead()) {
+                throw new IOException("File not accessible");
+            }
             InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
             HttpHeaders headers = new HttpHeaders();
@@ -93,8 +99,28 @@ class TravelController {
                     .contentType(MediaType.APPLICATION_PDF)
                     .body(resource);
         } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+//    @GetMapping("/print/changed_template.pdf")
+//    public ResponseEntity<InputStreamResource> getTravelExpenseReportPdf() {
+//        try {
+//            File file = new File("src/main/resources/print/changed_template.pdf"); //without Docker
+////            File file = new File("/app/resources/print/changed_template.pdf"); //with Docker
+//            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+//
+//            HttpHeaders headers = new HttpHeaders();
+//            headers.add("Content-Disposition", "inline; filename=changed_template.pdf");
+//
+//            return ResponseEntity.ok()
+//                    .headers(headers)
+//                    .contentLength(file.length())
+//                    .contentType(MediaType.APPLICATION_PDF)
+//                    .body(resource);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(500).build();
+//        }
+//    }
 }

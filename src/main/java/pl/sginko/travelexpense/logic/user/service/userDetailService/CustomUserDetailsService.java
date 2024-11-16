@@ -19,20 +19,6 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        UserEntity user = userRepository.findByEmail(email)
-//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-//
-//        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRoles().name());
-//
-//        return new User(
-//                user.getEmail(),
-//                user.getPassword(),
-//                List.of(authority));
-////                List.of(new SimpleGrantedAuthority(user.getRoles())));
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = findUserByEmail(email);
@@ -56,4 +42,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     private List<GrantedAuthority> mapRolesToAuthorities(Roles roles) {
         return List.of(new SimpleGrantedAuthority(roles.name()));
     }
+
+//        @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        UserEntity user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+//
+//        GrantedAuthority authority = new SimpleGrantedAuthority(user.getRoles().name());
+//
+//        return new User(
+//                user.getEmail(),
+//                user.getPassword(),
+//                List.of(authority));
+////                List.of(new SimpleGrantedAuthority(user.getRoles())));
+//    }
 }
