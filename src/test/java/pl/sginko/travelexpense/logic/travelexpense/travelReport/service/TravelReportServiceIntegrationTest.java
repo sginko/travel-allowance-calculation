@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
 @ActiveProfiles("test")
-class TravelReportServiceTest {
+class TravelReportServiceIntegrationTest {
     @Autowired
     private TravelReportService travelReportService;
 

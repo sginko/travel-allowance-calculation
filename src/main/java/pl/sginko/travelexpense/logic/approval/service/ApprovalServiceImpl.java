@@ -88,14 +88,39 @@ public class ApprovalServiceImpl implements ApprovalService {
         approval.updateStatus(newStatus);
 
         approvalRepository.save(approval);
+
+        travelReportEntity.getApprovals().add(approval);
+
         travelReportEntity.updateTravelReportStatusFromApprovals();
+
+        travelReportRepository.save(travelReportEntity);
 
         actionLogService.logAction("Status report: " + travelReportEntity.getTechId() + " updated to: "
                 + newStatus, travelReportEntity.getId(), approver.getId());
 
-//        notifyUserIfStatusChanged(travelEntity);
         publishApprovalEvent(travelReportEntity);
     }
+
+//    private void processApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
+//        UserEntity approver = findApproverByEmail(approverEmail);
+//        Roles approverRole = approver.getRoles();
+//        TravelReportEntity travelReportEntity = findTravelByTechId(travelId);
+//
+//        validateApprovalStatus(travelReportEntity, approverRole);
+//
+//        ApprovalEntity approval = new ApprovalEntity(travelReportEntity, approver, approverRole);
+//        approval.validateApprovalStatus();
+//        approval.updateStatus(newStatus);
+//
+//        approvalRepository.save(approval);
+//        travelReportEntity.updateTravelReportStatusFromApprovals();
+//
+//        actionLogService.logAction("Status report: " + travelReportEntity.getTechId() + " updated to: "
+//                + newStatus, travelReportEntity.getId(), approver.getId());
+//
+////        notifyUserIfStatusChanged(travelEntity);
+//        publishApprovalEvent(travelReportEntity);
+//    }
 
     private void publishApprovalEvent(TravelReportEntity travelReportEntity) {
         TravelReportStatus travelReportStatus = travelReportEntity.getStatus();
