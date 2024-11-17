@@ -65,7 +65,7 @@ public class ApprovalServiceIntegrationTest {
     }
 
     @Test
-    void shouldReturnPendingApprovals() {
+    void should_return_pending_approvals() {
         // GIVEN
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
 
@@ -80,7 +80,7 @@ public class ApprovalServiceIntegrationTest {
     }
 
     @Test
-    void shouldApproveTravelSuccessfully() {
+    void should_approve_travel_successfully() {
         // GIVEN
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
 
@@ -114,7 +114,7 @@ public class ApprovalServiceIntegrationTest {
     }
 
     @Test
-    void shouldRejectTravelSuccessfully() {
+    void should_reject_travel_successfully() {
         // GIVEN
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
 
@@ -149,7 +149,7 @@ public class ApprovalServiceIntegrationTest {
     }
 
     @Test
-    void shouldThrowExceptionWhenApprovingAlreadyApprovedTravel() {
+    void should_throw_exception_when_approving_already_approved_travel() {
         // GIVEN
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
         approvalService.approveTravel(travelReport.getTechId(), manager.getEmail());
