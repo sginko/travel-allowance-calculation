@@ -43,6 +43,25 @@ spring:
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
 
+  mail:
+    host:
+    port:
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        ssl:
+          enable: true
+
+cleanup:
+  old-reports:
+    cron: "0 56 14 * * *"
+
 logging:
   level:
     org:
