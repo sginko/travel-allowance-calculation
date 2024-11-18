@@ -116,7 +116,7 @@ class PdfDocumentServiceTest {
 //    void shouldThrowPdfDocumentExceptionWhenTemplatePathIsInvalid() {
 //        // GIVEN
 //        UUID techId = UUID.randomUUID();
-//        String invalidTemplatePath = "src/main/resources/print/non_existing_template.pdf"; // Неверный путь к шаблону
+//        String invalidTemplatePath = "src/main/resources/print/non_existing_template.pdf";
 //        when(travelRepository.findByTechId(techId)).thenReturn(Optional.of(travelEntity));
 //
 //        // WHEN & THEN
