@@ -50,7 +50,7 @@ class ApprovalEntityTest {
         ApprovalStatus newStatus = ApprovalStatus.APPROVED;
 
         // WHEN
-        approvalEntity.updateStatus(newStatus);
+        approvalEntity.updateApprovalStatus(newStatus);
 
         // THEN
         assertThat(approvalEntity.getStatus()).isEqualTo(newStatus);
@@ -59,19 +59,19 @@ class ApprovalEntityTest {
     @Test
     void should_validate_approval_status_when_status_is_pending() {
         // GIVEN
-        approvalEntity.updateStatus(INITIAL_STATUS);
+        approvalEntity.updateApprovalStatus(INITIAL_STATUS);
 
         // WHEN & THEN
-        assertDoesNotThrow(() -> approvalEntity.validateApprovalStatus());
+        assertDoesNotThrow(() -> approvalEntity.checkIfStatusPending());
     }
 
     @Test
     void should_throw_approval_exception_when_status_is_not_pending() {
         // GIVEN
-        approvalEntity.updateStatus(ApprovalStatus.APPROVED);
+        approvalEntity.updateApprovalStatus(ApprovalStatus.APPROVED);
 
         // WHEN
-        Executable executable = () -> approvalEntity.validateApprovalStatus();
+        Executable executable = () -> approvalEntity.checkIfStatusPending();
 
         // THEN
         ApprovalException exc = assertThrows(ApprovalException.class, executable);

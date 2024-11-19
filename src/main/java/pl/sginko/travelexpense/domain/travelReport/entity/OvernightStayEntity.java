@@ -21,8 +21,6 @@ public class OvernightStayEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @OneToOne
-//    @JoinColumn(name = "travel_report_id", nullable = false)
     @OneToOne(mappedBy = "overnightStayEntity")
     private TravelReportEntity travelReportEntity;
 

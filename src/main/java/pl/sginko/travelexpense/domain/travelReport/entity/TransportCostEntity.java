@@ -22,8 +22,6 @@ public class TransportCostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //    @OneToOne
-//    @JoinColumn(name = "travel_report_id", nullable = false)
     @OneToOne(mappedBy = "transportCostEntity")
     private TravelReportEntity travelReportEntity;
 

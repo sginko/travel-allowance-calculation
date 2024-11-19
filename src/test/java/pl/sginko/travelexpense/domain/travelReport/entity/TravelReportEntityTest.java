@@ -87,7 +87,7 @@ class TravelReportEntityTest {
     void should_set_status_to_rejected_if_any_approval_is_rejected() {
         // GIVEN
         ApprovalEntity approval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
-        approval.updateStatus(ApprovalStatus.REJECTED);
+        approval.updateApprovalStatus(ApprovalStatus.REJECTED);
         Set<ApprovalEntity> approvals = new HashSet<>();
         approvals.add(approval);
         travelReportEntity.getApprovals().addAll(approvals);
@@ -103,10 +103,10 @@ class TravelReportEntityTest {
     void should_set_status_to_approved_if_both_manager_and_accountant_approve() {
         // GIVEN
         ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
-        managerApproval.updateStatus(ApprovalStatus.APPROVED);
+        managerApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
 
         ApprovalEntity accountantApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_ACCOUNTANT);
-        accountantApproval.updateStatus(ApprovalStatus.APPROVED);
+        accountantApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
 
         travelReportEntity.getApprovals().add(managerApproval);
         travelReportEntity.getApprovals().add(accountantApproval);
@@ -122,7 +122,7 @@ class TravelReportEntityTest {
     void should_set_status_to_in_process_if_only_one_role_is_approved() {
         // GIVEN
         ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
-        managerApproval.updateStatus(ApprovalStatus.APPROVED);
+        managerApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
 
         travelReportEntity.getApprovals().add(managerApproval);
 

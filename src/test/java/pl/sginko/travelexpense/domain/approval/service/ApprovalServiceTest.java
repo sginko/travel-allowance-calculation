@@ -89,7 +89,7 @@ class ApprovalServiceTest {
         accountant.changeRoleToAccountant();
 
         ApprovalEntity existingApproval = new ApprovalEntity(travelReportEntity, accountant, accountant.getUserRoles());
-        existingApproval.updateStatus(ApprovalStatus.APPROVED);
+        existingApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
         travelReportEntity.getApprovals().add(existingApproval);
 
         lenient().doAnswer(invocation -> {
@@ -109,7 +109,7 @@ class ApprovalServiceTest {
         when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getUserRoles())).thenReturn(false);
 
         // WHEN
-        approvalService.approveTravel(travelId, approver.getEmail());
+        approvalService.approveTravelReport(travelId, approver.getEmail());
 
         // THEN
         ArgumentCaptor<ApprovalEntity> approvalCaptor = ArgumentCaptor.forClass(ApprovalEntity.class);
@@ -149,7 +149,7 @@ class ApprovalServiceTest {
         when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getUserRoles())).thenReturn(false);
 
         // WHEN
-        approvalService.rejectTravel(travelId, approver.getEmail());
+        approvalService.rejectTravelReport(travelId, approver.getEmail());
 
         // THEN
         ArgumentCaptor<ApprovalEntity> approvalCaptor = ArgumentCaptor.forClass(ApprovalEntity.class);
@@ -191,7 +191,7 @@ class ApprovalServiceTest {
         travelReportEntity.getApprovals().clear();
 
         // WHEN
-        approvalService.approveTravel(travelId, approver.getEmail());
+        approvalService.approveTravelReport(travelId, approver.getEmail());
 
         // THEN
         verify(eventPublisher, never()).publishEvent(any(ApprovalEvent.class));
@@ -206,7 +206,7 @@ class ApprovalServiceTest {
         when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getUserRoles())).thenReturn(false);
 
         // WHEN
-        approvalService.approveTravel(travelId, approver.getEmail());
+        approvalService.approveTravelReport(travelId, approver.getEmail());
 
         // THEN
         verify(eventPublisher, times(1)).publishEvent(any(ApprovalEvent.class));
@@ -223,7 +223,7 @@ class ApprovalServiceTest {
         UserEntity accountant2 = new UserEntity("accountant2@test.com", "Accountant2", "User2", "password");
         accountant2.changeRoleToAccountant();
         ApprovalEntity existingApproval2 = new ApprovalEntity(newTravelReport, accountant2, accountant2.getUserRoles());
-        existingApproval2.updateStatus(ApprovalStatus.APPROVED);
+        existingApproval2.updateApprovalStatus(ApprovalStatus.APPROVED);
         newTravelReport.getApprovals().add(existingApproval2);
 
         UUID newTravelId = newTravelReport.getTechId();
@@ -233,7 +233,7 @@ class ApprovalServiceTest {
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
 
         // WHEN
-        approvalService.rejectTravel(newTravelId, approver.getEmail());
+        approvalService.rejectTravelReport(newTravelId, approver.getEmail());
 
         // THEN
         verify(eventPublisher, times(1)).publishEvent(any(ApprovalEvent.class));
@@ -248,7 +248,7 @@ class ApprovalServiceTest {
         when(approvalRepository.existsByTravelReportEntityAndRole(eq(travelReportEntity), eq(approver.getUserRoles()))).thenReturn(true);
 
         // WHEN
-        Executable e = () -> approvalService.rejectTravel(travelId, approver.getEmail());
+        Executable e = () -> approvalService.rejectTravelReport(travelId, approver.getEmail());
 
         // THEN
         ApprovalException exception = assertThrows(ApprovalException.class, e);
@@ -263,7 +263,7 @@ class ApprovalServiceTest {
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.empty());
 
         // WHEN
-        Executable e = () -> approvalService.rejectTravel(travelId, approver.getEmail());
+        Executable e = () -> approvalService.rejectTravelReport(travelId, approver.getEmail());
 
         // THEN
         TravelReportException exception = assertThrows(TravelReportException.class, e);
@@ -295,7 +295,7 @@ class ApprovalServiceTest {
         when(travelReportMapper.toResponseDto(travel2)).thenReturn(responseDto2);
 
         // WHEN
-        List<TravelReportResponseDto> pendingApprovals = approvalService.getPendingApprovals(approver.getEmail());
+        List<TravelReportResponseDto> pendingApprovals = approvalService.getTravelReportsForApproval(approver.getEmail());
 
         // THEN
         assertThat(pendingApprovals).hasSize(2);
@@ -325,7 +325,7 @@ class ApprovalServiceTest {
         when(travelReportMapper.toResponseDto(travel2)).thenReturn(responseDto2);
 
         // WHEN
-        List<TravelReportResponseDto> pendingApprovals = approvalService.getPendingApprovals(approver.getEmail());
+        List<TravelReportResponseDto> pendingApprovals = approvalService.getTravelReportsForApproval(approver.getEmail());
 
         // THEN
         assertThat(pendingApprovals).hasSize(1);
@@ -339,7 +339,7 @@ class ApprovalServiceTest {
         when(travelReportRepository.findByStatusIn(anyList())).thenReturn(List.of());
 
         // WHEN
-        List<TravelReportResponseDto> pendingApprovals = approvalService.getPendingApprovals(approver.getEmail());
+        List<TravelReportResponseDto> pendingApprovals = approvalService.getTravelReportsForApproval(approver.getEmail());
 
         // THEN
         assertThat(pendingApprovals).isEmpty();

@@ -18,22 +18,22 @@ public class ApprovalController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pending")
-    public List<TravelReportResponseDto> getPendingApprovals() {
+    public List<TravelReportResponseDto> getTravelReportsForApproval() {
         String approverEmail = AuthenticationUtil.getCurrentUserEmail();
-        return approvalService.getPendingApprovals(approverEmail);
+        return approvalService.getTravelReportsForApproval(approverEmail);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{travelId}/approve")
     public void approveTravel(@PathVariable UUID travelId) {
         String approverEmail = AuthenticationUtil.getCurrentUserEmail();
-        approvalService.approveTravel(travelId, approverEmail);
+        approvalService.approveTravelReport(travelId, approverEmail);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/{travelId}/reject")
     public void rejectTravel(@PathVariable UUID travelId) {
         String approverEmail = AuthenticationUtil.getCurrentUserEmail();
-        approvalService.rejectTravel(travelId, approverEmail);
+        approvalService.rejectTravelReport(travelId, approverEmail);
     }
 }

@@ -70,7 +70,7 @@ public class ApprovalServiceIntegrationTest {
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
 
         // WHEN
-        List<TravelReportResponseDto> pendingApprovals = approvalService.getPendingApprovals(manager.getEmail());
+        List<TravelReportResponseDto> pendingApprovals = approvalService.getTravelReportsForApproval(manager.getEmail());
 
         // THEN
         assertThat(pendingApprovals).isNotEmpty();
@@ -85,8 +85,8 @@ public class ApprovalServiceIntegrationTest {
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
 
         // WHEN
-        approvalService.approveTravel(travelReport.getTechId(), manager.getEmail());
-        approvalService.approveTravel(travelReport.getTechId(), accountant.getEmail());
+        approvalService.approveTravelReport(travelReport.getTechId(), manager.getEmail());
+        approvalService.approveTravelReport(travelReport.getTechId(), accountant.getEmail());
 
         travelReportRepository.flush();
 
@@ -119,8 +119,8 @@ public class ApprovalServiceIntegrationTest {
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
 
         // WHEN
-        approvalService.approveTravel(travelReport.getTechId(), manager.getEmail());
-        approvalService.rejectTravel(travelReport.getTechId(), accountant.getEmail());
+        approvalService.approveTravelReport(travelReport.getTechId(), manager.getEmail());
+        approvalService.rejectTravelReport(travelReport.getTechId(), accountant.getEmail());
 
         // Фиксируем изменения
         travelReportRepository.flush();
@@ -152,12 +152,12 @@ public class ApprovalServiceIntegrationTest {
     void should_throw_exception_when_approving_already_approved_travel() {
         // GIVEN
         TravelReportEntity travelReport = createAndSaveTravelReport("CityA", "CityB");
-        approvalService.approveTravel(travelReport.getTechId(), manager.getEmail());
-        approvalService.approveTravel(travelReport.getTechId(), accountant.getEmail());
+        approvalService.approveTravelReport(travelReport.getTechId(), manager.getEmail());
+        approvalService.approveTravelReport(travelReport.getTechId(), accountant.getEmail());
 
         // WHEN & THEN
         ApprovalException exception = assertThrows(ApprovalException.class, () ->
-                approvalService.approveTravel(travelReport.getTechId(), manager.getEmail()));
+                approvalService.approveTravelReport(travelReport.getTechId(), manager.getEmail()));
         assertThat(exception.getMessage()).contains("Approval has already been processed");
     }
 

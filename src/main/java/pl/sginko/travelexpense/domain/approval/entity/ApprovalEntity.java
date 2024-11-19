@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.domain.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
+import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 
 @EqualsAndHashCode(of = {"travelReportEntity", "approver", "role"})
 @Getter
@@ -45,30 +45,13 @@ public class ApprovalEntity {
         this.status = ApprovalStatus.PENDING;
     }
 
-    public void updateStatus(ApprovalStatus newStatus) {
+    public void updateApprovalStatus(ApprovalStatus newStatus) {
         this.status = newStatus;
     }
 
-    public void validateApprovalStatus() {
+    public void checkIfStatusPending() {
         if (this.status != ApprovalStatus.PENDING) {
             throw new ApprovalException("Approval already processed.");
         }
     }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//
-//        ApprovalEntity that = (ApprovalEntity) o;
-//
-//        return Objects.equals(travelEntity, that.travelEntity) &&
-//                Objects.equals(approver, that.approver) &&
-//                role == that.role;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(travelEntity, approver, role);
-//    }
 }

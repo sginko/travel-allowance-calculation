@@ -12,8 +12,8 @@ import pl.sginko.travelexpense.domain.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalStatus;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportEditDto;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
+import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -69,17 +69,14 @@ public class TravelReportEntity {
     @Column(nullable = false)
     private BigDecimal advancePayment;
 
-    //    @OneToOne(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "diet_id", nullable = false)
     private DietEntity dietEntity;
 
-    //    @OneToOne(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "overnightStay_id", nullable = false)
     private OvernightStayEntity overnightStayEntity;
 
-    //    @OneToOne(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "transportCost_id", nullable = false)
     private TransportCostEntity transportCostEntity;
@@ -110,7 +107,7 @@ public class TravelReportEntity {
         this.advancePayment = advancePayment;
         this.otherExpenses = otherExpenses;
         this.status = TravelReportStatus.SUBMITTED;
-        validateDates();
+        validateStartAndEndDates();
     }
 
     public void setDietDetails(DietEntity dietEntity) {
@@ -162,7 +159,7 @@ public class TravelReportEntity {
         this.advancePayment = travelReportEditDto.getAdvancePayment();
         this.otherExpenses = travelReportEditDto.getOtherExpenses();
 
-        validateDates();
+        validateStartAndEndDates();
 
         if (this.dietEntity != null && travelReportEditDto.getDietEditDto() != null) {
             this.dietEntity.updateDietDetails(travelReportEditDto.getDietEditDto());
@@ -190,7 +187,7 @@ public class TravelReportEntity {
                 .anyMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);
     }
 
-    private void validateDates() {
+    private void validateStartAndEndDates() {
         LocalDateTime startDateTime = LocalDateTime.of(startDate, startTime);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
 

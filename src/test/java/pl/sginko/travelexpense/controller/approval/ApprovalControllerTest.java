@@ -65,7 +65,7 @@ class ApprovalControllerTest {
                                 "Car", BigDecimal.valueOf(100.00), BigDecimal.valueOf(150.00), BigDecimal.valueOf(300.00)))
         );
 
-        when(approvalService.getPendingApprovals(approverEmail)).thenReturn(mockPendingApprovals);
+        when(approvalService.getTravelReportsForApproval(approverEmail)).thenReturn(mockPendingApprovals);
 
         // WHEN & THEN
         mockMvc.perform(get("/api/v1/approvals/pending")
@@ -74,7 +74,7 @@ class ApprovalControllerTest {
                 .andExpect(jsonPath("$[0].fromCity").value("CityA"))
                 .andExpect(jsonPath("$[0].toCity").value("CityB"));
 
-        verify(approvalService, times(1)).getPendingApprovals(approverEmail);
+        verify(approvalService, times(1)).getTravelReportsForApproval(approverEmail);
     }
 
     // GET /api/v1/approvals/pending
@@ -85,7 +85,7 @@ class ApprovalControllerTest {
         // GIVEN
         String approverEmail = "approver@test.com";
 
-        when(approvalService.getPendingApprovals(approverEmail))
+        when(approvalService.getTravelReportsForApproval(approverEmail))
                 .thenThrow(new ApprovalException("No pending approvals found"));
 
         // WHEN & THEN
@@ -94,7 +94,7 @@ class ApprovalControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("No pending approvals found"));
 
-        verify(approvalService, times(1)).getPendingApprovals(approverEmail);
+        verify(approvalService, times(1)).getTravelReportsForApproval(approverEmail);
     }
 
     // POST /api/v1/approvals/{travelId}/approve
@@ -106,14 +106,14 @@ class ApprovalControllerTest {
         UUID travelId = UUID.randomUUID();
         String approverEmail = "approver@test.com";
 
-        doNothing().when(approvalService).approveTravel(travelId, approverEmail);
+        doNothing().when(approvalService).approveTravelReport(travelId, approverEmail);
 
         // WHEN & THEN
         mockMvc.perform(post("/api/v1/approvals/{travelId}/approve", travelId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(approvalService, times(1)).approveTravel(travelId, approverEmail);
+        verify(approvalService, times(1)).approveTravelReport(travelId, approverEmail);
     }
 
     // POST /api/v1/approvals/{travelId}/reject
@@ -125,14 +125,14 @@ class ApprovalControllerTest {
         UUID travelId = UUID.randomUUID();
         String approverEmail = "approver@test.com";
 
-        doNothing().when(approvalService).rejectTravel(travelId, approverEmail);
+        doNothing().when(approvalService).rejectTravelReport(travelId, approverEmail);
 
         // WHEN & THEN
         mockMvc.perform(post("/api/v1/approvals/{travelId}/reject", travelId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(approvalService, times(1)).rejectTravel(travelId, approverEmail);
+        verify(approvalService, times(1)).rejectTravelReport(travelId, approverEmail);
     }
 
     // POST /api/v1/approvals/{travelId}/approve
@@ -145,7 +145,7 @@ class ApprovalControllerTest {
         String approverEmail = "approver@test.com";
 
         doThrow(new TravelReportNotFoundException("Travel not found"))
-                .when(approvalService).approveTravel(travelId, approverEmail);
+                .when(approvalService).approveTravelReport(travelId, approverEmail);
 
         // WHEN & THEN
         mockMvc.perform(post("/api/v1/approvals/{travelId}/approve", travelId)
@@ -153,7 +153,7 @@ class ApprovalControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Travel not found"));
 
-        verify(approvalService, times(1)).approveTravel(travelId, approverEmail);
+        verify(approvalService, times(1)).approveTravelReport(travelId, approverEmail);
     }
 
     // POST /api/v1/approvals/{travelId}/reject
@@ -166,7 +166,7 @@ class ApprovalControllerTest {
         String approverEmail = "approver@test.com";
 
         doThrow(new TravelReportNotFoundException("Travel not found"))
-                .when(approvalService).rejectTravel(travelId, approverEmail);
+                .when(approvalService).rejectTravelReport(travelId, approverEmail);
 
         // WHEN & THEN
         mockMvc.perform(post("/api/v1/approvals/{travelId}/reject", travelId)
@@ -174,6 +174,6 @@ class ApprovalControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Travel not found"));
 
-        verify(approvalService, times(1)).rejectTravel(travelId, approverEmail);
+        verify(approvalService, times(1)).rejectTravelReport(travelId, approverEmail);
     }
 }

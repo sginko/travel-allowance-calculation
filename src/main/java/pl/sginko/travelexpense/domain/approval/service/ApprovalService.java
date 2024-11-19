@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public interface ApprovalService {
 
-    List<TravelReportResponseDto> getPendingApprovals(String approverEmail);
+    List<TravelReportResponseDto> getTravelReportsForApproval(String approverEmail);
 
-    void approveTravel(UUID travelId, String approverEmail);
+    void approveTravelReport(UUID travelId, String approverEmail);
 
-    void rejectTravel(UUID travelId, String approverEmail);
+    void rejectTravelReport(UUID travelId, String approverEmail);
 }
