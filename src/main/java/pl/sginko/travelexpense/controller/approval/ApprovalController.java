@@ -3,9 +3,9 @@ package pl.sginko.travelexpense.controller.approval;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.logic.approval.service.ApprovalService;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
-import pl.sginko.travelexpense.logic.user.util.AuthenticationUtil;
+import pl.sginko.travelexpense.domain.approval.service.ApprovalService;
+import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
+import pl.sginko.travelexpense.common.util.AuthenticationUtil;
 
 import java.util.List;
 import java.util.UUID;

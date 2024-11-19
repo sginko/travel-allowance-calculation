@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.logic.pdfDocument.service.PdfDocumentService;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportRequestDto;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.dto.TravelReportSubmissionResponseDto;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportNotFoundException;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.service.TravelReportService;
+import pl.sginko.travelexpense.common.pdfDocument.service.PdfDocumentService;
+import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportRequestDto;
+import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
+import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportSubmissionResponseDto;
+import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportNotFoundException;
+import pl.sginko.travelexpense.domain.travelReport.service.TravelReportService;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -3,9 +3,9 @@ package pl.sginko.travelexpense.controller.user;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pl.sginko.travelexpense.logic.user.dto.UserRequestDto;
-import pl.sginko.travelexpense.logic.user.dto.UserResponseDto;
-import pl.sginko.travelexpense.logic.user.service.userService.UserService;
+import pl.sginko.travelexpense.domain.user.dto.UserRequestDto;
+import pl.sginko.travelexpense.domain.user.dto.UserResponseDto;
+import pl.sginko.travelexpense.domain.user.service.userService.UserService;
 
 import java.util.List;
 

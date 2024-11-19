@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.sginko.travelexpense.logic.user.exception.UserException;
-import pl.sginko.travelexpense.logic.user.exception.UserNotFoundException;
+import pl.sginko.travelexpense.domain.user.exception.UserException;
+import pl.sginko.travelexpense.domain.user.exception.UserNotFoundException;
 
 import java.util.stream.Collectors;
 

@@ -11,11 +11,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.sginko.travelexpense.logic.user.dto.UserRequestDto;
-import pl.sginko.travelexpense.logic.user.entity.Roles;
-import pl.sginko.travelexpense.logic.user.entity.UserEntity;
-import pl.sginko.travelexpense.logic.user.mapper.UserMapper;
-import pl.sginko.travelexpense.logic.user.repository.UserRepository;
+import pl.sginko.travelexpense.domain.user.dto.UserRequestDto;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
+import pl.sginko.travelexpense.domain.user.entity.UserEntity;
+import pl.sginko.travelexpense.domain.user.mapper.UserMapper;
+import pl.sginko.travelexpense.domain.user.repository.UserRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.*;

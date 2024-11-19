@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.sginko.travelexpense.logic.approval.exception.ApprovalException;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportNotFoundException;
+import pl.sginko.travelexpense.domain.approval.exception.ApprovalException;
+import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportNotFoundException;
 
 @RestControllerAdvice
 public class ApprovalControllerAdvice {

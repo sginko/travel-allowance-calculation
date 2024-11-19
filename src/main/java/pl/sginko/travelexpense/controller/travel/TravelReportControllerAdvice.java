@@ -11,10 +11,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import pl.sginko.travelexpense.logic.travelexpense.overnightStay.exception.OvernightStayException;
-import pl.sginko.travelexpense.logic.travelexpense.transportCost.exception.TransportException;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportException;
-import pl.sginko.travelexpense.logic.travelexpense.travelReport.exception.TravelReportNotFoundException;
+import pl.sginko.travelexpense.domain.travelReport.exception.OvernightStayException;
+import pl.sginko.travelexpense.domain.travelReport.exception.TransportException;
+import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportNotFoundException;
 
 import java.time.format.DateTimeParseException;
 import java.util.stream.Collectors;
