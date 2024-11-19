@@ -10,25 +10,21 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sginko.travelexpense.domain.travelReport.entity.DietEntity;
-import pl.sginko.travelexpense.domain.travelReport.service.diet.DietService;
-import pl.sginko.travelexpense.domain.travelReport.entity.OvernightStayEntity;
-import pl.sginko.travelexpense.domain.travelReport.service.overnightStay.OvernightStayService;
-import pl.sginko.travelexpense.domain.travelReport.entity.TransportCostEntity;
-import pl.sginko.travelexpense.domain.travelReport.service.transportCost.TransportCostService;
+import pl.sginko.travelexpense.common.util.AuthenticationUtil;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportEditDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportRequestDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportSubmissionResponseDto;
-import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
-import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportStatus;
+import pl.sginko.travelexpense.domain.travelReport.entity.*;
 import pl.sginko.travelexpense.domain.travelReport.event.TravelReportSubmissionEvent;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
 import pl.sginko.travelexpense.domain.travelReport.mapper.TravelReportMapper;
 import pl.sginko.travelexpense.domain.travelReport.repository.TravelReportRepository;
+import pl.sginko.travelexpense.domain.travelReport.service.diet.DietService;
+import pl.sginko.travelexpense.domain.travelReport.service.overnightStay.OvernightStayService;
+import pl.sginko.travelexpense.domain.travelReport.service.transportCost.TransportCostService;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 import pl.sginko.travelexpense.domain.user.service.userService.UserReaderService;
-import pl.sginko.travelexpense.common.util.AuthenticationUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,7 +42,6 @@ public class TravelReportServiceImpl implements TravelReportService {
     private final UserReaderService userReaderService;
     private final ApplicationEventPublisher eventPublisher;
     private final ObjectMapper objectMapper;
-//    private final EmailService notification;
 
     @Override
     @Transactional
@@ -70,8 +65,6 @@ public class TravelReportServiceImpl implements TravelReportService {
         travelReportEntity.calculateTotalAmount();
 
         travelReportRepository.save(travelReportEntity);
-
-//        notification.sendSubmissionNotification(currentUser.getEmail(), travelEntity.getTechId());
 
         publishSubmitEvent(travelReportEntity, currentUser);
 

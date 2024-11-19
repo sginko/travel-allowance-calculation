@@ -8,17 +8,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalStatus;
-import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
-import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportStatus;
 import pl.sginko.travelexpense.domain.travelReport.dto.diet.DietEditDto;
-import pl.sginko.travelexpense.domain.travelReport.entity.DietEntity;
 import pl.sginko.travelexpense.domain.travelReport.dto.overnightStay.OvernightStayEditDto;
-import pl.sginko.travelexpense.domain.travelReport.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.domain.travelReport.dto.transportCost.TransportCostEditDto;
-import pl.sginko.travelexpense.domain.travelReport.entity.TransportCostEntity;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportEditDto;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
-import pl.sginko.travelexpense.domain.user.entity.Roles;
+import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 
 import java.math.BigDecimal;
@@ -91,7 +86,7 @@ class TravelReportEntityTest {
     @Test
     void should_set_status_to_rejected_if_any_approval_is_rejected() {
         // GIVEN
-        ApprovalEntity approval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_MANAGER);
+        ApprovalEntity approval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
         approval.updateStatus(ApprovalStatus.REJECTED);
         Set<ApprovalEntity> approvals = new HashSet<>();
         approvals.add(approval);
@@ -107,10 +102,10 @@ class TravelReportEntityTest {
     @Test
     void should_set_status_to_approved_if_both_manager_and_accountant_approve() {
         // GIVEN
-        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_MANAGER);
+        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
         managerApproval.updateStatus(ApprovalStatus.APPROVED);
 
-        ApprovalEntity accountantApproval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_ACCOUNTANT);
+        ApprovalEntity accountantApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_ACCOUNTANT);
         accountantApproval.updateStatus(ApprovalStatus.APPROVED);
 
         travelReportEntity.getApprovals().add(managerApproval);
@@ -126,7 +121,7 @@ class TravelReportEntityTest {
     @Test
     void should_set_status_to_in_process_if_only_one_role_is_approved() {
         // GIVEN
-        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_MANAGER);
+        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
         managerApproval.updateStatus(ApprovalStatus.APPROVED);
 
         travelReportEntity.getApprovals().add(managerApproval);

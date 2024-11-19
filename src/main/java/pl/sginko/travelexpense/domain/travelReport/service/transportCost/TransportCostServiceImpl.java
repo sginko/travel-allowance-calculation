@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.domain.travelReport.dto.transportCost.TransportCostDto;
 import pl.sginko.travelexpense.domain.travelReport.entity.TransportCostEntity;
-import pl.sginko.travelexpense.domain.travelReport.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
+import pl.sginko.travelexpense.domain.travelReport.mapper.TransportCostMapper;
 
 @AllArgsConstructor
 @Service

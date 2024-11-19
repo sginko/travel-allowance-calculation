@@ -12,7 +12,7 @@ import pl.sginko.travelexpense.domain.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalStatus;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportEditDto;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
-import pl.sginko.travelexpense.domain.user.entity.Roles;
+import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 
 import java.math.BigDecimal;
@@ -137,8 +137,8 @@ public class TravelReportEntity {
         if (anyApprovalRejected()) {
             updateStatus(TravelReportStatus.REJECTED);
         } else {
-            boolean accountantApproved = isApprovedByAtLeastOneRole(Roles.ROLE_ACCOUNTANT);
-            boolean managerApproved = isApprovedByAtLeastOneRole(Roles.ROLE_MANAGER);
+            boolean accountantApproved = isApprovedByAtLeastOneRole(UserRoles.ROLE_ACCOUNTANT);
+            boolean managerApproved = isApprovedByAtLeastOneRole(UserRoles.ROLE_MANAGER);
 
             if (accountantApproved && managerApproved) {
                 updateStatus(TravelReportStatus.APPROVED);
@@ -184,7 +184,7 @@ public class TravelReportEntity {
                 .anyMatch(approval -> approval.getStatus() == ApprovalStatus.REJECTED);
     }
 
-    private boolean isApprovedByAtLeastOneRole(Roles role) {
+    private boolean isApprovedByAtLeastOneRole(UserRoles role) {
         return approvals.stream()
                 .filter(approval -> approval.getRole() == role)
                 .anyMatch(approval -> approval.getStatus() == ApprovalStatus.APPROVED);

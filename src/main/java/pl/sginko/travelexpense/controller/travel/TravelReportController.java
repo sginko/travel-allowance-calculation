@@ -67,19 +67,6 @@ class TravelReportController {
         }
     }
 
-//    @PostMapping("/print/{techId}")
-//    public ResponseEntity<Void> generateTravelExpenseReportPdf(@PathVariable("techId") UUID techId) {
-//        try {
-//            pdfDocumentService.generateTravelExpenseReportPdf(techId);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(500).build();
-//        }
-//        return ResponseEntity.status(302)
-//                .header("Location", "/api/v1/travels/print/changed_template.pdf")
-//                .build();
-//    }
-
     @GetMapping("/print/changed_template.pdf")
     public ResponseEntity<InputStreamResource> getTravelExpenseReportPdf() {
         try {
@@ -102,25 +89,4 @@ class TravelReportController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-//    @GetMapping("/print/changed_template.pdf")
-//    public ResponseEntity<InputStreamResource> getTravelExpenseReportPdf() {
-//        try {
-//            File file = new File("src/main/resources/print/changed_template.pdf"); //without Docker
-////            File file = new File("/app/resources/print/changed_template.pdf"); //with Docker
-//            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
-//
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.add("Content-Disposition", "inline; filename=changed_template.pdf");
-//
-//            return ResponseEntity.ok()
-//                    .headers(headers)
-//                    .contentLength(file.length())
-//                    .contentType(MediaType.APPLICATION_PDF)
-//                    .body(resource);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return ResponseEntity.status(500).build();
-//        }
-//    }
 }

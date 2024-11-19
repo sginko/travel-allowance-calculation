@@ -8,7 +8,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.sginko.travelexpense.domain.user.dto.UserRequestDto;
 import pl.sginko.travelexpense.domain.user.dto.UserResponseDto;
-import pl.sginko.travelexpense.domain.user.entity.Roles;
+import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,7 +42,7 @@ class UserMapperTest {
         assertThat(userEntity.getName()).isEqualTo("name");
         assertThat(userEntity.getSurname()).isEqualTo("surname");
         assertThat(userEntity.getPassword()).isEqualTo(encodedPassword);
-        assertThat(userEntity.getRoles()).isEqualTo(Roles.ROLE_USER);
+        assertThat(userEntity.getUserRoles()).isEqualTo(UserRoles.ROLE_USER);
     }
 
     @Test
@@ -60,7 +60,7 @@ class UserMapperTest {
         assertThat(userEntity.getName()).isEqualTo(name);
         assertThat(userEntity.getSurname()).isEqualTo(surname);
         assertThat(userEntity.getPassword()).isEmpty();
-        assertThat(userEntity.getRoles()).isEqualTo(Roles.ROLE_USER);
+        assertThat(userEntity.getUserRoles()).isEqualTo(UserRoles.ROLE_USER);
     }
 
     @Test
@@ -76,6 +76,6 @@ class UserMapperTest {
         assertThat(responseDto.getEmail()).isEqualTo("user@test.com");
         assertThat(responseDto.getName()).isEqualTo("name");
         assertThat(responseDto.getSurname()).isEqualTo("surname");
-        assertThat(responseDto.getRoles()).isEqualTo(Roles.ROLE_ACCOUNTANT);
+        assertThat(responseDto.getUserRoles()).isEqualTo(UserRoles.ROLE_ACCOUNTANT);
     }
 }

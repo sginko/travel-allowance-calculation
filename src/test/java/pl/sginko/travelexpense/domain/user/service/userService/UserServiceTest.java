@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.sginko.travelexpense.domain.user.dto.UserRequestDto;
 import pl.sginko.travelexpense.domain.user.dto.UserResponseDto;
-import pl.sginko.travelexpense.domain.user.entity.Roles;
+import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 import pl.sginko.travelexpense.domain.user.exception.UserException;
 import pl.sginko.travelexpense.domain.user.exception.UserNotFoundException;
@@ -43,7 +43,7 @@ class UserServiceTest {
     void setUp() {
         userRequestDto = new UserRequestDto("test@test.com", "name", "surname", "password123");
         userEntity = new UserEntity("test@test.com", "name", "surname", "encodedPassword");
-        userResponseDto = new UserResponseDto("test@test.com", "name", "surname", Roles.ROLE_USER);
+        userResponseDto = new UserResponseDto("test@test.com", "name", "surname", UserRoles.ROLE_USER);
     }
 
     @Test
@@ -99,7 +99,7 @@ class UserServiceTest {
         userService.changeUserRoleToAccountant(userEntity.getEmail());
 
         // THEN
-        assertThat(userEntity.getRoles()).isEqualTo(Roles.ROLE_ACCOUNTANT);
+        assertThat(userEntity.getUserRoles()).isEqualTo(UserRoles.ROLE_ACCOUNTANT);
         verify(userRepository, times(1)).findByEmail(userEntity.getEmail());
     }
 
@@ -112,7 +112,7 @@ class UserServiceTest {
         userService.changeUserRoleToManager(userEntity.getEmail());
 
         // THEN
-        assertThat(userEntity.getRoles()).isEqualTo(Roles.ROLE_MANAGER);
+        assertThat(userEntity.getUserRoles()).isEqualTo(UserRoles.ROLE_MANAGER);
         verify(userRepository, times(1)).findByEmail(userEntity.getEmail());
     }
 

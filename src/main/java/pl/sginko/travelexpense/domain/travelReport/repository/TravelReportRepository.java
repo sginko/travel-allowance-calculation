@@ -20,5 +20,4 @@ public interface TravelReportRepository extends JpaRepository<TravelReportEntity
     List<TravelReportEntity> findByStartDateBefore(LocalDate cutoffDate);
 
     Optional<TravelReportEntity> findByTechIdAndUserEntity_Email(UUID techId, String email);
-
 }

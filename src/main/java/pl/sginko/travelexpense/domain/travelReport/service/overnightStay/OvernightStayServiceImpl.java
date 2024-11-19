@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.domain.travelReport.dto.overnightStay.OvernightStayDto;
 import pl.sginko.travelexpense.domain.travelReport.entity.OvernightStayEntity;
-import pl.sginko.travelexpense.domain.travelReport.mapper.OvernightStayMapper;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
+import pl.sginko.travelexpense.domain.travelReport.mapper.OvernightStayMapper;
 
 @AllArgsConstructor
 @Service

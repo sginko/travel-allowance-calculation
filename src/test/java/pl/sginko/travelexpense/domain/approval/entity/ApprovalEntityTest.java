@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import pl.sginko.travelexpense.domain.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
-import pl.sginko.travelexpense.domain.user.entity.Roles;
+import pl.sginko.travelexpense.domain.user.entity.UserRoles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ class ApprovalEntityTest {
     private TravelReportEntity travelReportEntity;
     private UserEntity approver;
 
-    private static final Roles DEFAULT_ROLE = Roles.ROLE_MANAGER;
+    private static final UserRoles DEFAULT_ROLE = UserRoles.ROLE_MANAGER;
     private static final ApprovalStatus INITIAL_STATUS = ApprovalStatus.PENDING;
 
 
@@ -115,7 +115,7 @@ class ApprovalEntityTest {
     @Test
     void equals_should_return_false_for_different_role() {
         // GIVEN
-        ApprovalEntity differentApproval = new ApprovalEntity(travelReportEntity, approver, Roles.ROLE_ACCOUNTANT);
+        ApprovalEntity differentApproval = new ApprovalEntity(travelReportEntity, approver, UserRoles.ROLE_ACCOUNTANT);
 
         // THEN
         assertThat(approvalEntity).isNotEqualTo(differentApproval);
