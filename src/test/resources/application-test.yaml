@@ -16,11 +16,6 @@ spring:
       ddl-auto: create-drop
     show-sql: true
 
-
-#  h2:
-#    console:
-#      enabled: true
-
   security:
     oauth2:
       client:
@@ -39,8 +34,27 @@ spring:
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
             user-name-attribute: sub
 
+  mail:
+    host: smtp.example.com
+    port: 2525
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
+          ssl:
+            enable: false
+
   logging:
     level:
       org:
         springframework:
           security: DEBUG
+
+management:
+  health:
+    mail:
+      enabled: false
