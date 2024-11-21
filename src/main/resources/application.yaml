@@ -44,19 +44,19 @@ spring:
             user-name-attribute: sub
 
   mail:
-    host: mail68.mydevil.net
-    port: 587
-    username: ksiegowosc@ginkota.pl
-    password: 08082012_Andrew!@_Olga
+    host:
+    port:
+    username:
+    password:
     properties:
       mail:
         smtp:
-          auth: true
+          auth:
           starttls:
-            enable: true
-            required: true
+            enable:
+            required:
         ssl:
-          enable: true
+          enable:
 
 cleanup:
   old-reports:
