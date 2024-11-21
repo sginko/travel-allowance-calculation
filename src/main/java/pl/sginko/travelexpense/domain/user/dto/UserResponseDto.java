@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -13,5 +13,5 @@ public class UserResponseDto {
     private String email;
     private String name;
     private String surname;
-    private UserRoles userRoles;
+    private Roles roles;
 }

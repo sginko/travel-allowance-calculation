@@ -45,7 +45,7 @@ spring:
 
 cleanup:
   old-reports:
-    cron: "0 56 14 * * *"
+    cron: "0 47 21 * * *"
 
 logging:
   level:

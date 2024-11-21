@@ -13,7 +13,7 @@ import pl.sginko.travelexpense.domain.travelReport.dto.overnightStay.OvernightSt
 import pl.sginko.travelexpense.domain.travelReport.dto.transportCost.TransportCostEditDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportEditDto;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 
 import java.math.BigDecimal;
@@ -86,7 +86,7 @@ class TravelReportEntityTest {
     @Test
     void should_set_status_to_rejected_if_any_approval_is_rejected() {
         // GIVEN
-        ApprovalEntity approval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
+        ApprovalEntity approval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_MANAGER);
         approval.updateApprovalStatus(ApprovalStatus.REJECTED);
         Set<ApprovalEntity> approvals = new HashSet<>();
         approvals.add(approval);
@@ -102,10 +102,10 @@ class TravelReportEntityTest {
     @Test
     void should_set_status_to_approved_if_both_manager_and_accountant_approve() {
         // GIVEN
-        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
+        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_MANAGER);
         managerApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
 
-        ApprovalEntity accountantApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_ACCOUNTANT);
+        ApprovalEntity accountantApproval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_ACCOUNTANT);
         accountantApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
 
         travelReportEntity.getApprovals().add(managerApproval);
@@ -121,7 +121,7 @@ class TravelReportEntityTest {
     @Test
     void should_set_status_to_in_process_if_only_one_role_is_approved() {
         // GIVEN
-        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, UserRoles.ROLE_MANAGER);
+        ApprovalEntity managerApproval = new ApprovalEntity(travelReportEntity, userEntity, Roles.ROLE_MANAGER);
         managerApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
 
         travelReportEntity.getApprovals().add(managerApproval);

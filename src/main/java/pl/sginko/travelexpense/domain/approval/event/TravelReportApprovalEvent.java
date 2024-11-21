@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class ApprovalEvent {
+public class TravelReportApprovalEvent {
     private final UUID travelTechId;
     private final String userEmail;
     private final TravelReportStatus status;

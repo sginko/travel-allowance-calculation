@@ -1,6 +1,6 @@
 package pl.sginko.travelexpense.domain.user.entity;
 
-public enum UserRoles {
+public enum Roles {
     ROLE_ADMIN,
     ROLE_USER,
     ROLE_MANAGER,

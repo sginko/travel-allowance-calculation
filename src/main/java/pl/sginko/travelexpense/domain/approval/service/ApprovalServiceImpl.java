@@ -1,13 +1,12 @@
 package pl.sginko.travelexpense.domain.approval.service;
 
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sginko.travelexpense.common.eventPublisher.EventPublisher;
 import pl.sginko.travelexpense.domain.actionLog.service.ActionLogService;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalStatus;
-import pl.sginko.travelexpense.domain.approval.event.ApprovalEvent;
 import pl.sginko.travelexpense.domain.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.domain.approval.repository.ApprovalRepository;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
@@ -17,7 +16,7 @@ import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportExcepti
 import pl.sginko.travelexpense.domain.travelReport.mapper.TravelReportMapper;
 import pl.sginko.travelexpense.domain.travelReport.repository.TravelReportRepository;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 import pl.sginko.travelexpense.domain.user.exception.UserException;
 import pl.sginko.travelexpense.domain.user.repository.UserRepository;
 
@@ -34,7 +33,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final UserRepository userRepository;
     private final TravelReportMapper travelReportMapper;
     private final ActionLogService actionLogService;
-    private final ApplicationEventPublisher eventPublisher;
+    private final EventPublisher eventPublisher;
 
     @Override
     public List<TravelReportResponseDto> getTravelReportsForApproval(String approverEmail) {
@@ -42,7 +41,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         UserEntity approver = findApproverUserByEmail(approverEmail);
 
         // Get the role of the approver (e.g., ROLE_MANAGER, ROLE_ACCOUNTANT)
-        UserRoles approverRole = approver.getUserRoles();
+        Roles approverRole = approver.getRoles();
 
         // Retrieve all travel reports with statuses SUBMITTED or IN_PROCESS
         List<TravelReportEntity> travelReportEntity = getTravelReportsByStatuses(List.of(TravelReportStatus.SUBMITTED, TravelReportStatus.IN_PROCESS));
@@ -70,7 +69,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         return travelReportRepository.findByStatusIn(travelReportStatus);
     }
 
-    private List<TravelReportEntity> filterPendingTravelReports(List<TravelReportEntity> travelReports, UserRoles approverRole) {
+    private List<TravelReportEntity> filterPendingTravelReports(List<TravelReportEntity> travelReports, Roles approverRole) {
         return travelReports.stream()
                 .filter(travel -> !approvalRepository.existsByTravelReportEntityAndRole(travel, approverRole))
                 .collect(Collectors.toList());
@@ -87,7 +86,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         UserEntity approver = findApproverUserByEmail(approverEmail);
 
         // Get the role of the approver (e.g., ROLE_MANAGER, ROLE_ACCOUNTANT)
-        UserRoles approverRole = approver.getUserRoles();
+        Roles approverRole = approver.getRoles();
 
         // Find the travelReport by its unique techId (UUID)
         TravelReportEntity travelReportEntity = findTravelByTechId(travelId);
@@ -102,22 +101,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         logAndPublishEvent(newStatus, travelReportEntity, approver);
     }
 
-    private void logAndPublishEvent(ApprovalStatus newStatus, TravelReportEntity travelReportEntity, UserEntity approver) {
-        // Log the action performed by the approver (e.g., approval or rejection)
-        actionLogService.logAction("Status report: " + travelReportEntity.getTechId() + " updated to: "
-                + newStatus, travelReportEntity.getId(), approver.getId());
-
-        // Publish an event if the travel report's status is now APPROVED or REJECTED
-        publishTravelReportApprovalEvent(travelReportEntity);
-    }
-
-    private void updateTravelReportStatus(TravelReportEntity travelReportEntity) {
-        travelReportEntity.updateTravelReportStatusFromApprovals();
-
-        travelReportRepository.save(travelReportEntity);
-    }
-
-    private void addApprovalToTravelReport(ApprovalStatus newStatus, TravelReportEntity travelReportEntity, UserEntity approver, UserRoles approverRole) {
+    private void addApprovalToTravelReport(ApprovalStatus newStatus, TravelReportEntity travelReportEntity, UserEntity approver, Roles approverRole) {
         // Create a new approval record (ApprovalEntity) for the travelReport and the approver
         ApprovalEntity approval = new ApprovalEntity(travelReportEntity, approver, approverRole);
 
@@ -135,15 +119,22 @@ public class ApprovalServiceImpl implements ApprovalService {
         approvals.add(approval);
     }
 
-    private void publishTravelReportApprovalEvent(TravelReportEntity travelReportEntity) {
-        TravelReportStatus travelReportStatus = travelReportEntity.getStatus();
+    private void updateTravelReportStatus(TravelReportEntity travelReportEntity) {
+        travelReportEntity.updateTravelReportStatusFromApprovals();
 
-        if (travelReportStatus == TravelReportStatus.APPROVED || travelReportStatus == TravelReportStatus.REJECTED) {
-            ApprovalEvent event = new ApprovalEvent(travelReportEntity.getTechId(), travelReportEntity.getUserEntity().getEmail(),
-                    travelReportStatus);
+        travelReportRepository.save(travelReportEntity);
+    }
 
-            eventPublisher.publishEvent(event);
-        }
+    private void logAndPublishEvent(ApprovalStatus newStatus, TravelReportEntity travelReportEntity, UserEntity approver) {
+        // Log the action performed by the approver (e.g., approval or rejection)
+        actionLogService.logAction("Status report: " + travelReportEntity.getTechId() + " updated to: "
+                + newStatus, travelReportEntity.getId(), approver.getId());
+
+        // Publish an event if the travel report's status is now APPROVED or REJECTED
+        eventPublisher.publishTravelReportApprovalEvent(
+                travelReportEntity.getTechId(),
+                travelReportEntity.getUserEntity().getEmail(),
+                travelReportEntity.getStatus());
     }
 
     private UserEntity findApproverUserByEmail(String approverEmail) {
@@ -156,7 +147,7 @@ public class ApprovalServiceImpl implements ApprovalService {
                 .orElseThrow(() -> new TravelReportException("Travel not found"));
     }
 
-    private void checkIfApprovalAlreadyExists(TravelReportEntity travelReportEntity, UserRoles role) {
+    private void checkIfApprovalAlreadyExists(TravelReportEntity travelReportEntity, Roles role) {
         boolean alreadyApproved = approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, role);
         if (alreadyApproved) {
             throw new ApprovalException("Approval has already been processed by a " + role);

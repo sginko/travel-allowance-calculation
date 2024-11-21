@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.domain.user.dto.UserRequestDto;
 import pl.sginko.travelexpense.domain.user.dto.UserResponseDto;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 import pl.sginko.travelexpense.domain.user.exception.UserException;
 import pl.sginko.travelexpense.domain.user.exception.UserNotFoundException;
@@ -66,7 +66,7 @@ class UserServiceIntegrationTest {
         // THEN
         UserEntity savedUser = userRepository.findByEmail("test@test.com").orElseThrow();
         assertThat(savedUser.getEmail()).isEqualTo("test@test.com");
-        assertThat(savedUser.getUserRoles()).isEqualTo(UserRoles.ROLE_USER);
+        assertThat(savedUser.getRoles()).isEqualTo(Roles.ROLE_USER);
     }
 
     @Test
@@ -91,7 +91,7 @@ class UserServiceIntegrationTest {
 
         // THEN
         UserEntity updatedUser = userRepository.findByEmail("test@test.com").orElseThrow();
-        assertThat(updatedUser.getUserRoles()).isEqualTo(UserRoles.ROLE_ACCOUNTANT);
+        assertThat(updatedUser.getRoles()).isEqualTo(Roles.ROLE_ACCOUNTANT);
     }
 
     @Test
@@ -104,7 +104,7 @@ class UserServiceIntegrationTest {
 
         // THEN
         UserEntity updatedUser = userRepository.findByEmail("test@test.com").orElseThrow();
-        assertThat(updatedUser.getUserRoles()).isEqualTo(UserRoles.ROLE_MANAGER);
+        assertThat(updatedUser.getRoles()).isEqualTo(Roles.ROLE_MANAGER);
     }
 
     @Test

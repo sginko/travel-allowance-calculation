@@ -34,21 +34,21 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRoles userRoles;
+    private Roles roles;
 
     public UserEntity(String email, String name, String surname, String password) {
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.password = password;
-        this.userRoles = UserRoles.ROLE_USER;
+        this.roles = Roles.ROLE_USER;
     }
 
     public void changeRoleToAccountant() {
-        this.userRoles = UserRoles.ROLE_ACCOUNTANT;
+        this.roles = Roles.ROLE_ACCOUNTANT;
     }
 
     public void changeRoleToManager() {
-        this.userRoles = UserRoles.ROLE_MANAGER;
+        this.roles = Roles.ROLE_MANAGER;
     }
 }

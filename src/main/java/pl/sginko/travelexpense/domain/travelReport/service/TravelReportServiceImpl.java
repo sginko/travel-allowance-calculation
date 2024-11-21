@@ -6,17 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
 import lombok.AllArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sginko.travelexpense.common.eventPublisher.EventPublisher;
 import pl.sginko.travelexpense.common.util.AuthenticationUtil;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportEditDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportRequestDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportSubmissionResponseDto;
 import pl.sginko.travelexpense.domain.travelReport.entity.*;
-import pl.sginko.travelexpense.domain.travelReport.event.TravelReportSubmissionEvent;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
 import pl.sginko.travelexpense.domain.travelReport.mapper.TravelReportMapper;
 import pl.sginko.travelexpense.domain.travelReport.repository.TravelReportRepository;
@@ -40,8 +39,8 @@ public class TravelReportServiceImpl implements TravelReportService {
     private final OvernightStayService overnightStayService;
     private final TransportCostService transportCostService;
     private final UserReaderService userReaderService;
-    private final ApplicationEventPublisher eventPublisher;
     private final ObjectMapper objectMapper;
+    private final EventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -66,7 +65,7 @@ public class TravelReportServiceImpl implements TravelReportService {
 
         travelReportRepository.save(travelReportEntity);
 
-        publishSubmitEvent(travelReportEntity, currentUser);
+        publishTravelReportSubmissionEvent(travelReportEntity, currentUser);
 
         return travelReportMapper.toTravelSubmissionResponseDto(travelReportEntity);
     }
@@ -126,10 +125,10 @@ public class TravelReportServiceImpl implements TravelReportService {
                 .orElseThrow(() -> new TravelReportException("Travel not found"));
     }
 
-    private void publishSubmitEvent(TravelReportEntity travelReportEntity, UserEntity currentUser) {
-        TravelReportSubmissionEvent submissionEvent = new TravelReportSubmissionEvent(travelReportEntity.getTechId(),
-                currentUser.getEmail());
-
-        eventPublisher.publishEvent(submissionEvent);
+    private void publishTravelReportSubmissionEvent(TravelReportEntity travelReportEntity, UserEntity currentUser) {
+        eventPublisher.publishTravelReportSubmissionEvent(
+                travelReportEntity.getTechId(),
+                currentUser.getEmail(),
+                TravelReportStatus.SUBMITTED);
     }
 }

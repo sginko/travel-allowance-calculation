@@ -12,7 +12,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.sginko.travelexpense.domain.user.dto.UserRequestDto;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 import pl.sginko.travelexpense.domain.user.mapper.UserMapper;
 import pl.sginko.travelexpense.domain.user.repository.UserRepository;
@@ -135,7 +135,7 @@ class UserControllerTest {
                 .andExpect(status().isOk());
 
         UserEntity updatedUser = userRepository.findByEmail(email).orElseThrow();
-        assertThat(updatedUser.getUserRoles()).isEqualTo(UserRoles.ROLE_ACCOUNTANT);
+        assertThat(updatedUser.getRoles()).isEqualTo(Roles.ROLE_ACCOUNTANT);
     }
 
     // PATCH /api/v1/users/{email}/change-role-to-accountant
@@ -188,7 +188,7 @@ class UserControllerTest {
                 .andExpect(status().isOk());
 
         UserEntity updatedUser = userRepository.findByEmail(email).orElseThrow();
-        assertThat(updatedUser.getUserRoles()).isEqualTo(UserRoles.ROLE_MANAGER);
+        assertThat(updatedUser.getRoles()).isEqualTo(Roles.ROLE_MANAGER);
     }
 
     // PATCH /api/v1/users/{email}/change-role-to-accountant

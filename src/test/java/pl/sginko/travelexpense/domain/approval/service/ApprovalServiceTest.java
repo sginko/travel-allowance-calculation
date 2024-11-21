@@ -8,20 +8,19 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.context.ApplicationEventPublisher;
+import pl.sginko.travelexpense.common.eventPublisher.EventPublisher;
 import pl.sginko.travelexpense.domain.actionLog.service.ActionLogService;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalEntity;
 import pl.sginko.travelexpense.domain.approval.entity.ApprovalStatus;
-import pl.sginko.travelexpense.domain.approval.event.ApprovalEvent;
 import pl.sginko.travelexpense.domain.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.domain.approval.repository.ApprovalRepository;
-import pl.sginko.travelexpense.domain.travelReport.mapper.DietMapper;
-import pl.sginko.travelexpense.domain.travelReport.mapper.OvernightStayMapper;
-import pl.sginko.travelexpense.domain.travelReport.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportStatus;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.domain.travelReport.mapper.DietMapper;
+import pl.sginko.travelexpense.domain.travelReport.mapper.OvernightStayMapper;
+import pl.sginko.travelexpense.domain.travelReport.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.domain.travelReport.mapper.TravelReportMapper;
 import pl.sginko.travelexpense.domain.travelReport.repository.TravelReportRepository;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
@@ -53,7 +52,7 @@ class ApprovalServiceTest {
     private ActionLogService actionLogService;
 
     @Mock
-    private ApplicationEventPublisher eventPublisher;
+    private EventPublisher eventPublisher;
 
     @Mock
     private DietMapper dietMapper;
@@ -88,7 +87,7 @@ class ApprovalServiceTest {
         UserEntity accountant = new UserEntity("accountant@test.com", "Accountant", "User", "password");
         accountant.changeRoleToAccountant();
 
-        ApprovalEntity existingApproval = new ApprovalEntity(travelReportEntity, accountant, accountant.getUserRoles());
+        ApprovalEntity existingApproval = new ApprovalEntity(travelReportEntity, accountant, accountant.getRoles());
         existingApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
         travelReportEntity.getApprovals().add(existingApproval);
 
@@ -106,7 +105,7 @@ class ApprovalServiceTest {
         // GIVEN
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
-        when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getUserRoles())).thenReturn(false);
+        when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getRoles())).thenReturn(false);
 
         // WHEN
         approvalService.approveTravelReport(travelId, approver.getEmail());
@@ -118,7 +117,7 @@ class ApprovalServiceTest {
 
         assertThat(savedApproval.getTravelReportEntity()).isEqualTo(travelReportEntity);
         assertThat(savedApproval.getApprover()).isEqualTo(approver);
-        assertThat(savedApproval.getRole()).isEqualTo(approver.getUserRoles());
+        assertThat(savedApproval.getRole()).isEqualTo(approver.getRoles());
         assertThat(savedApproval.getStatus()).isEqualTo(ApprovalStatus.APPROVED);
 
         ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
@@ -130,13 +129,14 @@ class ApprovalServiceTest {
         assertThat(travelIdCaptor.getValue()).isEqualTo(travelReportEntity.getId());
         assertThat(approverIdCaptor.getValue()).isEqualTo(approver.getId());
 
-        ArgumentCaptor<ApprovalEvent> eventCaptor = ArgumentCaptor.forClass(ApprovalEvent.class);
-        verify(eventPublisher).publishEvent(eventCaptor.capture());
-        ApprovalEvent publishedEvent = eventCaptor.getValue();
+        ArgumentCaptor<UUID> uuidCaptor = ArgumentCaptor.forClass(UUID.class);
+        ArgumentCaptor<String> emailCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<TravelReportStatus> statusCaptor = ArgumentCaptor.forClass(TravelReportStatus.class);
+        verify(eventPublisher).publishTravelReportApprovalEvent(uuidCaptor.capture(), emailCaptor.capture(), statusCaptor.capture());
 
-        assertThat(publishedEvent.getTravelTechId()).isEqualTo(travelReportEntity.getTechId());
-        assertThat(publishedEvent.getUserEmail()).isEqualTo(travelReportEntity.getUserEntity().getEmail());
-        assertThat(publishedEvent.getStatus()).isEqualTo(travelReportEntity.getStatus());
+        assertThat(uuidCaptor.getValue()).isEqualTo(travelId);
+        assertThat(emailCaptor.getValue()).isEqualTo(travelReportEntity.getUserEntity().getEmail());
+        assertThat(statusCaptor.getValue()).isEqualTo(TravelReportStatus.APPROVED);
 
         assertThat(travelReportEntity.getStatus()).isEqualTo(TravelReportStatus.APPROVED);
     }
@@ -146,7 +146,7 @@ class ApprovalServiceTest {
         // GIVEN
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
-        when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getUserRoles())).thenReturn(false);
+        when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getRoles())).thenReturn(false);
 
         // WHEN
         approvalService.rejectTravelReport(travelId, approver.getEmail());
@@ -158,7 +158,7 @@ class ApprovalServiceTest {
 
         assertThat(savedApproval.getTravelReportEntity()).isEqualTo(travelReportEntity);
         assertThat(savedApproval.getApprover()).isEqualTo(approver);
-        assertThat(savedApproval.getRole()).isEqualTo(approver.getUserRoles());
+        assertThat(savedApproval.getRole()).isEqualTo(approver.getRoles());
         assertThat(savedApproval.getStatus()).isEqualTo(ApprovalStatus.REJECTED);
 
         ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
@@ -170,32 +170,19 @@ class ApprovalServiceTest {
         assertThat(travelIdCaptor.getValue()).isEqualTo(travelReportEntity.getId());
         assertThat(approverIdCaptor.getValue()).isEqualTo(approver.getId());
 
-        ArgumentCaptor<ApprovalEvent> eventCaptor = ArgumentCaptor.forClass(ApprovalEvent.class);
-        verify(eventPublisher).publishEvent(eventCaptor.capture());
-        ApprovalEvent publishedEvent = eventCaptor.getValue();
+        // Захват аргументов метода publishTravelReportApprovalEvent
+        ArgumentCaptor<UUID> uuidCaptor = ArgumentCaptor.forClass(UUID.class);
+        ArgumentCaptor<String> emailCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<TravelReportStatus> statusCaptor = ArgumentCaptor.forClass(TravelReportStatus.class);
+        verify(eventPublisher).publishTravelReportApprovalEvent(uuidCaptor.capture(), emailCaptor.capture(), statusCaptor.capture());
 
-        assertThat(publishedEvent.getTravelTechId()).isEqualTo(travelReportEntity.getTechId());
-        assertThat(publishedEvent.getUserEmail()).isEqualTo(travelReportEntity.getUserEntity().getEmail());
-        assertThat(publishedEvent.getStatus()).isEqualTo(travelReportEntity.getStatus());
+        // Проверка захваченных значений
+        assertThat(uuidCaptor.getValue()).isEqualTo(travelId);
+        assertThat(emailCaptor.getValue()).isEqualTo(travelReportEntity.getUserEntity().getEmail());
+        assertThat(statusCaptor.getValue()).isEqualTo(TravelReportStatus.REJECTED);
 
+        // Проверка обновленного статуса
         assertThat(travelReportEntity.getStatus()).isEqualTo(TravelReportStatus.REJECTED);
-    }
-
-    @Test
-    void should_not_publish_event_when_status_is_in_process_after_approval() {
-        // GIVEN
-        when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
-        when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
-        when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getUserRoles())).thenReturn(false);
-
-        travelReportEntity.getApprovals().clear();
-
-        // WHEN
-        approvalService.approveTravelReport(travelId, approver.getEmail());
-
-        // THEN
-        verify(eventPublisher, never()).publishEvent(any(ApprovalEvent.class));
-        assertThat(travelReportEntity.getStatus()).isEqualTo(TravelReportStatus.IN_PROCESS);
     }
 
     @Test
@@ -203,13 +190,13 @@ class ApprovalServiceTest {
         // GIVEN
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
-        when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getUserRoles())).thenReturn(false);
+        when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getRoles())).thenReturn(false);
 
         // WHEN
         approvalService.approveTravelReport(travelId, approver.getEmail());
 
         // THEN
-        verify(eventPublisher, times(1)).publishEvent(any(ApprovalEvent.class));
+        verify(eventPublisher).publishTravelReportApprovalEvent(eq(travelId), eq(approver.getEmail()), eq(TravelReportStatus.APPROVED));
         assertThat(travelReportEntity.getStatus()).isEqualTo(TravelReportStatus.APPROVED);
     }
 
@@ -222,21 +209,21 @@ class ApprovalServiceTest {
 
         UserEntity accountant2 = new UserEntity("accountant2@test.com", "Accountant2", "User2", "password");
         accountant2.changeRoleToAccountant();
-        ApprovalEntity existingApproval2 = new ApprovalEntity(newTravelReport, accountant2, accountant2.getUserRoles());
+        ApprovalEntity existingApproval2 = new ApprovalEntity(newTravelReport, accountant2, accountant2.getRoles());
         existingApproval2.updateApprovalStatus(ApprovalStatus.APPROVED);
         newTravelReport.getApprovals().add(existingApproval2);
 
         UUID newTravelId = newTravelReport.getTechId();
 
         when(travelReportRepository.findByTechId(newTravelId)).thenReturn(Optional.of(newTravelReport));
-        when(approvalRepository.existsByTravelReportEntityAndRole(newTravelReport, approver.getUserRoles())).thenReturn(false);
+        when(approvalRepository.existsByTravelReportEntityAndRole(newTravelReport, approver.getRoles())).thenReturn(false);
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
 
         // WHEN
         approvalService.rejectTravelReport(newTravelId, approver.getEmail());
 
         // THEN
-        verify(eventPublisher, times(1)).publishEvent(any(ApprovalEvent.class));
+        verify(eventPublisher).publishTravelReportApprovalEvent(eq(newTravelId), eq(approver.getEmail()), eq(TravelReportStatus.REJECTED));
         assertThat(newTravelReport.getStatus()).isEqualTo(TravelReportStatus.REJECTED);
     }
 
@@ -245,14 +232,14 @@ class ApprovalServiceTest {
         // GIVEN
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
-        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travelReportEntity), eq(approver.getUserRoles()))).thenReturn(true);
+        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travelReportEntity), eq(approver.getRoles()))).thenReturn(true);
 
         // WHEN
         Executable e = () -> approvalService.rejectTravelReport(travelId, approver.getEmail());
 
         // THEN
         ApprovalException exception = assertThrows(ApprovalException.class, e);
-        assertThat(exception.getMessage()).isEqualTo("Approval has already been processed by a " + approver.getUserRoles());
+        assertThat(exception.getMessage()).isEqualTo("Approval has already been processed by a " + approver.getRoles());
         verify(approvalRepository, never()).save(any(ApprovalEntity.class));
     }
 
@@ -285,8 +272,8 @@ class ApprovalServiceTest {
         List<TravelReportEntity> allTravels = List.of(travel1, travel2);
 
         when(travelReportRepository.findByStatusIn(anyList())).thenReturn(allTravels);
-        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel1), eq(approver.getUserRoles()))).thenReturn(false);
-        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel2), eq(approver.getUserRoles()))).thenReturn(false);
+        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel1), eq(approver.getRoles()))).thenReturn(false);
+        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel2), eq(approver.getRoles()))).thenReturn(false);
 
         TravelReportResponseDto responseDto1 = createTestTravelReportResponseDto(travel1);
         TravelReportResponseDto responseDto2 = createTestTravelReportResponseDto(travel2);
@@ -318,8 +305,8 @@ class ApprovalServiceTest {
         List<TravelReportEntity> allTravels = List.of(travel1, travel2);
 
         when(travelReportRepository.findByStatusIn(anyList())).thenReturn(allTravels);
-        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel1), eq(approver.getUserRoles()))).thenReturn(true);
-        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel2), eq(approver.getUserRoles()))).thenReturn(false);
+        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel1), eq(approver.getRoles()))).thenReturn(true);
+        when(approvalRepository.existsByTravelReportEntityAndRole(eq(travel2), eq(approver.getRoles()))).thenReturn(false);
 
         TravelReportResponseDto responseDto2 = createTestTravelReportResponseDto(travel2);
         when(travelReportMapper.toResponseDto(travel2)).thenReturn(responseDto2);

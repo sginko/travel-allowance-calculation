@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 import pl.sginko.travelexpense.domain.user.repository.UserRepository;
 
@@ -51,7 +51,7 @@ class CustomUserDetailsServiceTest {
         assertThat(userDetails.getAuthorities()).hasSize(1);
         assertThat(userDetails.getAuthorities())
                 .extracting(GrantedAuthority::getAuthority)
-                .containsExactly(UserRoles.ROLE_USER.name());
+                .containsExactly(Roles.ROLE_USER.name());
 
         verify(userRepository, times(1)).findByEmail(email);
     }
@@ -90,7 +90,7 @@ class CustomUserDetailsServiceTest {
         assertThat(userDetails.getAuthorities()).hasSize(1);
         assertThat(userDetails.getAuthorities())
                 .extracting(GrantedAuthority::getAuthority)
-                .containsExactly(UserRoles.ROLE_MANAGER.name());
+                .containsExactly(Roles.ROLE_MANAGER.name());
 
         verify(userRepository, times(1)).findByEmail(email);
     }

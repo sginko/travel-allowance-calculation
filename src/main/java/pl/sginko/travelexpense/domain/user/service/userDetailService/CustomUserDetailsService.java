@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 import pl.sginko.travelexpense.domain.user.repository.UserRepository;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails buildUserDetails(UserEntity userEntity) {
-        List<GrantedAuthority> authorities = mapRolesToAuthorities(userEntity.getUserRoles());
+        List<GrantedAuthority> authorities = mapRolesToAuthorities(userEntity.getRoles());
         return new User(
                 userEntity.getEmail(),
                 userEntity.getPassword(),
@@ -39,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 
-    private List<GrantedAuthority> mapRolesToAuthorities(UserRoles userRoles) {
-        return List.of(new SimpleGrantedAuthority(userRoles.name()));
+    private List<GrantedAuthority> mapRolesToAuthorities(Roles roles) {
+        return List.of(new SimpleGrantedAuthority(roles.name()));
     }
 }

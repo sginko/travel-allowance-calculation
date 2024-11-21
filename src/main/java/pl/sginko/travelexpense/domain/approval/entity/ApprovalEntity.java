@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import pl.sginko.travelexpense.domain.approval.exception.ApprovalException;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
-import pl.sginko.travelexpense.domain.user.entity.UserRoles;
+import pl.sginko.travelexpense.domain.user.entity.Roles;
 
 @EqualsAndHashCode(of = {"travelReportEntity", "approver", "role"})
 @Getter
@@ -33,12 +33,12 @@ public class ApprovalEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserRoles role;
+    private Roles role;
 
     @Version
     private Long version;
 
-    public ApprovalEntity(TravelReportEntity travelReportEntity, UserEntity approver, UserRoles role) {
+    public ApprovalEntity(TravelReportEntity travelReportEntity, UserEntity approver, Roles role) {
         this.travelReportEntity = travelReportEntity;
         this.approver = approver;
         this.role = role;
