@@ -2,10 +2,7 @@ package pl.sginko.travelexpense.domain.travelReport.mapper;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportEditDto;
-import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportRequestDto;
-import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
-import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportSubmissionResponseDto;
+import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.*;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 
@@ -65,4 +62,32 @@ public class TravelReportMapper {
                 overnightStayMapper.toOvernightStayEditDto(entity.getOvernightStayEntity()),
                 transportCostMapper.toTransportCosEditDto(entity.getTransportCostEntity()));
     }
+
+//    public TravelReportResponsePdfDto toResponsePdfDto(TravelReportEntity entity) {
+//        return new TravelReportResponsePdfDto(
+//                entity.getUserEntity().getName() + " " + entity.getUserEntity().getSurname(),
+//                entity.getFromCity(),
+//                entity.getToCity(),
+//                entity.getStartDate(),
+//                entity.getStartTime(),
+//                entity.getEndDate(),
+//                entity.getEndTime(),
+//                entity.getDietEntity().getNumberOfBreakfasts(),
+//                entity.getDietEntity().getNumberOfLunches(),
+//                entity.getDietEntity().getNumberOfDinners(),
+//                entity.getTotalAmount(),
+//                numberToWords(entity.getTotalAmount()), // Метод для преобразования числа в слова
+//                entity.getDietEntity().getDietAmount(),
+//                entity.getDietEntity().getFoodAmount(),
+//                entity.getOvernightStayEntity().getTotalAmountOfOvernightsStayWithInvoice(),
+//                entity.getOvernightStayEntity().getTotalAmountOfOvernightsStayWithoutInvoice(),
+//                entity.getAdvancePayment(),
+//                numberToWords(entity.getAdvancePayment()),
+//                entity.getTransportCostEntity().getUndocumentedLocalTransportCost(),
+//                entity.getTransportCostEntity().getDocumentedLocalTransportCost(),
+//                entity.getTransportCostEntity().getMeansOfTransport(),
+//                entity.getTransportCostEntity().getTotalCostOfTravelByOwnAndPublicTransport(),
+//                entity.getTransportCostEntity().getTransportCostAmount(),
+//                entity.getOtherExpenses());
+//    }
 }

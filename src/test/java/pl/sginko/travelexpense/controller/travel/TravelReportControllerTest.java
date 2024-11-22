@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.sginko.travelexpense.common.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.common.pdfDocument.service.PdfDocumentService;
 import pl.sginko.travelexpense.domain.travelReport.dto.diet.DietDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.diet.DietResponseDto;
@@ -25,11 +26,11 @@ import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReport
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportSubmissionResponseDto;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportStatus;
+import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportNotFoundException;
 import pl.sginko.travelexpense.domain.travelReport.service.TravelReportService;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -160,11 +161,72 @@ class TravelReportControllerTest {
         verify(travelReportService, times(1)).getUserTravelExpenseReports();
     }
 
+    // POST /api/v1/travels/print/{techId}
+    // HAPPY PATH
+    @Test
+    @WithMockUser
+    public void should_generate_pdf_successfully() throws Exception {
+        // GIVEN
+        UUID techId = UUID.randomUUID();
+        ByteArrayOutputStream mockPdfStream = new ByteArrayOutputStream();
+        mockPdfStream.write("Mock PDF Content".getBytes());
+
+        when(pdfDocumentService.generateTravelExpenseReportPdfAsStream(techId))
+                .thenReturn(mockPdfStream);
+
+        // WHEN & THEN
+        mockMvc.perform(post("/api/v1/travels/print/{techId}", techId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Content-Type", MediaType.APPLICATION_PDF_VALUE))
+                .andExpect(header().string("Content-Disposition", "inline; filename=travel_expense_report.pdf"));
+
+        verify(pdfDocumentService, times(1)).generateTravelExpenseReportPdfAsStream(techId);
+    }
+
+    // POST /api/v1/travels/print/{techId}
+    // UNHAPPY PATH
+    @Test
+    @WithMockUser
+    public void should_return_internal_server_error_when_pdf_generation_fails() throws Exception {
+        // GIVEN
+        UUID techId = UUID.randomUUID();
+
+        when(pdfDocumentService.generateTravelExpenseReportPdfAsStream(techId))
+                .thenThrow(new PdfDocumentException("Failed to generate PDF"));
+
+        // WHEN & THEN
+        mockMvc.perform(post("/api/v1/travels/print/{techId}", techId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
+
+        verify(pdfDocumentService, times(1)).generateTravelExpenseReportPdfAsStream(techId);
+    }
+
+    // POST /api/v1/travels/print/{techId}
+    // UNHAPPY PATH
+    @Test
+    @WithMockUser
+    public void should_return_not_found_when_pdf_generation_fails_due_to_invalid_id() throws Exception {
+        // GIVEN
+        UUID nonExistentTechId = UUID.randomUUID();
+
+        when(pdfDocumentService.generateTravelExpenseReportPdfAsStream(nonExistentTechId))
+                .thenThrow(new TravelReportNotFoundException("Travel report not found"));
+
+        // WHEN & THEN
+        mockMvc.perform(post("/api/v1/travels/print/{techId}", nonExistentTechId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(pdfDocumentService, times(1)).generateTravelExpenseReportPdfAsStream(nonExistentTechId);
+    }
+
     // GET /api/v1/travels/{techId}
     // HAPPY PATH
     @Test
     @WithMockUser
-    public void should_get_travel_expense_report_by_id_successfully() throws Exception {
+    public void should_return_travel_report_by_id_successfully() throws Exception {
         // GIVEN
         UUID techId = UUID.randomUUID();
         TravelReportSubmissionResponseDto responseDto = new TravelReportSubmissionResponseDto(techId, TravelReportStatus.SUBMITTED);
@@ -185,27 +247,27 @@ class TravelReportControllerTest {
     // UNHAPPY PATH
     @Test
     @WithMockUser
-    public void should_return_not_found_when_travel_expense_report_not_found_by_id() throws Exception {
+    public void should_return_not_found_when_travel_report_not_exist() throws Exception {
         // GIVEN
-        UUID nonExistentTechId = UUID.randomUUID();
+        UUID techId = UUID.randomUUID();
 
-        when(travelReportService.getTravelExpenseReportById(nonExistentTechId))
+        when(travelReportService.getTravelExpenseReportById(techId))
                 .thenThrow(new TravelReportNotFoundException("Travel report not found"));
 
         // WHEN & THEN
-        mockMvc.perform(get("/api/v1/travels/{techId}", nonExistentTechId)
+        mockMvc.perform(get("/api/v1/travels/{techId}", techId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Travel report not found"));
 
-        verify(travelReportService, times(1)).getTravelExpenseReportById(nonExistentTechId);
+        verify(travelReportService, times(1)).getTravelExpenseReportById(techId);
     }
 
     // PATCH /api/v1/travels/update/{techId}
     // HAPPY PATH
     @Test
     @WithMockUser
-    public void should_update_travel_expense_report_successfully() throws Exception {
+    public void should_update_travel_report_successfully() throws Exception {
         // GIVEN
         UUID techId = UUID.randomUUID();
         JsonPatch patch = JsonPatch.fromJson(objectMapper.readTree("[{\"op\": \"replace\", \"path\": \"/fromCity\", \"value\": \"NewCity\"}]"));
@@ -222,10 +284,10 @@ class TravelReportControllerTest {
     }
 
     // PATCH /api/v1/travels/update/{techId}
-    // UNHAPPY PATH
+   // UNHAPPY PATH
     @Test
     @WithMockUser
-    public void should_return_bad_request_when_invalid_json_patch_provided() throws Exception {
+    public void should_return_bad_request_when_invalid_patch_provided() throws Exception {
         // GIVEN
         UUID techId = UUID.randomUUID();
         String invalidPatch = "[{\"op\": \"invalid\", \"path\": \"/fromCity\", \"value\": \"NewCity\"}]";
@@ -238,90 +300,21 @@ class TravelReportControllerTest {
     }
 
     // POST /api/v1/travels/print/{techId}
-    // HAPPY PATH
-    @Test
-    @WithMockUser
-    public void should_generate_pdf_successfully() throws Exception {
-        // GIVEN
-        UUID techId = UUID.randomUUID();
-        doNothing().when(pdfDocumentService).generateTravelExpenseReportPdf(techId);
-
-        // WHEN & THEN
-        mockMvc.perform(post("/api/v1/travels/print/{techId}", techId)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isFound())
-                .andExpect(header().string("Location", "/api/v1/travels/print/changed_template.pdf"));
-
-        verify(pdfDocumentService, times(1)).generateTravelExpenseReportPdf(techId);
-    }
-
-    // POST /api/v1/travels/print/{techId}
     // UNHAPPY PATH
     @Test
     @WithMockUser
-    public void should_return_internal_server_error_when_pdf_generation_fails() throws Exception {
+    public void should_return_not_found_when_travel_report_exception_thrown() throws Exception {
         // GIVEN
         UUID techId = UUID.randomUUID();
-        doThrow(IOException.class).when(pdfDocumentService).generateTravelExpenseReportPdf(techId);
+
+        when(pdfDocumentService.generateTravelExpenseReportPdfAsStream(techId))
+                .thenThrow(new TravelReportException("Travel report not found"));
 
         // WHEN & THEN
         mockMvc.perform(post("/api/v1/travels/print/{techId}", techId)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
-
-        verify(pdfDocumentService, times(1)).generateTravelExpenseReportPdf(techId);
-    }
-
-    // POST /api/v1/travels/print/{techId}
-    // UNHAPPY PATH
-    @Test
-    @WithMockUser
-    public void should_return_not_found_when_pdf_generation_fails_due_to_invalid_id() throws Exception {
-        // GIVEN
-        UUID nonExistentTechId = UUID.randomUUID();
-        doThrow(new TravelReportNotFoundException("Travel report not found"))
-                .when(pdfDocumentService).generateTravelExpenseReportPdf(nonExistentTechId);
-
-        // WHEN & THEN
-        mockMvc.perform(post("/api/v1/travels/print/{techId}", nonExistentTechId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
-        verify(pdfDocumentService, times(1)).generateTravelExpenseReportPdf(nonExistentTechId);
-    }
-
-    // GET /api/v1/travels/print/changed_template.pdf
-    // HAPPY PATH
-    @Test
-    @WithMockUser
-    public void should_get_pdf_file_successfully() throws Exception {
-        // GIVEN
-        File file = new File("src/main/resources/print/changed_template.pdf");
-        file.createNewFile();
-
-        // WHEN & THEN
-        mockMvc.perform(get("/api/v1/travels/print/changed_template.pdf")
-                        .contentType(MediaType.APPLICATION_PDF))
-                .andExpect(status().isOk())
-                .andExpect(header().string("Content-Disposition", "inline; filename=changed_template.pdf"));
-
-        file.delete();
-    }
-
-    // GET /api/v1/travels/print/changed_template.pdf
-    // UNHAPPY PATH
-    @Test
-    @WithMockUser
-    public void should_return_internal_server_error_when_pdf_file_not_found() throws Exception {
-        // GIVEN
-        File file = new File("src/main/resources/print/changed_template.pdf");
-        if (file.exists()) {
-            file.delete();
-        }
-
-        // WHEN & THEN
-        mockMvc.perform(get("/api/v1/travels/print/changed_template.pdf")
-                        .contentType(MediaType.APPLICATION_PDF))
-                .andExpect(status().isInternalServerError());
+        verify(pdfDocumentService, times(1)).generateTravelExpenseReportPdfAsStream(techId);
     }
 }

@@ -1,4 +1,4 @@
-package pl.sginko.travelexpense.domain.travelReport.notification;
+package pl.sginko.travelexpense.domain.approval.listener;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -7,20 +7,20 @@ import pl.sginko.travelexpense.common.emailService.EmailService;
 import pl.sginko.travelexpense.common.notification.dto.EmailNotificationDto;
 import pl.sginko.travelexpense.common.notification.mapper.NotificationMapper;
 import pl.sginko.travelexpense.common.notification.service.GlobalNotificationService;
+import pl.sginko.travelexpense.domain.approval.event.TravelReportApprovalEvent;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportStatus;
-import pl.sginko.travelexpense.domain.travelReport.event.TravelReportSubmissionEvent;
 
 import java.util.UUID;
 
 @AllArgsConstructor
 @Service
-public class TravelReportNotificationServiceImpl implements TravelReportNotificationService, GlobalNotificationService {
+public class ApproverListenerImpl implements ApproverListener, GlobalNotificationService {
     private final EmailService emailService;
     private final NotificationMapper notificationMapper;
 
     @EventListener
     @Override
-    public void handleTravelReportSubmissionEvent(TravelReportSubmissionEvent event) {
+    public void handleApprovalEvent(TravelReportApprovalEvent event) {
         sendEmailNotification(event.getTravelTechId(), event.getUserEmail(), event.getStatus());
     }
 

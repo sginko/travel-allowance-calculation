@@ -14,8 +14,10 @@ import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
 import pl.sginko.travelexpense.domain.travelReport.repository.TravelReportRepository;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Locale;
 import java.util.Map;
@@ -29,16 +31,28 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
     private final TravelReportRepository travelReportRepository;
 
     @Override
-    public void generateTravelExpenseReportPdf(UUID techId) throws IOException {
+    public ByteArrayOutputStream generateTravelExpenseReportPdfAsStream(UUID techId) throws PdfDocumentException {
         TravelReportEntity travelReportEntity = travelReportRepository.findByTechId(techId)
                 .orElseThrow(() -> new TravelReportException("Travel not found"));
+
+        Map<String, String> replacements = prepareReplacements(travelReportEntity);
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            fillTemplate("src/main/resources/print/template.pdf", outputStream, replacements);   //without Docker
+//            fillTemplate("/app/resources/print/template.pdf", outputStream, replacements);   // with Docker
+            return outputStream;
+        } catch (IOException e) {
+            throw new PdfDocumentException("Error processing PDF template: " + e.getMessage());
+        }
+    }
+
+    private Map<String, String> prepareReplacements(TravelReportEntity travelReportEntity) {
         DietEntity dietEntity = travelReportEntity.getDietEntity();
         OvernightStayEntity overnightStayEntity = travelReportEntity.getOvernightStayEntity();
         TransportCostEntity transportCostEntity = travelReportEntity.getTransportCostEntity();
 
-        Map<String, String> replacements = Map.ofEntries(
+        return Map.ofEntries(
                 entry("fullName", travelReportEntity.getUserEntity().getName() + " " + travelReportEntity.getUserEntity().getSurname()),
-//                entry("position", travelEntity.getUserEntity().getPosition()),
                 entry("fromCity", travelReportEntity.getFromCity()),
                 entry("toCity", travelReportEntity.getToCity()),
                 entry("startDate", travelReportEntity.getStartDate().toString()),
@@ -61,31 +75,15 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
                 entry("meansOfTransport", String.valueOf(transportCostEntity.getMeansOfTransport())),
                 entry("totalCostOfTravelByOwnAndPublicTransport", String.valueOf(transportCostEntity.getTotalCostOfTravelByOwnAndPublicTransport())),
                 entry("transportCostAmount", String.valueOf(transportCostEntity.getTransportCostAmount())),
-                entry("otherExpenses", String.valueOf(travelReportEntity.getOtherExpenses())));
-
-        //without Docker
-        String templatePath = "src/main/resources/print/template.pdf";
-        String outputPath = "src/main/resources/print/changed_template.pdf";
-
-        //with Docker
-//        String templatePath = "/app/resources/print/template.pdf";
-//        String outputPath = "/app/resources/print/changed_template.pdf";
-
-        fillTemplate(templatePath, outputPath, replacements);
+                entry("otherExpenses", String.valueOf(travelReportEntity.getOtherExpenses()))
+        );
     }
 
-    private String numberToWords(BigDecimal number) {
-        RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(Locale.forLanguageTag("pl-PL"), RuleBasedNumberFormat.SPELLOUT);
-        return ruleBasedNumberFormat.format(number);
-    }
-
-    // method without validation
-    private void fillTemplate(String templatePath, String outputPath, Map<String, String> data) throws IOException {
+    private void fillTemplate(String templatePath, OutputStream outputStream, Map<String, String> data) throws IOException {
         try (PDDocument document = PDDocument.load(new FileInputStream(templatePath))) {
             PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
 
             if (acroForm != null) {
-
                 for (Map.Entry<String, String> entry : data.entrySet()) {
                     PDField field = acroForm.getField(entry.getKey());
                     if (field != null) {
@@ -94,36 +92,13 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
                 }
                 acroForm.flatten();
             }
-            document.save(outputPath);
-        } catch (IOException e) {
-            throw new PdfDocumentException("Error processing PDF template: " + e.getMessage());
+
+            document.save(outputStream);
         }
     }
 
-    // method with validation
-//    private void fillTemplate(String templatePath, String outputPath, Map<String, String> data) throws IOException {
-//        try (PDDocument document = PDDocument.load(new FileInputStream(templatePath))) {
-//            PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-//
-//            if (acroForm != null) {
-//                for (PDField field : acroForm.getFields()) {
-//                    System.out.println("Field name: " + field.getFullyQualifiedName());
-//                }
-//
-//                for (Map.Entry<String, String> entry : data.entrySet()) {
-//                    PDField field = acroForm.getField(entry.getKey());
-//                    if (field != null) {
-//                        field.setValue(entry.getValue());
-//                        System.out.println("Setting field " + entry.getKey() + " to " + entry.getValue());
-//                    } else {
-//                        System.out.println("Field " + entry.getKey() + " not found in the form.");
-//                    }
-//                }
-//                acroForm.flatten();
-//            } else {
-//                System.out.println("AcroForm is null.");
-//            }
-//            document.save(outputPath);
-//        }
-//    }
+    private String numberToWords(BigDecimal number) {
+        RuleBasedNumberFormat ruleBasedNumberFormat = new RuleBasedNumberFormat(Locale.forLanguageTag("pl-PL"), RuleBasedNumberFormat.SPELLOUT);
+        return ruleBasedNumberFormat.format(number);
+    }
 }

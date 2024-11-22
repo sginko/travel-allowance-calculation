@@ -1,12 +1,12 @@
-//package pl.sginko.travelexpense.common.notification.service;
+//package pl.sginko.travelexpense.common.listener.service;
 //
 //import lombok.AllArgsConstructor;
 //import org.springframework.context.event.EventListener;
 //import org.springframework.scheduling.annotation.Async;
 //import org.springframework.stereotype.Service;
 //import pl.sginko.travelexpense.common.emailService.EmailService;
-//import pl.sginko.travelexpense.common.notification.dto.EmailNotificationDto;
-//import pl.sginko.travelexpense.common.notification.mapper.NotificationMapper;
+//import pl.sginko.travelexpense.common.listener.dto.EmailNotificationDto;
+//import pl.sginko.travelexpense.common.listener.mapper.NotificationMapper;
 //import pl.sginko.travelexpense.domain.approval.event.TravelReportApprovalEvent;
 //import pl.sginko.travelexpense.domain.travelReport.event.TravelReportSubmissionEvent;
 //
@@ -19,26 +19,26 @@
 //    @Async
 //    @EventListener
 //    public void handleTravelReportSubmissionEvent(TravelReportSubmissionEvent event) {
-//        EmailNotificationDto notification = eventMapper.toEmailNotificationDto(
+//        EmailNotificationDto listener = eventMapper.toEmailNotificationDto(
 //                event.getTravelTechId(),
 //                event.getUserEmail(),
 //                event.getStatus());
-//        emailService.sendEmail(notification);
+//        emailService.sendEmail(listener);
 //    }
 //
 //    @Async
 //    @EventListener
 //    public void handleTravelReportApprovalEvent(TravelReportApprovalEvent event) {
-//        EmailNotificationDto notification = eventMapper.toEmailNotificationDto(
+//        EmailNotificationDto listener = eventMapper.toEmailNotificationDto(
 //                event.getTravelTechId(),
 //                event.getUserEmail(),
 //                event.getStatus());
-//        emailService.sendEmail(notification);
+//        emailService.sendEmail(listener);
 //    }
 //
 ////    @Override
 ////    public void sendGeneralNotification(String email, String subject, String body) {
-////        EmailNotificationDto notification = new EmailNotificationDto(email, subject, body);
-////        emailService.sendEmail(notification);
+////        EmailNotificationDto listener = new EmailNotificationDto(email, subject, body);
+////        emailService.sendEmail(listener);
 ////    }
 //}

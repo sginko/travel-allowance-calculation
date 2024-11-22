@@ -8,16 +8,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.sginko.travelexpense.common.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.common.pdfDocument.service.PdfDocumentService;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportRequestDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponseDto;
 import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportSubmissionResponseDto;
-import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportNotFoundException;
+import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
 import pl.sginko.travelexpense.domain.travelReport.service.TravelReportService;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.UUID;
 
@@ -52,40 +52,24 @@ class TravelReportController {
         travelReportService.updateTravelExpenseReportById(techId, patch);
     }
 
-
     @PostMapping("/print/{techId}")
-    public ResponseEntity<Void> generateTravelExpenseReportPdf(@PathVariable("techId") UUID techId) {
+    public ResponseEntity<InputStreamResource> generateTravelExpenseReportPdf(@PathVariable("techId") UUID techId) {
         try {
-            pdfDocumentService.generateTravelExpenseReportPdf(techId);
-            return ResponseEntity.status(HttpStatus.FOUND)
-                    .header("Location", "/api/v1/travels/print/changed_template.pdf")
-                    .build();
-        } catch (TravelReportNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+            ByteArrayOutputStream pdfStream = pdfDocumentService.generateTravelExpenseReportPdfAsStream(techId);
 
-    @GetMapping("/print/changed_template.pdf")
-    public ResponseEntity<InputStreamResource> getTravelExpenseReportPdf() {
-        try {
-            File file = new File("src/main/resources/print/changed_template.pdf"); //without Docker
-//            File file = new File("/app/resources/print/changed_template.pdf"); //with Docker
-            if (!file.exists() || !file.canRead()) {
-                throw new IOException("File not accessible");
-            }
-            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+            InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(pdfStream.toByteArray()));
 
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-Disposition", "inline; filename=changed_template.pdf");
+            headers.add("Content-Disposition", "inline; filename=travel_expense_report.pdf");
 
             return ResponseEntity.ok()
                     .headers(headers)
-                    .contentLength(file.length())
+                    .contentLength(pdfStream.size())
                     .contentType(MediaType.APPLICATION_PDF)
                     .body(resource);
-        } catch (IOException e) {
+        } catch (TravelReportException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (PdfDocumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
