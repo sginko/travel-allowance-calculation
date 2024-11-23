@@ -63,31 +63,30 @@ public class TravelReportMapper {
                 transportCostMapper.toTransportCosEditDto(entity.getTransportCostEntity()));
     }
 
-//    public TravelReportResponsePdfDto toResponsePdfDto(TravelReportEntity entity) {
-//        return new TravelReportResponsePdfDto(
-//                entity.getUserEntity().getName() + " " + entity.getUserEntity().getSurname(),
-//                entity.getFromCity(),
-//                entity.getToCity(),
-//                entity.getStartDate(),
-//                entity.getStartTime(),
-//                entity.getEndDate(),
-//                entity.getEndTime(),
-//                entity.getDietEntity().getNumberOfBreakfasts(),
-//                entity.getDietEntity().getNumberOfLunches(),
-//                entity.getDietEntity().getNumberOfDinners(),
-//                entity.getTotalAmount(),
-//                numberToWords(entity.getTotalAmount()), // Метод для преобразования числа в слова
-//                entity.getDietEntity().getDietAmount(),
-//                entity.getDietEntity().getFoodAmount(),
-//                entity.getOvernightStayEntity().getTotalAmountOfOvernightsStayWithInvoice(),
-//                entity.getOvernightStayEntity().getTotalAmountOfOvernightsStayWithoutInvoice(),
-//                entity.getAdvancePayment(),
-//                numberToWords(entity.getAdvancePayment()),
-//                entity.getTransportCostEntity().getUndocumentedLocalTransportCost(),
-//                entity.getTransportCostEntity().getDocumentedLocalTransportCost(),
-//                entity.getTransportCostEntity().getMeansOfTransport(),
-//                entity.getTransportCostEntity().getTotalCostOfTravelByOwnAndPublicTransport(),
-//                entity.getTransportCostEntity().getTransportCostAmount(),
-//                entity.getOtherExpenses());
-//    }
+    public TravelReportResponsePdfDto toResponsePdfDto(TravelReportEntity entity) {
+        return new TravelReportResponsePdfDto(
+                entity.getUserEntity().getName(),
+                entity.getUserEntity().getSurname(),
+                entity.getFromCity(),
+                entity.getToCity(),
+                entity.getStartDate(),
+                entity.getStartTime(),
+                entity.getEndDate(),
+                entity.getEndTime(),
+                entity.getDietEntity().getNumberOfBreakfasts(),
+                entity.getDietEntity().getNumberOfLunches(),
+                entity.getDietEntity().getNumberOfDinners(),
+                entity.getTotalAmount(),
+                entity.getDietEntity().getDietAmount(),
+                entity.getDietEntity().getFoodAmount(),
+                entity.getOvernightStayEntity().getTotalAmountOfOvernightsStayWithInvoice(),
+                entity.getOvernightStayEntity().getTotalAmountOfOvernightsStayWithoutInvoice(),
+                entity.getAdvancePayment(),
+                entity.getTransportCostEntity().getUndocumentedLocalTransportCost(),
+                entity.getTransportCostEntity().getDocumentedLocalTransportCost(),
+                entity.getTransportCostEntity().getMeansOfTransport(),
+                entity.getTransportCostEntity().getTotalCostOfTravelByOwnAndPublicTransport(),
+                entity.getTransportCostEntity().getTransportCostAmount(),
+                entity.getOtherExpenses());
+    }
 }

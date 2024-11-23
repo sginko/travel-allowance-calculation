@@ -13,24 +13,23 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TravelReportResponsePdfDto {
-    private String fullName;
+    private String name;
+    private String surname;
     private String fromCity;
     private String toCity;
     private LocalDate startDate;
     private LocalTime startTime;
     private LocalDate endDate;
     private LocalTime endTime;
-    private int countBreakfast;
-    private int countLunch;
-    private int countDinner;
+    private int numberOfBreakfasts;
+    private int numberOfLunches;
+    private int numberOfDinners;
     private BigDecimal totalAmount;
-    private String totalAmountWords;
     private BigDecimal dietAmount;
     private BigDecimal foodAmount;
-    private BigDecimal overnightStayWithInvoice;
-    private BigDecimal overnightStayWithoutInvoice;
+    private BigDecimal totalAmountOfOvernightsStayWithInvoice;
+    private BigDecimal totalAmountOfOvernightsStayWithoutInvoice;
     private BigDecimal advancePayment;
-    private String advancePaymentWords;
     private BigDecimal undocumentedLocalTransportCost;
     private BigDecimal documentedLocalTransportCost;
     private String meansOfTransport;

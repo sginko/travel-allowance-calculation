@@ -7,7 +7,5 @@ import java.util.UUID;
 
 public interface PdfDocumentService {
 
-//    void generateTravelExpenseReportPdf(UUID techId) throws IOException;
-
     ByteArrayOutputStream generateTravelExpenseReportPdfAsStream(UUID techId) throws PdfDocumentException;
 }
