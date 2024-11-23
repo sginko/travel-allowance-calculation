@@ -53,8 +53,8 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
         Map<String, String> replacements = prepareReplacements(responsePdfDto);
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-            fillTemplate("src/main/resources/print/template.pdf", outputStream, replacements);   //without Docker
-//            fillTemplate("/app/resources/print/template.pdf", outputStream, replacements);   // with Docker
+//            fillTemplate("src/main/resources/print/template.pdf", outputStream, replacements);   //without Docker
+            fillTemplate("/app/resources/print/template.pdf", outputStream, replacements);   // with Docker
             return outputStream;
         } catch (IOException e) {
             throw new PdfDocumentException("Error processing PDF template: " + e.getMessage());

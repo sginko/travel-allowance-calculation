@@ -3,7 +3,7 @@ spring:
     active: local
 
   application:
-    name: auth-faktura
+    name: travel-expense
 
   session:
     store-type: jdbc
@@ -11,8 +11,8 @@ spring:
     cleanup-cron: 1 * * * * *
 
   datasource:
-#    url: jdbc:postgresql://postgres:5432/travel_expense
-    url: jdbc:postgresql://localhost:5432/travel_expense
+    url: jdbc:postgresql://postgres:5432/travel_expense
+#    url: jdbc:postgresql://localhost:5432/travel_expense
     username: postgres
     password: admin
 
