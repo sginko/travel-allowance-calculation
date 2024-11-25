@@ -5,9 +5,9 @@ services:
     container_name: postgres
     image: postgres:latest
     environment:
-      POSTGRES_DB: travel_expense
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -17,8 +17,10 @@ services:
     build: .
     depends_on:
       - postgres
-    ports:
-      - "8080:8080"
+    expose:
+      - "8080"
+#    ports:
+#      - "8080:8080"
     volumes:
       - ./src/main/resources/print:/app/resources/print
     networks:
@@ -27,6 +29,7 @@ services:
       replicas: 3
       restart_policy:
         condition: on-failure
+      endpoint_mode: dnsrr
 
   pgadmin:
     image: dpage/pgadmin4:latest

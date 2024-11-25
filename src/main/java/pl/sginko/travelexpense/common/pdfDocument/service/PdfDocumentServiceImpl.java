@@ -62,7 +62,6 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
     }
 
     private Map<String, String> prepareReplacements(TravelReportResponsePdfDto responsePdfDto) {
-
         return Map.ofEntries(
                 entry("fullName", responsePdfDto.getName() + " " + responsePdfDto.getSurname()),
                 entry("fromCity", responsePdfDto.getFromCity()),
@@ -104,7 +103,6 @@ public class PdfDocumentServiceImpl implements PdfDocumentService {
                 }
                 acroForm.flatten();
             }
-
             document.save(outputStream);
         }
     }

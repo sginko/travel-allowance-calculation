@@ -33,9 +33,6 @@ import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReport
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportStatus;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
-import pl.sginko.travelexpense.domain.travelReport.mapper.DietMapper;
-import pl.sginko.travelexpense.domain.travelReport.mapper.OvernightStayMapper;
-import pl.sginko.travelexpense.domain.travelReport.mapper.TransportCostMapper;
 import pl.sginko.travelexpense.domain.travelReport.mapper.TravelReportMapper;
 import pl.sginko.travelexpense.domain.travelReport.repository.TravelReportRepository;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
@@ -70,15 +67,6 @@ class ApprovalServiceTest {
     private EventPublisher eventPublisher;
 
     @Mock
-    private DietMapper dietMapper;
-
-    @Mock
-    private OvernightStayMapper overnightStayMapper;
-
-    @Mock
-    private TransportCostMapper transportCostMapper;
-
-    @Mock
     private TravelReportMapper travelReportMapper;
 
     @InjectMocks
@@ -105,14 +93,6 @@ class ApprovalServiceTest {
         ApprovalEntity existingApproval = new ApprovalEntity(travelReportEntity, accountant, accountant.getRoles());
         existingApproval.updateApprovalStatus(ApprovalStatus.APPROVED);
         travelReportEntity.getApprovals().add(existingApproval);
-
-        lenient().doAnswer(invocation -> {
-            ApprovalEntity approval = invocation.getArgument(0);
-            approval.getTravelReportEntity().getApprovals().add(approval);
-            return approval;
-        }).when(approvalRepository).save(any(ApprovalEntity.class));
-
-        lenient().when(travelReportRepository.save(any(TravelReportEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
     }
 
     @Test

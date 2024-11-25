@@ -20,12 +20,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import pl.sginko.travelexpense.common.pdfDocument.exception.PdfDocumentException;
 import pl.sginko.travelexpense.common.pdfDocument.service.PdfDocumentServiceImpl;
+import pl.sginko.travelexpense.domain.travelReport.dto.travelReport.TravelReportResponsePdfDto;
 import pl.sginko.travelexpense.domain.travelReport.entity.DietEntity;
 import pl.sginko.travelexpense.domain.travelReport.entity.OvernightStayEntity;
 import pl.sginko.travelexpense.domain.travelReport.entity.TransportCostEntity;
 import pl.sginko.travelexpense.domain.travelReport.entity.TravelReportEntity;
 import pl.sginko.travelexpense.domain.travelReport.exception.TravelReportException;
+import pl.sginko.travelexpense.domain.travelReport.mapper.TravelReportMapper;
 import pl.sginko.travelexpense.domain.travelReport.repository.TravelReportRepository;
 import pl.sginko.travelexpense.domain.user.entity.UserEntity;
 
@@ -35,32 +38,23 @@ import java.time.LocalTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class PdfDocumentServiceTest {
     @Mock
     private TravelReportRepository travelReportRepository;
 
+    @Mock
+    private TravelReportMapper travelReportMapper;
+
     @InjectMocks
     private PdfDocumentServiceImpl pdfDocumentService;
 
-    @Mock
-    private TravelReportEntity travelReportEntity;
-
-    @Mock
-    private DietEntity dietEntity;
-
-    @Mock
-    private OvernightStayEntity overnightStayEntity;
-
-    @Mock
-    private TransportCostEntity transportCostEntity;
-
-    @Mock
-    private UserEntity userEntity;
-
     private UUID techId;
+    private TravelReportEntity travelReportEntity;
+    private TravelReportResponsePdfDto responsePdfDto;
 
     @BeforeEach
     void setUp() {
@@ -68,93 +62,43 @@ class PdfDocumentServiceTest {
 
         techId = UUID.randomUUID();
 
-        when(userEntity.getName()).thenReturn("Name");
-        when(userEntity.getSurname()).thenReturn("Surname");
+        travelReportEntity = new TravelReportEntity("CityA", "CityB", LocalDate.now(), LocalTime.of(8, 0),
+                LocalDate.now().plusDays(1), LocalTime.of(18, 0),
+                new UserEntity("email@test.com", "Name", "Surname", "password"),
+                BigDecimal.valueOf(500), BigDecimal.valueOf(200));
 
-        when(dietEntity.getNumberOfBreakfasts()).thenReturn(1);
-        when(dietEntity.getNumberOfLunches()).thenReturn(1);
-        when(dietEntity.getNumberOfDinners()).thenReturn(1);
-        when(dietEntity.getDietAmount()).thenReturn(BigDecimal.valueOf(100));
-        when(dietEntity.getFoodAmount()).thenReturn(BigDecimal.valueOf(50));
+        travelReportEntity.setDietDetails(new DietEntity(travelReportEntity, BigDecimal.valueOf(45), 1,
+                1, 1));
 
-        when(overnightStayEntity.getTotalAmountOfOvernightsStayWithInvoice()).thenReturn(BigDecimal.valueOf(200));
-        when(overnightStayEntity.getTotalAmountOfOvernightsStayWithoutInvoice()).thenReturn(BigDecimal.valueOf(100));
+        travelReportEntity.setOvernightStayDetails(new OvernightStayEntity(travelReportEntity, 1,
+                0, BigDecimal.ZERO, false));
 
-        when(transportCostEntity.getUndocumentedLocalTransportCost()).thenReturn(BigDecimal.valueOf(30));
-        when(transportCostEntity.getDocumentedLocalTransportCost()).thenReturn(BigDecimal.valueOf(70));
-        when(transportCostEntity.getMeansOfTransport()).thenReturn("Public");
-        when(transportCostEntity.getTotalCostOfTravelByOwnAndPublicTransport()).thenReturn(BigDecimal.valueOf(150));
-        when(transportCostEntity.getTransportCostAmount()).thenReturn(BigDecimal.valueOf(100));
+        travelReportEntity.setTransportCostDetails(new TransportCostEntity(travelReportEntity, 0,
+                BigDecimal.ZERO, "Public", BigDecimal.valueOf(100), 0L,
+                0L, 0L, 0L));
 
-        when(travelReportEntity.getTechId()).thenReturn(techId);
-        when(travelReportEntity.getUserEntity()).thenReturn(userEntity);
-        when(travelReportEntity.getFromCity()).thenReturn("CityA");
-        when(travelReportEntity.getToCity()).thenReturn("CityB");
-        when(travelReportEntity.getStartDate()).thenReturn(LocalDate.now());
-        when(travelReportEntity.getStartTime()).thenReturn(LocalTime.of(8, 0));
-        when(travelReportEntity.getEndDate()).thenReturn(LocalDate.now().plusDays(1));
-        when(travelReportEntity.getEndTime()).thenReturn(LocalTime.of(18, 0));
-        when(travelReportEntity.getDietEntity()).thenReturn(dietEntity);
-        when(travelReportEntity.getOvernightStayEntity()).thenReturn(overnightStayEntity);
-        when(travelReportEntity.getTransportCostEntity()).thenReturn(transportCostEntity);
-        when(travelReportEntity.getAdvancePayment()).thenReturn(BigDecimal.valueOf(500));
-        when(travelReportEntity.getOtherExpenses()).thenReturn(BigDecimal.valueOf(200));
-        when(travelReportEntity.getTotalAmount()).thenReturn(BigDecimal.valueOf(1000));
+        travelReportEntity.calculateTotalAmount();
+
+        responsePdfDto = new TravelReportResponsePdfDto("Name", "Surname", "CityA", "CityB",
+                LocalDate.now(), LocalTime.of(8, 0), LocalDate.now().plusDays(1), LocalTime.of(18, 0),
+                1, 1, 1, BigDecimal.valueOf(1000), BigDecimal.valueOf(45),
+                BigDecimal.valueOf(25), BigDecimal.valueOf(200), BigDecimal.valueOf(100), BigDecimal.valueOf(500),
+                BigDecimal.valueOf(0), BigDecimal.valueOf(0), "Public", BigDecimal.valueOf(100),
+                BigDecimal.valueOf(200), BigDecimal.valueOf(200));
 
         when(travelReportRepository.findByTechId(techId)).thenReturn(Optional.of(travelReportEntity));
+        when(travelReportMapper.toResponsePdfDto(travelReportEntity)).thenReturn(responsePdfDto);
     }
 
 //    @Test
-//    void should_generate_pdf_document() throws IOException {
+//    void should_generate_pdf_document_successfully() throws PdfDocumentException {
 //        // WHEN
-//        ByteArrayOutputStream pdfStream = pdfDocumentService.generateTravelExpenseReportPdfAsStream(techId);
+//        var pdfStream = pdfDocumentService.generateTravelExpenseReportPdfAsStream(techId);
 //
 //        // THEN
-//        assertNotNull(pdfStream);
-//        assertTrue(pdfStream.size() > 0, "PDF stream should not be empty");
-//
-//        try (PDDocument document = PDDocument.load(pdfStream.toByteArray())) {
-//            PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-//            assertNotNull(acroForm);
-//
-//            assertEquals("Name", acroForm.getField("Name").getValueAsString());
-//            assertEquals("Surname", acroForm.getField("Surname").getValueAsString());
-//            assertEquals("CityA", acroForm.getField("fromCity").getValueAsString());
-//            assertEquals("CityB", acroForm.getField("toCity").getValueAsString());
-//        }
-//    }
-//
-//    @Test
-//    void should_generate_pdf_document() throws IOException {
-//        // WHEN
-//        ByteArrayOutputStream pdfStream = pdfDocumentService.generateTravelExpenseReportPdfAsStream(techId);
-//
-//        // THEN
-//        assertNotNull(pdfStream);
-//        assertTrue(pdfStream.size() > 0, "PDF stream should not be empty");
-//
-//        try (PDDocument document = PDDocument.load(pdfStream.toByteArray())) {
-//            PDAcroForm acroForm = document.getDocumentCatalog().getAcroForm();
-//            assertNotNull(acroForm, "AcroForm should not be null");
-//
-//            // Отладочный вывод доступных полей
-//            System.out.println("Available fields in the PDF template:");
-//            acroForm.getFields().forEach(field -> System.out.println(" - " + field.getFullyQualifiedName()));
-//
-//            // Проверяем наличие и значение конкретного поля 'fullName'
-//            PDField fullNameField = acroForm.getField("fullName");
-//            assertNotNull(fullNameField, "Field 'fullName' should exist in the PDF template");
-//            assertEquals("Name Surname", fullNameField.getValueAsString());
-//
-//            // Проверяем другие поля, если они есть
-//            PDField fromCityField = acroForm.getField("fromCity");
-//            assertNotNull(fromCityField, "Field 'fromCity' should exist in the PDF template");
-//            assertEquals("CityA", fromCityField.getValueAsString());
-//
-//            PDField toCityField = acroForm.getField("toCity");
-//            assertNotNull(toCityField, "Field 'toCity' should exist in the PDF template");
-//            assertEquals("CityB", toCityField.getValueAsString());
-//        }
+//        assertNotNull(pdfStream, "PDF stream should not be null");
+//        verify(travelReportRepository, times(1)).findByTechId(techId);
+//        verify(travelReportMapper, times(1)).toResponsePdfDto(travelReportEntity);
 //    }
 
     @Test
@@ -164,6 +108,9 @@ class PdfDocumentServiceTest {
         when(travelReportRepository.findByTechId(invalidTechId)).thenReturn(Optional.empty());
 
         // WHEN & THEN
-        assertThrows(TravelReportException.class, () -> pdfDocumentService.generateTravelExpenseReportPdfAsStream(invalidTechId));
+        assertThrows(TravelReportException.class,
+                () -> pdfDocumentService.generateTravelExpenseReportPdfAsStream(invalidTechId));
+        verify(travelReportRepository, times(1)).findByTechId(invalidTechId);
+        verifyNoInteractions(travelReportMapper);
     }
 }

@@ -16,6 +16,7 @@
 package pl.sginko.travelexpense.domain.approval.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.common.eventPublisher.EventPublisher;
@@ -40,6 +41,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class ApprovalServiceImpl implements ApprovalService {

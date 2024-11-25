@@ -39,8 +39,8 @@
         </dependency>
         <dependency>
             <groupId>org.jobrunr</groupId>
-            <artifactId>jobrunr-spring-boot-starter</artifactId>
-            <version>5.1.7</version>
+            <artifactId>jobrunr-spring-boot-3-starter</artifactId>
+            <version>7.3.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>
@@ -121,18 +121,6 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>javax.servlet</groupId>-->
-<!--            <artifactId>javax.servlet-api</artifactId>-->
-<!--            <version>4.0.1</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>jakarta.servlet</groupId>-->
-<!--            <artifactId>jakarta.servlet-api</artifactId>-->
-<!--            <version>5.0.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.xmlunit</groupId>   <!-- for spring-boot-starter-test CVE-2024-31573: XMLUnit-->
             <artifactId>xmlunit-core</artifactId>
@@ -155,36 +143,36 @@
                     </excludes>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.openapitools</groupId>-->
-<!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--                <version>7.7.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <goals>-->
-<!--                            <goal>generate</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <inputSpec>${project.basedir}/src/main/resources/contract/api.yaml</inputSpec>-->
-<!--                            <generatorName>spring</generatorName>-->
-<!--                            <apiPackage>pl.sginko.travelexpense.api</apiPackage>-->
-<!--                            <modelPackage>pl.sginko.travelexpense.model</modelPackage>-->
-<!--                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>-->
-<!--                            <configOptions>-->
-<!--                                <additionalModelTypeAnnotations>-->
-<!--                                    @lombok.Builder-->
-<!--                                    @lombok.AllArgsConstructor-->
-<!--                                    @lombok.NoArgsConstructor-->
-<!--                                    @lombok.Getter-->
-<!--                                </additionalModelTypeAnnotations>-->
-<!--                                <useJakartaEe>true</useJakartaEe>-->
-<!--                                <interfaceOnly>true</interfaceOnly>-->
-<!--                                <delegatePattern>true</delegatePattern>-->
-<!--                            </configOptions>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.openapitools</groupId>-->
+            <!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
+            <!--                <version>7.7.0</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>generate</goal>-->
+            <!--                        </goals>-->
+            <!--                        <configuration>-->
+            <!--                            <inputSpec>${project.basedir}/src/main/resources/contract/api.yaml</inputSpec>-->
+            <!--                            <generatorName>spring</generatorName>-->
+            <!--                            <apiPackage>pl.sginko.travelexpense.api</apiPackage>-->
+            <!--                            <modelPackage>pl.sginko.travelexpense.model</modelPackage>-->
+            <!--                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>-->
+            <!--                            <configOptions>-->
+            <!--                                <additionalModelTypeAnnotations>-->
+            <!--                                    @lombok.Builder-->
+            <!--                                    @lombok.AllArgsConstructor-->
+            <!--                                    @lombok.NoArgsConstructor-->
+            <!--                                    @lombok.Getter-->
+            <!--                                </additionalModelTypeAnnotations>-->
+            <!--                                <useJakartaEe>true</useJakartaEe>-->
+            <!--                                <interfaceOnly>true</interfaceOnly>-->
+            <!--                                <delegatePattern>true</delegatePattern>-->
+            <!--                            </configOptions>-->
+            <!--                        </configuration>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--            </plugin>-->
         </plugins>
     </build>
 
