@@ -82,7 +82,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         try {
             jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.APPROVED));
         } catch (OptimisticLockException e) {
-            throw new TravelReportException("The travel report was updated by another user. Please refresh and try again.");
+            throw new TravelReportException("The travel report was updated by another user.");
         }
     }
 
@@ -92,12 +92,12 @@ public class ApprovalServiceImpl implements ApprovalService {
         try {
             jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.REJECTED));
         } catch (OptimisticLockException e) {
-            throw new TravelReportException("The travel report was updated by another user. Please refresh and try again.");
+            throw new TravelReportException("The travel report was updated by another user.");
         }
     }
 
-    @Retryable(retryFor = OptimisticLockException.class, maxAttempts = 3, backoff = @Backoff(delay = 200))
-    @Job(name = "Handle travel report approval or rejection")
+//    @Retryable(retryFor = OptimisticLockException.class, maxAttempts = 3, backoff = @Backoff(delay = 200))
+//    @Job(name = "Handle travel report approval or rejection")
     @Transactional
     public void handleTravelReport(UUID travelId, String approverEmail, ApprovalStatus status) {
         log.info("Handling travel report ID {} by user {}", travelId, approverEmail);
