@@ -54,6 +54,11 @@ spring:
         springframework:
           security: DEBUG
 
+org:
+  jobrunr:
+    dashboard:
+      enabled: false
+
 management:
   health:
     mail:

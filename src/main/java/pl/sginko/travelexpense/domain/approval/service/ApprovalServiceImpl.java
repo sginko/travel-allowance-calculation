@@ -96,8 +96,8 @@ public class ApprovalServiceImpl implements ApprovalService {
         }
     }
 
-    @Retryable(value = OptimisticLockException.class, maxAttempts = 3, backoff = @Backoff(delay = 200))
-    @Job(name = "Handle travel report {0} approval or rejection")
+    @Retryable(retryFor = OptimisticLockException.class, maxAttempts = 3, backoff = @Backoff(delay = 200))
+    @Job(name = "Handle travel report approval or rejection")
     @Transactional
     public void handleTravelReport(UUID travelId, String approverEmail, ApprovalStatus status) {
         log.info("Handling travel report ID {} by user {}", travelId, approverEmail);
@@ -110,8 +110,7 @@ public class ApprovalServiceImpl implements ApprovalService {
         }
     }
 
-    @Transactional
-    public void processTravelReportApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
+    private void processTravelReportApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
         // Find the approver by their email address
         UserEntity approver = findApproverUserByEmail(approverEmail);
 

@@ -15,6 +15,8 @@
  */
 package pl.sginko.travelexpense.domain.approval.service;
 
+import org.jobrunr.jobs.lambdas.JobLambda;
+import org.jobrunr.scheduling.JobScheduler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -69,6 +71,9 @@ class ApprovalServiceTest {
     @Mock
     private TravelReportMapper travelReportMapper;
 
+    @Mock
+    private JobScheduler jobScheduler;
+
     @InjectMocks
     private ApprovalServiceImpl approvalService;
 
@@ -101,6 +106,21 @@ class ApprovalServiceTest {
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
         when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getRoles())).thenReturn(false);
+
+        doAnswer(invocation -> {
+            JobLambda jobLambda = invocation.getArgument(0);
+            jobLambda.run();
+            return null;
+        }).when(jobScheduler).enqueue(any(JobLambda.class));
+
+        doAnswer(invocation -> {
+            ApprovalEntity approval = invocation.getArgument(0);
+            approval.getTravelReportEntity().getApprovals().add(approval);
+            return approval;
+        }).when(approvalRepository).save(any(ApprovalEntity.class));
+
+        when(travelReportRepository.save(any(TravelReportEntity.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         // WHEN
         approvalService.approveTravelReport(travelId, approver.getEmail());
@@ -142,6 +162,20 @@ class ApprovalServiceTest {
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
         when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getRoles())).thenReturn(false);
+
+        doAnswer(invocation -> {
+            JobLambda jobLambda = invocation.getArgument(0);
+            jobLambda.run();
+            return null;
+        }).when(jobScheduler).enqueue(any(JobLambda.class));
+
+        doAnswer(invocation -> {
+            ApprovalEntity approval = invocation.getArgument(0);
+            approval.getTravelReportEntity().getApprovals().add(approval);
+            return approval;
+        }).when(approvalRepository).save(any(ApprovalEntity.class));
+
+        when(travelReportRepository.save(any(TravelReportEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         // WHEN
         approvalService.rejectTravelReport(travelId, approver.getEmail());
@@ -187,6 +221,20 @@ class ApprovalServiceTest {
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
         when(approvalRepository.existsByTravelReportEntityAndRole(travelReportEntity, approver.getRoles())).thenReturn(false);
 
+        doAnswer(invocation -> {
+            JobLambda jobLambda = invocation.getArgument(0);
+            jobLambda.run();
+            return null;
+        }).when(jobScheduler).enqueue(any(JobLambda.class));
+
+        doAnswer(invocation -> {
+            ApprovalEntity approval = invocation.getArgument(0);
+            approval.getTravelReportEntity().getApprovals().add(approval);
+            return approval;
+        }).when(approvalRepository).save(any(ApprovalEntity.class));
+
+        when(travelReportRepository.save(any(TravelReportEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
         // WHEN
         approvalService.approveTravelReport(travelId, approver.getEmail());
 
@@ -214,6 +262,20 @@ class ApprovalServiceTest {
         when(approvalRepository.existsByTravelReportEntityAndRole(newTravelReport, approver.getRoles())).thenReturn(false);
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
 
+        doAnswer(invocation -> {
+            JobLambda jobLambda = invocation.getArgument(0);
+            jobLambda.run();
+            return null;
+        }).when(jobScheduler).enqueue(any(JobLambda.class));
+
+        doAnswer(invocation -> {
+            ApprovalEntity approval = invocation.getArgument(0);
+            approval.getTravelReportEntity().getApprovals().add(approval);
+            return approval;
+        }).when(approvalRepository).save(any(ApprovalEntity.class));
+
+        when(travelReportRepository.save(any(TravelReportEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
         // WHEN
         approvalService.rejectTravelReport(newTravelId, approver.getEmail());
 
@@ -229,6 +291,12 @@ class ApprovalServiceTest {
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.of(travelReportEntity));
         when(approvalRepository.existsByTravelReportEntityAndRole(eq(travelReportEntity), eq(approver.getRoles()))).thenReturn(true);
 
+        doAnswer(invocation -> {
+            JobLambda jobLambda = invocation.getArgument(0);
+            jobLambda.run();
+            return null;
+        }).when(jobScheduler).enqueue(any(JobLambda.class));
+
         // WHEN
         Executable e = () -> approvalService.rejectTravelReport(travelId, approver.getEmail());
 
@@ -243,6 +311,12 @@ class ApprovalServiceTest {
         // GIVEN
         when(userRepository.findByEmail(approver.getEmail())).thenReturn(Optional.of(approver));
         when(travelReportRepository.findByTechId(travelId)).thenReturn(Optional.empty());
+
+        doAnswer(invocation -> {
+            JobLambda jobLambda = invocation.getArgument(0);
+            jobLambda.run();
+            return null;
+        }).when(jobScheduler).enqueue(any(JobLambda.class));
 
         // WHEN
         Executable e = () -> approvalService.rejectTravelReport(travelId, approver.getEmail());

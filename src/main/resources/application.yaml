@@ -64,7 +64,7 @@ org:
   jobrunr:
     background-job-server:
       enabled: true
-      worker-count: 1
+#      worker-count: 1
       poll-interval-in-seconds: 5
     dashboard:
       enabled: true

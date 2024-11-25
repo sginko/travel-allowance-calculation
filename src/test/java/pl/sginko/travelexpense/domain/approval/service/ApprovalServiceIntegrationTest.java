@@ -15,6 +15,8 @@
  */
 package pl.sginko.travelexpense.domain.approval.service;
 
+import org.jobrunr.jobs.lambdas.JobLambda;
+import org.jobrunr.scheduling.JobScheduler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,8 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
 
 @SpringBootTest
 @Transactional
@@ -61,6 +65,9 @@ public class ApprovalServiceIntegrationTest {
     @MockBean
     private JavaMailSender javaMailSender;
 
+    @MockBean
+    private JobScheduler jobScheduler;
+
     private UserEntity manager;
     private UserEntity accountant;
 
@@ -73,6 +80,12 @@ public class ApprovalServiceIntegrationTest {
         accountant = new UserEntity("accountant@test.com", "Accountant", "User", "password");
         accountant.changeRoleToAccountant();
         userRepository.save(accountant);
+
+        doAnswer(invocation -> {
+            JobLambda jobLambda = invocation.getArgument(0);
+            jobLambda.run();
+            return null;
+        }).when(jobScheduler).enqueue(any(JobLambda.class));
     }
 
     @Test
