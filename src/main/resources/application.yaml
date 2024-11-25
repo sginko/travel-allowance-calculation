@@ -11,8 +11,8 @@ spring:
     cleanup-cron: 1 * * * * *
 
   datasource:
-    url: jdbc:postgresql://postgres:5432/travel_expense
-#    url: jdbc:postgresql://localhost:5432/travel_expense
+#    url: jdbc:postgresql://postgres:5432/travel_expense
+    url: jdbc:postgresql://localhost:5432/travel_expense
     username: postgres
     password: admin
 
@@ -59,6 +59,18 @@ spring:
             required:
         ssl:
           enable:
+
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+      worker-count: 1
+      poll-interval-in-seconds: 5
+    dashboard:
+      enabled: true
+      port: 8000
+    jobs:
+      default-number-of-retries: 1
 
 cleanup:
   old-reports:

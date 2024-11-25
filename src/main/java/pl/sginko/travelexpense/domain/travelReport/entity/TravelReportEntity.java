@@ -109,6 +109,9 @@ public class TravelReportEntity {
     @OneToMany(mappedBy = "travelReportEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<ApprovalEntity> approvals = new HashSet<>();
 
+    @Version
+    private Long version;
+
     public TravelReportEntity(String fromCity, String toCity, LocalDate startDate, LocalTime startTime, LocalDate endDate,
                               LocalTime endTime, UserEntity userEntity, BigDecimal advancePayment, BigDecimal otherExpenses) {
         this.techId = UUID.randomUUID();

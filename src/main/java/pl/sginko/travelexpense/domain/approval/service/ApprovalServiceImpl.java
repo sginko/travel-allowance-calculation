@@ -15,8 +15,13 @@
  */
 package pl.sginko.travelexpense.domain.approval.service;
 
+import jakarta.persistence.OptimisticLockException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jobrunr.jobs.annotations.Job;
+import org.jobrunr.scheduling.JobScheduler;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.common.eventPublisher.EventPublisher;
@@ -51,6 +56,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final TravelReportMapper travelReportMapper;
     private final ActionLogService actionLogService;
     private final EventPublisher eventPublisher;
+    private final JobScheduler jobScheduler;
 
     @Override
     public List<TravelReportResponseDto> getTravelReportsForApproval(String approverEmail) {
@@ -73,32 +79,39 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional
     @Override
     public void approveTravelReport(UUID travelId, String approverEmail) {
-        processTravelReportApproval(travelId, approverEmail, ApprovalStatus.APPROVED);
+        try {
+            jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.APPROVED));
+        } catch (OptimisticLockException e) {
+            throw new TravelReportException("The travel report was updated by another user. Please refresh and try again.");
+        }
     }
 
     @Transactional
     @Override
     public void rejectTravelReport(UUID travelId, String approverEmail) {
-        processTravelReportApproval(travelId, approverEmail, ApprovalStatus.REJECTED);
+        try {
+            jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.REJECTED));
+        } catch (OptimisticLockException e) {
+            throw new TravelReportException("The travel report was updated by another user. Please refresh and try again.");
+        }
     }
 
-    private List<TravelReportEntity> getTravelReportsByStatuses(List<TravelReportStatus> travelReportStatus) {
-        return travelReportRepository.findByStatusIn(travelReportStatus);
+    @Retryable(value = OptimisticLockException.class, maxAttempts = 3, backoff = @Backoff(delay = 200))
+    @Job(name = "Handle travel report {0} approval or rejection")
+    @Transactional
+    public void handleTravelReport(UUID travelId, String approverEmail, ApprovalStatus status) {
+        log.info("Handling travel report ID {} by user {}", travelId, approverEmail);
+        try {
+            processTravelReportApproval(travelId, approverEmail, status);
+            log.info("Successfully handled travel report ID {} with status {}", travelId, status);
+        } catch (Exception e) {
+            log.error("Error handling travel report ID {}: {}", travelId, e.getMessage(), e);
+            throw e;
+        }
     }
 
-    private List<TravelReportEntity> filterPendingTravelReports(List<TravelReportEntity> travelReports, Roles approverRole) {
-        return travelReports.stream()
-                .filter(travel -> !approvalRepository.existsByTravelReportEntityAndRole(travel, approverRole))
-                .collect(Collectors.toList());
-    }
-
-    private List<TravelReportResponseDto> mapTravelReportEntityToTravelReportResponseDto(List<TravelReportEntity> travels) {
-        return travels.stream()
-                .map(entity -> travelReportMapper.toResponseDto(entity))
-                .collect(Collectors.toList());
-    }
-
-    private void processTravelReportApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
+    @Transactional
+    public void processTravelReportApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {
         // Find the approver by their email address
         UserEntity approver = findApproverUserByEmail(approverEmail);
 
@@ -116,6 +129,22 @@ public class ApprovalServiceImpl implements ApprovalService {
         updateTravelReportStatus(travelReportEntity);
 
         logAndPublishEvent(newStatus, travelReportEntity, approver);
+    }
+
+    private List<TravelReportEntity> getTravelReportsByStatuses(List<TravelReportStatus> travelReportStatus) {
+        return travelReportRepository.findByStatusIn(travelReportStatus);
+    }
+
+    private List<TravelReportEntity> filterPendingTravelReports(List<TravelReportEntity> travelReports, Roles approverRole) {
+        return travelReports.stream()
+                .filter(travel -> !approvalRepository.existsByTravelReportEntityAndRole(travel, approverRole))
+                .collect(Collectors.toList());
+    }
+
+    private List<TravelReportResponseDto> mapTravelReportEntityToTravelReportResponseDto(List<TravelReportEntity> travels) {
+        return travels.stream()
+                .map(entity -> travelReportMapper.toResponseDto(entity))
+                .collect(Collectors.toList());
     }
 
     private void addApprovalToTravelReport(ApprovalStatus newStatus, TravelReportEntity travelReportEntity, UserEntity approver, Roles approverRole) {
@@ -143,15 +172,15 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     private void logAndPublishEvent(ApprovalStatus newStatus, TravelReportEntity travelReportEntity, UserEntity approver) {
-        // Log the action performed by the approver (e.g., approval or rejection)
         actionLogService.logAction("Status report: " + travelReportEntity.getTechId() + " updated to: "
                 + newStatus, travelReportEntity.getId(), approver.getId());
 
-        // Publish an event if the travel report's status is now APPROVED or REJECTED
-        eventPublisher.publishTravelReportApprovalEvent(
-                travelReportEntity.getTechId(),
-                travelReportEntity.getUserEntity().getEmail(),
-                travelReportEntity.getStatus());
+        if (travelReportEntity.getStatus() == TravelReportStatus.APPROVED || travelReportEntity.getStatus() == TravelReportStatus.REJECTED) {
+            eventPublisher.publishTravelReportApprovalEvent(
+                    travelReportEntity.getTechId(),
+                    travelReportEntity.getUserEntity().getEmail(),
+                    travelReportEntity.getStatus());
+        }
     }
 
     private UserEntity findApproverUserByEmail(String approverEmail) {
