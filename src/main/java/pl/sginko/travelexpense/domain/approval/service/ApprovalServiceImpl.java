@@ -20,8 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jobrunr.jobs.annotations.Job;
 import org.jobrunr.scheduling.JobScheduler;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sginko.travelexpense.common.eventPublisher.EventPublisher;
@@ -79,35 +77,38 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional
     @Override
     public void approveTravelReport(UUID travelId, String approverEmail) {
-        try {
-            jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.APPROVED));
-        } catch (OptimisticLockException e) {
-            throw new TravelReportException("The travel report was updated by another user.");
-        }
+        jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.APPROVED));
     }
 
     @Transactional
     @Override
     public void rejectTravelReport(UUID travelId, String approverEmail) {
-        try {
-            jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.REJECTED));
-        } catch (OptimisticLockException e) {
-            throw new TravelReportException("The travel report was updated by another user.");
-        }
+        jobScheduler.enqueue(() -> handleTravelReport(travelId, approverEmail, ApprovalStatus.REJECTED));
     }
 
-//    @Retryable(retryFor = OptimisticLockException.class, maxAttempts = 3, backoff = @Backoff(delay = 200))
-//    @Job(name = "Handle travel report approval or rejection")
+    @Job(name = "Handle travel report approval or rejection")
     @Transactional
     public void handleTravelReport(UUID travelId, String approverEmail, ApprovalStatus status) {
         log.info("Handling travel report ID {} by user {}", travelId, approverEmail);
         try {
             processTravelReportApproval(travelId, approverEmail, status);
             log.info("Successfully handled travel report ID {} with status {}", travelId, status);
+        } catch (OptimisticLockException e) {
+            log.warn("OptimisticLockException for travel report ID {}: Retrying...", travelId);
+            throw e;
         } catch (Exception e) {
             log.error("Error handling travel report ID {}: {}", travelId, e.getMessage(), e);
             throw e;
         }
+
+//        log.info("Handling travel report ID {} by user {}", travelId, approverEmail);
+//        try {
+//            processTravelReportApproval(travelId, approverEmail, status);
+//            log.info("Successfully handled travel report ID {} with status {}", travelId, status);
+//        } catch (Exception e) {
+//            log.error("Error handling travel report ID {}: {}", travelId, e.getMessage(), e);
+//            throw e;
+//        }
     }
 
     private void processTravelReportApproval(UUID travelId, String approverEmail, ApprovalStatus newStatus) {

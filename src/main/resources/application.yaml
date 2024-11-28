@@ -64,17 +64,17 @@ org:
   jobrunr:
     background-job-server:
       enabled: true
-#      worker-count: 1
       poll-interval-in-seconds: 5
     dashboard:
       enabled: true
       port: 8000
     jobs:
-      default-number-of-retries: 1
+      default-number-of-retries: 3
+      retry-interval: PT10S
 
 cleanup:
   old-reports:
-    cron: "0 55 12 * * *"
+    cron: "0 54 10 * * *"
 
 logging:
   level:
