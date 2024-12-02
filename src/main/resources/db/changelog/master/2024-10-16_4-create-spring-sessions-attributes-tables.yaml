@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10
+      author: Sergi
+      changes:
+        - createTable:
+            tableName: SPRING_SESSION_ATTRIBUTES
+            columns:
+              - column:
+                  name: SESSION_PRIMARY_ID
+                  type: char(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ATTRIBUTE_NAME
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: ATTRIBUTE_BYTES
+                  type: varbinary(10000)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: SPRING_SESSION_ATTRIBUTES
+            baseColumnNames: SESSION_PRIMARY_ID
+            referencedTableName: SPRING_SESSION
+            referencedColumnNames: PRIMARY_ID
+            constraintName: FK_SESSION_ATTRIBUTES_TO_SESSION
+            onDelete: CASCADE

@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/master/2024-10-10_1-create-tables.yaml
+
+  - include:
+      file: db/changelog/master/2024-10-10_2-add-admin.yaml
+
+  - include:
+      file: db/changelog/master/2024-10-16_3-create-spring-sessions-tables.yaml
+
+  - include:
+      file: db/changelog/master/2024-10-16_4-create-spring-sessions-attributes-tables.yaml

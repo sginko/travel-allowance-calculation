@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <title>Dodawanie użytkownika - Kalkulator krajowej podróży służbowej</title>
+    <link rel="stylesheet" href="../styles/tac-employee-styles.css">
+    <link rel="stylesheet" href="../styles/core.css">
+</head>
+
+<body>
+    <div id="user-error-box" class="error-box">
+        <div class="error-b-c-btn"></div>
+        <span>Błąd podczas dodawania użytkownika</span>
+        <p></p>
+    </div>
+    <div class="employee-register-container">
+        <div id="user-message-box" class="message-box">
+            <span>Użytkownik został dodany.</span>
+        </div>
+        <label for="register-user-form" class="register-employee-label">Add user</label>
+        <form id="register-user-form">
+            <label for="pesel-field1" class="hidden"></label>
+            <label for="firstName" class="hidden"></label>
+            <label for="secondName" class="hidden"></label>
+            <label for="position" class="hidden"></label>
+            <input class="input-reg-log" name="pesel" id="pesel-field1" type="text" minlength="11" maxlength="11" placeholder="Pesel"
+                required>
+            <input class="input-reg-log" name="firstName" type="text" placeholder="Imię" required>
+            <input class="input-reg-log" name="secondName" type="text" placeholder="Nazwisko" required>
+            <input class="input-reg-log" name="position" type="text" placeholder="Stanowisko" required>
+            <input type="submit" value="Dodaj">
+        </form>
+    </div>
+    <script src="../javascript/submitUserForm.js"></script>
+    <script src="../javascript/validatePesel.js"></script>
+    <script src="../javascript/textBox.js"></script>
+</body>
+
+</html>
