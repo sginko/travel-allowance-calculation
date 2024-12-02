@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void sendEmail(EmailNotificationDto notificationDto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("ksiegowosc@ginkota.pl");
+        message.setFrom("your@mail.com");
         message.setTo(notificationDto.getToEmail());
         message.setSubject(notificationDto.getSubject());
         message.setText(notificationDto.getBody());
