@@ -16,7 +16,7 @@ spring:
   datasource:
     url: jdbc:postgresql://postgres:5432/travel_expense
 #    url: jdbc:postgresql://localhost:5432/travel_expense
-    username: postgres
+    username: admin
     password: admin
 
   jpa:
