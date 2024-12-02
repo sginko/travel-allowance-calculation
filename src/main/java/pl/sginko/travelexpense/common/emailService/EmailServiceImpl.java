@@ -16,20 +16,25 @@
 package pl.sginko.travelexpense.common.emailService;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import pl.sginko.travelexpense.common.notification.dto.EmailNotificationDto;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
 
+    @Value("${spring.mail.sender}")
+    private String senderEmail;
+
     @Override
     public void sendEmail(EmailNotificationDto notificationDto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("your@mail.com");
+        message.setFrom(senderEmail);
         message.setTo(notificationDto.getToEmail());
         message.setSubject(notificationDto.getSubject());
         message.setText(notificationDto.getBody());

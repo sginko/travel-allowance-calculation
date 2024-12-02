@@ -39,6 +39,7 @@ spring:
     port: 2525
     username: test
     password: test
+    sender: test-sender@example.com
     properties:
       mail:
         smtp:
