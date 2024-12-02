@@ -5,6 +5,9 @@ spring:
   application:
     name: travel-expense
 
+  mustache:
+    check-template-location: false
+
   session:
     store-type: jdbc
     timeout: 30s
@@ -20,8 +23,8 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    open-in-view: false
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    open-in-view: false
 
   liquibase:
     enabled: true
