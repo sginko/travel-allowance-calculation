@@ -90,6 +90,7 @@ By adhering to these regulations, the system ensures accurate and compliant mana
 - **NGINX**: Reverse proxy server for traffic management.
 - **OAuth2**: Secure authentication flow with third-party providers.
 - **Spring Security**: Ensuring application security.
+- **JSON Patch (via java-json-tools)**: Enables efficient and standard-compliant partial updates.
 - **Liquibase**: For seamless database migration management.
 - **H2 Database**: In-memory database for testing and development.
 - **Apache PDFBox**: Library for creating PDF reports dynamically.
