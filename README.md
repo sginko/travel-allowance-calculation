@@ -17,6 +17,7 @@
 ## Table of Contents
 
 - [Project Overview](#project-overview)
+- [Legal Basis](#legal-basis)
 - [Key Features](#key-features)
 - [Technologies Used](#technologies-used)
 - [NGINX Configuration](#nginx-configuration)
@@ -43,26 +44,40 @@ This system is tailored for businesses and professionals who need to manage trav
 
 ---
 
+## Legal Basis
+
+The system's calculations and functionalities are designed in accordance with the Polish Labor Code (Kodeks pracy), specifically:
+
+- **Art. 775 § 2**: Governs the entitlement to travel allowances for domestic and international business trips.
+- **Chapter 1: General Provisions**
+   - Defines the scope of travel expenses, including domestic ("podróżą krajową") and international trips ("podróżą zagraniczną").
+- **Chapter 2: Domestic Travel**
+   - Outlines the specifics of domestic travel allowances, meal costs, transportation, accommodation, and other necessary expenses.
+
+By adhering to these regulations, the system ensures accurate and compliant management of travel expenses for employees in state or local government budgetary units.
+
+---
+
 ## Key Features
 
 1. **Expense Management**
-   - Automatic calculation of travel costs, including allowances and other expenses.
-   - JSON Patch for efficient updates of travel records.
+   - **Automatic Calculation**: Computes travel costs, including allowances (diet), transport, and accommodation based on Kodeks pracy.
+   - **JSON Patch Support**: Enables efficient and partial updates of travel records.
 
 2. **PDF Report Generation**
-   - Generate travel reports dynamically with Apache PDFBox.
+   - **Dynamic Reports**: Generates detailed travel reports in PDF format using Apache PDFBox.
 
 3. **User Management**
-   - Role-based access control (Admin, Manager, Accountant, User).
-   - OAuth2-based authentication for enhanced security (Google Login).
+   - **Role-Based Access Control**: Assigns roles such as Admin, Manager, Accountant, and User with specific permissions.
+   - **Secure Authentication**: Implements OAuth2-based authentication for enhanced security, including Google Login integration.
 
 4. **Data Storage**
-   - PostgreSQL database with Liquibase for schema management.
-   - Dockerized database for easy deployment.
+   - **PostgreSQL Database**: Stores all travel and expense data securely with Liquibase managing schema migrations.
+   - **Dockerized Deployment**: Ensures easy and consistent deployment across different environments.
 
 5. **Job Scheduling and Sessions**
-   - Asynchronous tasks using JobRunr.
-   - JDBC-based session storage for session durability.
+   - **Asynchronous Tasks**: Manages background jobs using JobRunr.
+   - **Session Management**: Utilizes JDBC-based session storage for durability and scalability.
 
 ---
 
@@ -89,12 +104,7 @@ This system is tailored for businesses and professionals who need to manage trav
 ### Example NGINX Configuration
 
 ```nginx
-worker_processes auto;
-
-events {
-    worker_connections 1024;
-    # Additional event-related settings can be added here
-}
+events {}
 
 http {
     upstream javaapp_upstream {
@@ -116,7 +126,6 @@ http {
     }
 }
    ```
-
 ---
 
 ## Getting Started
