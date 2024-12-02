@@ -1,6 +1,6 @@
 # Travel Expense Management System
 
-**Travel Expense Management System** is a modern web application designed to simplify the management of business travel expenses. It automates the process of expense calculation, generates detailed reports, and supports secure role-based user management.
+**Travel Expense Management System** is a web application designed to simplify the management of business travel expenses. It automates the process of expense calculation, generates detailed reports, and supports secure role-based user management.
 
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-F2F4F9?style=for-the-badge&logo=spring-boot)
