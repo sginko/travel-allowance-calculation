@@ -2,16 +2,16 @@
 
 **Travel Expense Management System** is a web application designed to simplify the management of business travel expenses. It automates the calculation of travel allowances, generates detailed PDF reports, and adheres to the Polish Labor Code regulations.
 
-![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=java&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-F2F4F9?style=for-the-badge&logo=spring-boot)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)
-![OAuth2](https://img.shields.io/badge/OAuth2-Security-brightgreen?style=for-the-badge&logo=oauth)
-![NGINX](https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white)
-![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white)
-![H2 Database](https://img.shields.io/badge/H2_Database-F7DF1E?style=for-the-badge&logo=h2database&logoColor=black)
-![Liquibase](https://img.shields.io/badge/Liquibase-4A86E8?style=for-the-badge&logo=liquibase&logoColor=white)
-![Apache PDFBox](https://img.shields.io/badge/Apache_PDFBox-D22128?style=for-the-badge&logo=apache&logoColor=white)
+![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat&logo=java&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-F2F4F9?style=flat&logo=spring-boot)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=flat&logo=docker&logoColor=white)
+![OAuth2](https://img.shields.io/badge/OAuth2-Security-brightgreen?style=flat&logo=oauth)
+![NGINX](https://img.shields.io/badge/NGINX-009639?style=flat&logo=nginx&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat&logo=spring-security&logoColor=white)
+![H2 Database](https://img.shields.io/badge/H2_Database-F7DF1E?style=flat&logo=h2database&logoColor=black)
+![Liquibase](https://img.shields.io/badge/Liquibase-4A86E8?style=flat&logo=liquibase&logoColor=white)
+![Apache PDFBox](https://img.shields.io/badge/Apache_PDFBox-D22128?style=flat&logo=apache&logoColor=white)
 
 ---
 
