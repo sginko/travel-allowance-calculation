@@ -16,6 +16,9 @@ spring:
       ddl-auto: create-drop
     show-sql: true
 
+  liquibase:
+    enabled: false
+
   security:
     oauth2:
       client:
