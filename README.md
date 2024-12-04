@@ -1,6 +1,6 @@
 # Travel Expense Management System
 
-**Travel Expense Management System** is a web application designed to simplify the management of business travel expenses. It automates the process of expense calculation, generates detailed reports, and supports secure role-based user management.
+**Travel Expense Management System** is a web application designed to simplify the management of business travel expenses. It automates the calculation of travel allowances, generates detailed PDF reports, and adheres to the Polish Labor Code regulations.
 
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-F2F4F9?style=for-the-badge&logo=spring-boot)
@@ -11,6 +11,7 @@
 ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white)
 ![H2 Database](https://img.shields.io/badge/H2_Database-F7DF1E?style=for-the-badge&logo=h2database&logoColor=black)
 ![Liquibase](https://img.shields.io/badge/Liquibase-4A86E8?style=for-the-badge&logo=liquibase&logoColor=white)
+![Apache PDFBox](https://img.shields.io/badge/Apache_PDFBox-D22128?style=for-the-badge&logo=apache&logoColor=white)
 
 ---
 
@@ -22,11 +23,11 @@
 - [Technologies Used](#technologies-used)
 - [NGINX Configuration](#nginx-configuration)
 - [Getting Started](#getting-started)
-   - [Prerequisites](#prerequisites)
-   - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
 - [Usage](#usage)
-   - [User Roles](#user-roles)
-   - [Endpoints](#endpoints)
+    - [User Roles](#user-roles)
+    - [Endpoints](#endpoints)
 - [Contribution Guidelines](#contribution-guidelines)
 - [License](#license)
 - [Contact](#contact)
@@ -49,35 +50,35 @@ This system is tailored for businesses and professionals who need to manage trav
 The system's calculations and functionalities are designed in accordance with the Polish Labor Code (Kodeks pracy), specifically:
 
 - **Art. 775 § 2**: Governs the entitlement to travel allowances for domestic and international business trips.
-- **Chapter 1: General Provisions**
-   - Defines the scope of travel expenses, including domestic ("podróżą krajową") and international trips ("podróżą zagraniczną").
-- **Chapter 2: Domestic Travel**
-   - Outlines the specifics of domestic travel allowances, meal costs, transportation, accommodation, and other necessary expenses.
+- Covers:
+    - Travel diets (allowances).
+    - Transport and accommodation costs.
+    - Other necessary expenses as defined by the employer.
 
-By adhering to these regulations, the system ensures accurate and compliant management of travel expenses for employees in state or local government budgetary units.
+By adhering to these regulations, the system ensures accurate and compliant management of travel expenses.
 
 ---
 
 ## Key Features
 
 1. **Expense Management**
-   - **Automatic Calculation**: Computes travel costs, including allowances (diet), transport, and accommodation based on Kodeks pracy.
-   - **JSON Patch Support**: Enables efficient and partial updates of travel records.
+    - Automatic calculation of diets, transport costs, and accommodation fees.
+    - Flexible configuration for domestic and international travel.
 
 2. **PDF Report Generation**
-   - **Dynamic Reports**: Generates detailed travel reports in PDF format using Apache PDFBox.
+    - Generate professional and detailed reports in PDF format using Apache PDFBox.
 
 3. **User Management**
-   - **Role-Based Access Control**: Assigns roles such as Admin, Manager, Accountant, and User with specific permissions.
-   - **Secure Authentication**: Implements OAuth2-based authentication for enhanced security, including Google Login integration.
+    - Role-based access control (Admin, Manager, Accountant, User).
+    - Secure OAuth2-based authentication, including Google Login integration.
 
 4. **Data Storage**
-   - **PostgreSQL Database**: Stores all travel and expense data securely with Liquibase managing schema migrations.
-   - **Dockerized Deployment**: Ensures easy and consistent deployment across different environments.
+    - PostgreSQL database with Liquibase for schema management.
+    - Dockerized environment for consistent deployments.
 
-5. **Job Scheduling and Sessions**
-   - **Asynchronous Tasks**: Manages background jobs using JobRunr.
-   - **Session Management**: Utilizes JDBC-based session storage for durability and scalability.
+5. **Additional Features**
+    - Supports JSON Patch for efficient updates.
+    - Background job scheduling using JobRunr.
 
 ---
 
@@ -100,17 +101,16 @@ By adhering to these regulations, the system ensures accurate and compliant mana
 
 ## NGINX Configuration
 
-**NGINX** is used as a reverse proxy server to manage incoming traffic, enhance security, and improve application performance. Below is an example configuration that includes the essential `events {}` block.
+**NGINX** is used as a reverse proxy server to manage traffic and improve application performance.
 
-### Example NGINX Configuration
+### Example Configuration
 
 ```nginx
+
 events {}
 
 http {
     upstream javaapp_upstream {
-        server javaapp:8080;
-        server javaapp:8080;
         server javaapp:8080;
     }
 
@@ -160,6 +160,7 @@ Ensure you have the following installed:
     ```
 
 3. **Build and Run with Docker**:
+
     ```bash
     docker-compose up --build
     ```
@@ -171,16 +172,15 @@ Ensure you have the following installed:
    - **Default Credentials**:
       - **Email**: `admin@admin.com`
       - **Password**: `admin`
-
 ---
 
 ## Usage
 
 ### User Roles
 
-- **Admin**: Full control over user and expense management.
-- **Manager**: Manages team expenses and reports.
-- **Accountant**: Handles financial documentation and data.
+- **Admin**: Manage users and configurations.
+- **Manager**: Review and approve reports.
+- **Accountant**: Process financial data. Review and approve reports.
 - **User**: Records personal travel expenses.
 
 ### Endpoints
