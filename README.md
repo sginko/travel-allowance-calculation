@@ -3,7 +3,7 @@
 **Travel Expense Management System** is a web application designed to simplify the management of business travel expenses. It automates the calculation of travel allowances, generates detailed PDF reports, and adheres to the Polish Labor Code regulations.
 
 ![Java](https://img.shields.io/badge/Java-21-ED8B00?style=flat&logo=java&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.3.5-F2F4F9?style=flat&logo=spring-boot)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-F2F4F9?style=flat&logo=spring-boot)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat&logo=postgresql&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=flat&logo=docker&logoColor=white)
 ![OAuth2](https://img.shields.io/badge/OAuth2-Security-brightgreen?style=flat&logo=oauth)
