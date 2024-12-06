@@ -64,7 +64,6 @@ By adhering to these regulations, the system ensures accurate and compliant mana
 
 1. **Expense Management**
     - Automatic calculation of diets, transport costs, and accommodation fees.
-    - Flexible configuration for domestic and international travel.
 
 2. **PDF Report Generation**
     - Generate professional and detailed reports in PDF format using Apache PDFBox.
