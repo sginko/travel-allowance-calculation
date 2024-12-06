@@ -186,9 +186,71 @@ Ensure you have the following installed:
 
 ### Endpoints
 
-- **Expense Management**: `/api/expenses`
-- **PDF Report Generation**: `/api/reports`
-- **User Management**: `/api/users`
+**General:**
+- Registers a new user:
+```
+POST /api/v1/users/new-user
+```
+
+**Admin:**
+- Retrieves a list of all registered users:
+```
+GET /api/v1/users/all-users
+```
+
+- Changes the specified user's role to ACCOUNTANT:
+```
+PATCH /api/v1/users/{email}/change-role-to-accountant
+```
+
+- Changes the specified user's role to MANAGER:
+```
+PATCH /api/v1/users/{email}/change-role-to-manager
+```
+
+
+**Employee:**
+- Creates a new travel expense report:
+```
+POST /api/v1/travels
+```
+
+- Retrieves all travel expense reports associated with the current user:
+```
+GET /api/v1/travels
+```
+
+- Retrieves details of a specific travel expense report by its unique identifier (techId):
+```
+GET /api/v1/travels/{techId}
+```
+
+- Updates an existing travel expense report using a JSON Patch:
+```
+PATCH /api/v1/travels/update/{techId}
+```
+
+**Accountant, Manager:**
+- Retrieves all travel reports pending approval for the current approver:
+```
+GET /api/v1/approvals/pending
+```
+
+- Approves a specific travel report identified by travelId:
+```
+POST /api/v1/approvals/{travelId}/approve
+```
+
+- Rejects a specific travel report identified by travelId:
+```
+POST /api/v1/approvals/{travelId}/reject
+```
+
+**Common Functionality:**
+- Generates a PDF report for a specific travel expense report identified by techId. The report is returned as a downloadable file:
+```
+POST /api/v1/travels/print/{techId}
+```
 
 ---
 
