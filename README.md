@@ -208,7 +208,6 @@ PATCH /api/v1/users/{email}/change-role-to-accountant
 PATCH /api/v1/users/{email}/change-role-to-manager
 ```
 
-
 **Employee:**
 - Creates a new travel expense report:
 ```
