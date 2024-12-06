@@ -281,5 +281,3 @@ This project is licensed under the [Apache License 2.0](LICENSE). See the LICENS
 ## Contact
 
 For any inquiries or suggestions, please reach out to **Sergii Ginkota**.
-
----
