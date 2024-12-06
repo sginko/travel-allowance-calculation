@@ -85,7 +85,7 @@ By adhering to these regulations, the system ensures accurate and compliant mana
 ## Technologies Used
 
 - **Java 21**: Latest features for modern backend development.
-- **Spring Boot 3.3.5**: Framework for building RESTful services.
+- **Spring Boot**: Framework for building RESTful services.
 - **PostgreSQL**: Secure and scalable relational database.
 - **Docker & Docker Compose**: For easy application deployment.
 - **NGINX**: Reverse proxy server for traffic management.
